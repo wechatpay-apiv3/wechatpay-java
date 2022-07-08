@@ -1,0 +1,21 @@
+*.class
+*.swp
+.idea
+.vscode
+.DS_Store
+*.iml
+
+# exclude jar for gradle wrapper
+!gradle/wrapper/*.jar
+
+
+# Gradle files
+.gradle/*
+build/*
+out/*
+*/build/*
+*/out/*
+
+# compiler output
+bin/
+*/bin/

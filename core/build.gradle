@@ -1,0 +1,79 @@
+ext {
+    publishedArtifactId = "wechatpay-java-core"
+}
+
+sourceSets {
+    samples {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+
+configurations {
+}
+
+jar {
+    manifest {
+        attributes("Automatic-Module-Name": "com.wechat.pay.java.core")
+        attributes("Implementation-Version": project.version)
+    }
+}
+
+dependencies {
+}
+
+publishing {
+    java {
+        withJavadocJar()
+        withSourcesJar()
+    }
+
+    publications {
+        maven(MavenPublication) {
+            artifactId = project.ext.publishedArtifactId
+            from components.java
+
+            pom {
+                name = project.ext.publishedArtifactId
+                description = "A Java Core SDK for WeChat Pay\'s API"
+                url = ""
+                licenses {
+                    license {
+                        name = "The Apache Software License, Version 2.0"
+                        url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+                developers {
+                    developer {
+                        name = "WeChat Pay APIv3 Team"
+                    }
+                }
+                scm {
+                    connection = ""
+                    developerConnection = ""
+                    url = ""
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "mavencentral"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            url = version.endsWith("SNAPSHOT") ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                username System.getenv("SONATYPE_NEXUS_USERNAME")
+                password System.getenv("SONATYPE_NEXUS_PASSWORD")
+            }
+        }
+    }
+}
+
+signing {
+    def signingKey = findProperty("signingKey")
+    def signingPassword = findProperty("signingPassword")
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.maven
+}

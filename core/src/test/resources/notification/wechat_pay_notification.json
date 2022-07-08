@@ -1,0 +1,9 @@
+{
+  "resource": {
+    "original_type": "payscore",
+    "algorithm": "AEAD_AES_256_GCM",
+    "ciphertext": "YDS3lKPaC4Y52Gf3uhft5qUBlIa8b428AWTtTauHQfQrRw+X1WpiuHIDy0vo1Vd6VEq67aVyqPdDYMkRVSDaZL3iZttevRMOoPKMifozg6XPWjIZumks/GpT48lI4NizyeaqLBokNebthah3o1H76qSlO9NkDjp9bzmKLEYYH9TEklFUpsvPqOTOcgSLgh21YJXYR7dEBXFgRLiNIKRgO5JdXh1hccRUAlyVWxE54PXpnQ==",
+    "associated_data": "payscore",
+    "nonce": "Kj7QIyUiYx1q"
+  }
+}

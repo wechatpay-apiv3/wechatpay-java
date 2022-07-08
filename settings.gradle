@@ -1,0 +1,3 @@
+rootProject.name = 'wechatpay-java'
+include 'core'
+include 'service'

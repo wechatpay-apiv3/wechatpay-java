@@ -1,0 +1,15 @@
+{
+  "data": [
+    {
+      "serial_no": "5157F09EFDC096DE15EBE81A47057A7232F1B8E1",
+      "effective_time ": "2018-06-08T10:34:56+08:00",
+      "expire_time ": "2018-12-08T10:34:56+08:00",
+      "encrypt_certificate": {
+        "algorithm": "AEAD_AES_256_GCM",
+        "nonce": "61f9c719728a",
+        "associated_data": "certificate",
+        "ciphertext": "YDS3lKPaC4Y52Gf3uhft5qUBlIa8b428AWTtTauHQfQrRw+X1WpiuHIDy0vo1Vd6VEq67aVyqPdDYMkRVSDaZL3iZttevRMOoPKMifozg6XPWjIZumks/GpT48lI4NizyeaqLBokNebthah3o1H76qSlO9NkDjp9bzmKLEYYH9TEklFUpsvPqOTOcgSLgh21YJXYR7dEBXFgRLiNIKRgO5JdXh1hccRUAlyVWxE54PXpnQ=="
+      }
+    }
+  ]
+}
