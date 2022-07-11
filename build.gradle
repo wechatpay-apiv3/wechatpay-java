@@ -45,6 +45,9 @@ subprojects {
     javadoc {
         source = sourceSets.main.allJava
         classpath = configurations.runtimeClasspath
+        options {
+            encoding "UTF-8"
+        }
     }
 
     test {
