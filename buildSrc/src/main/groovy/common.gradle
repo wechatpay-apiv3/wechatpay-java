@@ -7,6 +7,8 @@ plugins {
 
 version "0.1.0"
 group "com.github.wechatpay-apiv3"
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
@@ -21,7 +23,7 @@ spotless {
 
 javadoc {
     source = sourceSets.main.allJava
-        classpath = configurations.runtimeClasspath
+    classpath = configurations.runtimeClasspath
     options {
         encoding "UTF-8"
     }
