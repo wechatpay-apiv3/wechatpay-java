@@ -1,15 +1,9 @@
+plugins{
+    id "common"
+}
+
 ext {
     publishedArtifactId = "wechatpay-java-core"
-}
-
-sourceSets {
-    samples {
-        compileClasspath += sourceSets.main.output
-        runtimeClasspath += sourceSets.main.output
-    }
-}
-
-configurations {
 }
 
 jar {
@@ -20,6 +14,11 @@ jar {
 }
 
 dependencies {
+    implementation "com.squareup.okhttp3:okhttp:${okhttpVersion}"
+    implementation "com.google.code.gson:gson:${gsonVersion}"
+    testImplementation "org.mockito:mockito-inline:${mockitoInlineVersion}"
+    testImplementation "junit:junit:${junitVersion}"
+    implementation "org.slf4j:slf4j-api:${slf4jVersion}"
 }
 
 publishing {

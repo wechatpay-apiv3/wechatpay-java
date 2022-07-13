@@ -1,3 +1,8 @@
+pluginManagement {
+    plugins {
+        id 'com.diffplug.spotless' version "${spotlessVersion}"
+    }
+}
 rootProject.name = 'wechatpay-java'
 include 'core'
 include 'service'
