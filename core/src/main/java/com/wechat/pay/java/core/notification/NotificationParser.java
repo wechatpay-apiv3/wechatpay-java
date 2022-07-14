@@ -16,7 +16,7 @@ import java.util.Map;
 /** 通知解析器 */
 public class NotificationParser {
 
-  private final Gson gson = GsonUtil.createGson();
+  private final Gson gson = GsonUtil.getGson();
   private final Map<String, Verifier> verifiers = new HashMap<>();
   private final Map<String, AeadCipher> ciphers = new HashMap<>();
 

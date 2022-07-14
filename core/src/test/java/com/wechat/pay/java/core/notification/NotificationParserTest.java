@@ -47,7 +47,7 @@ public class NotificationParserTest {
   public static void init() throws IOException {
 
     notificationJson = IOUtil.loadStringFromPath(NOTIFICATION_JSON_PATH);
-    notification = GsonUtil.createGson().fromJson(notificationJson, Notification.class);
+    notification = GsonUtil.getGson().fromJson(notificationJson, Notification.class);
     verifyAlgorithm = notification.getResource().getAlgorithm();
     verifiyNonce = notification.getResource().getNonce();
 
@@ -99,6 +99,6 @@ public class NotificationParserTest {
             .build();
 
     Object decryptObject = parser.parse(requestParam, Object.class);
-    Assert.assertEquals(DECRYPT_OBJECT_STRING, GsonUtil.createGson().toJson(decryptObject));
+    Assert.assertEquals(DECRYPT_OBJECT_STRING, GsonUtil.getGson().toJson(decryptObject));
   }
 }

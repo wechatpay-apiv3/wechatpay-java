@@ -29,7 +29,7 @@ public final class JsonRequestBody implements RequestBody {
 
   @Override
   public String toString() {
-    return GsonUtil.createGson().toJson(this);
+    return GsonUtil.getGson().toJson(this);
   }
 
   public static class Builder {

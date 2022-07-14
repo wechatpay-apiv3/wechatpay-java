@@ -30,7 +30,7 @@ public class GsonUtilTest {
             + outTradeNo
             + "\"\n"
             + "}";
-    Gson gson = GsonUtil.createGson();
+    Gson gson = GsonUtil.getGson();
     TestServiceRequest getTestServiceRequest =
         gson.fromJson(testServiceRequestJson, TestServiceRequest.class);
     TestServiceRequest createTestServiceRequest = new TestServiceRequest();

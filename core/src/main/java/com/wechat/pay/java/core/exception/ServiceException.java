@@ -32,7 +32,7 @@ public class ServiceException extends WechatPayException {
     this.httpStatusCode = httpStatusCode;
     this.responseBody = responseBody;
     if (responseBody != null) {
-      JsonObject jsonObject = GsonUtil.createGson().fromJson(responseBody, JsonObject.class);
+      JsonObject jsonObject = GsonUtil.getGson().fromJson(responseBody, JsonObject.class);
       JsonElement code = jsonObject.get("code");
       JsonElement message = jsonObject.get("message");
       this.errorCode = code == null ? null : code.getAsString();

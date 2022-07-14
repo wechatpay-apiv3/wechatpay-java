@@ -12,10 +12,10 @@ public class GsonUtil {
 
   private GsonUtil() {}
 
-  private static final GsonBuilder gsonBuilder;
+  private static final Gson gson;
 
   static {
-    gsonBuilder =
+    gson =
         new GsonBuilder()
             .disableHtmlEscaping()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -44,10 +44,11 @@ public class GsonUtil {
                   public boolean shouldSkipClass(Class<?> aClass) {
                     return false;
                   }
-                });
+                })
+            .create();
   }
 
-  public static Gson createGson() {
-    return gsonBuilder.create();
+  public static Gson getGson() {
+    return gson;
   }
 }

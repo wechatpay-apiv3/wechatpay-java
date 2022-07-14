@@ -61,7 +61,7 @@ public final class HttpResponse<T> {
 
   @Override
   public String toString() {
-    return GsonUtil.createGson().toJson(this);
+    return GsonUtil.getGson().toJson(this);
   }
 
   public static class Builder<T> {
@@ -89,7 +89,7 @@ public final class HttpResponse<T> {
       }
       ResponseBody body = new JsonResponseBody.Builder().body(originalResponse.getBody()).build();
       T serviceResponse =
-          GsonUtil.createGson().fromJson(originalResponse.getBody(), serviceResponseType);
+          GsonUtil.getGson().fromJson(originalResponse.getBody(), serviceResponseType);
       return new HttpResponse<>(
           originalResponse.getRequest(), originalResponse.getHeaders(), body, serviceResponse);
     }
