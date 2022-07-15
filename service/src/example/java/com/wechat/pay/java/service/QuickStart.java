@@ -2,7 +2,6 @@ package com.wechat.pay.java.service;
 
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.RSAConfig;
-import com.wechat.pay.java.core.cipher.AeadAesCipher;
 import com.wechat.pay.java.service.certificate.CertificateService;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
@@ -29,8 +28,7 @@ public class QuickStart {
   public static void downloadCertificate() {
     CertificateService certificateService = buildCertificateService();
     List<X509Certificate> certificates =
-        certificateService.downloadCertificate(
-            new AeadAesCipher(apiV3Key.getBytes(StandardCharsets.UTF_8)));
+        certificateService.downloadCertificate(apiV3Key.getBytes(StandardCharsets.UTF_8));
   }
   /**
    * 构建证书下载服务
