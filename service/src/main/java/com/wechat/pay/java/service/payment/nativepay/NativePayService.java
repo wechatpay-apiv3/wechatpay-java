@@ -33,6 +33,9 @@ import com.wechat.pay.java.service.payment.nativepay.model.PrepayRequest;
 import com.wechat.pay.java.service.payment.nativepay.model.PrepayResponse;
 import com.wechat.pay.java.service.payment.nativepay.model.QueryOrderByIdRequest;
 import com.wechat.pay.java.service.payment.nativepay.model.QueryOrderByOutTradeNoRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /** NativePayService服务 */
 public class NativePayService {
@@ -66,7 +69,7 @@ public class NativePayService {
     // 添加 path param
     requestPath = requestPath.replace("{" + "out_trade_no" + "}", request.getOutTradeNo());
     HttpHeaders headers = new HttpHeaders();
-    headers.addHeader(Constant.ACCEPT, " */*");
+    headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
     headers.addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue());
     HttpRequest httpRequest =
         new HttpRequest.Builder()
@@ -77,7 +80,6 @@ public class NativePayService {
             .build();
     httpClient.execute(httpRequest, null);
   }
-
   /**
    * Native支付预下单
    *
@@ -91,7 +93,7 @@ public class NativePayService {
   public PrepayResponse prepay(PrepayRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/v3/pay/transactions/native";
     HttpHeaders headers = new HttpHeaders();
-    headers.addHeader(Constant.ACCEPT, " */*");
+    headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
     headers.addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue());
     HttpRequest httpRequest =
         new HttpRequest.Builder()
@@ -104,7 +106,6 @@ public class NativePayService {
         httpClient.execute(httpRequest, PrepayResponse.class);
     return httpResponse.getServiceResponse();
   }
-
   /**
    * 微信支付订单号查询订单
    *
@@ -119,12 +120,17 @@ public class NativePayService {
     String requestPath = "https://api.mch.weixin.qq.com/v3/pay/transactions/id/{transaction_id}";
     // 添加 path param
     requestPath = requestPath.replace("{" + "transaction_id" + "}", request.getTransactionId());
-    // 添加 query param
-    if (request.getMchid() != null) {
-      requestPath += "?mchid=" + request.getMchid();
+    try {
+      // 添加 query param
+      if (request.getMchid() != null) {
+        requestPath +=
+            "?mchid=" + URLEncoder.encode(request.getMchid(), StandardCharsets.UTF_8.name());
+      }
+    } catch (UnsupportedEncodingException e) {
+      throw new RuntimeException(e);
     }
     HttpHeaders headers = new HttpHeaders();
-    headers.addHeader(Constant.ACCEPT, " */*");
+    headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
     headers.addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue());
     HttpRequest httpRequest =
         new HttpRequest.Builder()
@@ -135,7 +141,6 @@ public class NativePayService {
     HttpResponse<Transaction> httpResponse = httpClient.execute(httpRequest, Transaction.class);
     return httpResponse.getServiceResponse();
   }
-
   /**
    * 商户订单号查询订单
    *
@@ -151,12 +156,17 @@ public class NativePayService {
         "https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/{out_trade_no}";
     // 添加 path param
     requestPath = requestPath.replace("{" + "out_trade_no" + "}", request.getOutTradeNo());
-    // 添加 query param
-    if (request.getMchid() != null) {
-      requestPath += "?mchid=" + request.getMchid();
+    try {
+      // 添加 query param
+      if (request.getMchid() != null) {
+        requestPath +=
+            "?mchid=" + URLEncoder.encode(request.getMchid(), StandardCharsets.UTF_8.name());
+      }
+    } catch (UnsupportedEncodingException e) {
+      throw new RuntimeException(e);
     }
     HttpHeaders headers = new HttpHeaders();
-    headers.addHeader(Constant.ACCEPT, " */*");
+    headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
     headers.addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue());
     HttpRequest httpRequest =
         new HttpRequest.Builder()

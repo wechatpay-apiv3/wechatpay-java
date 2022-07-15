@@ -18,7 +18,6 @@ import java.util.List;
 
 /** Refund */
 public class Refund {
-
   /** 微信支付退款号 说明：微信支付退款号 */
   @SerializedName("refund_id")
   private String refundId;

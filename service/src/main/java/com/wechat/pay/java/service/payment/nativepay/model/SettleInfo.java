@@ -16,7 +16,6 @@ import com.wechat.pay.java.core.util.GsonUtil;
 
 /** SettleInfo */
 public class SettleInfo {
-
   /** profitSharing 说明：是否指定分账 */
   @SerializedName("profit_sharing")
   private Boolean profitSharing;

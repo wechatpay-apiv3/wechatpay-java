@@ -30,6 +30,9 @@ import com.wechat.pay.java.core.http.MediaType;
 import com.wechat.pay.java.service.refund.model.CreateRequest;
 import com.wechat.pay.java.service.refund.model.QueryByOutRefundNoRefundsRequest;
 import com.wechat.pay.java.service.refund.model.Refund;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /** RefundService服务 */
 public class RefundService {
@@ -61,7 +64,7 @@ public class RefundService {
   public Refund createRefunds(CreateRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/v3/refund/domestic/refunds";
     HttpHeaders headers = new HttpHeaders();
-    headers.addHeader(Constant.ACCEPT, " */*");
+    headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
     headers.addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue());
     HttpRequest httpRequest =
         new HttpRequest.Builder()
@@ -73,7 +76,6 @@ public class RefundService {
     HttpResponse<Refund> httpResponse = httpClient.execute(httpRequest, Refund.class);
     return httpResponse.getServiceResponse();
   }
-
   /**
    * 查询单笔退款（通过商户退款单号）
    *
@@ -88,12 +90,17 @@ public class RefundService {
     String requestPath = "https://api.mch.weixin.qq.com/v3/refund/domestic/refunds/{out_refund_no}";
     // 添加 path param
     requestPath = requestPath.replace("{" + "out_refund_no" + "}", request.getOutRefundNo());
-    // 添加 query param
-    if (request.getSubMchid() != null) {
-      requestPath += "?subMchid=" + request.getSubMchid();
+    try {
+      // 添加 query param
+      if (request.getSubMchid() != null) {
+        requestPath +=
+            "?subMchid=" + URLEncoder.encode(request.getSubMchid(), StandardCharsets.UTF_8.name());
+      }
+    } catch (UnsupportedEncodingException e) {
+      throw new RuntimeException(e);
     }
     HttpHeaders headers = new HttpHeaders();
-    headers.addHeader(Constant.ACCEPT, " */*");
+    headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
     headers.addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue());
     HttpRequest httpRequest =
         new HttpRequest.Builder()
