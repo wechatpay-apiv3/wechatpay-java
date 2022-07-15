@@ -63,7 +63,8 @@ public class NativePayService {
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
    * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
-  public void closeOrder(CloseOrderRequest request) {
+  public void closeOrder(CloseOrderRequest request)
+      throws HttpException, ValidationException, ServiceException, ParseException {
     String requestPath =
         "https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/{out_trade_no}/close";
     // 添加 path param
@@ -90,7 +91,8 @@ public class NativePayService {
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
    * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
-  public PrepayResponse prepay(PrepayRequest request) {
+  public PrepayResponse prepay(PrepayRequest request)
+      throws HttpException, ValidationException, ServiceException, ParseException {
     String requestPath = "https://api.mch.weixin.qq.com/v3/pay/transactions/native";
     HttpHeaders headers = new HttpHeaders();
     headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
@@ -116,7 +118,8 @@ public class NativePayService {
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
    * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
-  public Transaction queryOrderById(QueryOrderByIdRequest request) {
+  public Transaction queryOrderById(QueryOrderByIdRequest request)
+      throws HttpException, ValidationException, ServiceException, ParseException {
     String requestPath = "https://api.mch.weixin.qq.com/v3/pay/transactions/id/{transaction_id}";
     // 添加 path param
     requestPath = requestPath.replace("{" + "transaction_id" + "}", request.getTransactionId());
@@ -151,7 +154,8 @@ public class NativePayService {
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
    * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
-  public Transaction queryOrderByOutTradeNo(QueryOrderByOutTradeNoRequest request) {
+  public Transaction queryOrderByOutTradeNo(QueryOrderByOutTradeNoRequest request)
+      throws HttpException, ValidationException, ServiceException, ParseException {
     String requestPath =
         "https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/{out_trade_no}";
     // 添加 path param

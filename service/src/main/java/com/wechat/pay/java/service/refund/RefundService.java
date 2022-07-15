@@ -50,7 +50,6 @@ public class RefundService {
   public RefundService(HttpClient httpClient) {
     this.httpClient = requireNonNull(httpClient);
   }
-
   /**
    * 退款申请
    *
@@ -61,7 +60,8 @@ public class RefundService {
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
    * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
-  public Refund createRefunds(CreateRequest request) {
+  public Refund createRefunds(CreateRequest request)
+      throws HttpException, ValidationException, ServiceException, ParseException {
     String requestPath = "https://api.mch.weixin.qq.com/v3/refund/domestic/refunds";
     HttpHeaders headers = new HttpHeaders();
     headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
@@ -86,7 +86,8 @@ public class RefundService {
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
    * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
-  public Refund queryByOutRefundNoRefunds(QueryByOutRefundNoRefundsRequest request) {
+  public Refund queryByOutRefundNoRefunds(QueryByOutRefundNoRefundsRequest request)
+      throws HttpException, ValidationException, ServiceException, ParseException {
     String requestPath = "https://api.mch.weixin.qq.com/v3/refund/domestic/refunds/{out_refund_no}";
     // 添加 path param
     requestPath = requestPath.replace("{" + "out_refund_no" + "}", request.getOutRefundNo());
