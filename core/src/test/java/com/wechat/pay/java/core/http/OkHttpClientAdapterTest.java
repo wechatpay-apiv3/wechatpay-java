@@ -180,7 +180,7 @@ public class OkHttpClientAdapterTest {
   }
 
   @Test
-  public void testExecuteSendPostRequestWithJsonBody() {
+  public void testExecuteSendPostReqWithJsonBody() {
     Credential executeSendPostCredential =
         new Credential() {
           @Override
