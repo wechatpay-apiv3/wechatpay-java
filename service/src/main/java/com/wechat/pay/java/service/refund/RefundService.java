@@ -60,8 +60,7 @@ public class RefundService {
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
    * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
-  public Refund createRefunds(CreateRequest request)
-      throws HttpException, ValidationException, ServiceException, ParseException {
+  public Refund createRefunds(CreateRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/v3/refund/domestic/refunds";
     HttpHeaders headers = new HttpHeaders();
     headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
@@ -86,19 +85,14 @@ public class RefundService {
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
    * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
-  public Refund queryByOutRefundNoRefunds(QueryByOutRefundNoRefundsRequest request)
-      throws HttpException, ValidationException, ServiceException, ParseException {
+  public Refund queryByOutRefundNoRefunds(QueryByOutRefundNoRefundsRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/v3/refund/domestic/refunds/{out_refund_no}";
     // 添加 path param
-    requestPath = requestPath.replace("{" + "out_refund_no" + "}", request.getOutRefundNo());
-    try {
-      // 添加 query param
-      if (request.getSubMchid() != null) {
-        requestPath +=
-            "?subMchid=" + URLEncoder.encode(request.getSubMchid(), StandardCharsets.UTF_8.name());
-      }
-    } catch (UnsupportedEncodingException e) {
-      throw new RuntimeException(e);
+    requestPath =
+        requestPath.replace("{" + "out_refund_no" + "}", encodeParam(request.getOutRefundNo()));
+    // 添加 query param
+    if (request.getSubMchid() != null) {
+      requestPath += "?subMchid=" + encodeParam(request.getSubMchid());
     }
     HttpHeaders headers = new HttpHeaders();
     headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
@@ -111,5 +105,13 @@ public class RefundService {
             .build();
     HttpResponse<Refund> httpResponse = httpClient.execute(httpRequest, Refund.class);
     return httpResponse.getServiceResponse();
+  }
+
+  private String encodeParam(String param) {
+    try {
+      return URLEncoder.encode(param, StandardCharsets.UTF_8.name());
+    } catch (UnsupportedEncodingException e) {
+      throw new RuntimeException(e);
+    }
   }
 }
