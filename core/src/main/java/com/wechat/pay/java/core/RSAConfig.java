@@ -154,6 +154,11 @@ public final class RSAConfig implements Config {
       requireNonNull(merchantSerialNumber);
       requireNonNull(merchantId);
       requireNonNull(wechatPayCertificates);
+      if (wechatPayCertificates.isEmpty()) {
+        throw new IllegalArgumentException(
+            "Build RSAConfig, wechatPayCertificates is empty.Please "
+                + "call wechatPayCertificates() or wechatPayCertificatesFromPath() method.");
+      }
       X509Certificate latestCertificate = null;
       // 获取最近可用的微信支付平台证书
       for (X509Certificate x509Certificate : wechatPayCertificates) {

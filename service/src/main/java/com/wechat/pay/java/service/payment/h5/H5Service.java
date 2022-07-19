@@ -11,6 +11,7 @@
 
 package com.wechat.pay.java.service.payment.h5;
 
+import static com.wechat.pay.java.core.http.UrlEncoder.urlEncode;
 import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.Config;
@@ -64,9 +65,10 @@ public class H5Service {
     String requestPath =
         "https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/{out_trade_no}/close";
     // 添加 path param
-    requestPath = requestPath.replace("{" + "out_trade_no" + "}", request.getOutTradeNo());
+    requestPath =
+        requestPath.replace("{" + "out_trade_no" + "}", urlEncode(request.getOutTradeNo()));
     HttpHeaders headers = new HttpHeaders();
-    headers.addHeader(Constant.ACCEPT, " */*");
+    headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
     headers.addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue());
     HttpRequest httpRequest =
         new HttpRequest.Builder()
@@ -77,7 +79,6 @@ public class H5Service {
             .build();
     httpClient.execute(httpRequest, null);
   }
-
   /**
    * H5支付下单
    *
@@ -91,7 +92,7 @@ public class H5Service {
   public PrepayResponse prepay(PrepayRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/v3/pay/transactions/h5";
     HttpHeaders headers = new HttpHeaders();
-    headers.addHeader(Constant.ACCEPT, " */*");
+    headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
     headers.addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue());
     HttpRequest httpRequest =
         new HttpRequest.Builder()
@@ -104,7 +105,6 @@ public class H5Service {
         httpClient.execute(httpRequest, PrepayResponse.class);
     return httpResponse.getServiceResponse();
   }
-
   /**
    * 微信支付订单号查询订单
    *
@@ -118,13 +118,14 @@ public class H5Service {
   public Transaction queryOrderById(QueryOrderByIdRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/v3/pay/transactions/id/{transaction_id}";
     // 添加 path param
-    requestPath = requestPath.replace("{" + "transaction_id" + "}", request.getTransactionId());
+    requestPath =
+        requestPath.replace("{" + "transaction_id" + "}", urlEncode(request.getTransactionId()));
     // 添加 query param
     if (request.getMchid() != null) {
-      requestPath += "?mchid=" + request.getMchid();
+      requestPath += "?mchid=" + urlEncode(request.getMchid());
     }
     HttpHeaders headers = new HttpHeaders();
-    headers.addHeader(Constant.ACCEPT, " */*");
+    headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
     headers.addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue());
     HttpRequest httpRequest =
         new HttpRequest.Builder()
@@ -135,7 +136,6 @@ public class H5Service {
     HttpResponse<Transaction> httpResponse = httpClient.execute(httpRequest, Transaction.class);
     return httpResponse.getServiceResponse();
   }
-
   /**
    * 商户订单号查询订单
    *
@@ -150,13 +150,14 @@ public class H5Service {
     String requestPath =
         "https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/{out_trade_no}";
     // 添加 path param
-    requestPath = requestPath.replace("{" + "out_trade_no" + "}", request.getOutTradeNo());
+    requestPath =
+        requestPath.replace("{" + "out_trade_no" + "}", urlEncode(request.getOutTradeNo()));
     // 添加 query param
     if (request.getMchid() != null) {
-      requestPath += "?mchid=" + request.getMchid();
+      requestPath += "?mchid=" + urlEncode(request.getMchid());
     }
     HttpHeaders headers = new HttpHeaders();
-    headers.addHeader(Constant.ACCEPT, " */*");
+    headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
     headers.addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue());
     HttpRequest httpRequest =
         new HttpRequest.Builder()

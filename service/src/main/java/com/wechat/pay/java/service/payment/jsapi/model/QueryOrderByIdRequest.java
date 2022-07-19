@@ -44,6 +44,6 @@ public class QueryOrderByIdRequest {
 
   @Override
   public String toString() {
-    return GsonUtil.createGson().toJson(this);
+    return GsonUtil.getGson().toJson(this);
   }
 }

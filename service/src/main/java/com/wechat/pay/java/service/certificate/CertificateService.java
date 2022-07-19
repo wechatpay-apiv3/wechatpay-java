@@ -3,6 +3,7 @@ package com.wechat.pay.java.service.certificate;
 import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.Config;
+import com.wechat.pay.java.core.cipher.AeadAesCipher;
 import com.wechat.pay.java.core.cipher.AeadCipher;
 import com.wechat.pay.java.core.exception.HttpException;
 import com.wechat.pay.java.core.exception.ParseException;
@@ -45,7 +46,22 @@ public class CertificateService {
   }
 
   /**
-   * 获取平台证书列表
+   * 下载平台证书列表
+   *
+   * @param apiV3Key 微信支付 APIv3 密钥
+   * @return 证书列表
+   * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
+   * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
+   * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
+   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   */
+  public List<X509Certificate> downloadCertificate(byte[] apiV3Key) {
+    AeadCipher aeadCipher = new AeadAesCipher(apiV3Key);
+    return downloadCertificate(aeadCipher);
+  }
+
+  /**
+   * 下载平台证书列表
    *
    * @param aeadCipher 认证加解密器，用于解密证书
    * @return 证书列表

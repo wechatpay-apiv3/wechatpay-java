@@ -145,7 +145,7 @@ public class FileUploadServiceTest {
     FileUploadService fileService = new FileUploadService(httpClient);
     FileUploadResponse fileUploadResponse =
         fileService.uploadImage(imageUploadPath, imageMeta, imagePath);
-    Gson gson = GsonUtil.createGson();
+    Gson gson = GsonUtil.getGson();
     Assert.assertEquals(
         gson.fromJson(responseBodyJson, FileUploadResponse.class).toString(),
         fileUploadResponse.toString());
@@ -200,7 +200,7 @@ public class FileUploadServiceTest {
     FileUploadService fileService = new FileUploadService(httpClient);
     FileUploadResponse fileUploadResponse =
         fileService.uploadVideo(videoUploadPath, videoMeta, videoPath);
-    Gson gson = GsonUtil.createGson();
+    Gson gson = GsonUtil.getGson();
     Assert.assertEquals(
         gson.fromJson(responseBodyJson, FileUploadResponse.class).toString(),
         fileUploadResponse.toString());

@@ -10,7 +10,7 @@
 
 
 # Gradle files
-.gradle/*
+.gradle
 build/*
 out/*
 */build/*

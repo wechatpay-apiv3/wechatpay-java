@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -112,7 +113,7 @@ public class PemUtil {
   public static X509Certificate loadX509FromString(String certificateString) {
     X509Certificate certificate = null;
     try (ByteArrayInputStream inputStream =
-        new ByteArrayInputStream(certificateString.getBytes())) {
+        new ByteArrayInputStream(certificateString.getBytes(StandardCharsets.UTF_8))) {
       certificate = loadX509FromStream(inputStream);
     } catch (IOException e) {
       logger.warn("Get certificate from certificate string,inputStream close failed.", e);

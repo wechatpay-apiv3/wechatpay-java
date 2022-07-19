@@ -27,7 +27,7 @@ public final class JsonResponseBody implements ResponseBody {
 
   @Override
   public String toString() {
-    return GsonUtil.createGson().toJson(this);
+    return GsonUtil.getGson().toJson(this);
   }
 
   public static class Builder {

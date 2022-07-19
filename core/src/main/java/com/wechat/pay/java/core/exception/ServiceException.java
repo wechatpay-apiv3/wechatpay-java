@@ -26,13 +26,13 @@ public class ServiceException extends WechatPayException {
   public ServiceException(HttpRequest httpRequest, int httpStatusCode, String responseBody) {
     super(
         String.format(
-            "Wrong HttpStatusCode[%d]\nhttResponseBody[%.1024s]\tHttpRequest[%s]",
+            "Wrong HttpStatusCode[%d]%nhttResponseBody[%.1024s]\tHttpRequest[%s]",
             httpStatusCode, responseBody, httpRequest));
     this.httpRequest = httpRequest;
     this.httpStatusCode = httpStatusCode;
     this.responseBody = responseBody;
     if (responseBody != null) {
-      JsonObject jsonObject = GsonUtil.createGson().fromJson(responseBody, JsonObject.class);
+      JsonObject jsonObject = GsonUtil.getGson().fromJson(responseBody, JsonObject.class);
       JsonElement code = jsonObject.get("code");
       JsonElement message = jsonObject.get("message");
       this.errorCode = code == null ? null : code.getAsString();

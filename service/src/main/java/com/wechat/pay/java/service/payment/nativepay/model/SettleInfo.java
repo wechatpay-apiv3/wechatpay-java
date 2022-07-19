@@ -16,7 +16,6 @@ import com.wechat.pay.java.core.util.GsonUtil;
 
 /** SettleInfo */
 public class SettleInfo {
-
   /** profitSharing 说明：是否指定分账 */
   @SerializedName("profit_sharing")
   private Boolean profitSharing;
@@ -31,6 +30,6 @@ public class SettleInfo {
 
   @Override
   public String toString() {
-    return GsonUtil.createGson().toJson(this);
+    return GsonUtil.getGson().toJson(this);
   }
 }

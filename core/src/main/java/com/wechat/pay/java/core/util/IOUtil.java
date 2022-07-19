@@ -101,6 +101,8 @@ public class IOUtil {
    * @throws IOException 读取字节失败、关闭流失败等
    */
   public static String loadStringFromPath(String path) throws IOException {
-    return toString(Files.newInputStream(Paths.get(path)));
+    try (InputStream inputStream = Files.newInputStream(Paths.get(path))) {
+      return toString(inputStream);
+    }
   }
 }

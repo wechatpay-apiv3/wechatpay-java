@@ -11,6 +11,7 @@
 
 package com.wechat.pay.java.service.refund;
 
+import static com.wechat.pay.java.core.http.UrlEncoder.urlEncode;
 import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.Config;
@@ -47,7 +48,6 @@ public class RefundService {
   public RefundService(HttpClient httpClient) {
     this.httpClient = requireNonNull(httpClient);
   }
-
   /**
    * 退款申请
    *
@@ -61,7 +61,7 @@ public class RefundService {
   public Refund createRefunds(CreateRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/v3/refund/domestic/refunds";
     HttpHeaders headers = new HttpHeaders();
-    headers.addHeader(Constant.ACCEPT, " */*");
+    headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
     headers.addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue());
     HttpRequest httpRequest =
         new HttpRequest.Builder()
@@ -73,7 +73,6 @@ public class RefundService {
     HttpResponse<Refund> httpResponse = httpClient.execute(httpRequest, Refund.class);
     return httpResponse.getServiceResponse();
   }
-
   /**
    * 查询单笔退款（通过商户退款单号）
    *
@@ -87,13 +86,14 @@ public class RefundService {
   public Refund queryByOutRefundNoRefunds(QueryByOutRefundNoRefundsRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/v3/refund/domestic/refunds/{out_refund_no}";
     // 添加 path param
-    requestPath = requestPath.replace("{" + "out_refund_no" + "}", request.getOutRefundNo());
+    requestPath =
+        requestPath.replace("{" + "out_refund_no" + "}", urlEncode(request.getOutRefundNo()));
     // 添加 query param
     if (request.getSubMchid() != null) {
-      requestPath += "?subMchid=" + request.getSubMchid();
+      requestPath += "?subMchid=" + urlEncode(request.getSubMchid());
     }
     HttpHeaders headers = new HttpHeaders();
-    headers.addHeader(Constant.ACCEPT, " */*");
+    headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
     headers.addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue());
     HttpRequest httpRequest =
         new HttpRequest.Builder()

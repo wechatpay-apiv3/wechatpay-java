@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 public final class OkHttpClientAdapter extends AbstractHttpClient {
 
   private static final Logger logger = LoggerFactory.getLogger(OkHttpClientAdapter.class);
-
   private static final String META_NAME = "meta";
   private static final String FILE_NAME = "file";
 

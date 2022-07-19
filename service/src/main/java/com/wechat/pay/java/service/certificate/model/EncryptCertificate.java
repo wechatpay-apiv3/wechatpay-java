@@ -40,7 +40,7 @@ public class EncryptCertificate implements Serializable {
 
   @Override
   public String toString() {
-    return GsonUtil.createGson().toJson(this);
+    return GsonUtil.getGson().toJson(this);
   }
 
   public String getNonce() {
