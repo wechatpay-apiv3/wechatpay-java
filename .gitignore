@@ -10,12 +10,11 @@
 
 
 # Gradle files
-.gradle/*
+.gradle
 build/*
 out/*
 */build/*
 */out/*
-buildSrc/.gradle
 
 # compiler output
 bin/
