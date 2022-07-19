@@ -89,10 +89,10 @@ public class RefundService {
     String requestPath = "https://api.mch.weixin.qq.com/v3/refund/domestic/refunds/{out_refund_no}";
     // 添加 path param
     requestPath =
-        requestPath.replace("{" + "out_refund_no" + "}", encodeParam(request.getOutRefundNo()));
+        requestPath.replace("{" + "out_refund_no" + "}", urlEncode(request.getOutRefundNo()));
     // 添加 query param
     if (request.getSubMchid() != null) {
-      requestPath += "?subMchid=" + encodeParam(request.getSubMchid());
+      requestPath += "?subMchid=" + urlEncode(request.getSubMchid());
     }
     HttpHeaders headers = new HttpHeaders();
     headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
@@ -107,7 +107,7 @@ public class RefundService {
     return httpResponse.getServiceResponse();
   }
 
-  private String encodeParam(String param) {
+  private String urlEncode(String param) {
     try {
       return URLEncoder.encode(param, StandardCharsets.UTF_8.name());
     } catch (UnsupportedEncodingException e) {

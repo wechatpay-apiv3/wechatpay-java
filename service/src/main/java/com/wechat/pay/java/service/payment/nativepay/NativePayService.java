@@ -68,7 +68,7 @@ public class NativePayService {
         "https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/{out_trade_no}/close";
     // 添加 path param
     requestPath =
-        requestPath.replace("{" + "out_trade_no" + "}", encodeParam(request.getOutTradeNo()));
+        requestPath.replace("{" + "out_trade_no" + "}", urlEncode(request.getOutTradeNo()));
     HttpHeaders headers = new HttpHeaders();
     headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
     headers.addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue());
@@ -121,10 +121,10 @@ public class NativePayService {
     String requestPath = "https://api.mch.weixin.qq.com/v3/pay/transactions/id/{transaction_id}";
     // 添加 path param
     requestPath =
-        requestPath.replace("{" + "transaction_id" + "}", encodeParam(request.getTransactionId()));
+        requestPath.replace("{" + "transaction_id" + "}", urlEncode(request.getTransactionId()));
     // 添加 query param
     if (request.getMchid() != null) {
-      requestPath += "?mchid=" + encodeParam(request.getMchid());
+      requestPath += "?mchid=" + urlEncode(request.getMchid());
     }
     HttpHeaders headers = new HttpHeaders();
     headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
@@ -153,10 +153,10 @@ public class NativePayService {
         "https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/{out_trade_no}";
     // 添加 path param
     requestPath =
-        requestPath.replace("{" + "out_trade_no" + "}", encodeParam(request.getOutTradeNo()));
+        requestPath.replace("{" + "out_trade_no" + "}", urlEncode(request.getOutTradeNo()));
     // 添加 query param
     if (request.getMchid() != null) {
-      requestPath += "?mchid=" + encodeParam(request.getMchid());
+      requestPath += "?mchid=" + urlEncode(request.getMchid());
     }
     HttpHeaders headers = new HttpHeaders();
     headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
@@ -171,7 +171,7 @@ public class NativePayService {
     return httpResponse.getServiceResponse();
   }
 
-  private String encodeParam(String param) {
+  private String urlEncode(String param) {
     try {
       return URLEncoder.encode(param, StandardCharsets.UTF_8.name());
     } catch (UnsupportedEncodingException e) {
