@@ -11,6 +11,7 @@
 
 package com.wechat.pay.java.service.refund;
 
+import static com.wechat.pay.java.core.http.UrlEncoder.urlEncode;
 import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.Config;
@@ -30,9 +31,6 @@ import com.wechat.pay.java.core.http.MediaType;
 import com.wechat.pay.java.service.refund.model.CreateRequest;
 import com.wechat.pay.java.service.refund.model.QueryByOutRefundNoRefundsRequest;
 import com.wechat.pay.java.service.refund.model.Refund;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 /** RefundService服务 */
 public class RefundService {
@@ -105,13 +103,5 @@ public class RefundService {
             .build();
     HttpResponse<Refund> httpResponse = httpClient.execute(httpRequest, Refund.class);
     return httpResponse.getServiceResponse();
-  }
-
-  private String urlEncode(String param) {
-    try {
-      return URLEncoder.encode(param, StandardCharsets.UTF_8.name());
-    } catch (UnsupportedEncodingException e) {
-      throw new RuntimeException(e);
-    }
   }
 }

@@ -11,6 +11,7 @@
 
 package com.wechat.pay.java.service.payment.nativepay;
 
+import static com.wechat.pay.java.core.http.UrlEncoder.urlEncode;
 import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.Config;
@@ -33,9 +34,6 @@ import com.wechat.pay.java.service.payment.nativepay.model.PrepayRequest;
 import com.wechat.pay.java.service.payment.nativepay.model.PrepayResponse;
 import com.wechat.pay.java.service.payment.nativepay.model.QueryOrderByIdRequest;
 import com.wechat.pay.java.service.payment.nativepay.model.QueryOrderByOutTradeNoRequest;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 /** NativePayService服务 */
 public class NativePayService {
@@ -169,13 +167,5 @@ public class NativePayService {
             .build();
     HttpResponse<Transaction> httpResponse = httpClient.execute(httpRequest, Transaction.class);
     return httpResponse.getServiceResponse();
-  }
-
-  private String urlEncode(String param) {
-    try {
-      return URLEncoder.encode(param, StandardCharsets.UTF_8.name());
-    } catch (UnsupportedEncodingException e) {
-      throw new RuntimeException(e);
-    }
   }
 }
