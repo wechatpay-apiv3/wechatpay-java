@@ -153,7 +153,8 @@ public final class RSAConfig implements Config {
       requireNonNull(privateKey);
       requireNonNull(merchantSerialNumber);
       requireNonNull(merchantId);
-      if (wechatPayCertificates == null || wechatPayCertificates.size() == 0) {
+      requireNonNull(wechatPayCertificates);
+      if (wechatPayCertificates.isEmpty()) {
         throw new IllegalArgumentException(
             "Build RSAConfig, wechatPayCertificates is empty.Please "
                 + "call wechatPayCertificates() or wechatPayCertificatesFromPath() method.");

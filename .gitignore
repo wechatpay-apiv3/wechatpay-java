@@ -15,7 +15,7 @@ build/*
 out/*
 */build/*
 */out/*
-buildSrc/.gradle/*
+buildSrc/.gradle
 
 # compiler output
 bin/
