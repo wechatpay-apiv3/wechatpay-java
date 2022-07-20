@@ -90,7 +90,7 @@ public class RefundService {
         requestPath.replace("{" + "out_refund_no" + "}", urlEncode(request.getOutRefundNo()));
     // 添加 query param
     if (request.getSubMchid() != null) {
-      requestPath += "?subMchid=" + urlEncode(request.getSubMchid());
+      requestPath += "?sub_mchid=" + urlEncode(request.getSubMchid());
     }
     HttpHeaders headers = new HttpHeaders();
     headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
