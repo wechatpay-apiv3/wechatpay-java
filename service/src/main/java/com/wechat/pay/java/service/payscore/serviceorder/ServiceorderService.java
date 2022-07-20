@@ -216,16 +216,16 @@ public class ServiceorderService {
     String requestPath = "https://api.mch.weixin.qq.com/payscore/serviceorder";
     // 添加 query param
     if (request.getOutOrderNo() != null) {
-      requestPath += "?outOrderNo=" + urlEncode(request.getOutOrderNo());
+      requestPath += "?out_order_no=" + urlEncode(request.getOutOrderNo());
     }
     if (request.getServiceId() != null) {
-      requestPath += "?serviceId=" + urlEncode(request.getServiceId());
+      requestPath += "?service_id=" + urlEncode(request.getServiceId());
     }
     if (request.getAppid() != null) {
       requestPath += "?appid=" + urlEncode(request.getAppid());
     }
     if (request.getQueryId() != null) {
-      requestPath += "?queryId=" + urlEncode(request.getQueryId());
+      requestPath += "?query_id=" + urlEncode(request.getQueryId());
     }
     if (request.getMchid() != null) {
       requestPath += "?mchid=" + urlEncode(request.getMchid());

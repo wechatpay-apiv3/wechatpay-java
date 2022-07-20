@@ -104,7 +104,7 @@ public class PermissionService {
             "{" + "authorization_code" + "}", urlEncode(request.getAuthorizationCode()));
     // 添加 query param
     if (request.getServiceId() != null) {
-      requestPath += "?serviceId=" + urlEncode(request.getServiceId());
+      requestPath += "?service_id=" + urlEncode(request.getServiceId());
     }
     HttpHeaders headers = new HttpHeaders();
     headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
@@ -135,7 +135,7 @@ public class PermissionService {
     requestPath = requestPath.replace("{" + "openid" + "}", urlEncode(request.getOpenid()));
     // 添加 query param
     if (request.getServiceId() != null) {
-      requestPath += "?serviceId=" + urlEncode(request.getServiceId());
+      requestPath += "?service_id=" + urlEncode(request.getServiceId());
     }
     if (request.getAppid() != null) {
       requestPath += "?appid=" + urlEncode(request.getAppid());
