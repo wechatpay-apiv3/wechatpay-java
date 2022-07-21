@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        请您先搜索历史 issue，实际上很大部分的错误之前已经有别的用户报告过了，并得到了解决。
+        请您先搜索历史 [issue](https://github.com/wechatpay-apiv3/wechatpay-java/issues?q=is%3Aissue)，实际上很大部分的错误之前已经有别的用户报告过了，并得到了解决。
         感谢您填写错误报告!
   - type: textarea
     id: what-happened
