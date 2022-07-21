@@ -9,7 +9,7 @@ body:
   - type: textarea
     id: what-happened
     attributes:
-      label: Describe the bug
+      label: 错误描述
       description: 清晰简洁地描述错误。
       placeholder: 告诉我们您遇到了什么。
     validations:
@@ -17,7 +17,7 @@ body:
   - type: textarea
     id: repro-steps
     attributes:
-      label: To Reproduce
+      label: 重现bug的步骤
       description: 如何重现
       placeholder: 告诉我们如何重现错误
     validations:
@@ -25,14 +25,14 @@ body:
   - type: textarea
     id: expected-behavior
     attributes:
-      label: Expected behavior
+      label: 预期行为
       description: 对您期望发生的事情进行清晰简洁的描述。
     validations:
       required: true
   - type: textarea
     id: code-snippets
     attributes:
-      label: Code snippets
+      label: 导致错误的代码片段
       description: 如果方便的话，请添加代码片段以帮助解释您的问题。
       render: Java
     validations:
@@ -40,21 +40,21 @@ body:
   - type: input
     id: os
     attributes:
-      label: OS
+      label: 操作系统
       placeholder: macOS
     validations:
       required: true
   - type: input
     id: language-version
     attributes:
-      label: Java version
+      label: Java 版本
       placeholder: Java 17
     validations:
       required: true
   - type: input
     id: lib-version
     attributes:
-      label: wechatpay-java version
+      label: wechatpay-java 版本
       placeholder: v0.0.1
     validations:
       required: true
