@@ -1,0 +1,67 @@
+name: Bug report
+description: 如果你遇到问题，您可以提交错误报告，帮助我们改进
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您填写错误报告!
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: Describe the bug
+      description: 清晰简洁地描述错误。
+      placeholder: 告诉我们您遇到了什么。
+    validations:
+      required: true
+  - type: textarea
+    id: repro-steps
+    attributes:
+      label: To Reproduce
+      description: 如何重现
+      placeholder: 告诉我们如何重现错误
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: 对您期望发生的事情进行清晰简洁的描述。
+    validations:
+      required: true
+  - type: textarea
+    id: code-snippets
+    attributes:
+      label: Code snippets
+      description: 如果方便的话，请添加代码片段以帮助解释您的问题。
+      render: Java
+    validations:
+      required: false
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      placeholder: macOS
+    validations:
+      required: true
+  - type: input
+    id: language-version
+    attributes:
+      label: Java version
+      placeholder: Java 17
+    validations:
+      required: true
+  - type: input
+    id: lib-version
+    attributes:
+      label: wechatpay-java version
+      placeholder: v0.0.1
+    validations:
+      required: true
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 其他信息
+      description: 请添加有关问题的其他任何信息。
+    validations:
+      required: false
