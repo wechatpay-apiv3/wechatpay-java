@@ -5,6 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
+        请您先搜索历史 issue，实际上很大部分的错误之前已经有别的用户报告过了，并得到了解决。
         感谢您填写错误报告!
   - type: textarea
     id: what-happened
@@ -18,8 +19,11 @@ body:
     id: repro-steps
     attributes:
       label: 重现bug的步骤
-      description: 如何重现
-      placeholder: 告诉我们如何重现错误
+      description: 一步步地描述如何重现bug
+      placeholder: |
+      1. ...
+      2. ...
+      3. ...
     validations:
       required: true
   - type: textarea
