@@ -3,12 +3,13 @@ plugins {
     id "maven-publish"
     id "signing"
     id "com.diffplug.spotless"
+    id "com.github.johnrengelman.shadow"
 }
 
 version "0.1.0"
 group "com.github.wechatpay-apiv3"
-compileJava.options.encoding = 'UTF-8'
-compileTestJava.options.encoding = 'UTF-8'
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
 
 repositories {
     mavenCentral()
