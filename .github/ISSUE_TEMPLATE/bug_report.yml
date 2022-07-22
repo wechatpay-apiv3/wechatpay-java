@@ -1,0 +1,71 @@
+name: Bug report
+description: 如果你遇到问题，您可以提交错误报告，帮助我们改进
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请您先搜索历史 [issue](https://github.com/wechatpay-apiv3/wechatpay-java/issues?q=is%3Aissue)，实际上很大部分的错误之前已经有别的用户报告过了，并得到了解决。
+        感谢您填写错误报告!
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 错误描述
+      description: 清晰简洁地描述错误。
+      placeholder: 告诉我们您遇到了什么。
+    validations:
+      required: true
+  - type: textarea
+    id: repro-steps
+    attributes:
+      label: 重现bug的步骤
+      description: 一步步地描述如何重现bug
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: 预期行为
+      description: 对您期望发生的事情进行清晰简洁的描述。
+    validations:
+      required: true
+  - type: textarea
+    id: code-snippets
+    attributes:
+      label: 导致错误的代码片段
+      description: 如果方便的话，请添加代码片段以帮助解释您的问题。
+      render: Java
+    validations:
+      required: false
+  - type: input
+    id: os
+    attributes:
+      label: 操作系统
+      placeholder: macOS
+    validations:
+      required: true
+  - type: input
+    id: language-version
+    attributes:
+      label: Java 版本
+      placeholder: Java 17
+    validations:
+      required: true
+  - type: input
+    id: lib-version
+    attributes:
+      label: wechatpay-java 版本
+      placeholder: v0.0.1
+    validations:
+      required: true
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 其他信息
+      description: 请添加有关问题的其他任何信息。
+    validations:
+      required: false

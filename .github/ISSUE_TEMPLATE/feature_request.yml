@@ -1,0 +1,30 @@
+name: Feature request
+description: 提出功能方面的要求
+labels: ["feature-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您抽出宝贵时间填写此功能请求！
+  - type: textarea
+    id: problem
+    attributes:
+      label: 您的功能请求与问题有关吗？ 请描述您遇到的问题
+      description: 清晰简洁地描述问题。
+  - type: textarea
+    id: solution
+    attributes:
+      label: 描述您想要的解决方案
+      description: 清晰简洁地描述您的想法。
+  - type: textarea
+    id: alternative
+    attributes:
+      label: 您还有其他的方案吗？
+      description: 清晰简洁地描述您的想法。
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 其他信息
+      description: 请添加有关问题的其他任何信息。
+    validations:
+      required: false
