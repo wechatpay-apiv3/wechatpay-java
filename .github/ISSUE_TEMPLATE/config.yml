@@ -1,7 +1,7 @@
 blank_issues_enabled: false
 contact_links:
-  - name: 腾讯客服 - 微信支付商户专区
-    url: https://kf.qq.com/product/wechatpaymentmerchant.html
+  - name: 在线技术支持
+    url: https://support.pay.weixin.qq.com/online-service?from=github
     about: |
-      请在这里提交关于 wechatpay-java 有关的问题、功能请求或建议.
-      如果您有业务方面的问题，例如如何开通某某产品权限，请访问[腾讯客服](https://kf.qq.com/product/wechatpaymentmerchant.html)或者联系我们的[在线技术支持](https://support.pay.weixin.qq.com/online-service)。
+      请在这里提交关于 wechatpay-java 有关的问题、功能请求或建议。
+      如果您有业务方面的问题，例如如何开通某某产品权限，请联系我们的在线技术支持。
