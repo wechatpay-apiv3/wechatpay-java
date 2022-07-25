@@ -43,7 +43,7 @@ public class H5Service {
   private final String baseUrl;
 
   private H5Service(HttpClient httpClient, String baseUrl) {
-    this.httpClient = httpClient;
+    this.httpClient = requireNonNull(httpClient);
     this.baseUrl = baseUrl;
   }
 
@@ -68,7 +68,7 @@ public class H5Service {
     }
 
     public Builder httpClient(HttpClient httpClient) {
-      this.httpClient = httpClient;
+      this.httpClient = requireNonNull(httpClient);
       return this;
     }
 

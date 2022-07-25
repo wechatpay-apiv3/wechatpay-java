@@ -40,7 +40,7 @@ public class RefundService {
   private final String baseUrl;
 
   private RefundService(HttpClient httpClient, String baseUrl) {
-    this.httpClient = httpClient;
+    this.httpClient = requireNonNull(httpClient);
     this.baseUrl = baseUrl;
   }
 
@@ -65,7 +65,7 @@ public class RefundService {
     }
 
     public Builder httpClient(HttpClient httpClient) {
-      this.httpClient = httpClient;
+      this.httpClient = requireNonNull(httpClient);
       return this;
     }
 

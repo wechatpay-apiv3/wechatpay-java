@@ -59,7 +59,7 @@ public class CertificateService {
     }
 
     public Builder httpClient(HttpClient httpClient) {
-      this.httpClient = httpClient;
+      this.httpClient = requireNonNull(httpClient);
       return this;
     }
 

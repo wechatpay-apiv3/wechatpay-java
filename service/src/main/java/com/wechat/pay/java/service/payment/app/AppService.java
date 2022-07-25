@@ -43,7 +43,7 @@ public class AppService {
   private final String baseUrl;
 
   private AppService(HttpClient httpClient, String baseUrl) {
-    this.httpClient = httpClient;
+    this.httpClient = requireNonNull(httpClient);
     this.baseUrl = baseUrl;
   }
 
@@ -68,7 +68,7 @@ public class AppService {
     }
 
     public Builder httpClient(HttpClient httpClient) {
-      this.httpClient = httpClient;
+      this.httpClient = requireNonNull(httpClient);
       return this;
     }
 
