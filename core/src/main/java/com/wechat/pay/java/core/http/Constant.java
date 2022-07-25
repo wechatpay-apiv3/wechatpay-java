@@ -24,5 +24,7 @@ public final class Constant {
   public static final String ACCEPT = "Accept";
   public static final String CONTENT_TYPE = "Content-Type";
 
+  public static final String DEFAULT_BASE_URL = "https://api.mch.weixin.qq.com";
+
   private Constant() {}
 }

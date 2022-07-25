@@ -28,7 +28,7 @@ public class FileUploadServiceExample {
             .build();
 
     // 初始化文件上传服务
-    fileUploadService = new FileUploadService(rsaConfig);
+    fileUploadService = new FileUploadService.Builder().config(rsaConfig).build();
     // ... 调用接口
   }
 

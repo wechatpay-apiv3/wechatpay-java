@@ -76,7 +76,7 @@ public class QuickStart {
    * @return 证书下载服务
    */
   public static CertificateService buildCertificateService() {
-    return new CertificateService(buildConfig());
+    return new CertificateService.Builder().config(buildConfig()).build();
   }
   /**
    * 构建请求配置

@@ -27,7 +27,7 @@ public class CertificateServiceExample {
             .build();
 
     // 初始化证书服务
-    service = new CertificateService(rsaConfig);
+    service = new CertificateService.Builder().config(rsaConfig).build();
     // 设置商户apiV3密钥，apiV3密钥用于解密下载证书
     // ... 调用接口
   }
