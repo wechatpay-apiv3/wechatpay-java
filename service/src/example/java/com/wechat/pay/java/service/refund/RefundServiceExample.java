@@ -36,6 +36,7 @@ public class RefundServiceExample {
     CreateRequest request = new CreateRequest();
     return service.createRefunds(request);
   }
+
   /** 查询单笔退款（通过商户退款单号） */
   public static Refund queryByOutRefundNoRefunds() {
 

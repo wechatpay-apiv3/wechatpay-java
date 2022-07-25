@@ -1,5 +1,6 @@
 package com.wechat.pay.java.service.certificate;
 
+import static com.wechat.pay.java.core.http.Constant.DEFAULT_BASE_URL;
 import static com.wechat.pay.java.core.http.Constant.REQUEST_ID;
 import static com.wechat.pay.java.service.certificate.CertificateService.CERTIFICATE_DOWNLOAD_PATH;
 
@@ -92,6 +93,11 @@ public class CertificateServiceTest {
                 return true;
               }
             };
+          }
+
+          @Override
+          public String getBaseUrl() {
+            return DEFAULT_BASE_URL;
           }
         };
   }

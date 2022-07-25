@@ -11,6 +11,7 @@
 
 package com.wechat.pay.java.service.refund;
 
+import static com.wechat.pay.java.core.http.Constant.DEFAULT_BASE_URL;
 import static com.wechat.pay.java.core.http.UrlEncoder.urlEncode;
 import static java.util.Objects.requireNonNull;
 
@@ -36,6 +37,7 @@ import com.wechat.pay.java.service.refund.model.Refund;
 public class RefundService {
 
   private final HttpClient httpClient;
+  private final String baseUrl;
 
   public RefundService(Config config) {
     this.httpClient =
@@ -43,11 +45,19 @@ public class RefundService {
             .credential(requireNonNull(config.createCredential()))
             .validator(requireNonNull(config.createValidator()))
             .build();
+    this.baseUrl = config.getBaseUrl();
   }
 
   public RefundService(HttpClient httpClient) {
     this.httpClient = requireNonNull(httpClient);
+    this.baseUrl = DEFAULT_BASE_URL;
   }
+
+  public RefundService(HttpClient httpClient, String baseUrl) {
+    this.httpClient = httpClient;
+    this.baseUrl = baseUrl;
+  }
+
   /**
    * 退款申请
    *
@@ -59,7 +69,7 @@ public class RefundService {
    * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public Refund createRefunds(CreateRequest request) {
-    String requestPath = "https://api.mch.weixin.qq.com/v3/refund/domestic/refunds";
+    String requestPath = this.baseUrl + "/v3/refund/domestic/refunds";
     HttpHeaders headers = new HttpHeaders();
     headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
     headers.addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue());
@@ -73,6 +83,7 @@ public class RefundService {
     HttpResponse<Refund> httpResponse = httpClient.execute(httpRequest, Refund.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询单笔退款（通过商户退款单号）
    *
@@ -84,7 +95,7 @@ public class RefundService {
    * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public Refund queryByOutRefundNoRefunds(QueryByOutRefundNoRefundsRequest request) {
-    String requestPath = "https://api.mch.weixin.qq.com/v3/refund/domestic/refunds/{out_refund_no}";
+    String requestPath = this.baseUrl + "/v3/refund/domestic/refunds/{out_refund_no}";
     // 添加 path param
     requestPath =
         requestPath.replace("{" + "out_refund_no" + "}", urlEncode(request.getOutRefundNo()));

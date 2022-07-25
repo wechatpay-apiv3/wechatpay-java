@@ -1,5 +1,6 @@
 package com.wechat.pay.java.service.file;
 
+import static com.wechat.pay.java.core.http.Constant.DEFAULT_BASE_URL;
 import static com.wechat.pay.java.core.http.Constant.REQUEST_ID;
 
 import com.google.gson.Gson;
@@ -92,6 +93,11 @@ public class FileUploadServiceTest {
                 return true;
               }
             };
+          }
+
+          @Override
+          public String getBaseUrl() {
+            return DEFAULT_BASE_URL;
           }
         };
   }
