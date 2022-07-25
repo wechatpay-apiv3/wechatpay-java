@@ -1,7 +1,6 @@
 package com.wechat.pay.java.core;
 
 import static com.wechat.pay.java.core.cipher.Constant.HEX;
-import static com.wechat.pay.java.core.http.Constant.DEFAULT_BASE_URL;
 import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.auth.Credential;
@@ -38,22 +37,18 @@ public final class RSAConfig implements Config {
   private final CertificateProvider certificateProvider;
   /** 最新的微信支付平台证书 */
   private final X509Certificate latestWechatPayCertificate;
-  /** 根URL * */
-  private final String baseUrl;
 
   private RSAConfig(
       String merchantId,
       PrivateKey privateKey,
       String merchantSerialNumber,
       CertificateProvider certificateProvider,
-      X509Certificate latestWechatPayCertificate,
-      String baseUrl) {
+      X509Certificate latestWechatPayCertificate) {
     this.merchantId = merchantId;
     this.privateKey = privateKey;
     this.merchantSerialNumber = merchantSerialNumber;
     this.certificateProvider = certificateProvider;
     this.latestWechatPayCertificate = latestWechatPayCertificate;
-    this.baseUrl = baseUrl;
   }
 
   @Override
@@ -78,18 +73,12 @@ public final class RSAConfig implements Config {
     return new WechatPay2Validator(new RSAVerifier(certificateProvider));
   }
 
-  @Override
-  public String getBaseUrl() {
-    return this.baseUrl;
-  }
-
   public static class Builder {
 
     private String merchantId;
     private PrivateKey privateKey;
     private String merchantSerialNumber;
     private List<X509Certificate> wechatPayCertificates;
-    private String baseUrl;
 
     public Builder merchantId(String merchantId) {
       this.merchantId = merchantId;
@@ -160,11 +149,6 @@ public final class RSAConfig implements Config {
       return this;
     }
 
-    public Builder baseUrl(String baseUrl) {
-      this.baseUrl = baseUrl;
-      return this;
-    }
-
     public RSAConfig build() {
       requireNonNull(privateKey);
       requireNonNull(merchantSerialNumber);
@@ -196,8 +180,7 @@ public final class RSAConfig implements Config {
           privateKey,
           merchantSerialNumber,
           new InMemoryCertificateProvider(wechatPayCertificates),
-          latestCertificate,
-          baseUrl == null ? DEFAULT_BASE_URL : baseUrl);
+          latestCertificate);
     }
   }
 }

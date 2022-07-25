@@ -42,23 +42,39 @@ public class H5Service {
   private final HttpClient httpClient;
   private final String baseUrl;
 
-  public H5Service(Config config) {
-    this.httpClient =
-        new DefaultHttpClientBuilder()
-            .credential(requireNonNull(config.createCredential()))
-            .validator(requireNonNull(config.createValidator()))
-            .build();
-    this.baseUrl = config.getBaseUrl();
-  }
-
-  public H5Service(HttpClient httpClient) {
-    this.httpClient = requireNonNull(httpClient);
-    this.baseUrl = DEFAULT_BASE_URL;
-  }
-
-  public H5Service(HttpClient httpClient, String baseUrl) {
+  private H5Service(HttpClient httpClient, String baseUrl) {
     this.httpClient = httpClient;
     this.baseUrl = baseUrl;
+  }
+
+  /** H5Service构造器 */
+  public static class Builder {
+
+    private HttpClient httpClient;
+    private String baseUrl = DEFAULT_BASE_URL;
+
+    public Builder config(Config config) {
+      this.httpClient =
+          new DefaultHttpClientBuilder()
+              .credential(requireNonNull(config.createCredential()))
+              .validator(requireNonNull(config.createValidator()))
+              .build();
+      return this;
+    }
+
+    public Builder baseUrl(String baseUrl) {
+      this.baseUrl = baseUrl;
+      return this;
+    }
+
+    public Builder httpClient(HttpClient httpClient) {
+      this.httpClient = httpClient;
+      return this;
+    }
+
+    public H5Service build() {
+      return new H5Service(httpClient, baseUrl);
+    }
   }
 
   /**

@@ -30,7 +30,7 @@ public class AppServiceExample {
             .build();
 
     // 初始化服务
-    service = new AppService(config);
+    service = new AppService.Builder().config(config).build();
     // ... 调用接口
   }
 

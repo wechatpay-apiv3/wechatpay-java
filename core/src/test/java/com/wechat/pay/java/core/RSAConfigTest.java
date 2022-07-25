@@ -1,6 +1,5 @@
 package com.wechat.pay.java.core;
 
-import static com.wechat.pay.java.core.http.Constant.DEFAULT_BASE_URL;
 import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_CERTIFICATE_SERIAL_NUMBER;
 import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_ID;
 import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_PRIVATE_KEY_PATH;
@@ -43,6 +42,5 @@ public class RSAConfigTest {
     Assert.assertNotNull(rsaConfig.createValidator());
     Assert.assertNotNull(rsaConfig.createDecryptor());
     Assert.assertNotNull(rsaConfig.createEncryptor());
-    Assert.assertEquals(DEFAULT_BASE_URL, rsaConfig.getBaseUrl());
   }
 }

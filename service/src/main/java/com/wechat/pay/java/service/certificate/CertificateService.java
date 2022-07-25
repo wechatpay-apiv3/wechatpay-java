@@ -1,5 +1,6 @@
 package com.wechat.pay.java.service.certificate;
 
+import static com.wechat.pay.java.core.http.Constant.DEFAULT_BASE_URL;
 import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.Config;
@@ -29,20 +30,42 @@ import java.util.List;
 /** 证书服务 */
 public class CertificateService {
 
-  public static final String CERTIFICATE_DOWNLOAD_PATH =
-      "https://api.mch.weixin.qq.com/v3/certificates";
   private final HttpClient httpClient;
+  private final String baseUrl;
 
-  public CertificateService(Config config) {
-    this.httpClient =
-        new DefaultHttpClientBuilder()
-            .credential(requireNonNull(config.createCredential()))
-            .validator(requireNonNull(config.createValidator()))
-            .build();
+  private CertificateService(HttpClient httpClient, String baseUrl) {
+    this.httpClient = requireNonNull(httpClient);
+    this.baseUrl = baseUrl;
   }
 
-  public CertificateService(HttpClient httpClient) {
-    this.httpClient = requireNonNull(httpClient);
+  /** CertificateService构造器 */
+  public static class Builder {
+
+    private HttpClient httpClient;
+    private String baseUrl = DEFAULT_BASE_URL;
+
+    public Builder config(Config config) {
+      this.httpClient =
+          new DefaultHttpClientBuilder()
+              .credential(requireNonNull(config.createCredential()))
+              .validator(requireNonNull(config.createValidator()))
+              .build();
+      return this;
+    }
+
+    public Builder baseUrl(String baseUrl) {
+      this.baseUrl = baseUrl;
+      return this;
+    }
+
+    public Builder httpClient(HttpClient httpClient) {
+      this.httpClient = httpClient;
+      return this;
+    }
+
+    public CertificateService build() {
+      return new CertificateService(httpClient, baseUrl);
+    }
   }
 
   /**
@@ -75,7 +98,7 @@ public class CertificateService {
     HttpRequest request =
         new HttpRequest.Builder()
             .httpMethod(HttpMethod.GET)
-            .url(CERTIFICATE_DOWNLOAD_PATH)
+            .url(baseUrl + "/v3/certificates")
             .addHeader(Constant.ACCEPT, " */*")
             .addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue())
             .build();

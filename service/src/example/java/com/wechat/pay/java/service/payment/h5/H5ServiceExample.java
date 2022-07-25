@@ -30,7 +30,7 @@ public class H5ServiceExample {
             .build();
 
     // 初始化服务
-    service = new H5Service(config);
+    service = new H5Service.Builder().config(config).build();
     // ... 调用接口
   }
 

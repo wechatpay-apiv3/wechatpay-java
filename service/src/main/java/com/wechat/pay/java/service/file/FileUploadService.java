@@ -26,16 +26,36 @@ public class FileUploadService {
 
   private final HttpClient httpClient;
 
-  public FileUploadService(Config config) {
-    this.httpClient =
-        new DefaultHttpClientBuilder()
-            .credential(requireNonNull(config.createCredential()))
-            .validator(requireNonNull(config.createValidator()))
-            .build();
+  private FileUploadService(HttpClient httpClient) {
+    this.httpClient = requireNonNull(httpClient);
   }
 
-  public FileUploadService(HttpClient httpClient) {
-    this.httpClient = requireNonNull(httpClient);
+  /** FileUploadService构造器 */
+  public static class Builder {
+
+    private HttpClient httpClient;
+
+    public Builder config(Config config) {
+      this.httpClient =
+          new DefaultHttpClientBuilder()
+              .credential(requireNonNull(config.createCredential()))
+              .validator(requireNonNull(config.createValidator()))
+              .build();
+      return this;
+    }
+
+    public Builder baseUrl(String baseUrl) {
+      return this;
+    }
+
+    public Builder httpClient(HttpClient httpClient) {
+      this.httpClient = httpClient;
+      return this;
+    }
+
+    public FileUploadService build() {
+      return new FileUploadService(httpClient);
+    }
   }
 
   /**

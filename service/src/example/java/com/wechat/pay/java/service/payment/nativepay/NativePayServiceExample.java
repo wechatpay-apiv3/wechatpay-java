@@ -30,7 +30,7 @@ public class NativePayServiceExample {
             .build();
 
     // 初始化服务
-    service = new NativePayService(config);
+    service = new NativePayService.Builder().config(config).build();
     // ... 调用接口
   }
 

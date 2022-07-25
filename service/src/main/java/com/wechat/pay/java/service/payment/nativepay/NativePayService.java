@@ -42,23 +42,39 @@ public class NativePayService {
   private final HttpClient httpClient;
   private final String baseUrl;
 
-  public NativePayService(Config config) {
-    this.httpClient =
-        new DefaultHttpClientBuilder()
-            .credential(requireNonNull(config.createCredential()))
-            .validator(requireNonNull(config.createValidator()))
-            .build();
-    this.baseUrl = config.getBaseUrl();
-  }
-
-  public NativePayService(HttpClient httpClient) {
-    this.httpClient = requireNonNull(httpClient);
-    this.baseUrl = DEFAULT_BASE_URL;
-  }
-
-  public NativePayService(HttpClient httpClient, String baseUrl) {
+  private NativePayService(HttpClient httpClient, String baseUrl) {
     this.httpClient = httpClient;
     this.baseUrl = baseUrl;
+  }
+
+  /** NativePayService构造器 */
+  public static class Builder {
+
+    private HttpClient httpClient;
+    private String baseUrl = DEFAULT_BASE_URL;
+
+    public Builder config(Config config) {
+      this.httpClient =
+          new DefaultHttpClientBuilder()
+              .credential(requireNonNull(config.createCredential()))
+              .validator(requireNonNull(config.createValidator()))
+              .build();
+      return this;
+    }
+
+    public Builder baseUrl(String baseUrl) {
+      this.baseUrl = baseUrl;
+      return this;
+    }
+
+    public Builder httpClient(HttpClient httpClient) {
+      this.httpClient = httpClient;
+      return this;
+    }
+
+    public NativePayService build() {
+      return new NativePayService(httpClient, baseUrl);
+    }
   }
 
   /**

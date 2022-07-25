@@ -35,11 +35,4 @@ public interface Config {
    * @return 请求验证器
    */
   Validator createValidator();
-
-  /**
-   * 获取请求的base url，默认为：https://api.mch.weixin.qq.com
-   *
-   * @return base url
-   */
-  String getBaseUrl();
 }

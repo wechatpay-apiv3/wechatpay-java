@@ -42,23 +42,39 @@ public class JsapiService {
   private final HttpClient httpClient;
   private final String baseUrl;
 
-  public JsapiService(Config config) {
-    this.httpClient =
-        new DefaultHttpClientBuilder()
-            .credential(requireNonNull(config.createCredential()))
-            .validator(requireNonNull(config.createValidator()))
-            .build();
-    this.baseUrl = config.getBaseUrl();
-  }
-
-  public JsapiService(HttpClient httpClient) {
-    this.httpClient = requireNonNull(httpClient);
-    this.baseUrl = DEFAULT_BASE_URL;
-  }
-
-  public JsapiService(HttpClient httpClient, String baseUrl) {
+  private JsapiService(HttpClient httpClient, String baseUrl) {
     this.httpClient = httpClient;
     this.baseUrl = baseUrl;
+  }
+
+  /** JsapiService构造器 */
+  public static class Builder {
+
+    private HttpClient httpClient;
+    private String baseUrl = DEFAULT_BASE_URL;
+
+    public Builder config(Config config) {
+      this.httpClient =
+          new DefaultHttpClientBuilder()
+              .credential(requireNonNull(config.createCredential()))
+              .validator(requireNonNull(config.createValidator()))
+              .build();
+      return this;
+    }
+
+    public Builder baseUrl(String baseUrl) {
+      this.baseUrl = baseUrl;
+      return this;
+    }
+
+    public Builder httpClient(HttpClient httpClient) {
+      this.httpClient = httpClient;
+      return this;
+    }
+
+    public JsapiService build() {
+      return new JsapiService(httpClient, baseUrl);
+    }
   }
 
   /**

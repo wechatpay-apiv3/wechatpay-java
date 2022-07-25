@@ -30,7 +30,7 @@ public class JsapiServiceExample {
             .build();
 
     // 初始化服务
-    service = new JsapiService(config);
+    service = new JsapiService.Builder().config(config).build();
     // ... 调用接口
   }
 

@@ -39,23 +39,39 @@ public class RefundService {
   private final HttpClient httpClient;
   private final String baseUrl;
 
-  public RefundService(Config config) {
-    this.httpClient =
-        new DefaultHttpClientBuilder()
-            .credential(requireNonNull(config.createCredential()))
-            .validator(requireNonNull(config.createValidator()))
-            .build();
-    this.baseUrl = config.getBaseUrl();
-  }
-
-  public RefundService(HttpClient httpClient) {
-    this.httpClient = requireNonNull(httpClient);
-    this.baseUrl = DEFAULT_BASE_URL;
-  }
-
-  public RefundService(HttpClient httpClient, String baseUrl) {
+  private RefundService(HttpClient httpClient, String baseUrl) {
     this.httpClient = httpClient;
     this.baseUrl = baseUrl;
+  }
+
+  /** RefundService构造器 */
+  public static class Builder {
+
+    private HttpClient httpClient;
+    private String baseUrl = DEFAULT_BASE_URL;
+
+    public Builder config(Config config) {
+      this.httpClient =
+          new DefaultHttpClientBuilder()
+              .credential(requireNonNull(config.createCredential()))
+              .validator(requireNonNull(config.createValidator()))
+              .build();
+      return this;
+    }
+
+    public Builder baseUrl(String baseUrl) {
+      this.baseUrl = baseUrl;
+      return this;
+    }
+
+    public Builder httpClient(HttpClient httpClient) {
+      this.httpClient = httpClient;
+      return this;
+    }
+
+    public RefundService build() {
+      return new RefundService(httpClient, baseUrl);
+    }
   }
 
   /**

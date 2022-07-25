@@ -27,7 +27,7 @@ public class RefundServiceExample {
             .build();
 
     // 初始化服务
-    service = new RefundService(config);
+    service = new RefundService.Builder().config(config).build();
     // ... 调用接口
   }
 
