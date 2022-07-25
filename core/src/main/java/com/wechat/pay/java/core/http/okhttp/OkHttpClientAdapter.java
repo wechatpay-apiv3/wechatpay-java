@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
 import com.wechat.pay.java.core.exception.HttpException;
-import com.wechat.pay.java.core.exception.ParseException;
+import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.http.AbstractHttpClient;
 import com.wechat.pay.java.core.http.FileRequestBody;
 import com.wechat.pay.java.core.http.HttpRequest;
@@ -115,7 +115,7 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
           .body(okHttpResponse.body().string())
           .build();
     } catch (IOException e) {
-      throw new ParseException(
+      throw new MalformedMessageException(
           "Assemble OriginalResponse,get responseBody failed.\nHttpRequest[%s]", wechatPayRequest);
     }
   }

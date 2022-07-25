@@ -3,8 +3,11 @@ package com.wechat.pay.java.core.http;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
+import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.exception.ServiceException;
 import java.util.stream.Stream;
+
+import com.wechat.pay.java.core.exception.ValidationException;
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -18,6 +21,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public interface HttpClientTest {
   HttpClient createHttpClient();
+  HttpClient createFalseValidationHttpClient();
 
   class Response {
     public String one;
@@ -128,12 +132,12 @@ public interface HttpClientTest {
       requestBuilder.body(new JsonRequestBody.Builder().body(requestBody).build());
     }
 
-    client.execute(requestBuilder.build(), Response.class);
+    assertThatNoException().isThrownBy(() -> client.execute(requestBuilder.build(), Response.class));
     // todo: need an download() API which would not check response's Content-Type
   }
 
   @Test
-  default void testExecute_Response_400() throws Exception {
+  default void testExecute_ServiceException() throws Exception {
     HttpClient client = createHttpClient();
     MockWebServer server = new MockWebServer();
     server.enqueue(
@@ -145,10 +149,39 @@ public interface HttpClientTest {
     HttpUrl requestUrl = server.url(testUrl);
 
     assertThatExceptionOfType(ServiceException.class)
-        .isThrownBy(
-            () -> {
-              HttpResponse<Response> response =
-                  client.get(null, requestUrl.toString(), Response.class);
+        .isThrownBy(() -> {
+              client.get(null, requestUrl.toString(), Response.class);
+        }).withMessageContaining("400");
+  }
+
+  @Test
+  default void testExecute_MalformedMessageException() throws Exception {
+    HttpClient client = createHttpClient();
+    MockWebServer server = new MockWebServer();
+    server.enqueue(
+            new MockResponse()
+                    .setBody("testResponseBody")
+                    .setHeader("Content-Type", "text/plain; charset=utf-8"));
+    server.start();
+    HttpUrl requestUrl = server.url(testUrl);
+
+    assertThatExceptionOfType(MalformedMessageException.class)
+            .isThrownBy(() -> {
+              client.get(null, requestUrl.toString(), Response.class);
+            });
+  }
+
+  @Test
+  default void testExecute_ValidationException() throws Exception {
+    HttpClient client = createFalseValidationHttpClient();
+    MockWebServer server = new MockWebServer();
+    server.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
+    server.start();
+    HttpUrl requestUrl = server.url(testUrl);
+
+    assertThatExceptionOfType(ValidationException.class)
+            .isThrownBy(() -> {
+              client.get(null, requestUrl.toString(), Response.class);
             });
   }
 }

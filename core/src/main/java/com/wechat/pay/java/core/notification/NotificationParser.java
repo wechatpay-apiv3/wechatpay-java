@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import com.google.gson.Gson;
 import com.wechat.pay.java.core.cipher.AeadCipher;
 import com.wechat.pay.java.core.cipher.Verifier;
-import com.wechat.pay.java.core.exception.ParseException;
+import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.exception.ValidationException;
 import com.wechat.pay.java.core.util.GsonUtil;
 import java.nio.charset.StandardCharsets;
@@ -40,7 +40,7 @@ public class NotificationParser {
    * @param decryptObjectClass 解密数据的Class对象
    * @param <T> 由Class对象建模的类的类型
    * @return 解密后的回调报文
-   * @throws ParseException 回调通知参数不正确、解析通知数据失败
+   * @throws MalformedMessageException 回调通知参数不正确、解析通知数据失败
    * @throws ValidationException 签名验证失败
    */
   public <T> T parse(RequestParam requestParam, Class<T> decryptObjectClass) {
@@ -104,28 +104,28 @@ public class NotificationParser {
 
   private void validateNotification(Notification notification) {
     if (notification == null) {
-      throw new ParseException(
+      throw new MalformedMessageException(
           "The notification obtained by parsing the WechatPay notification is null.");
     }
     Resource resource = notification.getResource();
     if (resource == null) {
-      throw new ParseException(
+      throw new MalformedMessageException(
           "The resource obtained by parsing the WechatPay notification is null"
               + ".Notification[%s]",
           notification);
     }
     if (resource.getAlgorithm() == null) {
-      throw new ParseException(
+      throw new MalformedMessageException(
           "The algorithm obtained by parsing the WechatPay notification is empty.Notification[%s]"
               + notification);
     }
     if (resource.getCiphertext() == null) {
-      throw new ParseException(
+      throw new MalformedMessageException(
           "The ciphertext obtained by parsing the WechatPay notification is empty.Notification[%s]"
               + notification);
     }
     if (resource.createNonce() == null) {
-      throw new ParseException(
+      throw new MalformedMessageException(
           "The nonce obtained by parsing the WechatPay notification is empty.Notification[%s]"
               + notification);
     }
@@ -135,7 +135,7 @@ public class NotificationParser {
       String algorithm, String associatedData, String nonce, String ciphertext) {
     AeadCipher aeadCipher = ciphers.get(algorithm);
     if (aeadCipher == null) {
-      throw new ParseException(
+      throw new MalformedMessageException(
           "Parse WechatPay notification,There is no AeadCipher corresponding to the algorithm.");
     }
     return aeadCipher.decryptToString(
