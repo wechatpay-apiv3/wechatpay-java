@@ -22,35 +22,15 @@ public class QuickStart {
   public static String apiV3Key = "";
 
   public static void main(String[] args) {
-    downloadCertificate();
-  }
-  /** 下载证书 */
-  public static void downloadCertificate() {
-    CertificateService certificateService = buildCertificateService();
+    Config config =
+        new RSAConfig.Builder()
+            .merchantId(merchantId)
+            .privateKeyFromPath(privateKeyPath)
+            .merchantSerialNumber(merchantSerialNumber)
+            .wechatPayCertificatesFromPath(wechatPayCertificatePath)
+            .build();
+    CertificateService certificateService = new CertificateService.Builder().config(config).build();
     List<X509Certificate> certificates =
         certificateService.downloadCertificate(apiV3Key.getBytes(StandardCharsets.UTF_8));
-  }
-  /**
-   * 构建证书下载服务
-   *
-   * @return 证书下载服务
-   */
-  public static CertificateService buildCertificateService() {
-    return new CertificateService.Builder().config(buildConfig()).build();
-  }
-  /**
-   * 构建请求配置
-   *
-   * @return 配置
-   */
-  public static Config buildConfig() {
-    return new RSAConfig.Builder()
-        .merchantId(merchantId)
-        // 使用 com.wechat.pay.java.core.util 中的函数从本地文件中加载商户私钥，商户私钥会用来生成请求的签名
-        // 也可以使用其他方式加载商户私钥
-        .privateKeyFromPath(privateKeyPath)
-        .merchantSerialNumber(merchantSerialNumber)
-        .wechatPayCertificatesFromPath(wechatPayCertificatePath)
-        .build();
   }
 }
