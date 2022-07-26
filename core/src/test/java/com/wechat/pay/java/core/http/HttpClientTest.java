@@ -6,9 +6,8 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 import com.wechat.pay.java.core.exception.HttpException;
 import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.exception.ServiceException;
-import java.util.stream.Stream;
-
 import com.wechat.pay.java.core.exception.ValidationException;
+import java.util.stream.Stream;
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -22,6 +21,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public interface HttpClientTest {
   HttpClient createHttpClient();
+
   HttpClient createFalseValidationHttpClient();
 
   class Response {
@@ -154,10 +154,12 @@ public interface HttpClientTest {
     server.start();
     HttpUrl requestUrl = server.url(testUrl);
 
-    final ServiceException thrown = assertThrows(
+    final ServiceException thrown =
+        assertThrows(
             ServiceException.class,
-            () -> { client.get(null, requestUrl.toString(), Response.class); }
-    );
+            () -> {
+              client.get(null, requestUrl.toString(), Response.class);
+            });
     assertEquals(400, thrown.getHttpStatusCode());
     assertEquals("INVALID_REQUEST", thrown.getErrorCode());
     assertEquals("test message", thrown.getErrorMessage());
@@ -169,15 +171,16 @@ public interface HttpClientTest {
     HttpClient client = createHttpClient();
     MockWebServer server = new MockWebServer();
     server.enqueue(
-            new MockResponse()
-                    .setBody("testResponseBody")
-                    .setHeader("Content-Type", "text/plain; charset=utf-8"));
+        new MockResponse()
+            .setBody("testResponseBody")
+            .setHeader("Content-Type", "text/plain; charset=utf-8"));
     server.start();
     HttpUrl requestUrl = server.url(testUrl);
     assertThrows(
-            MalformedMessageException.class,
-            () -> { client.get(null, requestUrl.toString(), Response.class); }
-    );
+        MalformedMessageException.class,
+        () -> {
+          client.get(null, requestUrl.toString(), Response.class);
+        });
 
     server.shutdown();
   }
@@ -191,9 +194,10 @@ public interface HttpClientTest {
     HttpUrl requestUrl = server.url(testUrl);
 
     assertThrows(
-            ValidationException.class,
-            () -> { client.get(null, requestUrl.toString(), Response.class); }
-    );
+        ValidationException.class,
+        () -> {
+          client.get(null, requestUrl.toString(), Response.class);
+        });
 
     server.shutdown();
   }
@@ -202,8 +206,9 @@ public interface HttpClientTest {
   default void testExecute_HttpException() {
     HttpClient client = createHttpClient();
     assertThrows(
-            HttpException.class,
-            () -> { client.get(null, "http://url.not.avalible", Response.class); }
-    );
+        HttpException.class,
+        () -> {
+          client.get(null, "http://url.not.avalible", Response.class);
+        });
   }
 }

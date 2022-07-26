@@ -36,34 +36,34 @@ public class OkHttpClientAdapterV2Test implements HttpClientTest {
     return new DefaultHttpClientBuilder().credential(credential).validator(validator).build();
   }
 
-    @Override
-    public HttpClient createFalseValidationHttpClient() {
-        Credential credential =
-                new Credential() {
-                    @Override
-                    public String getSchema() {
-                        return "foo";
-                    }
+  @Override
+  public HttpClient createFalseValidationHttpClient() {
+    Credential credential =
+        new Credential() {
+          @Override
+          public String getSchema() {
+            return "foo";
+          }
 
-                    @Override
-                    public String getMerchantId() {
-                        return "1234567890";
-                    }
+          @Override
+          public String getMerchantId() {
+            return "1234567890";
+          }
 
-                    @Override
-                    public String getAuthorization(URI uri, String httpMethod, String signBody) {
-                        return "bar";
-                    }
-                };
+          @Override
+          public String getAuthorization(URI uri, String httpMethod, String signBody) {
+            return "bar";
+          }
+        };
 
-        Validator validator =
-                new Validator() {
-                    @Override
-                    public <T> boolean validate(HttpHeaders responseHeaders, String body) {
-                        return false;
-                    }
-                };
+    Validator validator =
+        new Validator() {
+          @Override
+          public <T> boolean validate(HttpHeaders responseHeaders, String body) {
+            return false;
+          }
+        };
 
-        return new DefaultHttpClientBuilder().credential(credential).validator(validator).build();
-    }
+    return new DefaultHttpClientBuilder().credential(credential).validator(validator).build();
+  }
 }
