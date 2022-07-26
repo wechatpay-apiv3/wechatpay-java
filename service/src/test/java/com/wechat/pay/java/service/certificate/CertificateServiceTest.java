@@ -1,6 +1,5 @@
 package com.wechat.pay.java.service.certificate;
 
-import static com.wechat.pay.java.core.http.Constant.DEFAULT_BASE_URL;
 import static com.wechat.pay.java.core.http.Constant.REQUEST_ID;
 
 import com.wechat.pay.java.core.Config;
@@ -11,6 +10,7 @@ import com.wechat.pay.java.core.cipher.PrivacyDecryptor;
 import com.wechat.pay.java.core.cipher.PrivacyEncryptor;
 import com.wechat.pay.java.core.http.Constant;
 import com.wechat.pay.java.core.http.DefaultHttpClientBuilder;
+import com.wechat.pay.java.core.http.HostName;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpHeaders;
 import com.wechat.pay.java.core.http.HttpMethod;
@@ -105,7 +105,7 @@ public class CertificateServiceTest {
                   Headers headers = chain.request().headers();
                   Assert.assertEquals(chain.request().method(), HttpMethod.GET.name());
                   Assert.assertEquals(
-                      DEFAULT_BASE_URL + "/v3/certificates",
+                      "https://" + HostName.APIHK.getValue() + "/v3/certificates",
                       chain.request().url().url().toString());
                   Assert.assertEquals("*/*", headers.get(Constant.ACCEPT));
                   Assert.assertEquals(
@@ -165,7 +165,7 @@ public class CertificateServiceTest {
         };
 
     CertificateService certificateService =
-        new CertificateService.Builder().httpClient(httpClient).build();
+        new CertificateService.Builder().httpClient(httpClient).hostName(HostName.APIHK).build();
     List<X509Certificate> certificateList = certificateService.downloadCertificate(fakeAeadCipher);
     Assert.assertNotNull(certificateList);
   }

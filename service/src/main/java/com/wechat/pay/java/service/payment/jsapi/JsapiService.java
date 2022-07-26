@@ -11,17 +11,17 @@
 
 package com.wechat.pay.java.service.payment.jsapi;
 
-import static com.wechat.pay.java.core.http.Constant.DEFAULT_BASE_URL;
 import static com.wechat.pay.java.core.http.UrlEncoder.urlEncode;
 import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.exception.HttpException;
-import com.wechat.pay.java.core.exception.ParseException;
+import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.exception.ServiceException;
 import com.wechat.pay.java.core.exception.ValidationException;
 import com.wechat.pay.java.core.http.Constant;
 import com.wechat.pay.java.core.http.DefaultHttpClientBuilder;
+import com.wechat.pay.java.core.http.HostName;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpHeaders;
 import com.wechat.pay.java.core.http.HttpMethod;
@@ -40,18 +40,18 @@ import com.wechat.pay.java.service.payment.model.Transaction;
 public class JsapiService {
 
   private final HttpClient httpClient;
-  private final String baseUrl;
+  private final HostName hostName;
 
-  private JsapiService(HttpClient httpClient, String baseUrl) {
+  private JsapiService(HttpClient httpClient, HostName hostName) {
     this.httpClient = requireNonNull(httpClient);
-    this.baseUrl = baseUrl;
+    this.hostName = hostName;
   }
 
   /** JsapiService构造器 */
   public static class Builder {
 
     private HttpClient httpClient;
-    private String baseUrl = DEFAULT_BASE_URL;
+    private HostName hostName;
 
     public Builder config(Config config) {
       this.httpClient =
@@ -62,18 +62,18 @@ public class JsapiService {
       return this;
     }
 
-    public Builder baseUrl(String baseUrl) {
-      this.baseUrl = baseUrl;
+    public Builder hostName(HostName hostName) {
+      this.hostName = hostName;
       return this;
     }
 
     public Builder httpClient(HttpClient httpClient) {
-      this.httpClient = requireNonNull(httpClient);
+      this.httpClient = httpClient;
       return this;
     }
 
     public JsapiService build() {
-      return new JsapiService(httpClient, baseUrl);
+      return new JsapiService(httpClient, hostName);
     }
   }
 
@@ -84,13 +84,17 @@ public class JsapiService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public void closeOrder(CloseOrderRequest request) {
-    String requestPath = this.baseUrl + "/v3/pay/transactions/out-trade-no/{out_trade_no}/close";
+    String requestPath =
+        "https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/{out_trade_no}/close";
     // 添加 path param
     requestPath =
         requestPath.replace("{" + "out_trade_no" + "}", urlEncode(request.getOutTradeNo()));
+    if (this.hostName != null) {
+      requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
+    }
     HttpHeaders headers = new HttpHeaders();
     headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
     headers.addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue());
@@ -112,10 +116,13 @@ public class JsapiService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public PrepayResponse prepay(PrepayRequest request) {
-    String requestPath = this.baseUrl + "/v3/pay/transactions/jsapi";
+    String requestPath = "https://api.mch.weixin.qq.com/v3/pay/transactions/jsapi";
+    if (this.hostName != null) {
+      requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
+    }
     HttpHeaders headers = new HttpHeaders();
     headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
     headers.addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue());
@@ -139,16 +146,19 @@ public class JsapiService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public Transaction queryOrderById(QueryOrderByIdRequest request) {
-    String requestPath = this.baseUrl + "/v3/pay/transactions/id/{transaction_id}";
+    String requestPath = "https://api.mch.weixin.qq.com/v3/pay/transactions/id/{transaction_id}";
     // 添加 path param
     requestPath =
         requestPath.replace("{" + "transaction_id" + "}", urlEncode(request.getTransactionId()));
     // 添加 query param
     if (request.getMchid() != null) {
       requestPath += "?mchid=" + urlEncode(request.getMchid());
+    }
+    if (this.hostName != null) {
+      requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
     }
     HttpHeaders headers = new HttpHeaders();
     headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
@@ -171,16 +181,20 @@ public class JsapiService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public Transaction queryOrderByOutTradeNo(QueryOrderByOutTradeNoRequest request) {
-    String requestPath = this.baseUrl + "/v3/pay/transactions/out-trade-no/{out_trade_no}";
+    String requestPath =
+        "https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/{out_trade_no}";
     // 添加 path param
     requestPath =
         requestPath.replace("{" + "out_trade_no" + "}", urlEncode(request.getOutTradeNo()));
     // 添加 query param
     if (request.getMchid() != null) {
       requestPath += "?mchid=" + urlEncode(request.getMchid());
+    }
+    if (this.hostName != null) {
+      requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
     }
     HttpHeaders headers = new HttpHeaders();
     headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
