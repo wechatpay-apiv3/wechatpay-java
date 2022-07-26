@@ -30,26 +30,30 @@ public class NativePayServiceExample {
             .build();
 
     // 初始化服务
-    service = new NativePayService(config);
+    service = new NativePayService.Builder().config(config).build();
     // ... 调用接口
   }
+
   /** 关闭订单 */
   public static void closeOrder() {
 
     CloseOrderRequest request = new CloseOrderRequest();
     service.closeOrder(request);
   }
+
   /** Native支付预下单 */
   public static PrepayResponse prepay() {
     PrepayRequest request = new PrepayRequest();
     return service.prepay(request);
   }
+
   /** 微信支付订单号查询订单 */
   public static Transaction queryOrderById() {
 
     QueryOrderByIdRequest request = new QueryOrderByIdRequest();
     return service.queryOrderById(request);
   }
+
   /** 商户订单号查询订单 */
   public static Transaction queryOrderByOutTradeNo() {
 

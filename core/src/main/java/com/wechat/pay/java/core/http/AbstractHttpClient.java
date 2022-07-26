@@ -12,7 +12,7 @@ import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
-import com.wechat.pay.java.core.exception.ParseException;
+import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.exception.ServiceException;
 import com.wechat.pay.java.core.exception.ValidationException;
 import com.wechat.pay.java.core.http.HttpRequest.Builder;
@@ -57,7 +57,7 @@ public abstract class AbstractHttpClient implements HttpClient {
 
     if (originalResponse.getBody() != null
         && !MediaType.APPLICATION_JSON.equals(originalResponse.getContentType())) {
-      throw new ParseException(
+      throw new MalformedMessageException(
           "Unsupported content-type[%s]\nhttpRequest[%s]",
           originalResponse.getContentType(), originalResponse.getRequest());
     }

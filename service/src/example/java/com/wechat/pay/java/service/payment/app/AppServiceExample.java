@@ -30,26 +30,30 @@ public class AppServiceExample {
             .build();
 
     // 初始化服务
-    service = new AppService(config);
+    service = new AppService.Builder().config(config).build();
     // ... 调用接口
   }
+
   /** 关闭订单 */
   public static void closeOrder() {
 
     CloseOrderRequest request = new CloseOrderRequest();
     service.closeOrder(request);
   }
+
   /** APP支付下单 */
   public static PrepayResponse prepay() {
     PrepayRequest request = new PrepayRequest();
     return service.prepay(request);
   }
+
   /** 微信支付订单号查询订单 */
   public static Transaction queryOrderById() {
 
     QueryOrderByIdRequest request = new QueryOrderByIdRequest();
     return service.queryOrderById(request);
   }
+
   /** 商户订单号查询订单 */
   public static Transaction queryOrderByOutTradeNo() {
 

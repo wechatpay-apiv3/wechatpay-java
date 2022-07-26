@@ -23,7 +23,7 @@ public class PemUtil {
 
   private static final Logger logger = LoggerFactory.getLogger(PemUtil.class);
   private static final String RSA_ALGORITHM = "RSA";
-  private static final String X509_CERTIFICATE_TYPE = "X509";
+  private static final String X509_CERTIFICATE_TYPE = "X.509";
 
   private PemUtil() {}
 
