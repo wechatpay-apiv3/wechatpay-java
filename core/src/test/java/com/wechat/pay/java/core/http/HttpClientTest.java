@@ -1,8 +1,9 @@
 package com.wechat.pay.java.core.http;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
+import com.wechat.pay.java.core.exception.HttpException;
 import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.exception.ServiceException;
 import java.util.stream.Stream;
@@ -71,11 +72,11 @@ public interface HttpClientTest {
     client.execute(requestBuilder.build(), null);
 
     RecordedRequest request = server.takeRequest();
-    assertThat(request.getMethod()).isEqualTo(method.name());
-    assertThat(request.getRequestUrl()).isEqualTo(requestUrl);
-    assertThat(request.getHeader("Test-Header1")).isEqualTo("HeaderValue1");
-    assertThat(request.getHeader("Test-Header2")).isEqualTo("HeaderValue2");
-    assertThat(request.getBody().readUtf8()).isEqualTo(requestBody);
+    assertEquals(method.name(), request.getMethod());
+    assertEquals(requestUrl, request.getRequestUrl());
+    assertEquals("HeaderValue1", request.getHeader("Test-Header1"));
+    assertEquals("HeaderValue2", request.getHeader("Test-Header2"));
+    assertEquals(requestBody, request.getBody().readUtf8());
 
     server.shutdown();
   }
@@ -103,11 +104,14 @@ public interface HttpClientTest {
     }
 
     HttpResponse<Response> response = client.execute(requestBuilder.build(), Response.class);
-    assertThat(response.getServiceResponse().one).isEqualTo("one");
-    assertThat(response.getServiceResponse().two).isEqualTo(2);
-    assertThat(response.getHeaders().getHeader("Test-Header")).isEqualTo("HeaderValue");
+    assertEquals("one", response.getServiceResponse().one);
+    assertEquals(2, response.getServiceResponse().two);
+    assertEquals("HeaderValue", response.getHeaders().getHeader("Test-Header"));
+
     JsonResponseBody responseBody = (JsonResponseBody) response.getBody();
-    assertThat(responseBody.getBody()).isEqualTo(testResponseBody);
+    assertEquals(testResponseBody, responseBody.getBody());
+
+    server.shutdown();
   }
 
   @DisplayName("测试应答处理204是否正确")
@@ -132,8 +136,10 @@ public interface HttpClientTest {
       requestBuilder.body(new JsonRequestBody.Builder().body(requestBody).build());
     }
 
-    assertThatNoException().isThrownBy(() -> client.execute(requestBuilder.build(), Response.class));
+    assertDoesNotThrow(() -> client.execute(requestBuilder.build(), Response.class));
     // todo: need an download() API which would not check response's Content-Type
+
+    server.shutdown();
   }
 
   @Test
@@ -148,10 +154,14 @@ public interface HttpClientTest {
     server.start();
     HttpUrl requestUrl = server.url(testUrl);
 
-    assertThatExceptionOfType(ServiceException.class)
-        .isThrownBy(() -> {
-              client.get(null, requestUrl.toString(), Response.class);
-        }).withMessageContaining("400");
+    final ServiceException thrown = assertThrows(
+            ServiceException.class,
+            () -> { client.get(null, requestUrl.toString(), Response.class); }
+    );
+    assertEquals(400, thrown.getHttpStatusCode());
+    assertEquals("INVALID_REQUEST", thrown.getErrorCode());
+    assertEquals("test message", thrown.getErrorMessage());
+    server.shutdown();
   }
 
   @Test
@@ -164,11 +174,12 @@ public interface HttpClientTest {
                     .setHeader("Content-Type", "text/plain; charset=utf-8"));
     server.start();
     HttpUrl requestUrl = server.url(testUrl);
+    assertThrows(
+            MalformedMessageException.class,
+            () -> { client.get(null, requestUrl.toString(), Response.class); }
+    );
 
-    assertThatExceptionOfType(MalformedMessageException.class)
-            .isThrownBy(() -> {
-              client.get(null, requestUrl.toString(), Response.class);
-            });
+    server.shutdown();
   }
 
   @Test
@@ -179,9 +190,20 @@ public interface HttpClientTest {
     server.start();
     HttpUrl requestUrl = server.url(testUrl);
 
-    assertThatExceptionOfType(ValidationException.class)
-            .isThrownBy(() -> {
-              client.get(null, requestUrl.toString(), Response.class);
-            });
+    assertThrows(
+            ValidationException.class,
+            () -> { client.get(null, requestUrl.toString(), Response.class); }
+    );
+
+    server.shutdown();
+  }
+
+  @Test
+  default void testExecute_HttpException() {
+    HttpClient client = createHttpClient();
+    assertThrows(
+            HttpException.class,
+            () -> { client.get(null, "http://url.not.avalible", Response.class); }
+    );
   }
 }
