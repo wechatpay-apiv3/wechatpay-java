@@ -6,11 +6,12 @@ import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.cipher.AeadAesCipher;
 import com.wechat.pay.java.core.cipher.AeadCipher;
 import com.wechat.pay.java.core.exception.HttpException;
-import com.wechat.pay.java.core.exception.ParseException;
+import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.exception.ServiceException;
 import com.wechat.pay.java.core.exception.ValidationException;
 import com.wechat.pay.java.core.http.Constant;
 import com.wechat.pay.java.core.http.DefaultHttpClientBuilder;
+import com.wechat.pay.java.core.http.HostName;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpMethod;
 import com.wechat.pay.java.core.http.HttpRequest;
@@ -29,20 +30,42 @@ import java.util.List;
 /** 证书服务 */
 public class CertificateService {
 
-  public static final String CERTIFICATE_DOWNLOAD_PATH =
-      "https://api.mch.weixin.qq.com/v3/certificates";
   private final HttpClient httpClient;
+  private final HostName hostName;
 
-  public CertificateService(Config config) {
-    this.httpClient =
-        new DefaultHttpClientBuilder()
-            .credential(requireNonNull(config.createCredential()))
-            .validator(requireNonNull(config.createValidator()))
-            .build();
+  private CertificateService(HttpClient httpClient, HostName hostName) {
+    this.httpClient = requireNonNull(httpClient);
+    this.hostName = hostName;
   }
 
-  public CertificateService(HttpClient httpClient) {
-    this.httpClient = requireNonNull(httpClient);
+  /** CertificateService构造器 */
+  public static class Builder {
+
+    private HttpClient httpClient;
+    private HostName hostName;
+
+    public Builder config(Config config) {
+      this.httpClient =
+          new DefaultHttpClientBuilder()
+              .credential(requireNonNull(config.createCredential()))
+              .validator(requireNonNull(config.createValidator()))
+              .build();
+      return this;
+    }
+
+    public Builder httpClient(HttpClient httpClient) {
+      this.httpClient = requireNonNull(httpClient);
+      return this;
+    }
+
+    public Builder hostName(HostName hostName) {
+      this.hostName = hostName;
+      return this;
+    }
+
+    public CertificateService build() {
+      return new CertificateService(httpClient, hostName);
+    }
   }
 
   /**
@@ -53,7 +76,7 @@ public class CertificateService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public List<X509Certificate> downloadCertificate(byte[] apiV3Key) {
     AeadCipher aeadCipher = new AeadAesCipher(apiV3Key);
@@ -68,14 +91,18 @@ public class CertificateService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public List<X509Certificate> downloadCertificate(AeadCipher aeadCipher) {
     requireNonNull(aeadCipher);
+    String requestPath = "https://api.mch.weixin.qq.com/v3/certificates";
+    if (hostName != null) {
+      requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
+    }
     HttpRequest request =
         new HttpRequest.Builder()
             .httpMethod(HttpMethod.GET)
-            .url(CERTIFICATE_DOWNLOAD_PATH)
+            .url(requestPath)
             .addHeader(Constant.ACCEPT, " */*")
             .addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue())
             .build();

@@ -12,7 +12,7 @@ import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
-import com.wechat.pay.java.core.exception.ParseException;
+import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.exception.ServiceException;
 import com.wechat.pay.java.core.exception.ValidationException;
 import com.wechat.pay.java.core.http.HttpRequest.Builder;
@@ -57,7 +57,7 @@ public abstract class AbstractHttpClient implements HttpClient {
 
     if (originalResponse.getBody() != null
         && !MediaType.APPLICATION_JSON.equals(originalResponse.getContentType())) {
-      throw new ParseException(
+      throw new MalformedMessageException(
           "Unsupported content-type[%s]\nhttpRequest[%s]",
           originalResponse.getContentType(), originalResponse.getRequest());
     }
@@ -118,67 +118,5 @@ public abstract class AbstractHttpClient implements HttpClient {
   private String getAuthorization(HttpRequest request) {
     return credential.getAuthorization(
         request.getUri(), request.getHttpMethod().name(), getSignBody(request.getBody()));
-  }
-
-  @Override
-  public <T> HttpResponse<T> get(HttpHeaders headers, String url, Class<T> responseClass) {
-    HttpRequest httpRequest =
-        new HttpRequest.Builder().url(url).httpMethod(HttpMethod.GET).headers(headers).build();
-    return execute(httpRequest, responseClass);
-  }
-
-  @Override
-  public <T> HttpResponse<T> post(
-      HttpHeaders headers,
-      String url,
-      com.wechat.pay.java.core.http.RequestBody body,
-      Class<T> responseClass) {
-    HttpRequest httpRequest =
-        new HttpRequest.Builder()
-            .url(url)
-            .httpMethod(HttpMethod.POST)
-            .headers(headers)
-            .body(body)
-            .build();
-    return execute(httpRequest, responseClass);
-  }
-
-  @Override
-  public <T> HttpResponse<T> patch(
-      HttpHeaders headers,
-      String url,
-      com.wechat.pay.java.core.http.RequestBody body,
-      Class<T> responseClass) {
-    HttpRequest httpRequest =
-        new HttpRequest.Builder()
-            .url(url)
-            .httpMethod(HttpMethod.PATCH)
-            .headers(headers)
-            .body(body)
-            .build();
-    return execute(httpRequest, responseClass);
-  }
-
-  @Override
-  public <T> HttpResponse<T> put(
-      HttpHeaders headers,
-      String url,
-      com.wechat.pay.java.core.http.RequestBody body,
-      Class<T> responseClass) {
-    HttpRequest httpRequest =
-        new HttpRequest.Builder()
-            .url(url)
-            .httpMethod(HttpMethod.PUT)
-            .headers(headers)
-            .body(body)
-            .build();
-    return execute(httpRequest, responseClass);
-  }
-
-  @Override
-  public <T> HttpResponse<T> delete(HttpHeaders headers, String url, Class<T> responseClass) {
-    HttpRequest httpRequest =
-        new HttpRequest.Builder().url(url).httpMethod(HttpMethod.DELETE).headers(headers).build();
-    return execute(httpRequest, responseClass);
   }
 }

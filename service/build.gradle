@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
+
 plugins{
     id "common"
 }
@@ -33,6 +35,13 @@ jar {
         attributes("Implementation-Version": project.version)
     }
 }
+
+
+task relocateShadowJar(type: ConfigureShadowRelocation) {
+    target = tasks.shadowJar
+}
+
+tasks.shadowJar.dependsOn tasks.relocateShadowJar
 
 publishing {
     java {

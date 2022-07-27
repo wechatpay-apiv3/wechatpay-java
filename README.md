@@ -62,36 +62,16 @@ public class QuickStart {
   public static String apiV3Key = "";
 
   public static void main(String[] args) {
-    downloadCertificate();
-  }
-  /** 下载证书 */
-  public static void downloadCertificate() {
-    CertificateService certificateService = buildCertificateService();
+    Config config =
+        new RSAConfig.Builder()
+            .merchantId(merchantId)
+            .privateKeyFromPath(privateKeyPath)
+            .merchantSerialNumber(merchantSerialNumber)
+            .wechatPayCertificatesFromPath(wechatPayCertificatePath)
+            .build();
+    CertificateService certificateService = new CertificateService.Builder().config(config).build();
     List<X509Certificate> certificates =
         certificateService.downloadCertificate(apiV3Key.getBytes(StandardCharsets.UTF_8));
-  }
-  /**
-   * 构建证书下载服务
-   *
-   * @return 证书下载服务
-   */
-  public static CertificateService buildCertificateService() {
-    return new CertificateService(buildConfig());
-  }
-  /**
-   * 构建请求配置
-   *
-   * @return 配置
-   */
-  public static Config buildConfig() {
-    return new RSAConfig.Builder()
-        .merchantId(merchantId)
-        // 使用 com.wechat.pay.java.core.util 中的函数从本地文件中加载商户私钥，商户私钥会用来生成请求的签名
-        // 也可以使用其他方式加载商户私钥
-        .privateKeyFromPath(privateKeyPath)
-        .merchantSerialNumber(merchantSerialNumber)
-        .wechatPayCertificatesFromPath(wechatPayCertificatePath)
-        .build();
   }
 }
 ```
@@ -115,7 +95,7 @@ SDK 使用的是 unchecked exception，会抛出四种自定义异常。每种�
 - [ServiceException](core/src/main/java/com/wechat/pay/java/core/exception/ServiceException.java)：调用微信支付服务，发送 HTTP 请求成功，HTTP 状态码小于200或大于等于300。
     - 状态码为5xx：主动重试。
     - 状态码为其他：获取错误中的 `errorCode` 、`errorMessage`，上报监控和日志打印。
-- [ParseException](core/src/main/java/com/wechat/pay/java/core/exception/ParseException.java)：服务返回成功，返回内容异常。
+- [MalformedMessageException](core/src/main/java/com/wechat/pay/java/core/exception/MalformedMessageException.java)：服务返回成功，返回内容异常。
   - HTTP 返回` Content-Type` 不为 `application/json`：当前不支持其他类型的返回体，账单下载正在规划中。
   - 解析 HTTP 返回体失败：上报监控和日志打印。
   - 回调通知参数不正确：确认传入参数是否与 HTTP 请求信息一致，传入参数是否存在编码或者 HTML 转码问题。

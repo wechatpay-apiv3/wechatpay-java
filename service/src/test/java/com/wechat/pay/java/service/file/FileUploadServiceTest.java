@@ -142,7 +142,7 @@ public class FileUploadServiceTest {
             .validator(fileUploadServiceConfig.createValidator())
             .okHttpClient(builder.build())
             .build();
-    FileUploadService fileService = new FileUploadService(httpClient);
+    FileUploadService fileService = new FileUploadService.Builder().httpClient(httpClient).build();
     FileUploadResponse fileUploadResponse =
         fileService.uploadImage(imageUploadPath, imageMeta, imagePath);
     Gson gson = GsonUtil.getGson();
@@ -197,7 +197,7 @@ public class FileUploadServiceTest {
             .validator(fileUploadServiceConfig.createValidator())
             .okHttpClient(uploadVideoOkHttpClientBuilder.build())
             .build();
-    FileUploadService fileService = new FileUploadService(httpClient);
+    FileUploadService fileService = new FileUploadService.Builder().httpClient(httpClient).build();
     FileUploadResponse fileUploadResponse =
         fileService.uploadVideo(videoUploadPath, videoMeta, videoPath);
     Gson gson = GsonUtil.getGson();

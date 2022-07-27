@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.exception.HttpException;
-import com.wechat.pay.java.core.exception.ParseException;
+import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.exception.ServiceException;
 import com.wechat.pay.java.core.exception.ValidationException;
 import com.wechat.pay.java.core.http.Constant;
@@ -26,16 +26,32 @@ public class FileUploadService {
 
   private final HttpClient httpClient;
 
-  public FileUploadService(Config config) {
-    this.httpClient =
-        new DefaultHttpClientBuilder()
-            .credential(requireNonNull(config.createCredential()))
-            .validator(requireNonNull(config.createValidator()))
-            .build();
+  private FileUploadService(HttpClient httpClient) {
+    this.httpClient = requireNonNull(httpClient);
   }
 
-  public FileUploadService(HttpClient httpClient) {
-    this.httpClient = requireNonNull(httpClient);
+  /** FileUploadService构造器 */
+  public static class Builder {
+
+    private HttpClient httpClient;
+
+    public Builder config(Config config) {
+      this.httpClient =
+          new DefaultHttpClientBuilder()
+              .credential(requireNonNull(config.createCredential()))
+              .validator(requireNonNull(config.createValidator()))
+              .build();
+      return this;
+    }
+
+    public Builder httpClient(HttpClient httpClient) {
+      this.httpClient = requireNonNull(httpClient);
+      return this;
+    }
+
+    public FileUploadService build() {
+      return new FileUploadService(httpClient);
+    }
   }
 
   /**
@@ -48,7 +64,7 @@ public class FileUploadService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    * @throws IOException 读取字节失败、关闭流失败等。
    */
   public FileUploadResponse uploadVideo(String uploadPath, String meta, String videoPath)
@@ -72,7 +88,7 @@ public class FileUploadService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public FileUploadResponse uploadVideo(
       String uploadPath, String meta, String fileName, byte[] video) {
@@ -89,7 +105,7 @@ public class FileUploadService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    * @throws IOException 读取图片失败、关闭图片流失败。
    */
   public FileUploadResponse uploadImage(String uploadPath, String meta, String imagePath)
@@ -113,7 +129,7 @@ public class FileUploadService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public FileUploadResponse uploadImage(
       String uploadPath, String meta, String fileName, byte[] image) {
