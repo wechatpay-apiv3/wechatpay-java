@@ -1,3 +1,4 @@
 plugins {
     id "com.diffplug.spotless"
+    id "com.github.johnrengelman.shadow"
 }

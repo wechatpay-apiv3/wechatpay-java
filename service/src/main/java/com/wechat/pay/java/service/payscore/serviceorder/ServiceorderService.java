@@ -16,7 +16,7 @@ import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.exception.HttpException;
-import com.wechat.pay.java.core.exception.ParseException;
+import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.exception.ServiceException;
 import com.wechat.pay.java.core.exception.ValidationException;
 import com.wechat.pay.java.core.http.Constant;
@@ -68,7 +68,7 @@ public class ServiceorderService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public CancelServiceOrderResponse cancelServiceOrder(CancelServiceOrderRequest request) {
     String requestPath =
@@ -98,7 +98,7 @@ public class ServiceorderService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public CollectServiceOrderResponse collectServiceOrder(CollectServiceOrderRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/payscore/serviceorder/{out_order_no}/pay";
@@ -127,7 +127,7 @@ public class ServiceorderService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public CompleteServiceOrderResponse completeServiceOrder(CompleteServiceOrderRequest request) {
     String requestPath =
@@ -157,7 +157,7 @@ public class ServiceorderService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public CreateServiceOrderResponse createServiceOrder(CreateServiceOrderRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/payscore/serviceorder";
@@ -183,7 +183,7 @@ public class ServiceorderService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public DirectCompleteServiceOrderResponse directCompleteServiceOrder(
       DirectCompleteServiceOrderRequest request) {
@@ -210,7 +210,7 @@ public class ServiceorderService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public ServiceOrderEntity getServiceOrder(GetServiceOrderRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/payscore/serviceorder";
@@ -251,7 +251,7 @@ public class ServiceorderService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public ServiceOrderEntity modifyServiceOrder(ModifyServiceOrderRequest request) {
     String requestPath =
@@ -281,7 +281,7 @@ public class ServiceorderService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public ServiceOrderEntity syncServiceOrder(SyncServiceOrderRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/payscore/serviceorder/{out_order_no}/sync";

@@ -16,7 +16,7 @@ import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.exception.HttpException;
-import com.wechat.pay.java.core.exception.ParseException;
+import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.exception.ServiceException;
 import com.wechat.pay.java.core.exception.ValidationException;
 import com.wechat.pay.java.core.http.Constant;
@@ -66,7 +66,7 @@ public class PermissionService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public ApplyPermissionsResponse applyPermissions(ApplyPermissionsRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/v3/payscore/permissions";
@@ -92,7 +92,7 @@ public class PermissionService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public PermissionsEntity getPermissionsByAuthorizationCode(
       GetPermissionsByAuthorizationCodeRequest request) {
@@ -127,7 +127,7 @@ public class PermissionService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public PermissionsEntity getPermissionsByOpenId(GetPermissionsByOpenIdRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/v3/payscore/permissions/openid/{openid}";
@@ -161,7 +161,7 @@ public class PermissionService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public OrderSceneApplyPermissionsResponse orderSceneApplyPermissions(
       OrderSceneApplyPermissionsRequest request) {
@@ -188,7 +188,7 @@ public class PermissionService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public SceneApplyPermissionsResponse sceneApplyPermissions(SceneApplyPermissionsRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/v3/payscore/permissions/apply-for-scene";
@@ -213,7 +213,7 @@ public class PermissionService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public void terminatePermissionsByCode(TerminatePermissionsByCodeRequest request) {
     String requestPath =
@@ -241,7 +241,7 @@ public class PermissionService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public void terminatePermissionsByOpenId(TerminatePermissionsByOpenIdRequest request) {
     String requestPath =
@@ -268,7 +268,7 @@ public class PermissionService {
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws ParseException 服务返回成功，content-type不为application/json、解析返回体失败。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public PermissionsEntity upgradeUserPermissions(UpgradeUserPermissionsRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/v3/payscore/permissions/openid/{openid}";
