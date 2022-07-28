@@ -29,7 +29,7 @@ public interface HttpClientTest {
     public int two;
   }
 
-  String testUrl = "/test/url?p1=a&p2=b";
+  String testUrl = "/path/to/test?p1=a&p2=b&p3=[ab%2F%23cd]";
   String testResponseBody = "{\"one\":\"one\",\"two\":2}";
 
   static Stream<Arguments> requestProvider() {
@@ -156,10 +156,7 @@ public interface HttpClientTest {
 
     final ServiceException thrown =
         assertThrows(
-            ServiceException.class,
-            () -> {
-              client.get(null, requestUrl.toString(), Response.class);
-            });
+            ServiceException.class, () -> client.get(null, requestUrl.toString(), Response.class));
     assertEquals(400, thrown.getHttpStatusCode());
     assertEquals("INVALID_REQUEST", thrown.getErrorCode());
     assertEquals("test message", thrown.getErrorMessage());
@@ -178,9 +175,7 @@ public interface HttpClientTest {
     HttpUrl requestUrl = server.url(testUrl);
     assertThrows(
         MalformedMessageException.class,
-        () -> {
-          client.get(null, requestUrl.toString(), Response.class);
-        });
+        () -> client.get(null, requestUrl.toString(), Response.class));
 
     server.shutdown();
   }
@@ -194,10 +189,7 @@ public interface HttpClientTest {
     HttpUrl requestUrl = server.url(testUrl);
 
     assertThrows(
-        ValidationException.class,
-        () -> {
-          client.get(null, requestUrl.toString(), Response.class);
-        });
+        ValidationException.class, () -> client.get(null, requestUrl.toString(), Response.class));
 
     server.shutdown();
   }
@@ -206,9 +198,6 @@ public interface HttpClientTest {
   default void testExecute_HttpException() {
     HttpClient client = createHttpClient();
     assertThrows(
-        HttpException.class,
-        () -> {
-          client.get(null, "http://url.not.avalible", Response.class);
-        });
+        HttpException.class, () -> client.get(null, "http://url.not.avalible", Response.class));
   }
 }
