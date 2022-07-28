@@ -56,6 +56,7 @@ public abstract class AbstractHttpClient implements HttpClient {
     }
 
     if (originalResponse.getBody() != null
+        && !originalResponse.getBody().isEmpty()
         && !MediaType.APPLICATION_JSON.equals(originalResponse.getContentType())) {
       throw new MalformedMessageException(
           "Unsupported content-type[%s]\nhttpRequest[%s]",
