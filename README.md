@@ -1,4 +1,4 @@
-# 微信支付 APIv3 Java SDK-beta
+# 微信支付 APIv3 Java SDK-beta-
 
 [微信支付 APIv3](https://wechatpay-api.gitbook.io/wechatpay-api-v3/) 官方 Java 语言客户端开发库。
 
