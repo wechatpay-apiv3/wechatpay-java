@@ -2,6 +2,7 @@ pluginManagement {
     plugins {
         id 'com.diffplug.spotless' version "${spotlessVersion}"
         id 'com.github.johnrengelman.shadow' version "${shadowVersion}"
+        id 'org.sonarqube' version "${sonarqubeVersion}"
     }
 }
 rootProject.name = 'wechatpay-java'
