@@ -116,7 +116,9 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
           .build();
     } catch (IOException e) {
       throw new MalformedMessageException(
-          "Assemble OriginalResponse,get responseBody failed.\nHttpRequest[%s]", wechatPayRequest);
+          String.format(
+              "Assemble OriginalResponse,get responseBody failed.\nHttpRequest[%s]",
+              wechatPayRequest));
     }
   }
 }

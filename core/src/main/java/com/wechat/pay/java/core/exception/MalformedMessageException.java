@@ -5,7 +5,11 @@ public class MalformedMessageException extends WechatPayException {
 
   private static final long serialVersionUID = -1049702516796430238L;
 
-  public MalformedMessageException(String format, Object... objects) {
-    super(format, objects);
+  public MalformedMessageException(String message) {
+    super(message);
+  }
+
+  public MalformedMessageException(String message, Throwable cause) {
+    super(message, cause);
   }
 }

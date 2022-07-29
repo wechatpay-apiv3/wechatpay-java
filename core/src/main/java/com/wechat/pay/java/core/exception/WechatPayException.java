@@ -5,14 +5,6 @@ public abstract class WechatPayException extends RuntimeException {
 
   private static final long serialVersionUID = -5896431877288268263L;
 
-  public WechatPayException(String format, Object... objects) {
-    super(String.format(format, objects));
-  }
-
-  public WechatPayException(Throwable cause, String format, Object... objects) {
-    super(String.format(format, objects), cause);
-  }
-
   public WechatPayException(String message) {
     super(message);
   }

@@ -7,29 +7,28 @@ public class HttpException extends WechatPayException {
 
   private static final long serialVersionUID = 8583990125724273072L;
   private HttpRequest httpRequest;
-  private Throwable throwable;
+  private Throwable cause;
 
   /**
    * 构造请求参数失败时调用
    *
-   * @param t 引起失败的原始异常
-   * @param format format
-   * @param objects objects
+   * @param message 错误信息
+   * @param cause 引起失败的原始异常
    */
-  public HttpException(Throwable t, String format, Object... objects) {
-    super(t, format, objects);
+  public HttpException(String message, Throwable cause) {
+    super(message, cause);
   }
 
   /**
    * 发送请求失败时调用
    *
    * @param httpRequest http请求
-   * @param throwable 引起失败的原始异常
+   * @param cause 引起失败的原始异常
    */
-  public HttpException(HttpRequest httpRequest, Throwable throwable) {
-    super(String.format("Send Http Request failed,httpRequest[%s]", httpRequest), throwable);
+  public HttpException(HttpRequest httpRequest, Throwable cause) {
+    super(String.format("Send Http Request failed,httpRequest[%s]", httpRequest), cause);
     this.httpRequest = httpRequest;
-    this.throwable = throwable;
+    this.cause = cause;
   }
 
   /**
@@ -55,7 +54,7 @@ public class HttpException extends WechatPayException {
    *
    * @return 错误或异常
    */
-  public Throwable getThrowable() {
-    return throwable;
+  public Throwable getCause() {
+    return cause;
   }
 }
