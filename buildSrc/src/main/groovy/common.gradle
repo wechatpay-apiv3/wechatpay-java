@@ -4,6 +4,7 @@ plugins {
     id "signing"
     id "com.diffplug.spotless"
     id "com.github.johnrengelman.shadow"
+    id "jacoco"
 }
 
 version "0.1.0"
@@ -32,4 +33,10 @@ javadoc {
 
 test {
     useJUnit()
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
 }
