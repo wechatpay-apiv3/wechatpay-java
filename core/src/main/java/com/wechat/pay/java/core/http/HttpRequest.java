@@ -171,7 +171,7 @@ public final class HttpRequest {
             headers == null ? new HttpHeaders() : headers,
             body);
       } catch (URISyntaxException e) {
-        throw new HttpException(e, "Parse url[%s] to uri failed.", url);
+        throw new HttpException(String.format("Parse url[%s] to uri failed.", url), e);
       }
     }
   }
