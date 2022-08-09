@@ -151,7 +151,7 @@ public class NotificationParser {
       throw new MalformedMessageException(
           "Parse WechatPay notification,There is no AeadCipher corresponding to the algorithm.");
     }
-    return aeadCipher.decryptToString(
+    return aeadCipher.decrypt(
         associatedData.getBytes(StandardCharsets.UTF_8),
         nonce.getBytes(StandardCharsets.UTF_8),
         Base64.getDecoder().decode(ciphertext));
