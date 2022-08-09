@@ -24,6 +24,7 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:${mockitoInlineVersion}"
 
     testImplementation platform("org.junit:junit-bom:${junit5Version}")
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:${junit5Version}"
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation "com.squareup.okhttp3:mockwebserver:${okhttpVersion}"
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:${junit5Version}")
