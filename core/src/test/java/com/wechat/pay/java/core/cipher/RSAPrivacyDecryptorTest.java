@@ -2,6 +2,7 @@ package com.wechat.pay.java.core.cipher;
 
 import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_PRIVATE_KEY;
 
+import com.wechat.pay.java.core.exception.DecryptionException;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,7 +16,6 @@ public class RSAPrivacyDecryptorTest {
           + "vePUnxQWN70RZiBcqr7O7Gb0gU3l7FkvoUFSbY44HgDJetmVow3yGIV3Tcd45o2MNQ+5F1qvjIjb3/6dkGKce4/kNTYraUMO6o6kfFXl"
           + "fg+bFRIiz8hiUpbToWdu7g0R5Hq0/YIE5vw/5Ms4gbk2HIQIfOLkY8sEPjYHA==";
   private static final String PLAINTEXT = "plaintext";
-  private static final String RSA_OAEP = "RSA/ECB/OAEPWithSHA-1AndMGF1Padding";
 
   @BeforeClass
   public static void init() {
@@ -28,9 +28,8 @@ public class RSAPrivacyDecryptorTest {
     Assert.assertEquals(PLAINTEXT, decryptMsg);
   }
 
-  @Test
-  public void testDecryptWithTransformation() {
-    String decryptMsg = rsaPrivacyDecryptor.decryptWithTransformation(RSA_OAEP, CIPHERTEXT);
-    Assert.assertEquals(PLAINTEXT, decryptMsg);
+  @Test(expected = DecryptionException.class)
+  public void testDecryptFail() {
+    rsaPrivacyDecryptor.decrypt("MTIzNA==");
   }
 }
