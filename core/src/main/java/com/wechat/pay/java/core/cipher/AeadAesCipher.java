@@ -1,7 +1,7 @@
 package com.wechat.pay.java.core.cipher;
 
 /** 带有关联数据的AES认证加解密器 */
-public final class AeadAesCipher extends AeadCipher {
+public final class AeadAesCipher extends AbstractAeadCipher {
 
   private static final String TRANSFORMATION = "AES/GCM/NoPadding";
 

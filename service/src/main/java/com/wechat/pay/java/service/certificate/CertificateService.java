@@ -113,7 +113,7 @@ public class CertificateService {
     for (Data data : dataList) {
       EncryptCertificate encryptCertificate = data.getEncryptCertificate();
       String decryptCertificate =
-          aeadCipher.decryptToString(
+          aeadCipher.decrypt(
               encryptCertificate.getAssociatedData().getBytes(StandardCharsets.UTF_8),
               encryptCertificate.getNonce().getBytes(StandardCharsets.UTF_8),
               Base64.getDecoder().decode(encryptCertificate.getCiphertext()));

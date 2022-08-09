@@ -2,6 +2,7 @@ package com.wechat.pay.java.core.notification;
 
 import static com.wechat.pay.java.core.model.TestConfig.WECHAT_PAY_CERTIFICATE_SERIAL_NUMBER;
 
+import com.wechat.pay.java.core.cipher.AbstractAeadCipher;
 import com.wechat.pay.java.core.cipher.AeadAesCipher;
 import com.wechat.pay.java.core.cipher.AeadCipher;
 import com.wechat.pay.java.core.cipher.Verifier;
@@ -55,14 +56,14 @@ public class NotificationParserTest {
     verifyNonce = notification.getResource().getNonce();
 
     AeadCipher fakeAeadCipher =
-        new AeadCipher(verifyAlgorithm, TRANSFORMATION, KEY_LENGTH_BIT, KEY) {
+        new AbstractAeadCipher(verifyAlgorithm, TRANSFORMATION, KEY_LENGTH_BIT, KEY) {
           @Override
-          public String encryptToString(byte[] associatedData, byte[] nonce, byte[] plaintext) {
+          public String encrypt(byte[] associatedData, byte[] nonce, byte[] plaintext) {
             return "fake-ciphertext";
           }
 
           @Override
-          public String decryptToString(byte[] associatedData, byte[] nonce, byte[] ciphertext) {
+          public String decrypt(byte[] associatedData, byte[] nonce, byte[] ciphertext) {
             Assert.assertArrayEquals(
                 notification.getResource().getAssociatedData().getBytes(StandardCharsets.UTF_8),
                 associatedData);
@@ -194,14 +195,14 @@ public class NotificationParserTest {
     verifyAlgorithm = notification.getResource().getAlgorithm();
     verifyNonce = notification.getResource().getNonce();
     AeadCipher fakeAeadCipher =
-        new AeadCipher(verifyAlgorithm, TRANSFORMATION, KEY_LENGTH_BIT, KEY) {
+        new AeadCipher() {
           @Override
-          public String encryptToString(byte[] associatedData, byte[] nonce, byte[] plaintext) {
+          public String encrypt(byte[] associatedData, byte[] nonce, byte[] plaintext) {
             return "fake-ciphertext";
           }
 
           @Override
-          public String decryptToString(byte[] associatedData, byte[] nonce, byte[] ciphertext) {
+          public String decrypt(byte[] associatedData, byte[] nonce, byte[] ciphertext) {
             return DECRYPT_OBJECT_STRING;
           }
         };
@@ -231,14 +232,14 @@ public class NotificationParserTest {
     verifyNonce = notification.getResource().getNonce();
 
     AeadCipher fakeAeadCipher =
-        new AeadCipher(verifyAlgorithm, TRANSFORMATION, KEY_LENGTH_BIT, KEY) {
+        new AeadCipher() {
           @Override
-          public String encryptToString(byte[] associatedData, byte[] nonce, byte[] plaintext) {
+          public String encrypt(byte[] associatedData, byte[] nonce, byte[] plaintext) {
             return "fake-ciphertext";
           }
 
           @Override
-          public String decryptToString(byte[] associatedData, byte[] nonce, byte[] ciphertext) {
+          public String decrypt(byte[] associatedData, byte[] nonce, byte[] ciphertext) {
             return DECRYPT_OBJECT_STRING;
           }
         };
