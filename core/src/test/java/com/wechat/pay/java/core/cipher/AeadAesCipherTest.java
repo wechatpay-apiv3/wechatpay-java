@@ -2,6 +2,7 @@ package com.wechat.pay.java.core.cipher;
 
 import static com.wechat.pay.java.core.model.TestConfig.API_V3_KEY;
 
+import com.wechat.pay.java.core.exception.DecryptionException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import org.junit.Assert;
@@ -24,7 +25,7 @@ public class AeadAesCipherTest {
   @Test
   public void testEncryptToString() {
     String ciphertext =
-        aeadAesCipher.encryptToString(
+        aeadAesCipher.encrypt(
             ASSOCIATED_DATA.getBytes(StandardCharsets.UTF_8),
             NONCE.getBytes(StandardCharsets.UTF_8),
             MESSAGE.getBytes(StandardCharsets.UTF_8));
@@ -34,10 +35,34 @@ public class AeadAesCipherTest {
   @Test
   public void testDecryptToString() {
     String plaintext =
-        aeadAesCipher.decryptToString(
+        aeadAesCipher.decrypt(
             ASSOCIATED_DATA.getBytes(StandardCharsets.UTF_8),
             NONCE.getBytes(StandardCharsets.UTF_8),
             Base64.getDecoder().decode(CIPHERTEXT));
     Assert.assertEquals(plaintext, MESSAGE);
+  }
+
+  @Test(expected = DecryptionException.class)
+  public void testDecryptBadAAD() {
+    aeadAesCipher.decrypt(
+        "bad-associatedData".getBytes(StandardCharsets.UTF_8),
+        NONCE.getBytes(StandardCharsets.UTF_8),
+        Base64.getDecoder().decode(CIPHERTEXT));
+  }
+
+  @Test(expected = DecryptionException.class)
+  public void testDecryptBadNonce() {
+    aeadAesCipher.decrypt(
+        ASSOCIATED_DATA.getBytes(StandardCharsets.UTF_8),
+        "bad-4a9R25RW".getBytes(StandardCharsets.UTF_8),
+        Base64.getDecoder().decode(CIPHERTEXT));
+  }
+
+  @Test(expected = DecryptionException.class)
+  public void testDecryptBadCipher() {
+    aeadAesCipher.decrypt(
+        ASSOCIATED_DATA.getBytes(StandardCharsets.UTF_8),
+        NONCE.getBytes(StandardCharsets.UTF_8),
+        new byte[128]);
   }
 }

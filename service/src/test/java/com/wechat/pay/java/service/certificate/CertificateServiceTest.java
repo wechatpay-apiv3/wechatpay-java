@@ -5,6 +5,7 @@ import static com.wechat.pay.java.core.http.Constant.REQUEST_ID;
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
+import com.wechat.pay.java.core.cipher.AbstractAeadCipher;
 import com.wechat.pay.java.core.cipher.AeadCipher;
 import com.wechat.pay.java.core.cipher.PrivacyDecryptor;
 import com.wechat.pay.java.core.cipher.PrivacyEncryptor;
@@ -143,19 +144,18 @@ public class CertificateServiceTest {
     String algorithm = "fake-algorithm";
     String transformation = "fake-transformation";
     int keyLengthBit = 24;
-    int tagLengthBit = 1;
     byte[] key = "key".getBytes(StandardCharsets.UTF_8);
     String mockWechatPayCertificatePath = RESOURCES_DIR + "/certificate/wechat_pay_certificate.pem";
 
     AeadCipher fakeAeadCipher =
-        new AeadCipher(algorithm, transformation, keyLengthBit, key) {
+        new AbstractAeadCipher(algorithm, transformation, keyLengthBit, key) {
           @Override
-          public String encryptToString(byte[] associatedData, byte[] nonce, byte[] plaintext) {
+          public String encrypt(byte[] associatedData, byte[] nonce, byte[] plaintext) {
             return "fake-ciphertext";
           }
 
           @Override
-          public String decryptToString(byte[] associatedData, byte[] nonce, byte[] ciphertext) {
+          public String decrypt(byte[] associatedData, byte[] nonce, byte[] ciphertext) {
             try {
               return IOUtil.loadStringFromPath(mockWechatPayCertificatePath);
             } catch (IOException e) {
