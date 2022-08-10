@@ -13,7 +13,6 @@ public final class SM2PrivacyEncryptor extends AbstractPrivacyEncryptor {
   }
 
   /**
-   *
    * @param publicKey 请求的敏感信息加密时使用的微信支付国密公钥
    * @param wechatpaySerial 微信支付国密平台证书的证书序列号
    */

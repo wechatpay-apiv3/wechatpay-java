@@ -2,7 +2,6 @@ package com.wechat.pay.java.shangmi.kona;
 
 import com.tencent.crypto.provider.SMCSProvider;
 import com.wechat.pay.java.core.cipher.AbstractAeadCipher;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.Security;
@@ -19,10 +18,7 @@ public final class AeadSM4Cipher extends AbstractAeadCipher {
   private static final int TAG_LENGTH_BIT = 128;
   private static final String ALGORITHM = "SM4";
 
-  /**
-   *
-   * @param apiV3Key APIv3密钥
-   */
+  /** @param apiV3Key APIv3密钥 */
   public AeadSM4Cipher(byte[] apiV3Key) {
     super(ALGORITHM, TRANSFORMATION, TAG_LENGTH_BIT, covertSM4Key(apiV3Key));
   }
@@ -35,8 +31,8 @@ public final class AeadSM4Cipher extends AbstractAeadCipher {
    */
   private static byte[] covertSM4Key(byte[] apiV3Key) {
     try {
-    MessageDigest md = MessageDigest.getInstance("SM3");
-    return Arrays.copyOf(md.digest(apiV3Key), 16);
+      MessageDigest md = MessageDigest.getInstance("SM3");
+      return Arrays.copyOf(md.digest(apiV3Key), 16);
     } catch (NoSuchAlgorithmException e) {
       throw new RuntimeException(e);
     }
