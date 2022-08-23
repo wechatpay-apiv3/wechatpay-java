@@ -1,9 +1,10 @@
 package com.wechat.pay.java.shangmi.kona;
 
-import com.tencent.crypto.provider.SMCSProvider;
+import com.tencent.kona.KonaProvider;
 import com.wechat.pay.java.core.cipher.AbstractAeadCipher;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.Security;
 import java.util.Arrays;
 
@@ -11,7 +12,7 @@ import java.util.Arrays;
 public final class AeadSM4Cipher extends AbstractAeadCipher {
 
   static {
-    Security.addProvider(new SMCSProvider());
+    Security.addProvider(new KonaProvider());
   }
 
   private static final String TRANSFORMATION = "SM4/GCM/NoPadding";
@@ -31,9 +32,9 @@ public final class AeadSM4Cipher extends AbstractAeadCipher {
    */
   private static byte[] covertSM4Key(byte[] apiV3Key) {
     try {
-      MessageDigest md = MessageDigest.getInstance("SM3");
+      MessageDigest md = MessageDigest.getInstance("SM3", KonaProvider.NAME);
       return Arrays.copyOf(md.digest(apiV3Key), 16);
-    } catch (NoSuchAlgorithmException e) {
+    } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
       throw new RuntimeException(e);
     }
   }

@@ -4,8 +4,9 @@ plugins{
 
 ext {
     publishedArtifactId = "wechatpay-java-shangmi-kona"
-    tencentsm_ssl = "0.8.3"
-    tencentsm_crypto = "1.11.4"
+    kona_pkix = "1.0.0"
+    kona_crypto = "1.0.0"
+    kona_provider = "1.0.0"
 }
 
 repositories {
@@ -16,10 +17,11 @@ repositories {
 }
 
 dependencies {
-    implementation project(":core")
+    api project(":core")
+    implementation "com.tencent.kona:kona-provider:${kona_provider}"
+    implementation "com.tencent.kona:kona-pkix:${kona_pkix}"
+    implementation "com.tencent.kona:kona-crypto:${kona_crypto}"
     implementation "org.slf4j:slf4j-api:${slf4jVersion}"
-    implementation "com.tencent:tencentsm-ssl:${tencentsm_ssl}"
-    implementation "com.tencent:tencentsm-crypto:${tencentsm_crypto}"
 
     testImplementation platform("org.junit:junit-bom:${junit5Version}")
     testImplementation 'org.junit.jupiter:junit-jupiter'

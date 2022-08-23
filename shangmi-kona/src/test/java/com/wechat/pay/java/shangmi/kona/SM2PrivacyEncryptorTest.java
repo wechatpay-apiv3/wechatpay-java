@@ -15,7 +15,7 @@ class SM2PrivacyEncryptorTest {
 
   @BeforeAll
   public static void init() {
-    X509Certificate certificate = SMPemUtil.loadX509FromPath(MERCHANT_CERTIFICATE_PATH);
+    X509Certificate certificate = SMPemUtil.loadCertificateFromPath(MERCHANT_CERTIFICATE_PATH);
     sm2PrivacyEncryptor =
         new SM2PrivacyEncryptor(
             certificate.getPublicKey(), certificate.getSerialNumber().toString(HEX));

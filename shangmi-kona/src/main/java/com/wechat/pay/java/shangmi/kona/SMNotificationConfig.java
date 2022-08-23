@@ -10,19 +10,18 @@ import com.wechat.pay.java.core.notification.NotificationConfig;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class SMNotificationConfig implements NotificationConfig {
   public static final String SIGN_TYPE = "WECHATPAY2-SM2-WITH-SM3";
   public static final String CIPHER_ALGORITHM = "AEAD_SM4_GCM";
-  private static final int API_V3_KEY_LENGTH_BYTE = 16;
+  private static final int API_V3_KEY_LENGTH_BYTE = 32;
   private final CertificateProvider certificateProvider;
   private final byte[] apiV3Key;
 
-  private SMNotificationConfig(CertificateProvider certificateProvider, byte[] apiV3Key) {
-    this.certificateProvider = certificateProvider;
-    this.apiV3Key = apiV3Key;
+  private SMNotificationConfig(Builder builder) {
+    this.certificateProvider = requireNonNull(builder.certificateProvider);
+    this.apiV3Key = requireNonNull(builder.apiV3Key);
   }
 
   @Override
@@ -47,66 +46,53 @@ public class SMNotificationConfig implements NotificationConfig {
 
   public static class Builder {
 
-    private List<X509Certificate> certificates;
+    private CertificateProvider certificateProvider;
+
+    private List<X509Certificate> certificates = new ArrayList<>();
     private byte[] apiV3Key;
 
-    public Builder certificates(X509Certificate... certificates) {
-      if (certificates == null || certificates.length == 0) {
-        throw new IllegalArgumentException(
-            "The parameter certificates of building SMNotificationConfig is empty.");
-      }
-      this.certificates = Arrays.asList(certificates);
+    /** 移除之前的微信支付平台证书，加入新的证书 */
+    public Builder wechatPayCertificates(List<X509Certificate> wechatpayCertificates) {
+      this.certificates = wechatpayCertificates;
       return this;
     }
 
-    public Builder certificates(String... certificates) {
-      if (certificates == null || certificates.length == 0) {
-        throw new IllegalArgumentException(
-            "The parameter certificates of building SMNotificationConfig is empty.");
-      }
-      List<X509Certificate> certificateList = new ArrayList<>();
-      for (String certificateString : certificates) {
-        X509Certificate x509Certificate = SMPemUtil.loadX509FromString(certificateString);
-        certificateList.add(x509Certificate);
-      }
-      this.certificates = certificateList;
+    /** 设置微信支付平台证书提供器 */
+    public Builder wechatPayCertificateProvider(CertificateProvider certificateProvider) {
+      this.certificateProvider = certificateProvider;
       return this;
     }
 
-    public Builder certificatesFromPath(String... certificatePaths) {
-      if (certificatePaths == null || certificatePaths.length == 0) {
-        throw new IllegalArgumentException(
-            "The parameter certificatePaths of building SMNotificationConfig is empty.");
-      }
-      List<X509Certificate> certificateList = new ArrayList<>();
-      for (String certificatePath : certificatePaths) {
-        X509Certificate x509Certificate = SMPemUtil.loadX509FromPath(certificatePath);
-        certificateList.add(x509Certificate);
-      }
-      this.certificates = certificateList;
+    /** 添加一个微信支付平台证书对象 */
+    public Builder addWechatPayCertificate(X509Certificate certificate) {
+      certificates.add(certificate);
       return this;
     }
 
+    /** 添加一个字符串的微信支付平台证书 */
+    public Builder addWechatPayCertificate(String certificate) {
+      return addWechatPayCertificate(SMPemUtil.loadCertificateFromString(certificate));
+    }
+
+    /** 设置APIv3密钥 */
     public Builder apiV3Key(String apiV3Key) {
-      if (requireNonNull(apiV3Key).length() != API_V3_KEY_LENGTH_BYTE) {
+      if (apiV3Key.length() != API_V3_KEY_LENGTH_BYTE) {
         throw new IllegalArgumentException(
-            "The parameter apiV3Key of building SMNotificationConfig is empty.");
+            "The length of apiV3Key is invalid, it should be 32 bytes.");
       }
       this.apiV3Key = apiV3Key.getBytes(StandardCharsets.UTF_8);
       return this;
     }
 
     public SMNotificationConfig build() {
-      if (this.certificates == null) {
-        throw new IllegalArgumentException(
-            "The parameter certificates of building SMNotificationConfig is empty.");
+      if (certificateProvider == null) {
+        if (certificates.isEmpty()) {
+          throw new IllegalArgumentException(
+              "neither certificate provider nor certificates must not be empty");
+        }
+        certificateProvider = new InMemoryCertificateProvider(certificates);
       }
-      if (this.apiV3Key == null) {
-        throw new IllegalArgumentException(
-            "The parameter apiV3Key of building SMNotificationConfig is empty.");
-      }
-      return new SMNotificationConfig(
-          new InMemoryCertificateProvider(requireNonNull(certificates)), apiV3Key);
+      return new SMNotificationConfig(this);
     }
   }
 }

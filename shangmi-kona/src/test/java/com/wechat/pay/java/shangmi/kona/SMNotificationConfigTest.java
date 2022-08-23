@@ -11,18 +11,7 @@ class SMNotificationConfigTest {
   public void testBuildConfigFromString() {
     NotificationConfig config =
         new SMNotificationConfig.Builder()
-            .certificates(WECHAT_PAY_CERTIFICATE_STRING)
-            .apiV3Key(API_V3_KEY)
-            .build();
-    assertNotNull(config.createAeadCipher());
-    assertNotNull(config.createVerifier());
-  }
-
-  @Test
-  public void testBuildConfigFromPath() {
-    NotificationConfig config =
-        new SMNotificationConfig.Builder()
-            .certificatesFromPath(WECHAT_PAY_CERTIFICATE_PATH)
+            .addWechatPayCertificate(WECHAT_PAY_CERTIFICATE_STRING)
             .apiV3Key(API_V3_KEY)
             .build();
     assertNotNull(config.createAeadCipher());

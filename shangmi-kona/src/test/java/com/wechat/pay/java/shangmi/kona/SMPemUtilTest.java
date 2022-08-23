@@ -24,13 +24,13 @@ class SMPemUtilTest {
 
   @Test
   public void testLoadX509FromPath() {
-    X509Certificate certificate = SMPemUtil.loadX509FromPath(MERCHANT_CERTIFICATE_PATH);
+    X509Certificate certificate = SMPemUtil.loadCertificateFromPath(MERCHANT_CERTIFICATE_PATH);
     assertNotNull(certificate);
   }
 
   @Test
   public void testLoadX509FromString() {
-    X509Certificate certificate = SMPemUtil.loadX509FromString(MERCHANT_CERTIFICATE_STRING);
+    X509Certificate certificate = SMPemUtil.loadCertificateFromString(MERCHANT_CERTIFICATE_STRING);
     assertNotNull(certificate);
   }
 
@@ -38,7 +38,7 @@ class SMPemUtilTest {
   public void testLoadX509FromStream() {
     ByteArrayInputStream inputStream =
         new ByteArrayInputStream(MERCHANT_CERTIFICATE_STRING.getBytes(StandardCharsets.UTF_8));
-    X509Certificate certificate = SMPemUtil.loadX509FromStream(inputStream);
+    X509Certificate certificate = SMPemUtil.loadCertificateFromStream(inputStream);
     assertNotNull(certificate);
   }
 }

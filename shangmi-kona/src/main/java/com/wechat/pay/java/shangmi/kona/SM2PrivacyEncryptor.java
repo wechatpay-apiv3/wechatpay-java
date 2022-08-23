@@ -1,6 +1,6 @@
 package com.wechat.pay.java.shangmi.kona;
 
-import com.tencent.crypto.provider.SMCSProvider;
+import com.tencent.kona.KonaProvider;
 import com.wechat.pay.java.core.cipher.AbstractPrivacyEncryptor;
 import java.security.PublicKey;
 import java.security.Security;
@@ -9,7 +9,7 @@ import java.security.Security;
 public final class SM2PrivacyEncryptor extends AbstractPrivacyEncryptor {
 
   static {
-    Security.addProvider(new SMCSProvider());
+    Security.addProvider(new KonaProvider());
   }
 
   /**

@@ -13,11 +13,8 @@ import com.wechat.pay.java.core.certificate.InMemoryCertificateProvider;
 import com.wechat.pay.java.core.cipher.PrivacyDecryptor;
 import com.wechat.pay.java.core.cipher.PrivacyEncryptor;
 import java.security.PrivateKey;
-import java.security.cert.CertificateExpiredException;
-import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public final class SMConfig implements Config {
@@ -29,27 +26,19 @@ public final class SMConfig implements Config {
   private final String merchantSerialNumber;
   /** 微信支付平台证书Provider */
   private final CertificateProvider certificateProvider;
-  /** 最新的微信支付平台证书 */
-  private final X509Certificate latestWechatPayCertificate;
 
-  private SMConfig(
-      String merchantId,
-      PrivateKey privateKey,
-      String merchantSerialNumber,
-      CertificateProvider certificateProvider,
-      X509Certificate latestWechatPayCertificate) {
-    this.merchantId = merchantId;
-    this.privateKey = privateKey;
-    this.merchantSerialNumber = merchantSerialNumber;
-    this.latestWechatPayCertificate = latestWechatPayCertificate;
-    this.certificateProvider = certificateProvider;
+  private SMConfig(Builder builder) {
+    this.merchantId = requireNonNull(builder.merchantId);
+    this.privateKey = requireNonNull(builder.privateKey);
+    this.merchantSerialNumber = requireNonNull(builder.merchantSerialNumber);
+    this.certificateProvider = requireNonNull(builder.certificateProvider);
   }
 
   @Override
   public PrivacyEncryptor createEncryptor() {
+    X509Certificate certificate = certificateProvider.getAvailableCertificate();
     return new SM2PrivacyEncryptor(
-        latestWechatPayCertificate.getPublicKey(),
-        latestWechatPayCertificate.getSerialNumber().toString(HEX));
+        certificate.getPublicKey(), certificate.getSerialNumber().toString(HEX));
   }
 
   @Override
@@ -72,7 +61,8 @@ public final class SMConfig implements Config {
     private String merchantId;
     private PrivateKey privateKey;
     private String merchantSerialNumber;
-    private List<X509Certificate> wechatPayCertificates;
+    private List<X509Certificate> wechatPayCertificates = new ArrayList<>();
+    private CertificateProvider certificateProvider;
 
     public Builder merchantId(String merchantId) {
       this.merchantId = merchantId;
@@ -80,8 +70,8 @@ public final class SMConfig implements Config {
     }
 
     public Builder privateKey(String privateKey) {
-      this.privateKey = SMPemUtil.loadPrivateKeyFromString(privateKey);
-      return this;
+
+      return privateKey(SMPemUtil.loadPrivateKeyFromString(privateKey));
     }
 
     public Builder privateKey(PrivateKey privateKey) {
@@ -89,9 +79,9 @@ public final class SMConfig implements Config {
       return this;
     }
 
+    /** 从指定的本地私钥文件加载私钥 */
     public Builder privateKeyFromPath(String privateKeyPath) {
-      this.privateKey = SMPemUtil.loadPrivateKeyFromPath(privateKeyPath);
-      return this;
+      return privateKey(SMPemUtil.loadPrivateKeyFromPath(privateKeyPath));
     }
 
     public Builder merchantSerialNumber(String merchantSerialNumber) {
@@ -99,85 +89,42 @@ public final class SMConfig implements Config {
       return this;
     }
 
-    public Builder merchantSerialNumberFromCertificate(String merchantCertificate) {
-      X509Certificate x509Cert = SMPemUtil.loadX509FromString(merchantCertificate);
-      if (x509Cert == null) {
-        throw new IllegalArgumentException(
-            "Get serial number from certificate, certificate is empty.");
-      }
-      this.merchantSerialNumber = x509Cert.getSerialNumber().toString(16);
+    /** 设置微信支付平台证书提供器 */
+    public Builder wechatPayCertificateProvider(CertificateProvider provider) {
+      this.certificateProvider = provider;
       return this;
     }
 
-    public Builder merchantSerialNumberFromCertificatePath(String path) {
-      X509Certificate x509Cert = SMPemUtil.loadX509FromPath(path);
-      if (x509Cert == null) {
-        throw new IllegalArgumentException(
-            "Get serial number from certificate path, certificate is empty.");
-      }
-      merchantSerialNumber = x509Cert.getSerialNumber().toString(16);
+    /** 添加一个微信支付平台证书对象 */
+    public Builder addWechatPayCertificate(X509Certificate certificate) {
+      wechatPayCertificates.add(certificate);
       return this;
     }
 
-    public Builder wechatPayCertificates(String... wechatPayCertificates) {
-      this.wechatPayCertificates = new ArrayList<>();
-      for (String certificate : wechatPayCertificates) {
-        X509Certificate x509Certificate = SMPemUtil.loadX509FromString(certificate);
-        if (x509Certificate != null) {
-          this.wechatPayCertificates.add(x509Certificate);
-        }
-      }
-      return this;
+    /** 添加一个字符串的微信支付平台证书 */
+    public Builder addWechatPayCertificate(String certificate) {
+      return addWechatPayCertificate(SMPemUtil.loadCertificateFromString(certificate));
     }
 
-    public Builder wechatPayCertificates(X509Certificate... wechatPayCertificates) {
-      this.wechatPayCertificates = Arrays.asList(wechatPayCertificates);
-      return this;
+    /** 从指定的本地证书文件添加一个微信支付平台证书 */
+    public Builder addWechatPayCertificateFromPath(String certificatePath) {
+      return addWechatPayCertificate(SMPemUtil.loadCertificateFromPath(certificatePath));
     }
 
-    public Builder wechatPayCertificatesFromPath(String... certificatePaths) {
-      this.wechatPayCertificates = new ArrayList<>();
-      for (String certificatePath : certificatePaths) {
-        X509Certificate x509Certificate = SMPemUtil.loadX509FromPath(certificatePath);
-        if (x509Certificate != null) {
-          this.wechatPayCertificates.add(x509Certificate);
-        }
-      }
+    /** 移除之前的微信支付平台证书，加入新的证书 */
+    public Builder wechatPayCertificates(List<X509Certificate> wechatPayCertificates) {
+      this.wechatPayCertificates = wechatPayCertificates;
       return this;
     }
 
     public SMConfig build() {
-      requireNonNull(privateKey);
-      requireNonNull(merchantSerialNumber);
-      requireNonNull(merchantId);
-      requireNonNull(wechatPayCertificates);
       if (wechatPayCertificates.isEmpty()) {
         throw new IllegalArgumentException(
             "Build SMConfig, wechatPayCertificates is empty.Please "
                 + "call wechatPayCertificates() or wechatPayCertificatesFromPath() method.");
       }
-      X509Certificate latestCertificate = null;
-      // 获取最近可用的微信支付平台证书
-      for (X509Certificate x509Certificate : wechatPayCertificates) {
-        // 如果latestCertificate为空或者x509Certificate证书的有效开始时间在latestCertificate之后
-        // 更新latestCertificate
-        if (latestCertificate == null
-            || x509Certificate.getNotBefore().after(latestCertificate.getNotBefore())) {
-          latestCertificate = x509Certificate;
-        }
-      }
-      try {
-        latestCertificate.checkValidity();
-      } catch (CertificateExpiredException | CertificateNotYetValidException e) {
-        throw new IllegalArgumentException(
-            "Build SMConfig, The latest wechatPay certificate is not valid or has expired.", e);
-      }
-      return new SMConfig(
-          merchantId,
-          privateKey,
-          merchantSerialNumber,
-          new InMemoryCertificateProvider(wechatPayCertificates),
-          latestCertificate);
+      certificateProvider = new InMemoryCertificateProvider(wechatPayCertificates);
+      return new SMConfig(this);
     }
   }
 }
