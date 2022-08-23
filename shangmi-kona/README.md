@@ -1,20 +1,18 @@
-# wechatpay-java-shangmi 国密算法扩展
+# wechatpay-java-shangmi-kona 国密算法扩展
 
-商密 (ShangMi)，也被习惯称之为国密，是一组由[中国国家密码局](https://www.oscca.gov.cn/)标准化的密码学算法。微信支付 APIv3 在支持 RSA/AES 等算法的基础上，支持了国密算法。
+商密 (ShangMi)，俗称国密，是一组由[中国国家密码局](https://www.oscca.gov.cn/)标准化的密码学算法。微信支付 APIv3 在支持 RSA/AES 等算法的基础上，支持了国密算法。
 
-`wechatpay-java-shangmi` 是微信支付提供的 `wechatpay-java` 国密扩展，帮助开发者完成国密的签名、验签、加解密等工作。
+`wechatpay-java-shangmi-kona` 是 `wechatpay-java` 的一个国密扩展。它基于 Kona 国密套件，帮助开发者完成国密的签名、验签、加解密等工作。
 
 ## 前置条件
 
-微信支付暂时没有开放国密的使用，请有需求的商户：
-
-+ 联系微信支付技术支持，获取国密接入文档，开通国密能力
-+ 申请国密证书，并下载国密的微信支付平台证书
-+ 掌握 `wechatpay-java` 的使用方法
++ 了解 [wechatpay-java](https://github.com/wechatpay-apiv3/wechatpay-java)
++ 使用 **OpenJDK**，而不是 Oracle JDK。因为 Kona 国密套件暂不支持 Oracle JDK。
++ 开通微信支付国密能力，申请**国密**证书，并下载**国密**微信支付平台证书。注：微信支付暂时没有开放国密的使用，请有需求的商户联系微信支付技术支持，获取国密接入文档。
 
 ## 配置
 
-`wechatpay-java-shangmi` 依赖的国密套件目前只发布在腾讯的 Maven 仓库，使用前需要在包管理配置中引入相应的仓库配置。 
+`wechatpay-java-shangmi-kona` 依赖的 Kona 国密套件目前只发布在腾讯的 Maven 仓库，使用前需要在包管理配置中引入相应的仓库配置。 
 
 ### maven
 
@@ -120,12 +118,14 @@ SDK 支持创建多个 `service`，请使用 `RSAConfig` 和 `SMConfig` 分别�
 
 微信支付平台证书下载接口可能会有调整，到时 SDK 会在第一时间适配。
 
-### Kona 是什么
+### Kona 国密套件是什么
 
-Kona 国密套件是由腾讯研发且长期维护的一组 Java 库，它包括了三个组件：
+Kona 国密套件是由腾讯研发且长期维护的一组 Java 库。它包括了三个组件：
 
 + kona-cypto 基于 [Java Cryptography Architecture (JCA)](https://en.wikipedia.org/wiki/Java_Cryptography_Architecture) 实现了符合国家标准的国密基础算法。
-+ kona-pkix 实现了国密 X.509 证书解析，及其证书链验证。
-+ kona-ssl 实现了中国的 TLCP 协议，并遵循 [RFC8998](https://www.rfc-editor.org/rfc/rfc8998.html) 在 TLS 1.3 协议中支持了国密算法。
++ kona-pkix 实现了国密 X.509 证书解析与验证，可加载和创建包含国密证书的密钥库文件。
++ kona-ssl 实现了信息安全技术传输层密码协议（TLCP），并遵循 [RFC8998](https://www.rfc-editor.org/rfc/rfc8998.html) 将国密基础算法加入 TLS 1.3 协议。
 
-`wechatpay-java-shangmi` 使用了 `kona-crypto` 和 `kona-pkix`。
+该套件还提供了一个额外的 Provider，即 `kona-provider`。使用上述特性，只需要依赖此 Provider。
+
+`wechatpay-java-shangmi-kona` 使用了 `kona-crypto` 和 `kona-pkix`。
