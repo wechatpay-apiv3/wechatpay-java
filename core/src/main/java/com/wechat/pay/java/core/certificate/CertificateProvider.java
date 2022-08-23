@@ -10,4 +10,11 @@ public interface CertificateProvider {
    * @return X.509证书实例
    */
   X509Certificate getCertificate(String serialNumber);
+
+  /**
+   * 获取最新可用的微信支付平台证书
+   *
+   * @return X.509证书实例
+   */
+  X509Certificate getAvailableCertificate();
 }
