@@ -17,8 +17,6 @@ import com.wechat.pay.java.core.cipher.RSASigner;
 import com.wechat.pay.java.core.cipher.RSAVerifier;
 import com.wechat.pay.java.core.util.PemUtil;
 import java.security.PrivateKey;
-import java.security.cert.CertificateExpiredException;
-import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,27 +33,23 @@ public final class RSAConfig implements Config {
   private final String merchantSerialNumber;
   /** 微信支付平台证书Provider */
   private final CertificateProvider certificateProvider;
-  /** 最新的微信支付平台证书 */
-  private final X509Certificate latestWechatPayCertificate;
 
   private RSAConfig(
       String merchantId,
       PrivateKey privateKey,
       String merchantSerialNumber,
-      CertificateProvider certificateProvider,
-      X509Certificate latestWechatPayCertificate) {
+      CertificateProvider certificateProvider) {
     this.merchantId = merchantId;
     this.privateKey = privateKey;
     this.merchantSerialNumber = merchantSerialNumber;
     this.certificateProvider = certificateProvider;
-    this.latestWechatPayCertificate = latestWechatPayCertificate;
   }
 
   @Override
   public PrivacyEncryptor createEncryptor() {
+    X509Certificate certificate = certificateProvider.getAvailableCertificate();
     return new RSAPrivacyEncryptor(
-        latestWechatPayCertificate.getPublicKey(),
-        latestWechatPayCertificate.getSerialNumber().toString(HEX));
+        certificate.getPublicKey(), certificate.getSerialNumber().toString(HEX));
   }
 
   @Override
@@ -153,34 +147,16 @@ public final class RSAConfig implements Config {
       requireNonNull(privateKey);
       requireNonNull(merchantSerialNumber);
       requireNonNull(merchantId);
-      requireNonNull(wechatPayCertificates);
       if (wechatPayCertificates.isEmpty()) {
         throw new IllegalArgumentException(
             "Build RSAConfig, wechatPayCertificates is empty.Please "
                 + "call wechatPayCertificates() or wechatPayCertificatesFromPath() method.");
       }
-      X509Certificate latestCertificate = null;
-      // 获取最近可用的微信支付平台证书
-      for (X509Certificate x509Certificate : wechatPayCertificates) {
-        // 如果 latestCertificate 为空或者 x509Certificate 证书的有效开始时间在 latestCertificate 之后
-        // 更新 latestCertificate
-        if (latestCertificate == null
-            || x509Certificate.getNotBefore().after(latestCertificate.getNotBefore())) {
-          latestCertificate = x509Certificate;
-        }
-      }
-      try {
-        latestCertificate.checkValidity();
-      } catch (CertificateExpiredException | CertificateNotYetValidException e) {
-        throw new IllegalArgumentException(
-            "Build RSAConfig, The latest WechatPay certificate is not valid or has expired.", e);
-      }
       return new RSAConfig(
           merchantId,
           privateKey,
           merchantSerialNumber,
-          new InMemoryCertificateProvider(wechatPayCertificates),
-          latestCertificate);
+          new InMemoryCertificateProvider(wechatPayCertificates));
     }
   }
 }
