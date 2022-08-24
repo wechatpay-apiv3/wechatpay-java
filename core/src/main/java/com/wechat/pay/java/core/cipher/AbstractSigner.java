@@ -22,7 +22,7 @@ public abstract class AbstractSigner implements Signer {
    * @param certificateSerialNumber 商户API证书序列号
    * @param privateKey 商户API私钥
    */
-  public AbstractSigner(
+  protected AbstractSigner(
       String algorithm,
       String algorithmName,
       String certificateSerialNumber,

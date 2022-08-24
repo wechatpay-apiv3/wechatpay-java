@@ -17,7 +17,7 @@ public abstract class AbstractPrivacyEncryptor implements PrivacyEncryptor {
   private final Cipher cipher;
   private final String wechatPaySerial;
 
-  public AbstractPrivacyEncryptor(
+  protected AbstractPrivacyEncryptor(
       String transformation, PublicKey publicKey, String wechatPaySerial) {
     this.publicKey = requireNonNull(publicKey);
     this.wechatPaySerial = requireNonNull(wechatPaySerial);

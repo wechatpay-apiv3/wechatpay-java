@@ -24,7 +24,7 @@ public abstract class AbstractVerifier implements Verifier {
    * @param algorithmName 获取Signature对象时指定的算法，例如SHA256withRSA
    * @param certificateProvider 验签使用的微信支付平台证书管理器，非空
    */
-  public AbstractVerifier(String algorithmName, CertificateProvider certificateProvider) {
+  protected AbstractVerifier(String algorithmName, CertificateProvider certificateProvider) {
     this.certificateProvider = requireNonNull(certificateProvider);
     this.algorithmName = requireNonNull(algorithmName);
   }
