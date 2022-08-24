@@ -21,7 +21,9 @@ public class NotificationParser {
   private final Map<String, AeadCipher> ciphers = new HashMap<>();
 
   public NotificationParser(NotificationConfig... configs) {
-    requireNonNull(configs);
+    if (configs.length == 0) {
+      throw new IllegalArgumentException("NotificationConfig is empty.");
+    }
     for (NotificationConfig config : configs) {
       this.verifiers.put(config.getSignType(), config.createVerifier());
       this.ciphers.put(config.getCipherType(), config.createAeadCipher());
@@ -55,39 +57,46 @@ public class NotificationParser {
     }
     if (requestParam.getSignType() == null) {
       throw new ValidationException(
-          "Verify WechatPay notification parameters, signType is empty" + ".RequestParam[%s]",
-          requestParam.toString());
+          String.format(
+              "Verify WechatPay notification parameters, signType is empty" + ".RequestParam[%s]",
+              requestParam));
     }
     if (requestParam.getSerialNumber() == null) {
       throw new ValidationException(
-          "Verify WechatPay notification parameters, serialNumber is empty" + ".RequestParam[%s]",
-          requestParam.toString());
+          String.format(
+              "Verify WechatPay notification parameters, serialNumber is empty"
+                  + ".RequestParam[%s]",
+              requestParam));
     }
     if (requestParam.getMessage() == null) {
       throw new ValidationException(
-          "Verify WechatPay notification parameters, message is empty" + ".RequestParam[%s]",
-          requestParam.toString());
+          String.format(
+              "Verify WechatPay notification parameters, message is empty" + ".RequestParam[%s]",
+              requestParam));
     }
     if (requestParam.getSignature() == null) {
       throw new ValidationException(
-          "Verify WechatPay notification parameters, signature is empty" + ".RequestParam[%s]",
-          requestParam.toString());
+          String.format(
+              "Verify WechatPay notification parameters, signature is empty" + ".RequestParam[%s]",
+              requestParam));
     }
     Verifier verifier = verifiers.get(requestParam.getSignType());
     if (verifier == null) {
       throw new ValidationException(
-          "Processing WechatPay notification, there is no verifier corresponding to signType[%s]",
-          requestParam.getSignType());
+          String.format(
+              "Processing WechatPay notification, there is no verifier corresponding to signType[%s]",
+              requestParam.getSignType()));
     }
     if (!verifier.verify(
         requestParam.getSerialNumber(), requestParam.getMessage(), requestParam.getSignature())) {
       throw new ValidationException(
-          "Processing WechatPay notification,signature verification failed,"
-              + "signType[%s]\tserial[%s]\tmessage[%s]\tsign[%s]",
-          requestParam.getSignature(),
-          requestParam.getSerialNumber(),
-          requestParam.getMessage(),
-          requestParam.getSignature());
+          String.format(
+              "Processing WechatPay notification,signature verification failed,"
+                  + "signType[%s]\tserial[%s]\tmessage[%s]\tsign[%s]",
+              requestParam.getSignature(),
+              requestParam.getSerialNumber(),
+              requestParam.getMessage(),
+              requestParam.getSignature()));
     }
   }
 
@@ -110,24 +119,28 @@ public class NotificationParser {
     Resource resource = notification.getResource();
     if (resource == null) {
       throw new MalformedMessageException(
-          "The resource obtained by parsing the WechatPay notification is null"
-              + ".Notification[%s]",
-          notification);
+          String.format(
+              "The resource obtained by parsing the WechatPay notification is null"
+                  + ".Notification[%s]",
+              notification));
     }
     if (resource.getAlgorithm() == null) {
       throw new MalformedMessageException(
-          "The algorithm obtained by parsing the WechatPay notification is empty.Notification[%s]"
-              + notification);
+          String.format(
+              "The algorithm obtained by parsing the WechatPay notification is empty.Notification[%s]",
+              notification));
     }
     if (resource.getCiphertext() == null) {
       throw new MalformedMessageException(
-          "The ciphertext obtained by parsing the WechatPay notification is empty.Notification[%s]"
-              + notification);
+          String.format(
+              "The ciphertext obtained by parsing the WechatPay notification is empty.Notification[%s]",
+              notification));
     }
     if (resource.createNonce() == null) {
       throw new MalformedMessageException(
-          "The nonce obtained by parsing the WechatPay notification is empty.Notification[%s]"
-              + notification);
+          String.format(
+              "The nonce obtained by parsing the WechatPay notification is empty.Notification[%s]",
+              notification));
     }
   }
 

@@ -59,16 +59,18 @@ public abstract class AbstractHttpClient implements HttpClient {
         && !originalResponse.getBody().isEmpty()
         && !MediaType.APPLICATION_JSON.equals(originalResponse.getContentType())) {
       throw new MalformedMessageException(
-          "Unsupported content-type[%s]\nhttpRequest[%s]",
-          originalResponse.getContentType(), originalResponse.getRequest());
+          String.format(
+              "Unsupported content-type[%s]%nhttpRequest[%s]",
+              originalResponse.getContentType(), originalResponse.getRequest()));
     }
 
     if (!validator.validate(originalResponse.getHeaders(), originalResponse.getBody())) {
       String requestId = originalResponse.getHeaders().getHeader(REQUEST_ID);
       throw new ValidationException(
-          "Validate response failed,the WechatPay signature is incorrect.\n"
-              + "Request-ID[%s]\tresponseHeader[%s]\tresponseBody[%.1024s]",
-          requestId, originalResponse.getHeaders(), originalResponse.getBody());
+          String.format(
+              "Validate response failed,the WechatPay signature is incorrect.%n"
+                  + "Request-ID[%s]\tresponseHeader[%s]\tresponseBody[%.1024s]",
+              requestId, originalResponse.getHeaders(), originalResponse.getBody()));
     }
   }
 

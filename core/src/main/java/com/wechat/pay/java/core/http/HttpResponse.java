@@ -1,5 +1,7 @@
 package com.wechat.pay.java.core.http;
 
+import com.google.gson.JsonSyntaxException;
+import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.util.GsonUtil;
 import java.util.Objects;
 
@@ -88,8 +90,14 @@ public final class HttpResponse<T> {
             originalResponse.getRequest(), originalResponse.getHeaders(), null, null);
       }
       ResponseBody body = new JsonResponseBody.Builder().body(originalResponse.getBody()).build();
-      T serviceResponse =
-          GsonUtil.getGson().fromJson(originalResponse.getBody(), serviceResponseType);
+      T serviceResponse;
+      try {
+        serviceResponse =
+            GsonUtil.getGson().fromJson(originalResponse.getBody(), serviceResponseType);
+      } catch (JsonSyntaxException e) {
+        throw new MalformedMessageException(
+            String.format("Invalid json response body[%s]", originalResponse.getBody()), e);
+      }
       return new HttpResponse<>(
           originalResponse.getRequest(), originalResponse.getHeaders(), body, serviceResponse);
     }
