@@ -160,30 +160,31 @@ public class NotificationParserTest {
     new NotificationParser();
   }
 
-  @Test
+  @Test(expected = Test.None.class)
   public void testConstructWithConfig() {
-    new NotificationParser(
-        new NotificationConfig() {
-          @Override
-          public String getSignType() {
-            return "fake-sign-type";
-          }
+    NotificationParser parser =
+        new NotificationParser(
+            new NotificationConfig() {
+              @Override
+              public String getSignType() {
+                return "fake-sign-type";
+              }
 
-          @Override
-          public String getCipherType() {
-            return "fake-cipher-type";
-          }
+              @Override
+              public String getCipherType() {
+                return "fake-cipher-type";
+              }
 
-          @Override
-          public Verifier createVerifier() {
-            return (serialNumber, message, signature) -> false;
-          }
+              @Override
+              public Verifier createVerifier() {
+                return (serialNumber, message, signature) -> false;
+              }
 
-          @Override
-          public AeadCipher createAeadCipher() {
-            return new AeadAesCipher("test".getBytes(StandardCharsets.UTF_8));
-          }
-        });
+              @Override
+              public AeadCipher createAeadCipher() {
+                return new AeadAesCipher("test".getBytes(StandardCharsets.UTF_8));
+              }
+            });
   }
 
   @Test(expected = MalformedMessageException.class)
