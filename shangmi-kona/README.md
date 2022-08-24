@@ -7,7 +7,7 @@
 ## 前置条件
 
 + 了解 [wechatpay-java](https://github.com/wechatpay-apiv3/wechatpay-java)
-+ 使用 **OpenJDK**，而不是 Oracle JDK。因为 Kona 国密套件暂不支持 Oracle JDK。
++ 使用 **OpenJDK**，而不是 Oracle JDK。因为 Kona 国密套件暂不支持 Oracle JDK。欢迎使用腾讯的 OpenJDK 发行版，即 KonaJDK [8](https://github.com/Tencent/TencentKona-8) 和 [11](https://github.com/Tencent/TencentKona-11)。
 + 开通微信支付国密能力，申请**国密**证书，并下载**国密**微信支付平台证书。注：微信支付暂时没有开放国密的使用，请有需求的商户联系微信支付技术支持，获取国密接入文档。
 
 ## 配置
