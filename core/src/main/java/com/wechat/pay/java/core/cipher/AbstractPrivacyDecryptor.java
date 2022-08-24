@@ -23,12 +23,12 @@ public abstract class AbstractPrivacyDecryptor implements PrivacyDecryptor {
    * @param transformation 加密使用的模式
    * @param privateKey 加密使用的私钥
    */
-  public AbstractPrivacyDecryptor(String transformation, PrivateKey privateKey) {
+  protected AbstractPrivacyDecryptor(String transformation, PrivateKey privateKey) {
     this.privateKey = requireNonNull(privateKey);
     try {
       cipher = Cipher.getInstance(transformation);
     } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-      throw new RuntimeException(
+      throw new IllegalArgumentException(
           "The current Java environment does not support " + transformation, e);
     }
   }

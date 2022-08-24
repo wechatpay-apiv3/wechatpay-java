@@ -19,7 +19,7 @@ repositories {
 spotless {
     java {
         removeUnusedImports()
-        googleJavaFormat()
+        googleJavaFormat('1.7')
     }
 }
 

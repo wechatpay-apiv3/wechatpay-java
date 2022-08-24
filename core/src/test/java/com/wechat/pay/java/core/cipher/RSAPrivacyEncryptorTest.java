@@ -31,6 +31,7 @@ public class RSAPrivacyEncryptorTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testEncryptTooLargePlaintext() {
-    rsaPrivacyEncryptor.encrypt(new String(new char[220]));
+    int paddingLen = 2 * 20 + 2; // OAEP adds 2 * sha1's length + 2 padding
+    rsaPrivacyEncryptor.encrypt(new String(new char[256 - paddingLen + 1]));
   }
 }
