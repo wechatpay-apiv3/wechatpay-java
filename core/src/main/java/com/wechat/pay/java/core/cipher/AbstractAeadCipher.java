@@ -20,7 +20,8 @@ public abstract class AbstractAeadCipher implements AeadCipher {
   private final int tagLengthBit;
   private final byte[] key;
 
-  public AbstractAeadCipher(String algorithm, String transformation, int tagLengthBit, byte[] key) {
+  protected AbstractAeadCipher(
+      String algorithm, String transformation, int tagLengthBit, byte[] key) {
     this.algorithm = algorithm;
     this.transformation = transformation;
     this.tagLengthBit = tagLengthBit;
@@ -42,15 +43,16 @@ public abstract class AbstractAeadCipher implements AeadCipher {
           javax.crypto.Cipher.ENCRYPT_MODE,
           new SecretKeySpec(key, algorithm),
           new GCMParameterSpec(tagLengthBit, nonce));
-      cipher.updateAAD(
-          associatedData == null ? "".getBytes(StandardCharsets.UTF_8) : associatedData);
+      if (associatedData != null) {
+        cipher.updateAAD(associatedData);
+      }
       return Base64.getEncoder().encodeToString(cipher.doFinal(plaintext));
-    } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-      throw new IllegalStateException(e);
     } catch (InvalidKeyException
         | InvalidAlgorithmParameterException
         | BadPaddingException
-        | IllegalBlockSizeException e) {
+        | IllegalBlockSizeException
+        | NoSuchAlgorithmException
+        | NoSuchPaddingException e) {
       throw new IllegalArgumentException(e);
     }
   }
@@ -70,12 +72,14 @@ public abstract class AbstractAeadCipher implements AeadCipher {
           javax.crypto.Cipher.DECRYPT_MODE,
           new SecretKeySpec(key, algorithm),
           new GCMParameterSpec(tagLengthBit, nonce));
-      cipher.updateAAD(
-          associatedData == null ? "".getBytes(StandardCharsets.UTF_8) : associatedData);
+      if (associatedData != null) {
+        cipher.updateAAD(associatedData);
+      }
       return new String(cipher.doFinal(ciphertext), StandardCharsets.UTF_8);
-    } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-      throw new IllegalStateException(e);
-    } catch (InvalidKeyException | InvalidAlgorithmParameterException e) {
+    } catch (InvalidKeyException
+        | InvalidAlgorithmParameterException
+        | NoSuchAlgorithmException
+        | NoSuchPaddingException e) {
       throw new IllegalArgumentException(e);
     } catch (BadPaddingException | IllegalBlockSizeException e) {
       throw new DecryptionException("Decryption failed", e);

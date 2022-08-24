@@ -17,14 +17,14 @@ public abstract class AbstractPrivacyEncryptor implements PrivacyEncryptor {
   private final Cipher cipher;
   private final String wechatPaySerial;
 
-  public AbstractPrivacyEncryptor(
+  protected AbstractPrivacyEncryptor(
       String transformation, PublicKey publicKey, String wechatPaySerial) {
     this.publicKey = requireNonNull(publicKey);
     this.wechatPaySerial = requireNonNull(wechatPaySerial);
     try {
       cipher = Cipher.getInstance(transformation);
     } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-      throw new RuntimeException(
+      throw new IllegalArgumentException(
           "The current Java environment does not support " + transformation, e);
     }
   }

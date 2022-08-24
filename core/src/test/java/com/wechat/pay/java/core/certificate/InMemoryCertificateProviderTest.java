@@ -25,4 +25,10 @@ public class InMemoryCertificateProviderTest {
     Certificate noExistsCertificate = provider.getCertificate(MERCHANT_CERTIFICATE_SERIAL_NUMBER);
     assertNull(noExistsCertificate);
   }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testFailWithEmptyList() {
+    Vector<X509Certificate> listCertificates = new Vector<>();
+    new InMemoryCertificateProvider(listCertificates);
+  }
 }
