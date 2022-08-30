@@ -76,7 +76,80 @@ public class QuickStart {
 }
 ```
 
-## 更多示例
+## 示例
+
+请求时需使用使用你自己的商户号、证书密钥、AppID 以及对应的 OpenID。
+
+### JSAPI 下单
+
+```java
+import com.wechat.pay.java.core.Config;
+import com.wechat.pay.java.core.RSAConfig;
+import com.wechat.pay.java.service.payment.jsapi.JsapiService;
+import com.wechat.pay.java.service.payment.jsapi.model.Amount;
+import com.wechat.pay.java.service.payment.jsapi.model.Payer;
+import com.wechat.pay.java.service.payment.jsapi.model.PrepayRequest;
+import com.wechat.pay.java.service.payment.jsapi.model.PrepayResponse;
+
+public class JsapiExample {
+  public static void main(String[] args) {
+    Config config =
+        new RSAConfig.Builder()
+            .merchantId(merchantId)
+            .privateKeyFromPath(privateKeyPath)
+            .merchantSerialNumber(merchantSerialNumber)
+            .wechatPayCertificatesFromPath(wechatPayCertificatePath)
+            .build();
+
+    JsapiService service = new JsapiService.Builder().config(config).build();
+
+    PrepayRequest request = new PrepayRequest();
+    Amount amount = new Amount();
+    amount.setTotal(100);
+    request.setAmount(amount);
+    request.setAppid("wxa9d9651ae******");
+    request.setMchid("190000****");
+    request.setDescription("测试商品标题");
+    request.setNotifyUrl("https://notify_url");
+    request.setOutTradeNo("out_trade_no_001");
+    Payer payer = new Payer();
+    payer.setOpenid("oLTPCuN5a-nBD4rAL_fa********");
+    request.setPayer(payer);
+
+    PrepayResponse response = service.prepay(request);
+    System.out.println(response.getPrepayId());
+  }
+}
+```
+
+### 查询支付订单
+
+```java
+QueryOrderByIdRequest queryRequest = new QueryOrderByIdRequest();
+queryRequest.setMchid("190000****");
+queryRequest.setTransactionId("4200001569202208304701234567");
+
+try {
+  Transaction result = service.queryOrderById(queryRequest);
+  System.out.println(result.getTradeState());
+} catch (ServiceException e) {
+  // API返回失败, 例如ORDER_NOT_EXISTS
+  System.out.printf("code=[%s], message=[%s]\n", e.getErrorCode(), e.getErrorMessage());
+  System.out.printf("reponse body=[%s]", e.getResponseBody());
+}
+```
+
+### 关闭订单
+
+```java
+CloseOrderRequest closeRequest = new CloseOrderRequest();
+closeRequest.setMchid("190000****");
+closeRequest.setOutTradeNo("out_trade_no_001");
+// 方法没有返回值，意味着成功时API返回204 No Content
+service.closeOrder(closeRequest);
+```
+
+### 更多示例
 
 为了方便开发者快速上手，微信支付给每个服务生成了示例代码 `XxxServiceExample.java`，可以在 [example](service/src/example) 中查看。例如：
 
