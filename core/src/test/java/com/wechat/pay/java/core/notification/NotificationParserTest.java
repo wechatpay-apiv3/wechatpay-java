@@ -2,7 +2,6 @@ package com.wechat.pay.java.core.notification;
 
 import static com.wechat.pay.java.core.model.TestConfig.WECHAT_PAY_CERTIFICATE_SERIAL_NUMBER;
 
-import com.wechat.pay.java.core.cipher.AbstractAeadCipher;
 import com.wechat.pay.java.core.cipher.AeadAesCipher;
 import com.wechat.pay.java.core.cipher.AeadCipher;
 import com.wechat.pay.java.core.cipher.Verifier;
