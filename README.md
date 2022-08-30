@@ -35,7 +35,7 @@
 
 ### 调用业务请求接口
 
-以下载微信支付平台证书为例，先构建请求配置和请求服务，再发送请求。详细代码可参考 [QuickStart](service/src/example/java/com/wechat/pay/java/service/QuickStart.java)。
+以下载微信支付平台证书为例，先构建 `config` 和 `service`，再发送请求。详细代码可参考 [QuickStart](service/src/example/java/com/wechat/pay/java/service/QuickStart.java)。
 
 ```java
 package com.wechat.pay.java.service;
@@ -76,11 +76,13 @@ public class QuickStart {
 }
 ```
 
+从示例可见，使用 SDK 并不需要计算请求签名和验证应答签名。
+
 ## 示例
 
-请求时需使用使用你自己的商户号、证书密钥、AppID 以及对应的 OpenID。
+### JSAPI 支付下单
 
-### JSAPI 下单
+请求参数需使用你自己的商户号、证书密钥、AppID 以及对应的 OpenID。
 
 ```java
 import com.wechat.pay.java.core.Config;
@@ -135,7 +137,7 @@ try {
 } catch (ServiceException e) {
   // API返回失败, 例如ORDER_NOT_EXISTS
   System.out.printf("code=[%s], message=[%s]\n", e.getErrorCode(), e.getErrorMessage());
-  System.out.printf("reponse body=[%s]", e.getResponseBody());
+  System.out.printf("reponse body=[%s]\n", e.getResponseBody());
 }
 ```
 
