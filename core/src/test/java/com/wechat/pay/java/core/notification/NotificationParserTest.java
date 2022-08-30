@@ -56,7 +56,7 @@ public class NotificationParserTest {
     verifyNonce = notification.getResource().getNonce();
 
     AeadCipher fakeAeadCipher =
-        new AbstractAeadCipher(verifyAlgorithm, TRANSFORMATION, KEY_LENGTH_BIT, KEY) {
+        new AeadCipher() {
           @Override
           public String encrypt(byte[] associatedData, byte[] nonce, byte[] plaintext) {
             return "fake-ciphertext";
