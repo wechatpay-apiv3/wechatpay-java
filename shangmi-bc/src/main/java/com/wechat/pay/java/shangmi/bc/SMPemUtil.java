@@ -1,10 +1,7 @@
 package com.wechat.pay.java.shangmi.bc;
 
-import com.wechat.pay.java.core.util.IOUtil;
 import com.wechat.pay.java.core.util.PemUtil;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.security.KeyPair;
 import java.security.Security;
 import java.security.cert.X509Certificate;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey;
@@ -23,7 +20,8 @@ public class SMPemUtil {
    * @return 私钥
    */
   public static BCECPrivateKey loadPrivateKeyFromPath(String keyPath) {
-    return (BCECPrivateKey) PemUtil.loadPrivateKeyFromPath(keyPath, "EC", BouncyCastleProvider.PROVIDER_NAME);
+    return (BCECPrivateKey)
+        PemUtil.loadPrivateKeyFromPath(keyPath, "EC", BouncyCastleProvider.PROVIDER_NAME);
   }
 
   /**
@@ -33,7 +31,8 @@ public class SMPemUtil {
    * @return 私钥
    */
   public static BCECPrivateKey loadPrivateKeyFromString(String keyString) {
-    return (BCECPrivateKey) PemUtil.loadPrivateKeyFromString(keyString, "EC", BouncyCastleProvider.PROVIDER_NAME);
+    return (BCECPrivateKey)
+        PemUtil.loadPrivateKeyFromString(keyString, "EC", BouncyCastleProvider.PROVIDER_NAME);
   }
 
   /**

@@ -27,17 +27,17 @@ public class PemUtil {
   public static PrivateKey loadPrivateKeyFromString(String keyString) {
     try {
       keyString =
-              keyString
-                      .replace("-----BEGIN PRIVATE KEY-----", "")
-                      .replace("-----END PRIVATE KEY-----", "")
-                      .replaceAll("\\s+", "");
+          keyString
+              .replace("-----BEGIN PRIVATE KEY-----", "")
+              .replace("-----END PRIVATE KEY-----", "")
+              .replaceAll("\\s+", "");
       return KeyFactory.getInstance("RSA")
-              .generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(keyString)));
+          .generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(keyString)));
     } catch (NoSuchAlgorithmException e) {
       throw new UnsupportedOperationException("The current Java environment does not support RSA");
     } catch (InvalidKeySpecException e) {
       throw new IllegalArgumentException(
-              "Get privateKey from privateKey str, keyString is illegal.", e);
+          "Get privateKey from privateKey str, keyString is illegal.", e);
     }
   }
 
@@ -48,21 +48,21 @@ public class PemUtil {
    * @return 私钥
    */
   public static PrivateKey loadPrivateKeyFromString(
-          String keyString, String algorithm, String provider) {
+      String keyString, String algorithm, String provider) {
     try {
       keyString =
-              keyString
-                      .replace("-----BEGIN PRIVATE KEY-----", "")
-                      .replace("-----END PRIVATE KEY-----", "")
-                      .replaceAll("\\s+", "");
+          keyString
+              .replace("-----BEGIN PRIVATE KEY-----", "")
+              .replace("-----END PRIVATE KEY-----", "")
+              .replaceAll("\\s+", "");
       return KeyFactory.getInstance(algorithm, provider)
-              .generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(keyString)));
+          .generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(keyString)));
     } catch (NoSuchAlgorithmException e) {
       throw new UnsupportedOperationException(
-              "The current Java environment does not support " + algorithm);
+          "The current Java environment does not support " + algorithm);
     } catch (InvalidKeySpecException e) {
       throw new IllegalArgumentException(
-              "Get privateKey from privateKey str, keyString is illegal.", e);
+          "Get privateKey from privateKey str, keyString is illegal.", e);
     } catch (NoSuchProviderException e) {
       throw new IllegalArgumentException("No such crypto provider " + provider, e);
     }
@@ -85,7 +85,7 @@ public class PemUtil {
    * @return 私钥
    */
   public static PrivateKey loadPrivateKeyFromPath(
-          String keyPath, String algorithm, String provider) {
+      String keyPath, String algorithm, String provider) {
     return loadPrivateKeyFromString(readPrivateKeyStringFromPath(keyPath), algorithm, provider);
   }
 
@@ -106,7 +106,7 @@ public class PemUtil {
   public static X509Certificate loadX509FromStream(InputStream inputStream) {
     try {
       return (X509Certificate)
-              CertificateFactory.getInstance("X.509").generateCertificate(inputStream);
+          CertificateFactory.getInstance("X.509").generateCertificate(inputStream);
     } catch (CertificateException e) {
       throw new IllegalArgumentException("parsing certificate failed", e);
     }
@@ -122,8 +122,7 @@ public class PemUtil {
   public static X509Certificate loadX509FromStream(InputStream inputStream, String provider) {
     try {
       return (X509Certificate)
-              CertificateFactory.getInstance("X.509", provider)
-                      .generateCertificate(inputStream);
+          CertificateFactory.getInstance("X.509", provider).generateCertificate(inputStream);
     } catch (CertificateException e) {
       throw new IllegalArgumentException("parsing certificate failed", e);
     } catch (NoSuchProviderException e) {
@@ -166,7 +165,7 @@ public class PemUtil {
    */
   public static X509Certificate loadX509FromString(String certificateString) {
     try (ByteArrayInputStream inputStream =
-                 new ByteArrayInputStream(certificateString.getBytes(StandardCharsets.UTF_8))) {
+        new ByteArrayInputStream(certificateString.getBytes(StandardCharsets.UTF_8))) {
       return loadX509FromStream(inputStream);
     } catch (IOException e) {
       throw new UncheckedIOException(e);
@@ -180,7 +179,7 @@ public class PemUtil {
    */
   public static X509Certificate loadX509FromString(String certificateString, String provider) {
     try (ByteArrayInputStream inputStream =
-                 new ByteArrayInputStream(certificateString.getBytes(StandardCharsets.UTF_8))) {
+        new ByteArrayInputStream(certificateString.getBytes(StandardCharsets.UTF_8))) {
       return loadX509FromStream(inputStream, provider);
     } catch (IOException e) {
       throw new UncheckedIOException(e);

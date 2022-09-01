@@ -6,7 +6,6 @@ import com.wechat.pay.java.core.cipher.PrivacyDecryptor;
 import com.wechat.pay.java.core.exception.DecryptionException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.bouncycastle.crypto.engines.SM2Engine;
 import org.bouncycastle.crypto.params.ECDomainParameters;
 import org.bouncycastle.crypto.params.ECPrivateKeyParameters;
