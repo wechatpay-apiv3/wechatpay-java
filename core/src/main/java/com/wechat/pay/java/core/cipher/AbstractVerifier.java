@@ -40,7 +40,7 @@ public abstract class AbstractVerifier implements Verifier {
     } catch (InvalidKeyException e) {
       throw new IllegalArgumentException("verify uses an illegal certificate.", e);
     } catch (NoSuchAlgorithmException e) {
-      throw new IllegalStateException(
+      throw new UnsupportedOperationException(
           "The current Java environment does not support " + algorithmName, e);
     }
   }

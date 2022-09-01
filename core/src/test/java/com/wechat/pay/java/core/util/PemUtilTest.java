@@ -45,4 +45,30 @@ public class PemUtilTest {
     X509Certificate certificate = PemUtil.loadX509FromStream(inputStream);
     Assert.assertNotNull(certificate);
   }
+
+  @Test
+  public void testLoadPrivateKeyWithProvider() {
+    PrivateKey privateKey =
+        PemUtil.loadPrivateKeyFromString(MERCHANT_PRIVATE_KEY_STRING, "RSA", "SunRsaSign");
+    Assert.assertNotNull(privateKey);
+  }
+
+  @Test
+  public void testLoadPrivFromPathWithProv() {
+    PrivateKey privateKey =
+        PemUtil.loadPrivateKeyFromPath(MERCHANT_PRIVATE_KEY_PATH, "RSA", "SunRsaSign");
+    Assert.assertNotNull(privateKey);
+  }
+
+  @Test
+  public void testLoadX509FromPathWithProv() {
+    X509Certificate certificate = PemUtil.loadX509FromPath(MERCHANT_CERTIFICATE_PATH, "SUN");
+    Assert.assertNotNull(certificate);
+  }
+
+  @Test
+  public void testLoadX509FromStringWithProv() {
+    X509Certificate certificate = PemUtil.loadX509FromString(MERCHANT_CERTIFICATE_STRING, "SUN");
+    Assert.assertNotNull(certificate);
+  }
 }

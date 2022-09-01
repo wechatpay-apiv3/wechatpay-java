@@ -8,3 +8,5 @@ pluginManagement {
 rootProject.name = 'wechatpay-java'
 include 'core'
 include 'service'
+include 'shangmi-bc'
+include 'shangmi-testing'
