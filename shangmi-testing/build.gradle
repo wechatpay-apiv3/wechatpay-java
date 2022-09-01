@@ -1,0 +1,25 @@
+plugins{
+    id "common"
+}
+
+ext {
+    publishedArtifactId = "wechatpay-java-shangmi-testing"
+}
+
+dependencies {
+    api project(":core")
+
+    implementation platform("org.junit:junit-bom:${junit5Version}")
+    implementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes("Automatic-Module-Name": "com.wechat.pay.java.shangmi.testing")
+        attributes("Implementation-Version": project.version)
+    }
+}

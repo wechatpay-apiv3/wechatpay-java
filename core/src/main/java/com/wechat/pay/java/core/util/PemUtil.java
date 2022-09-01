@@ -1,13 +1,10 @@
 package com.wechat.pay.java.core.util;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -15,71 +12,122 @@ import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /** PEM工具 */
 public class PemUtil {
 
-  private static final Logger logger = LoggerFactory.getLogger(PemUtil.class);
-  private static final String RSA_ALGORITHM = "RSA";
-  private static final String X509_CERTIFICATE_TYPE = "X.509";
-
   private PemUtil() {}
 
   /**
-   * 从私钥字符串中加载私钥
+   * 从私钥字符串中加载RSA私钥。
    *
    * @param keyString 私钥字符串
-   * @return 私钥
+   * @return RSA私钥
    */
   public static PrivateKey loadPrivateKeyFromString(String keyString) {
     try {
       keyString =
-          keyString
-              .replace("-----BEGIN PRIVATE KEY-----", "")
-              .replace("-----END PRIVATE KEY-----", "")
-              .replaceAll("\\s+", "");
-      return KeyFactory.getInstance(RSA_ALGORITHM)
-          .generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(keyString)));
+              keyString
+                      .replace("-----BEGIN PRIVATE KEY-----", "")
+                      .replace("-----END PRIVATE KEY-----", "")
+                      .replaceAll("\\s+", "");
+      return KeyFactory.getInstance("RSA")
+              .generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(keyString)));
     } catch (NoSuchAlgorithmException e) {
-      throw new IllegalStateException("The current Java environment does not support RSA.");
+      throw new UnsupportedOperationException("The current Java environment does not support RSA");
     } catch (InvalidKeySpecException e) {
       throw new IllegalArgumentException(
-          "Get privateKey from privateKey str, the passed parameter keyString is illegal.", e);
+              "Get privateKey from privateKey str, keyString is illegal.", e);
     }
   }
 
   /**
-   * 从私钥路径加载私钥
-   *
-   * @param keyPath 私钥路径
+   * @param keyString 私钥字符串
+   * @param algorithm 私钥算法
+   * @param provider the provider
    * @return 私钥
    */
-  public static PrivateKey loadPrivateKeyFromPath(String keyPath) {
-    try (FileInputStream inputStream = new FileInputStream(keyPath)) {
-      return loadPrivateKeyFromString(IOUtil.toString(inputStream));
-    } catch (FileNotFoundException e) {
+  public static PrivateKey loadPrivateKeyFromString(
+          String keyString, String algorithm, String provider) {
+    try {
+      keyString =
+              keyString
+                      .replace("-----BEGIN PRIVATE KEY-----", "")
+                      .replace("-----END PRIVATE KEY-----", "")
+                      .replaceAll("\\s+", "");
+      return KeyFactory.getInstance(algorithm, provider)
+              .generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(keyString)));
+    } catch (NoSuchAlgorithmException e) {
+      throw new UnsupportedOperationException(
+              "The current Java environment does not support " + algorithm);
+    } catch (InvalidKeySpecException e) {
       throw new IllegalArgumentException(
-          "Get privateKey from keyPath, file not found in keyPath:" + keyPath, e);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+              "Get privateKey from privateKey str, keyString is illegal.", e);
+    } catch (NoSuchProviderException e) {
+      throw new IllegalArgumentException("No such crypto provider " + provider, e);
     }
   }
 
   /**
-   * 从私钥输入流加载私钥
+   * 从私钥路径加载RSA私钥
+   *
+   * @param keyPath 私钥路径
+   * @return RSA私钥
+   */
+  public static PrivateKey loadPrivateKeyFromPath(String keyPath) {
+    return loadPrivateKeyFromString(readPrivateKeyStringFromPath(keyPath));
+  }
+
+  /**
+   * @param keyPath 私钥路径
+   * @param algorithm 私钥算法
+   * @param provider the provider
+   * @return 私钥
+   */
+  public static PrivateKey loadPrivateKeyFromPath(
+          String keyPath, String algorithm, String provider) {
+    return loadPrivateKeyFromString(readPrivateKeyStringFromPath(keyPath), algorithm, provider);
+  }
+
+  private static String readPrivateKeyStringFromPath(String keyPath) {
+    try (FileInputStream inputStream = new FileInputStream(keyPath)) {
+      return IOUtil.toString(inputStream);
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
+  }
+
+  /**
+   * 从输入流加载证书
    *
    * @param inputStream 私钥输入流
-   * @return 私钥
+   * @return X.509证书
    */
   public static X509Certificate loadX509FromStream(InputStream inputStream) {
     try {
       return (X509Certificate)
-          CertificateFactory.getInstance(X509_CERTIFICATE_TYPE).generateCertificate(inputStream);
+              CertificateFactory.getInstance("X.509").generateCertificate(inputStream);
     } catch (CertificateException e) {
-      throw new IllegalArgumentException(
-          "Get certificate from inputStream, the passed parameter inputStream is " + "illegal.", e);
+      throw new IllegalArgumentException("parsing certificate failed", e);
+    }
+  }
+
+  /**
+   * 从输入流加载证书
+   *
+   * @param inputStream 私钥输入流
+   * @param provider the provider
+   * @return X.509证书
+   */
+  public static X509Certificate loadX509FromStream(InputStream inputStream, String provider) {
+    try {
+      return (X509Certificate)
+              CertificateFactory.getInstance("X.509", provider)
+                      .generateCertificate(inputStream);
+    } catch (CertificateException e) {
+      throw new IllegalArgumentException("parsing certificate failed", e);
+    } catch (NoSuchProviderException e) {
+      throw new IllegalArgumentException("No such provider " + provider, e);
     }
   }
 
@@ -87,37 +135,55 @@ public class PemUtil {
    * 从证书文件路径加载证书
    *
    * @param certificatePath 证书文件路径
-   * @return X509证书
+   * @return X.509证书
    */
   public static X509Certificate loadX509FromPath(String certificatePath) {
-    X509Certificate certificate = null;
     try (FileInputStream inputStream = new FileInputStream(certificatePath)) {
-      certificate = loadX509FromStream(inputStream);
-    } catch (FileNotFoundException e) {
-      throw new IllegalArgumentException(
-          "Get privateKey from certificatePath, file not found in certificatePath:"
-              + certificatePath,
-          e);
+      return loadX509FromStream(inputStream);
     } catch (IOException e) {
-      logger.error("Get certificate from certificatePath,inputStream close failed.", e);
+      throw new UncheckedIOException(e);
     }
-    return certificate;
+  }
+
+  /**
+   * @param certificatePath 证书文件路径
+   * @param provider the provider
+   * @return X.509证书
+   */
+  public static X509Certificate loadX509FromPath(String certificatePath, String provider) {
+    try (FileInputStream inputStream = new FileInputStream(certificatePath)) {
+      return loadX509FromStream(inputStream, provider);
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
   }
 
   /**
    * 从证书字符串加载证书
    *
    * @param certificateString 证书字符串
-   * @return X509证书
+   * @return X.509证书
    */
   public static X509Certificate loadX509FromString(String certificateString) {
-    X509Certificate certificate = null;
     try (ByteArrayInputStream inputStream =
-        new ByteArrayInputStream(certificateString.getBytes(StandardCharsets.UTF_8))) {
-      certificate = loadX509FromStream(inputStream);
+                 new ByteArrayInputStream(certificateString.getBytes(StandardCharsets.UTF_8))) {
+      return loadX509FromStream(inputStream);
     } catch (IOException e) {
-      logger.warn("Get certificate from certificate string,inputStream close failed.", e);
+      throw new UncheckedIOException(e);
     }
-    return certificate;
+  }
+
+  /**
+   * @param certificateString 证书字符串
+   * @param provider the provider
+   * @return X.509证书
+   */
+  public static X509Certificate loadX509FromString(String certificateString, String provider) {
+    try (ByteArrayInputStream inputStream =
+                 new ByteArrayInputStream(certificateString.getBytes(StandardCharsets.UTF_8))) {
+      return loadX509FromStream(inputStream, provider);
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
   }
 }

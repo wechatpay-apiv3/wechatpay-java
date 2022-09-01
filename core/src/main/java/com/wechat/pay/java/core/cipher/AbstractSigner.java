@@ -33,7 +33,7 @@ public abstract class AbstractSigner implements Signer {
       this.signature = Signature.getInstance(algorithmName);
       this.signature.initSign(privateKey);
     } catch (NoSuchAlgorithmException e) {
-      throw new IllegalStateException(
+      throw new UnsupportedOperationException(
           "The current Java environment does not support " + algorithmName, e);
     } catch (InvalidKeyException e) {
       throw new IllegalArgumentException(algorithm + " signature uses an illegal privateKey.", e);
