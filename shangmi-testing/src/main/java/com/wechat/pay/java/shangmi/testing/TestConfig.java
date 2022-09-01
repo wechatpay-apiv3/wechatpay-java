@@ -16,10 +16,11 @@ public class TestConfig {
 
   static {
     try {
-      ClassLoader classLoader = TestConfig.class.getClassLoader();
-      MERCHANT_PRIVATE_KEY_PATH = classLoader.getResource("merchant_private_key.pem").getPath();
-      MERCHANT_CERTIFICATE_PATH = classLoader.getResource("merchant_certificate.pem").getPath();
-      WECHAT_PAY_CERTIFICATE_PATH = classLoader.getResource("wechat_pay_certificate.pem").getPath();
+      String RESOURCE_DIR =
+          System.getProperty("user.dir") + "/../shangmi-testing/src/main/resources/";
+      MERCHANT_PRIVATE_KEY_PATH = RESOURCE_DIR + "merchant_private_key.pem";
+      MERCHANT_CERTIFICATE_PATH = RESOURCE_DIR + "merchant_certificate.pem";
+      WECHAT_PAY_CERTIFICATE_PATH = RESOURCE_DIR + "wechat_pay_certificate.pem";
       MERCHANT_PRIVATE_KEY_STRING = IOUtil.loadStringFromPath(MERCHANT_PRIVATE_KEY_PATH);
       MERCHANT_CERTIFICATE_STRING = IOUtil.loadStringFromPath(MERCHANT_CERTIFICATE_PATH);
       MERCHANT_CERTIFICATE_SERIAL_NUMBER = "54E7F59ED8DF4570CFB14780EA8152D45A675EE6";
