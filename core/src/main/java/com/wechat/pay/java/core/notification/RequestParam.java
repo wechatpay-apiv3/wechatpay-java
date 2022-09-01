@@ -61,8 +61,6 @@ public class RequestParam {
     private String signature;
     private String body;
 
-    public Builder() {}
-
     public Builder serialNumber(String serialNumber) {
       this.serialNumber = serialNumber;
       return this;
