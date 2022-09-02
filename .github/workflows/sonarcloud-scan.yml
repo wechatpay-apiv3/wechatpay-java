@@ -3,6 +3,12 @@ name: Sonarcloud Scan
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - main
+      - feat_*
+      - fix_*
+      - refactor_*
     
 jobs:
   build:
