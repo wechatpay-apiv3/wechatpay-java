@@ -6,9 +6,9 @@ on:
   push:
     branches:
       - main
-      - feat_*
-      - fix_*
-      - refactor_*
+      - 'feat_*'
+      - 'fix_*'
+      - 'refactor_*'
     
 jobs:
   build:
