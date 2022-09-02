@@ -13,25 +13,25 @@ public interface BaseAeadSM4Test {
 
   AeadCipher createAeadSMCipher(byte[] apiV3Key);
 
-  String plaintext = "plaintext";
-  String associatedData = "associatedData";
-  String nonce = "uluk4a9R25RW";
-  String ciphertext = "+lcLNfkZQQx+iQm20Apa3x9Mb/5L7PgZ7w==";
+  String PLAINTEXT = "plaintext";
+  String ASSOCIATED_DATA = "associatedData";
+  String NONCE = "uluk4a9R25RW";
+  String CIPHERTEXT = "+lcLNfkZQQx+iQm20Apa3x9Mb/5L7PgZ7w==";
 
   @Test
   default void testEncrypt() {
     AeadCipher sm4cipher = createAeadSMCipher(API_V3_KEY.getBytes(StandardCharsets.UTF_8));
     String encryptData =
         sm4cipher.encrypt(
-            associatedData.getBytes(StandardCharsets.UTF_8),
-            nonce.getBytes(StandardCharsets.UTF_8),
-            plaintext.getBytes(StandardCharsets.UTF_8));
+            ASSOCIATED_DATA.getBytes(StandardCharsets.UTF_8),
+            NONCE.getBytes(StandardCharsets.UTF_8),
+            PLAINTEXT.getBytes(StandardCharsets.UTF_8));
     String decryptData =
         sm4cipher.decrypt(
-            associatedData.getBytes(StandardCharsets.UTF_8),
-            nonce.getBytes(StandardCharsets.UTF_8),
+            ASSOCIATED_DATA.getBytes(StandardCharsets.UTF_8),
+            NONCE.getBytes(StandardCharsets.UTF_8),
             Base64.getDecoder().decode(encryptData));
-    assertEquals(plaintext, decryptData);
+    assertEquals(PLAINTEXT, decryptData);
   }
 
   @Test
@@ -39,10 +39,10 @@ public interface BaseAeadSM4Test {
     AeadCipher sm4Cipher = createAeadSMCipher(API_V3_KEY.getBytes(StandardCharsets.UTF_8));
     String result =
         sm4Cipher.decrypt(
-            associatedData.getBytes(StandardCharsets.UTF_8),
-            nonce.getBytes(StandardCharsets.UTF_8),
-            Base64.getDecoder().decode(ciphertext));
-    assertEquals(plaintext, result);
+            ASSOCIATED_DATA.getBytes(StandardCharsets.UTF_8),
+            NONCE.getBytes(StandardCharsets.UTF_8),
+            Base64.getDecoder().decode(CIPHERTEXT));
+    assertEquals(PLAINTEXT, result);
   }
 
   @Test
@@ -52,8 +52,8 @@ public interface BaseAeadSM4Test {
         DecryptionException.class,
         () ->
             sm4Cipher.decrypt(
-                associatedData.getBytes(StandardCharsets.UTF_8),
-                nonce.getBytes(StandardCharsets.UTF_8),
+                ASSOCIATED_DATA.getBytes(StandardCharsets.UTF_8),
+                NONCE.getBytes(StandardCharsets.UTF_8),
                 Base64.getDecoder().decode("+lcLNfkZQQx+iQm20Apa3x9Mb/5L7PgZ8w==")));
   }
 }

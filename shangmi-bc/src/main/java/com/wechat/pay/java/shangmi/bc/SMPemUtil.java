@@ -1,7 +1,6 @@
 package com.wechat.pay.java.shangmi.bc;
 
 import com.wechat.pay.java.core.util.PemUtil;
-import java.io.*;
 import java.security.Security;
 import java.security.cert.X509Certificate;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey;
@@ -11,6 +10,10 @@ public class SMPemUtil {
 
   static {
     Security.addProvider(new BouncyCastleProvider());
+  }
+
+  private SMPemUtil() {
+    throw new IllegalStateException("Utility class");
   }
 
   /**

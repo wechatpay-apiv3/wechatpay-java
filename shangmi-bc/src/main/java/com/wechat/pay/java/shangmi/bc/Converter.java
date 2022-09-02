@@ -85,20 +85,14 @@ public class Converter {
     BigInteger y = ASN1Integer.getInstance(seq.getObjectAt(1)).getValue();
     byte[] c3 = ASN1OctetString.getInstance(seq.getObjectAt(2)).getOctets();
     byte[] c2 = ASN1OctetString.getInstance(seq.getObjectAt(3)).getOctets();
-    try {
-      try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-        try {
-          outputStream.write(x.toByteArray());
-          outputStream.write(y.toByteArray());
-          outputStream.write(c3);
-          outputStream.write(c2);
-        } catch (IOException e) {
-          throw new IllegalStateException(e);
-        }
-        return outputStream.toByteArray();
-      }
+    try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+      outputStream.write(x.toByteArray());
+      outputStream.write(y.toByteArray());
+      outputStream.write(c3);
+      outputStream.write(c2);
+      return outputStream.toByteArray();
     } catch (IOException e) {
-      throw new IllegalArgumentException(e);
+      throw new UncheckedIOException(e);
     }
   }
 }

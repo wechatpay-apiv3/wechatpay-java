@@ -30,7 +30,7 @@ public class AeadSM4Cipher extends AbstractAeadCipher {
       MessageDigest md = MessageDigest.getInstance("SM3", BouncyCastleProvider.PROVIDER_NAME);
       return Arrays.copyOf(md.digest(apiV3Key), 16);
     } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
-      throw new RuntimeException(e);
+      throw new IllegalStateException(e);
     }
   }
 }
