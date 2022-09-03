@@ -9,9 +9,9 @@
 + 了解 [wechatpay-java](https://github.com/wechatpay-apiv3/wechatpay-java)
 + 开通微信支付国密能力，申请**国密**证书，并下载**国密**微信支付平台证书。注：微信支付暂时没有开放国密的使用，请有需求的商户联系微信支付技术支持，获取国密接入文档。
 
-## 请求使用商密
+## 使用国密 SDK
 
-使用 `SMConfig` 替代 `RSAConfig` 初始化具体的业务服务，再调用服务提供的业务接口即可。 国密的签名、验签会注入请求的各个环节。
+使用 `SMConfig` 替代 `RSAConfig` 初始化具体的业务服务，再调用服务提供的业务接口即可。国密的签名、验签会注入请求的各个环节。
 
 ```java
 package com.wechat.pay.java.service;
@@ -52,6 +52,34 @@ public class QuickStart {
     Transaction transaction = service.queryOrderById(request);
   }
 }
+```
+
+## 使用国密发送 HTTP 请求
+
+如果 SDK 未支持你需要的接口，你可以使用 `SMConfig` + `DefaultHttpClientBuilder` 得到一个 HttpClient 发送 HTTP 请求，它会自动生成签名和验证签名。
+
+```java
+SMConfig config = new SMConfig.Builder()
+        .merchantId(merchantId)
+        .merchantSerialNumber(merchantSerialNo)
+        .privateKey(privateKey)
+        .addWechatPayCertificate(wechatPayCertificate).build();
+
+HttpClient client = new DefaultHttpClientBuilder()
+        .credential(config.createCredential())
+        .validator(config.createValidator())
+        .build();
+
+HttpHeaders headers = new HttpHeaders();
+headers.addHeader("Accept", "application/json");
+
+// 你需要为应答编写对应的model
+HttpResponse<DownloadCertificateResponse> response = client.get(
+        headers,
+        "https://api.mch.weixin.qq.com/v3/certificates",
+        DownloadCertificateResponse.class);
+
+System.out.println(response.getServiceResponse());
 ```
 
 ## 常见问题
