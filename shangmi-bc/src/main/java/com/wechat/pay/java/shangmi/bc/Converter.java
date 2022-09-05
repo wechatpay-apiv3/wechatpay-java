@@ -41,7 +41,6 @@ public class Converter {
    * @return ASN.1_C1C3C2串字节数组
    */
   public static byte[] c1c3c2ToAsn1(byte[] c1c3c2) {
-    // starts at 1 because the first bit is 0x04, which means the public key is uncompressed flag
     byte[] c1 = Arrays.copyOfRange(c1c3c2, 0, C1_LEN_BYTE);
     byte[] c3 = Arrays.copyOfRange(c1c3c2, C1_LEN_BYTE, C1_LEN_BYTE + C3_LEN_BYTE);
     byte[] c2 = Arrays.copyOfRange(c1c3c2, C1_LEN_BYTE + C3_LEN_BYTE, c1c3c2.length);

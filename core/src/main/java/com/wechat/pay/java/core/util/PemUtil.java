@@ -19,7 +19,7 @@ public class PemUtil {
   private PemUtil() {}
 
   /**
-   * 从私钥字符串中加载RSA私钥。
+   * 从字符串中加载RSA私钥。
    *
    * @param keyString 私钥字符串
    * @return RSA私钥
@@ -41,6 +41,8 @@ public class PemUtil {
   }
 
   /**
+   * 从字符串中加载指定算法的私钥
+   *
    * @param keyString 私钥字符串
    * @param algorithm 私钥算法
    * @param provider the provider
@@ -64,7 +66,7 @@ public class PemUtil {
   }
 
   /**
-   * 从私钥路径加载RSA私钥
+   * 从文件路径加载RSA私钥
    *
    * @param keyPath 私钥路径
    * @return RSA私钥
@@ -74,6 +76,8 @@ public class PemUtil {
   }
 
   /**
+   * 从文件路径加载指定算法的私钥
+   *
    * @param keyPath 私钥路径
    * @param algorithm 私钥算法
    * @param provider the provider
@@ -93,7 +97,7 @@ public class PemUtil {
   }
 
   /**
-   * 从输入流加载证书
+   * 从输入流加载X.509证书
    *
    * @param inputStream 私钥输入流
    * @return X.509证书
@@ -108,7 +112,7 @@ public class PemUtil {
   }
 
   /**
-   * 从输入流加载证书
+   * 从输入流加载X.509证书
    *
    * @param inputStream 私钥输入流
    * @param provider the provider
@@ -124,7 +128,7 @@ public class PemUtil {
   }
 
   /**
-   * 从证书文件路径加载证书
+   * 从文件路径加载X.509证书
    *
    * @param certificatePath 证书文件路径
    * @return X.509证书
@@ -138,6 +142,8 @@ public class PemUtil {
   }
 
   /**
+   * 从文件路径加载X.509证书
+   *
    * @param certificatePath 证书文件路径
    * @param provider the provider
    * @return X.509证书
@@ -151,7 +157,7 @@ public class PemUtil {
   }
 
   /**
-   * 从证书字符串加载证书
+   * 从字符串加载X.509证书
    *
    * @param certificateString 证书字符串
    * @return X.509证书
@@ -166,6 +172,8 @@ public class PemUtil {
   }
 
   /**
+   * 从字符串加载X.509证书
+   *
    * @param certificateString 证书字符串
    * @param provider the provider
    * @return X.509证书

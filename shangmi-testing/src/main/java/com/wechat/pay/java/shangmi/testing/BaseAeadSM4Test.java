@@ -20,14 +20,14 @@ public interface BaseAeadSM4Test {
 
   @Test
   default void testEncrypt() {
-    AeadCipher sm4cipher = createAeadSMCipher(API_V3_KEY.getBytes(StandardCharsets.UTF_8));
+    AeadCipher sm4Cipher = createAeadSMCipher(API_V3_KEY.getBytes(StandardCharsets.UTF_8));
     String encryptData =
-        sm4cipher.encrypt(
+        sm4Cipher.encrypt(
             ASSOCIATED_DATA.getBytes(StandardCharsets.UTF_8),
             NONCE.getBytes(StandardCharsets.UTF_8),
             PLAINTEXT.getBytes(StandardCharsets.UTF_8));
     String decryptData =
-        sm4cipher.decrypt(
+        sm4Cipher.decrypt(
             ASSOCIATED_DATA.getBytes(StandardCharsets.UTF_8),
             NONCE.getBytes(StandardCharsets.UTF_8),
             Base64.getDecoder().decode(encryptData));
