@@ -29,3 +29,59 @@ jar {
         attributes("Implementation-Version": project.version)
     }
 }
+
+publishing {
+    java {
+        withJavadocJar()
+        withSourcesJar()
+    }
+
+    publications {
+        maven(MavenPublication) {
+            artifactId = project.ext.publishedArtifactId
+            from components.java
+
+            pom {
+                name = project.ext.publishedArtifactId
+                description = "A ShangMi extension package implemented using Bouncy Castle for WeChat Pay APIv3 Java SDK"
+                url = "https://github.com/wechatpay-apiv3/wechatpay-java"
+                licenses {
+                    license {
+                        name = "The Apache Software License, Version 2.0"
+                        url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+                developers {
+                    developer {
+                        name = "WeChat Pay APIv3 Team"
+                    }
+                }
+                scm {
+                    connection = "scm:git:https://github.com/wechatpay-apiv3/wechatpay-java.git"
+                    developerConnection = "scm:git:ssh://github.com:wechatpay-apiv3/wechatpay-java.git"
+                    url = "https://github.com/wechatpay-apiv3/wechatpay-java"
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "mavencentral"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            url = version.endsWith("SNAPSHOT") ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                username System.getenv("SONATYPE_NEXUS_USERNAME")
+                password System.getenv("SONATYPE_NEXUS_PASSWORD")
+            }
+        }
+    }
+}
+
+signing {
+    def signingKey = findProperty("signingKey")
+    def signingPassword = findProperty("signingPassword")
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.maven
+}

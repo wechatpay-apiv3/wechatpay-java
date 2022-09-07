@@ -57,7 +57,7 @@ publishing {
             pom {
                 name = project.ext.publishedArtifactId
                 description = "A Java Core SDK for WeChat Pay\'s API"
-                url = ""
+                url = "https://github.com/wechatpay-apiv3/wechatpay-java"
                 licenses {
                     license {
                         name = "The Apache Software License, Version 2.0"
@@ -70,9 +70,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = ""
-                    developerConnection = ""
-                    url = ""
+                    connection = "scm:git:https://github.com/wechatpay-apiv3/wechatpay-java.git"
+                    developerConnection = "scm:git:ssh://github.com:wechatpay-apiv3/wechatpay-java.git"
+                    url = "https://github.com/wechatpay-apiv3/wechatpay-java"
                 }
             }
         }
