@@ -2,10 +2,6 @@ plugins{
     id "common"
 }
 
-ext {
-    publishedArtifactId = "wechatpay-java-shangmi-testing"
-}
-
 dependencies {
     api project(":core")
 
