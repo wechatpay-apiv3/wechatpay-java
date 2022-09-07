@@ -40,5 +40,5 @@ jobs:
         env:
           SONATYPE_NEXUS_USERNAME: ${{secrets.SONATYPE_NEXUS_USERNAME}}
           SONATYPE_NEXUS_PASSWORD: ${{secrets.SONATYPE_NEXUS_PASSWORD}}
-          ORG_GRADLE_PROJECT_signingKey: ${{secrets.SIGNING_KEY}}
-          ORG_GRADLE_PROJECT_signingPassword: ${{secrets.SIGNING_PASSWORD}}
+          SIGNING_KEY: ${{secrets.SIGNING_KEY}}
+          SIGNING_PASSWORD: ${{secrets.SIGNING_PASSWORD}}
