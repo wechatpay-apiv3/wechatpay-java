@@ -9,6 +9,26 @@
 + 了解 [wechatpay-java](https://github.com/wechatpay-apiv3/wechatpay-java)
 + 开通微信支付国密能力，申请**国密**证书，并下载**国密**微信支付平台证书。注：微信支付暂时没有开放国密的使用，请有需求的商户联系微信支付技术支持，获取国密接入文档。
 
+## 安装
+
+最新版本已经在 [Maven Central](https://search.maven.org/artifact/com.github.wechatpay-apiv3/wechatpay-java-shangmi-bc) 发布。
+
+### Gradle
+在你的 build.gradle 文件中加入如下的依赖
+```groovy
+implementation 'com.github.wechatpay-apiv3:wechatpay-java-shangmi-bc:0.1.0'
+```
+
+#### Maven
+加入以下依赖
+```xml
+<dependency>
+  <groupId>com.github.wechatpay-apiv3</groupId>
+  <artifactId>wechatpay-java-shangmi-bc</artifactId>
+  <version>0.1.0</version>
+</dependency>
+```
+
 ## 使用国密 SDK
 
 使用 `SMConfig` 替代 `RSAConfig` 初始化具体的业务服务，再调用服务提供的业务接口即可。国密的签名、验签会注入请求的各个环节。
