@@ -8,7 +8,7 @@
 
 ## 项目状态
 
-当前为开发版本，**建议仅用于测试，谨慎用于生产环境。** 项目规划详如下。
+当前版本`0.1.0`为测试版本，项目规划详如下。
 
 | 工作项 | 状态 |
 | ----- | ---- |
@@ -31,7 +31,23 @@
 
 ### 安装
 
-可以先自行打包 JAR 文件引入，敬请期待其他安装方式。
+最新版本已经在 [Maven Central](https://search.maven.org/artifact/com.github.wechatpay-apiv3/wechatpay-java) 发布。
+
+#### Gradle
+在你的 build.gradle 文件中加入如下的依赖
+```groovy
+implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.1.0'
+```
+
+#### Maven
+加入以下依赖
+```xml
+<dependency>
+  <groupId>com.github.wechatpay-apiv3</groupId>
+  <artifactId>wechatpay-java</artifactId>
+  <version>0.1.0</version>
+</dependency>
+```
 
 ### 调用业务请求接口
 
