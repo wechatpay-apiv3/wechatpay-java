@@ -30,8 +30,11 @@ import com.wechat.pay.java.core.http.HttpResponse;
 import com.wechat.pay.java.core.http.JsonRequestBody;
 import com.wechat.pay.java.core.http.MediaType;
 import com.wechat.pay.java.service.refund.model.CreateRequest;
-import com.wechat.pay.java.service.refund.model.QueryByOutRefundNoRefundsRequest;
+import com.wechat.pay.java.service.refund.model.QueryByOutRefundNoRequest;
 import com.wechat.pay.java.service.refund.model.Refund;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /** RefundService服务 */
 public class RefundService {
@@ -43,7 +46,6 @@ public class RefundService {
     this.httpClient = requireNonNull(httpClient);
     this.hostName = hostName;
   }
-
   /** RefundService构造器 */
   public static class Builder {
 
@@ -84,8 +86,9 @@ public class RefundService {
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
    * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
-  public Refund createRefunds(CreateRequest request) {
+  public Refund create(CreateRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/v3/refund/domestic/refunds";
+
     if (this.hostName != null) {
       requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
     }
@@ -113,15 +116,28 @@ public class RefundService {
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
    * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
-  public Refund queryByOutRefundNoRefunds(QueryByOutRefundNoRefundsRequest request) {
+  public Refund queryByOutRefundNo(QueryByOutRefundNoRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/v3/refund/domestic/refunds/{out_refund_no}";
     // 添加 path param
     requestPath =
         requestPath.replace("{" + "out_refund_no" + "}", urlEncode(request.getOutRefundNo()));
-    // 添加 query param
+
+    Map<String, Object> queryParams = new HashMap<>();
     if (request.getSubMchid() != null) {
-      requestPath += "?sub_mchid=" + urlEncode(request.getSubMchid());
+      queryParams.put("sub_mchid", urlEncode(request.getSubMchid()));
     }
+    boolean isFirstQueryParm = true;
+    StringBuilder requestPathBuilder = new StringBuilder(requestPath);
+    for (Entry<String, Object> entry : queryParams.entrySet()) {
+      if (isFirstQueryParm) {
+        requestPathBuilder.append("?").append(entry.getKey()).append("=").append(entry.getValue());
+        isFirstQueryParm = false;
+        continue;
+      }
+      requestPathBuilder.append("&").append(entry.getKey()).append("=").append(entry.getValue());
+    }
+    requestPath = requestPathBuilder.toString();
+
     if (this.hostName != null) {
       requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
     }
