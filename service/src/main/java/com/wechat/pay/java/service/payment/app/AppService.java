@@ -35,6 +35,9 @@ import com.wechat.pay.java.service.payment.app.model.PrepayResponse;
 import com.wechat.pay.java.service.payment.app.model.QueryOrderByIdRequest;
 import com.wechat.pay.java.service.payment.app.model.QueryOrderByOutTradeNoRequest;
 import com.wechat.pay.java.service.payment.model.Transaction;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /** AppService服务 */
 public class AppService {
@@ -46,7 +49,6 @@ public class AppService {
     this.httpClient = requireNonNull(httpClient);
     this.hostName = hostName;
   }
-
   /** AppService构造器 */
   public static class Builder {
 
@@ -92,6 +94,7 @@ public class AppService {
     // 添加 path param
     requestPath =
         requestPath.replace("{" + "out_trade_no" + "}", urlEncode(request.getOutTradeNo()));
+
     if (this.hostName != null) {
       requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
     }
@@ -107,7 +110,6 @@ public class AppService {
             .build();
     httpClient.execute(httpRequest, null);
   }
-
   /**
    * APP支付下单
    *
@@ -120,6 +122,7 @@ public class AppService {
    */
   public PrepayResponse prepay(PrepayRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/v3/pay/transactions/app";
+
     if (this.hostName != null) {
       requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
     }
@@ -137,7 +140,6 @@ public class AppService {
         httpClient.execute(httpRequest, PrepayResponse.class);
     return httpResponse.getServiceResponse();
   }
-
   /**
    * 微信支付订单号查询订单
    *
@@ -153,10 +155,23 @@ public class AppService {
     // 添加 path param
     requestPath =
         requestPath.replace("{" + "transaction_id" + "}", urlEncode(request.getTransactionId()));
-    // 添加 query param
+
+    Map<String, Object> queryParams = new HashMap<>();
     if (request.getMchid() != null) {
-      requestPath += "?mchid=" + urlEncode(request.getMchid());
+      queryParams.put("mchid", urlEncode(request.getMchid()));
     }
+    boolean isFirstQueryParm = true;
+    StringBuilder requestPathBuilder = new StringBuilder(requestPath);
+    for (Entry<String, Object> entry : queryParams.entrySet()) {
+      if (isFirstQueryParm) {
+        requestPathBuilder.append("?").append(entry.getKey()).append("=").append(entry.getValue());
+        isFirstQueryParm = false;
+        continue;
+      }
+      requestPathBuilder.append("&").append(entry.getKey()).append("=").append(entry.getValue());
+    }
+    requestPath = requestPathBuilder.toString();
+
     if (this.hostName != null) {
       requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
     }
@@ -172,7 +187,6 @@ public class AppService {
     HttpResponse<Transaction> httpResponse = httpClient.execute(httpRequest, Transaction.class);
     return httpResponse.getServiceResponse();
   }
-
   /**
    * 商户订单号查询订单
    *
@@ -189,10 +203,23 @@ public class AppService {
     // 添加 path param
     requestPath =
         requestPath.replace("{" + "out_trade_no" + "}", urlEncode(request.getOutTradeNo()));
-    // 添加 query param
+
+    Map<String, Object> queryParams = new HashMap<>();
     if (request.getMchid() != null) {
-      requestPath += "?mchid=" + urlEncode(request.getMchid());
+      queryParams.put("mchid", urlEncode(request.getMchid()));
     }
+    boolean isFirstQueryParm = true;
+    StringBuilder requestPathBuilder = new StringBuilder(requestPath);
+    for (Entry<String, Object> entry : queryParams.entrySet()) {
+      if (isFirstQueryParm) {
+        requestPathBuilder.append("?").append(entry.getKey()).append("=").append(entry.getValue());
+        isFirstQueryParm = false;
+        continue;
+      }
+      requestPathBuilder.append("&").append(entry.getKey()).append("=").append(entry.getValue());
+    }
+    requestPath = requestPathBuilder.toString();
+
     if (this.hostName != null) {
       requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
     }

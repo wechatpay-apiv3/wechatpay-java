@@ -3,6 +3,7 @@ package com.wechat.pay.java.service.refund;
 import com.wechat.pay.java.core.RSAConfig;
 import com.wechat.pay.java.service.refund.model.CreateRequest;
 import com.wechat.pay.java.service.refund.model.QueryByOutRefundNoRefundsRequest;
+import com.wechat.pay.java.service.refund.model.QueryByOutRefundNoRequest;
 import com.wechat.pay.java.service.refund.model.Refund;
 
 /** RefundService使用示例 */
@@ -32,15 +33,15 @@ public class RefundServiceExample {
   }
 
   /** 退款申请 */
-  public static Refund createRefunds() {
+  public static Refund create() {
     CreateRequest request = new CreateRequest();
-    return service.createRefunds(request);
+    return service.create(request);
   }
 
   /** 查询单笔退款（通过商户退款单号） */
-  public static Refund queryByOutRefundNoRefunds() {
+  public static Refund queryByOutRefundNo() {
 
-    QueryByOutRefundNoRefundsRequest request = new QueryByOutRefundNoRefundsRequest();
-    return service.queryByOutRefundNoRefunds(request);
+    QueryByOutRefundNoRequest request = new QueryByOutRefundNoRequest();
+    return service.queryByOutRefundNo(request);
   }
 }
