@@ -29,12 +29,10 @@ import com.wechat.pay.java.core.http.HttpRequest;
 import com.wechat.pay.java.core.http.HttpResponse;
 import com.wechat.pay.java.core.http.JsonRequestBody;
 import com.wechat.pay.java.core.http.MediaType;
+import com.wechat.pay.java.core.http.QueryParameter;
 import com.wechat.pay.java.service.refund.model.CreateRequest;
 import com.wechat.pay.java.service.refund.model.QueryByOutRefundNoRequest;
 import com.wechat.pay.java.service.refund.model.Refund;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
 /** RefundService服务 */
 public class RefundService {
@@ -122,21 +120,11 @@ public class RefundService {
     requestPath =
         requestPath.replace("{" + "out_refund_no" + "}", urlEncode(request.getOutRefundNo()));
 
-    Map<String, Object> queryParams = new HashMap<>();
+    QueryParameter queryParameter = new QueryParameter();
     if (request.getSubMchid() != null) {
-      queryParams.put("sub_mchid", urlEncode(request.getSubMchid()));
+      queryParameter.add("sub_mchid", urlEncode(request.getSubMchid()));
     }
-    boolean isFirstQueryParm = true;
-    StringBuilder requestPathBuilder = new StringBuilder(requestPath);
-    for (Entry<String, Object> entry : queryParams.entrySet()) {
-      if (isFirstQueryParm) {
-        requestPathBuilder.append("?").append(entry.getKey()).append("=").append(entry.getValue());
-        isFirstQueryParm = false;
-        continue;
-      }
-      requestPathBuilder.append("&").append(entry.getKey()).append("=").append(entry.getValue());
-    }
-    requestPath = requestPathBuilder.toString();
+    requestPath += queryParameter.getQueryStr();
 
     if (this.hostName != null) {
       requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());

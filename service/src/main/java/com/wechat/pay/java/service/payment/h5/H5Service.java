@@ -29,15 +29,13 @@ import com.wechat.pay.java.core.http.HttpRequest;
 import com.wechat.pay.java.core.http.HttpResponse;
 import com.wechat.pay.java.core.http.JsonRequestBody;
 import com.wechat.pay.java.core.http.MediaType;
+import com.wechat.pay.java.core.http.QueryParameter;
 import com.wechat.pay.java.service.payment.h5.model.CloseOrderRequest;
 import com.wechat.pay.java.service.payment.h5.model.PrepayRequest;
 import com.wechat.pay.java.service.payment.h5.model.PrepayResponse;
 import com.wechat.pay.java.service.payment.h5.model.QueryOrderByIdRequest;
 import com.wechat.pay.java.service.payment.h5.model.QueryOrderByOutTradeNoRequest;
 import com.wechat.pay.java.service.payment.model.Transaction;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
 /** H5Service服务 */
 public class H5Service {
@@ -156,21 +154,11 @@ public class H5Service {
     requestPath =
         requestPath.replace("{" + "transaction_id" + "}", urlEncode(request.getTransactionId()));
 
-    Map<String, Object> queryParams = new HashMap<>();
+    QueryParameter queryParameter = new QueryParameter();
     if (request.getMchid() != null) {
-      queryParams.put("mchid", urlEncode(request.getMchid()));
+      queryParameter.add("mchid", urlEncode(request.getMchid()));
     }
-    boolean isFirstQueryParm = true;
-    StringBuilder requestPathBuilder = new StringBuilder(requestPath);
-    for (Entry<String, Object> entry : queryParams.entrySet()) {
-      if (isFirstQueryParm) {
-        requestPathBuilder.append("?").append(entry.getKey()).append("=").append(entry.getValue());
-        isFirstQueryParm = false;
-        continue;
-      }
-      requestPathBuilder.append("&").append(entry.getKey()).append("=").append(entry.getValue());
-    }
-    requestPath = requestPathBuilder.toString();
+    requestPath += queryParameter.getQueryStr();
 
     if (this.hostName != null) {
       requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
@@ -204,21 +192,11 @@ public class H5Service {
     requestPath =
         requestPath.replace("{" + "out_trade_no" + "}", urlEncode(request.getOutTradeNo()));
 
-    Map<String, Object> queryParams = new HashMap<>();
+    QueryParameter queryParameter = new QueryParameter();
     if (request.getMchid() != null) {
-      queryParams.put("mchid", urlEncode(request.getMchid()));
+      queryParameter.add("mchid", urlEncode(request.getMchid()));
     }
-    boolean isFirstQueryParm = true;
-    StringBuilder requestPathBuilder = new StringBuilder(requestPath);
-    for (Entry<String, Object> entry : queryParams.entrySet()) {
-      if (isFirstQueryParm) {
-        requestPathBuilder.append("?").append(entry.getKey()).append("=").append(entry.getValue());
-        isFirstQueryParm = false;
-        continue;
-      }
-      requestPathBuilder.append("&").append(entry.getKey()).append("=").append(entry.getValue());
-    }
-    requestPath = requestPathBuilder.toString();
+    requestPath += queryParameter.getQueryStr();
 
     if (this.hostName != null) {
       requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
