@@ -13,12 +13,12 @@ public class QueryParameter {
   }
 
   public String getQueryStr() {
-    boolean isFirstQueryparam = true;
+    boolean isFirstQueryParam = true;
     StringBuilder queryStrBuilder = new StringBuilder();
     for (Entry<String, Object> entry : params.entrySet()) {
-      if (isFirstQueryparam) {
+      if (isFirstQueryParam) {
         queryStrBuilder.append("?").append(entry.getKey()).append("=").append(entry.getValue());
-        isFirstQueryparam = false;
+        isFirstQueryParam = false;
         continue;
       }
       queryStrBuilder.append("&").append(entry.getKey()).append("=").append(entry.getValue());
