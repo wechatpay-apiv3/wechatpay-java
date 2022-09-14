@@ -29,6 +29,7 @@ import com.wechat.pay.java.core.http.HttpRequest;
 import com.wechat.pay.java.core.http.HttpResponse;
 import com.wechat.pay.java.core.http.JsonRequestBody;
 import com.wechat.pay.java.core.http.MediaType;
+import com.wechat.pay.java.core.http.QueryParameter;
 import com.wechat.pay.java.service.payment.model.Transaction;
 import com.wechat.pay.java.service.payment.nativepay.model.CloseOrderRequest;
 import com.wechat.pay.java.service.payment.nativepay.model.PrepayRequest;
@@ -46,7 +47,6 @@ public class NativePayService {
     this.httpClient = requireNonNull(httpClient);
     this.hostName = hostName;
   }
-
   /** NativePayService构造器 */
   public static class Builder {
 
@@ -92,6 +92,7 @@ public class NativePayService {
     // 添加 path param
     requestPath =
         requestPath.replace("{" + "out_trade_no" + "}", urlEncode(request.getOutTradeNo()));
+
     if (this.hostName != null) {
       requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
     }
@@ -107,7 +108,6 @@ public class NativePayService {
             .build();
     httpClient.execute(httpRequest, null);
   }
-
   /**
    * Native支付预下单
    *
@@ -120,6 +120,7 @@ public class NativePayService {
    */
   public PrepayResponse prepay(PrepayRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/v3/pay/transactions/native";
+
     if (this.hostName != null) {
       requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
     }
@@ -137,7 +138,6 @@ public class NativePayService {
         httpClient.execute(httpRequest, PrepayResponse.class);
     return httpResponse.getServiceResponse();
   }
-
   /**
    * 微信支付订单号查询订单
    *
@@ -153,10 +153,13 @@ public class NativePayService {
     // 添加 path param
     requestPath =
         requestPath.replace("{" + "transaction_id" + "}", urlEncode(request.getTransactionId()));
-    // 添加 query param
+
+    QueryParameter queryParameter = new QueryParameter();
     if (request.getMchid() != null) {
-      requestPath += "?mchid=" + urlEncode(request.getMchid());
+      queryParameter.add("mchid", urlEncode(request.getMchid()));
     }
+    requestPath += queryParameter.getQueryStr();
+
     if (this.hostName != null) {
       requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
     }
@@ -172,7 +175,6 @@ public class NativePayService {
     HttpResponse<Transaction> httpResponse = httpClient.execute(httpRequest, Transaction.class);
     return httpResponse.getServiceResponse();
   }
-
   /**
    * 商户订单号查询订单
    *
@@ -189,10 +191,13 @@ public class NativePayService {
     // 添加 path param
     requestPath =
         requestPath.replace("{" + "out_trade_no" + "}", urlEncode(request.getOutTradeNo()));
-    // 添加 query param
+
+    QueryParameter queryParameter = new QueryParameter();
     if (request.getMchid() != null) {
-      requestPath += "?mchid=" + urlEncode(request.getMchid());
+      queryParameter.add("mchid", urlEncode(request.getMchid()));
     }
+    requestPath += queryParameter.getQueryStr();
+
     if (this.hostName != null) {
       requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
     }
