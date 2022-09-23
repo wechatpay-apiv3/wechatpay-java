@@ -11,8 +11,9 @@
 
 package com.wechat.pay.java.service.payment.app.model;
 
+import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
+
 import com.google.gson.annotations.SerializedName;
-import com.wechat.pay.java.core.util.GsonUtil;
 
 /** 商户门店信息 */
 public class StoreInfo {
@@ -63,6 +64,13 @@ public class StoreInfo {
 
   @Override
   public String toString() {
-    return GsonUtil.getGson().toJson(this);
+    StringBuilder sb = new StringBuilder();
+    sb.append("class StoreInfo {\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    areaCode: ").append(toIndentedString(areaCode)).append("\n");
+    sb.append("    address: ").append(toIndentedString(address)).append("\n");
+    sb.append("}");
+    return sb.toString();
   }
 }

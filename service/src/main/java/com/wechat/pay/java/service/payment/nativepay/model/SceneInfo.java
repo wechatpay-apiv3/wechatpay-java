@@ -11,8 +11,9 @@
 
 package com.wechat.pay.java.service.payment.nativepay.model;
 
+import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
+
 import com.google.gson.annotations.SerializedName;
-import com.wechat.pay.java.core.util.GsonUtil;
 
 /** 支付场景描述 */
 public class SceneInfo {
@@ -52,6 +53,12 @@ public class SceneInfo {
 
   @Override
   public String toString() {
-    return GsonUtil.getGson().toJson(this);
+    StringBuilder sb = new StringBuilder();
+    sb.append("class SceneInfo {\n");
+    sb.append("    payerClientIp: ").append(toIndentedString(payerClientIp)).append("\n");
+    sb.append("    deviceId: ").append(toIndentedString(deviceId)).append("\n");
+    sb.append("    storeInfo: ").append(toIndentedString(storeInfo)).append("\n");
+    sb.append("}");
+    return sb.toString();
   }
 }

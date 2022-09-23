@@ -11,8 +11,9 @@
 
 package com.wechat.pay.java.service.payment.h5.model;
 
+import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
+
 import com.google.gson.annotations.SerializedName;
-import com.wechat.pay.java.core.util.GsonUtil;
 
 /** CloseRequest */
 public class CloseRequest {
@@ -30,6 +31,10 @@ public class CloseRequest {
 
   @Override
   public String toString() {
-    return GsonUtil.getGson().toJson(this);
+    StringBuilder sb = new StringBuilder();
+    sb.append("class CloseRequest {\n");
+    sb.append("    mchid: ").append(toIndentedString(mchid)).append("\n");
+    sb.append("}");
+    return sb.toString();
   }
 }

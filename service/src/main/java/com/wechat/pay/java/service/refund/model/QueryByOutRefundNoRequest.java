@@ -11,9 +11,10 @@
 
 package com.wechat.pay.java.service.refund.model;
 
+import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.wechat.pay.java.core.util.GsonUtil;
 
 /** QueryByOutRefundNoRequest */
 public class QueryByOutRefundNoRequest {
@@ -44,6 +45,11 @@ public class QueryByOutRefundNoRequest {
 
   @Override
   public String toString() {
-    return GsonUtil.getGson().toJson(this);
+    StringBuilder sb = new StringBuilder();
+    sb.append("class QueryByOutRefundNoRequest {\n");
+    sb.append("    outRefundNo: ").append(toIndentedString(outRefundNo)).append("\n");
+    sb.append("    subMchid: ").append(toIndentedString(subMchid)).append("\n");
+    sb.append("}");
+    return sb.toString();
   }
 }

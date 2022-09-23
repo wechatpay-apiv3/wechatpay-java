@@ -11,8 +11,9 @@
 
 package com.wechat.pay.java.service.payment.jsapi.model;
 
+import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
+
 import com.google.gson.annotations.SerializedName;
-import com.wechat.pay.java.core.util.GsonUtil;
 import java.util.List;
 
 /** 优惠功能 */
@@ -26,7 +27,7 @@ public class Detail {
   /** 商品小票ID 说明：商家小票ID。 */
   @SerializedName("invoice_id")
   private String invoiceId;
-  /** 单品列表 */
+  /** 单品列表 说明： */
   @SerializedName("goods_detail")
   private List<GoodsDetail> goodsDetail;
 
@@ -56,6 +57,12 @@ public class Detail {
 
   @Override
   public String toString() {
-    return GsonUtil.getGson().toJson(this);
+    StringBuilder sb = new StringBuilder();
+    sb.append("class Detail {\n");
+    sb.append("    costPrice: ").append(toIndentedString(costPrice)).append("\n");
+    sb.append("    invoiceId: ").append(toIndentedString(invoiceId)).append("\n");
+    sb.append("    goodsDetail: ").append(toIndentedString(goodsDetail)).append("\n");
+    sb.append("}");
+    return sb.toString();
   }
 }

@@ -11,8 +11,9 @@
 
 package com.wechat.pay.java.service.refund.model;
 
+import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
+
 import com.google.gson.annotations.SerializedName;
-import com.wechat.pay.java.core.util.GsonUtil;
 
 /** FundsFromItem */
 public class FundsFromItem {
@@ -41,6 +42,11 @@ public class FundsFromItem {
 
   @Override
   public String toString() {
-    return GsonUtil.getGson().toJson(this);
+    StringBuilder sb = new StringBuilder();
+    sb.append("class FundsFromItem {\n");
+    sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
+    sb.append("    account: ").append(toIndentedString(account)).append("\n");
+    sb.append("}");
+    return sb.toString();
   }
 }

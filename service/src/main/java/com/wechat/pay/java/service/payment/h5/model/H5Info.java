@@ -11,8 +11,9 @@
 
 package com.wechat.pay.java.service.payment.h5.model;
 
+import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
+
 import com.google.gson.annotations.SerializedName;
-import com.wechat.pay.java.core.util.GsonUtil;
 
 /** H5Info */
 public class H5Info {
@@ -74,6 +75,14 @@ public class H5Info {
 
   @Override
   public String toString() {
-    return GsonUtil.getGson().toJson(this);
+    StringBuilder sb = new StringBuilder();
+    sb.append("class H5Info {\n");
+    sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("    appName: ").append(toIndentedString(appName)).append("\n");
+    sb.append("    appUrl: ").append(toIndentedString(appUrl)).append("\n");
+    sb.append("    bundleId: ").append(toIndentedString(bundleId)).append("\n");
+    sb.append("    packageName: ").append(toIndentedString(packageName)).append("\n");
+    sb.append("}");
+    return sb.toString();
   }
 }

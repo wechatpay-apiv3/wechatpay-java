@@ -11,8 +11,9 @@
 
 package com.wechat.pay.java.service.payment.app.model;
 
+import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
+
 import com.google.gson.annotations.SerializedName;
-import com.wechat.pay.java.core.util.GsonUtil;
 
 /** PrepayResponse */
 public class PrepayResponse {
@@ -30,6 +31,10 @@ public class PrepayResponse {
 
   @Override
   public String toString() {
-    return GsonUtil.getGson().toJson(this);
+    StringBuilder sb = new StringBuilder();
+    sb.append("class PrepayResponse {\n");
+    sb.append("    prepayId: ").append(toIndentedString(prepayId)).append("\n");
+    sb.append("}");
+    return sb.toString();
   }
 }

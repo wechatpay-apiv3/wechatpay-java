@@ -11,8 +11,9 @@
 
 package com.wechat.pay.java.service.refund.model;
 
+import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
+
 import com.google.gson.annotations.SerializedName;
-import com.wechat.pay.java.core.util.GsonUtil;
 import java.util.List;
 
 /** CreateRequest */
@@ -122,6 +123,18 @@ public class CreateRequest {
 
   @Override
   public String toString() {
-    return GsonUtil.getGson().toJson(this);
+    StringBuilder sb = new StringBuilder();
+    sb.append("class CreateRequest {\n");
+    sb.append("    subMchid: ").append(toIndentedString(subMchid)).append("\n");
+    sb.append("    transactionId: ").append(toIndentedString(transactionId)).append("\n");
+    sb.append("    outTradeNo: ").append(toIndentedString(outTradeNo)).append("\n");
+    sb.append("    outRefundNo: ").append(toIndentedString(outRefundNo)).append("\n");
+    sb.append("    reason: ").append(toIndentedString(reason)).append("\n");
+    sb.append("    notifyUrl: ").append(toIndentedString(notifyUrl)).append("\n");
+    sb.append("    goodsDetail: ").append(toIndentedString(goodsDetail)).append("\n");
+    sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
+    sb.append("    fundsAccount: ").append(toIndentedString(fundsAccount)).append("\n");
+    sb.append("}");
+    return sb.toString();
   }
 }

@@ -11,8 +11,9 @@
 
 package com.wechat.pay.java.service.payment.app.model;
 
+import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
+
 import com.google.gson.annotations.SerializedName;
-import com.wechat.pay.java.core.util.GsonUtil;
 import java.util.List;
 
 /** PrepayRequest */
@@ -188,6 +189,23 @@ public class PrepayRequest {
 
   @Override
   public String toString() {
-    return GsonUtil.getGson().toJson(this);
+    StringBuilder sb = new StringBuilder();
+    sb.append("class PrepayRequest {\n");
+    sb.append("    appid: ").append(toIndentedString(appid)).append("\n");
+    sb.append("    mchid: ").append(toIndentedString(mchid)).append("\n");
+    sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    outTradeNo: ").append(toIndentedString(outTradeNo)).append("\n");
+    sb.append("    timeExpire: ").append(toIndentedString(timeExpire)).append("\n");
+    sb.append("    attach: ").append(toIndentedString(attach)).append("\n");
+    sb.append("    notifyUrl: ").append(toIndentedString(notifyUrl)).append("\n");
+    sb.append("    goodsTag: ").append(toIndentedString(goodsTag)).append("\n");
+    sb.append("    limitPay: ").append(toIndentedString(limitPay)).append("\n");
+    sb.append("    supportFapiao: ").append(toIndentedString(supportFapiao)).append("\n");
+    sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
+    sb.append("    detail: ").append(toIndentedString(detail)).append("\n");
+    sb.append("    sceneInfo: ").append(toIndentedString(sceneInfo)).append("\n");
+    sb.append("    settleInfo: ").append(toIndentedString(settleInfo)).append("\n");
+    sb.append("}");
+    return sb.toString();
   }
 }

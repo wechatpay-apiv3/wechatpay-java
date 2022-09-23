@@ -11,9 +11,9 @@
 
 package com.wechat.pay.java.service.refund.model;
 
+import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
+
 import com.google.gson.annotations.SerializedName;
-import com.wechat.pay.java.core.util.GsonUtil;
-import java.util.ArrayList;
 import java.util.List;
 
 /** Refund */
@@ -52,7 +52,7 @@ public class Refund {
   private String createTime;
   /** 优惠退款信息 说明：优惠退款信息 */
   @SerializedName("promotion_detail")
-  private List<Promotion> promotionDetail = new ArrayList<Promotion>();
+  private List<Promotion> promotionDetail;
   /** 金额信息 说明：金额详细信息 */
   @SerializedName("amount")
   private Amount amount;
@@ -173,6 +173,23 @@ public class Refund {
 
   @Override
   public String toString() {
-    return GsonUtil.getGson().toJson(this);
+    StringBuilder sb = new StringBuilder();
+    sb.append("class Refund {\n");
+    sb.append("    refundId: ").append(toIndentedString(refundId)).append("\n");
+    sb.append("    outRefundNo: ").append(toIndentedString(outRefundNo)).append("\n");
+    sb.append("    transactionId: ").append(toIndentedString(transactionId)).append("\n");
+    sb.append("    outTradeNo: ").append(toIndentedString(outTradeNo)).append("\n");
+    sb.append("    userReceivedAccount: ")
+        .append(toIndentedString(userReceivedAccount))
+        .append("\n");
+    sb.append("    successTime: ").append(toIndentedString(successTime)).append("\n");
+    sb.append("    createTime: ").append(toIndentedString(createTime)).append("\n");
+    sb.append("    promotionDetail: ").append(toIndentedString(promotionDetail)).append("\n");
+    sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
+    sb.append("    channel: ").append(toIndentedString(channel)).append("\n");
+    sb.append("    fundsAccount: ").append(toIndentedString(fundsAccount)).append("\n");
+    sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("}");
+    return sb.toString();
   }
 }
