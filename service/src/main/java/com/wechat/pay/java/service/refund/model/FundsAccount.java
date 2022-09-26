@@ -16,7 +16,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * UNSETTLED - 未结算资金，退款所使用资金对应的资金账户类型 AVAILABLE - 可用余额，退款所使用资金对应的资金账户类型 UNAVAILABLE -
  * 不可用余额，退款所使用资金对应的资金账户类型 OPERATION - 运营户，退款所使用资金对应的资金账户类型 BASIC -
- * 基本账户（含可用余额和不可用余额），退款所使用资金对应的资金账户类型
+ * 基本账户（含可用余额和不可用余额），退款所使用资金对应的资金账户类型 ECNY_BASIC - 数字人民币基本账户，退款所使用资金对应的资金账户类型
  */
 public enum FundsAccount {
   @SerializedName("UNSETTLED")
@@ -32,5 +32,8 @@ public enum FundsAccount {
   OPERATION,
 
   @SerializedName("BASIC")
-  BASIC
+  BASIC,
+
+  @SerializedName("ECNY_BASIC")
+  ECNY_BASIC
 }

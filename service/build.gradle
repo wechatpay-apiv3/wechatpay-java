@@ -21,7 +21,7 @@ configurations {
 }
 
 dependencies {
-    implementation project(":core")
+    api project(":core")
     implementation "com.google.code.gson:gson:${gsonVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jVersion}"
 

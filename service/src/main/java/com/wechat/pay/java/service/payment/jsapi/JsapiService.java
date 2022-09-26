@@ -12,6 +12,7 @@
 package com.wechat.pay.java.service.payment.jsapi;
 
 import static com.wechat.pay.java.core.http.UrlEncoder.urlEncode;
+import static com.wechat.pay.java.core.util.GsonUtil.toJson;
 import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.Config;
@@ -30,6 +31,7 @@ import com.wechat.pay.java.core.http.HttpResponse;
 import com.wechat.pay.java.core.http.JsonRequestBody;
 import com.wechat.pay.java.core.http.MediaType;
 import com.wechat.pay.java.core.http.QueryParameter;
+import com.wechat.pay.java.core.http.RequestBody;
 import com.wechat.pay.java.service.payment.jsapi.model.CloseOrderRequest;
 import com.wechat.pay.java.service.payment.jsapi.model.PrepayRequest;
 import com.wechat.pay.java.service.payment.jsapi.model.PrepayResponse;
@@ -59,6 +61,7 @@ public class JsapiService {
               .credential(requireNonNull(config.createCredential()))
               .validator(requireNonNull(config.createValidator()))
               .build();
+
       return this;
     }
 
@@ -89,9 +92,11 @@ public class JsapiService {
   public void closeOrder(CloseOrderRequest request) {
     String requestPath =
         "https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/{out_trade_no}/close";
+
+    CloseOrderRequest realRequest = request;
     // 添加 path param
     requestPath =
-        requestPath.replace("{" + "out_trade_no" + "}", urlEncode(request.getOutTradeNo()));
+        requestPath.replace("{" + "out_trade_no" + "}", urlEncode(realRequest.getOutTradeNo()));
 
     if (this.hostName != null) {
       requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
@@ -104,7 +109,7 @@ public class JsapiService {
             .httpMethod(HttpMethod.POST)
             .url(requestPath)
             .headers(headers)
-            .body(new JsonRequestBody.Builder().body(request.toString()).build())
+            .body(createRequestBody(realRequest))
             .build();
     httpClient.execute(httpRequest, null);
   }
@@ -120,7 +125,7 @@ public class JsapiService {
    */
   public PrepayResponse prepay(PrepayRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/v3/pay/transactions/jsapi";
-
+    PrepayRequest realRequest = request;
     if (this.hostName != null) {
       requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
     }
@@ -132,7 +137,7 @@ public class JsapiService {
             .httpMethod(HttpMethod.POST)
             .url(requestPath)
             .headers(headers)
-            .body(new JsonRequestBody.Builder().body(request.toString()).build())
+            .body(createRequestBody(realRequest))
             .build();
     HttpResponse<PrepayResponse> httpResponse =
         httpClient.execute(httpRequest, PrepayResponse.class);
@@ -150,16 +155,19 @@ public class JsapiService {
    */
   public Transaction queryOrderById(QueryOrderByIdRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/v3/pay/transactions/id/{transaction_id}";
+
+    QueryOrderByIdRequest realRequest = request;
     // 添加 path param
     requestPath =
-        requestPath.replace("{" + "transaction_id" + "}", urlEncode(request.getTransactionId()));
+        requestPath.replace(
+            "{" + "transaction_id" + "}", urlEncode(realRequest.getTransactionId()));
 
+    // 添加 query param
     QueryParameter queryParameter = new QueryParameter();
-    if (request.getMchid() != null) {
-      queryParameter.add("mchid", urlEncode(request.getMchid()));
+    if (realRequest.getMchid() != null) {
+      queryParameter.add("mchid", urlEncode(realRequest.getMchid()));
     }
     requestPath += queryParameter.getQueryStr();
-
     if (this.hostName != null) {
       requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
     }
@@ -188,16 +196,18 @@ public class JsapiService {
   public Transaction queryOrderByOutTradeNo(QueryOrderByOutTradeNoRequest request) {
     String requestPath =
         "https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/{out_trade_no}";
+
+    QueryOrderByOutTradeNoRequest realRequest = request;
     // 添加 path param
     requestPath =
-        requestPath.replace("{" + "out_trade_no" + "}", urlEncode(request.getOutTradeNo()));
+        requestPath.replace("{" + "out_trade_no" + "}", urlEncode(realRequest.getOutTradeNo()));
 
+    // 添加 query param
     QueryParameter queryParameter = new QueryParameter();
-    if (request.getMchid() != null) {
-      queryParameter.add("mchid", urlEncode(request.getMchid()));
+    if (realRequest.getMchid() != null) {
+      queryParameter.add("mchid", urlEncode(realRequest.getMchid()));
     }
     requestPath += queryParameter.getQueryStr();
-
     if (this.hostName != null) {
       requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
     }
@@ -212,5 +222,9 @@ public class JsapiService {
             .build();
     HttpResponse<Transaction> httpResponse = httpClient.execute(httpRequest, Transaction.class);
     return httpResponse.getServiceResponse();
+  }
+
+  private RequestBody createRequestBody(Object request) {
+    return new JsonRequestBody.Builder().body(toJson(request)).build();
   }
 }

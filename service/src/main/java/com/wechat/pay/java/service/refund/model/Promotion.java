@@ -11,9 +11,9 @@
 
 package com.wechat.pay.java.service.refund.model;
 
+import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
+
 import com.google.gson.annotations.SerializedName;
-import com.wechat.pay.java.core.util.GsonUtil;
-import java.util.ArrayList;
 import java.util.List;
 
 /** Promotion */
@@ -29,7 +29,7 @@ public class Promotion {
   private Long refundAmount;
   /** 商品列表 说明：优惠商品发生退款时返回商品信息 */
   @SerializedName("goods_detail")
-  private List<GoodsDetail> goodsDetail = new ArrayList<GoodsDetail>();
+  private List<GoodsDetail> goodsDetail;
   /** 优惠范围 说明：枚举值： - GLOBAL- 全场代金券 - SINGLE- 单品优惠 */
   @SerializedName("scope")
   private Scope scope;
@@ -87,6 +87,15 @@ public class Promotion {
 
   @Override
   public String toString() {
-    return GsonUtil.getGson().toJson(this);
+    StringBuilder sb = new StringBuilder();
+    sb.append("class Promotion {\n");
+    sb.append("    promotionId: ").append(toIndentedString(promotionId)).append("\n");
+    sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
+    sb.append("    refundAmount: ").append(toIndentedString(refundAmount)).append("\n");
+    sb.append("    goodsDetail: ").append(toIndentedString(goodsDetail)).append("\n");
+    sb.append("    scope: ").append(toIndentedString(scope)).append("\n");
+    sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("}");
+    return sb.toString();
   }
 }

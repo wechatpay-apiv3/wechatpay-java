@@ -19,8 +19,7 @@ public class RefundServiceExample {
     RSAConfig config =
         new RSAConfig.Builder()
             .merchantId(merchantId)
-            // 使用 com.wechat.pay.java.core.util
-            // 中的函数从本地文件中加载商户私钥，商户私钥会用来生成请求的签名
+            // 使用 com.wechat.pay.java.core.util 中的函数从本地文件中加载商户私钥，商户私钥会用来生成请求的签名
             .privateKeyFromPath(privateKeyPath)
             .merchantSerialNumber(merchantSerialNumber)
             .wechatPayCertificatesFromPath(wechatPayCertificatePath)
@@ -30,13 +29,11 @@ public class RefundServiceExample {
     service = new RefundService.Builder().config(config).build();
     // ... 调用接口
   }
-
   /** 退款申请 */
   public static Refund create() {
     CreateRequest request = new CreateRequest();
     return service.create(request);
   }
-
   /** 查询单笔退款（通过商户退款单号） */
   public static Refund queryByOutRefundNo() {
 

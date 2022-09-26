@@ -11,8 +11,9 @@
 
 package com.wechat.pay.java.service.refund.model;
 
+import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
+
 import com.google.gson.annotations.SerializedName;
-import com.wechat.pay.java.core.util.GsonUtil;
 import java.util.List;
 
 /** AmountReq */
@@ -68,6 +69,13 @@ public class AmountReq {
 
   @Override
   public String toString() {
-    return GsonUtil.getGson().toJson(this);
+    StringBuilder sb = new StringBuilder();
+    sb.append("class AmountReq {\n");
+    sb.append("    refund: ").append(toIndentedString(refund)).append("\n");
+    sb.append("    from: ").append(toIndentedString(from)).append("\n");
+    sb.append("    total: ").append(toIndentedString(total)).append("\n");
+    sb.append("    currency: ").append(toIndentedString(currency)).append("\n");
+    sb.append("}");
+    return sb.toString();
   }
 }

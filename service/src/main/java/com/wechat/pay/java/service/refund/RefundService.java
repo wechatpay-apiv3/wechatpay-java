@@ -12,6 +12,7 @@
 package com.wechat.pay.java.service.refund;
 
 import static com.wechat.pay.java.core.http.UrlEncoder.urlEncode;
+import static com.wechat.pay.java.core.util.GsonUtil.toJson;
 import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.Config;
@@ -30,6 +31,7 @@ import com.wechat.pay.java.core.http.HttpResponse;
 import com.wechat.pay.java.core.http.JsonRequestBody;
 import com.wechat.pay.java.core.http.MediaType;
 import com.wechat.pay.java.core.http.QueryParameter;
+import com.wechat.pay.java.core.http.RequestBody;
 import com.wechat.pay.java.service.refund.model.CreateRequest;
 import com.wechat.pay.java.service.refund.model.QueryByOutRefundNoRequest;
 import com.wechat.pay.java.service.refund.model.Refund;
@@ -86,7 +88,7 @@ public class RefundService {
    */
   public Refund create(CreateRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/v3/refund/domestic/refunds";
-
+    CreateRequest realRequest = request;
     if (this.hostName != null) {
       requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
     }
@@ -98,12 +100,11 @@ public class RefundService {
             .httpMethod(HttpMethod.POST)
             .url(requestPath)
             .headers(headers)
-            .body(new JsonRequestBody.Builder().body(request.toString()).build())
+            .body(createRequestBody(realRequest))
             .build();
     HttpResponse<Refund> httpResponse = httpClient.execute(httpRequest, Refund.class);
     return httpResponse.getServiceResponse();
   }
-
   /**
    * 查询单笔退款（通过商户退款单号）
    *
@@ -116,16 +117,18 @@ public class RefundService {
    */
   public Refund queryByOutRefundNo(QueryByOutRefundNoRequest request) {
     String requestPath = "https://api.mch.weixin.qq.com/v3/refund/domestic/refunds/{out_refund_no}";
+
+    QueryByOutRefundNoRequest realRequest = request;
     // 添加 path param
     requestPath =
-        requestPath.replace("{" + "out_refund_no" + "}", urlEncode(request.getOutRefundNo()));
+        requestPath.replace("{" + "out_refund_no" + "}", urlEncode(realRequest.getOutRefundNo()));
 
+    // 添加 query param
     QueryParameter queryParameter = new QueryParameter();
-    if (request.getSubMchid() != null) {
-      queryParameter.add("sub_mchid", urlEncode(request.getSubMchid()));
+    if (realRequest.getSubMchid() != null) {
+      queryParameter.add("sub_mchid", urlEncode(realRequest.getSubMchid()));
     }
     requestPath += queryParameter.getQueryStr();
-
     if (this.hostName != null) {
       requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
     }
@@ -140,5 +143,9 @@ public class RefundService {
             .build();
     HttpResponse<Refund> httpResponse = httpClient.execute(httpRequest, Refund.class);
     return httpResponse.getServiceResponse();
+  }
+
+  private RequestBody createRequestBody(Object request) {
+    return new JsonRequestBody.Builder().body(toJson(request)).build();
   }
 }
