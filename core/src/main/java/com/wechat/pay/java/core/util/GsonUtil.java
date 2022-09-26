@@ -48,7 +48,22 @@ public class GsonUtil {
             .create();
   }
 
+  /**
+   * 获取自定义设置的Gson对象
+   *
+   * @return Gson对象
+   */
   public static Gson getGson() {
     return gson;
+  }
+
+  /**
+   * 转换对象为JSON格式字符串
+   *
+   * @param object 待转换对象
+   * @return JSON格式字符串
+   */
+  public static String toJson(Object object) {
+    return gson.toJson(object);
   }
 }

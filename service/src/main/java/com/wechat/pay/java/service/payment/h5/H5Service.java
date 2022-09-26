@@ -12,6 +12,7 @@
 package com.wechat.pay.java.service.payment.h5;
 
 import static com.wechat.pay.java.core.http.UrlEncoder.urlEncode;
+import static com.wechat.pay.java.core.util.GsonUtil.toJson;
 import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.Config;
@@ -30,7 +31,7 @@ import com.wechat.pay.java.core.http.HttpResponse;
 import com.wechat.pay.java.core.http.JsonRequestBody;
 import com.wechat.pay.java.core.http.MediaType;
 import com.wechat.pay.java.core.http.QueryParameter;
-import com.wechat.pay.java.core.util.GsonUtil;
+import com.wechat.pay.java.core.http.RequestBody;
 import com.wechat.pay.java.service.payment.h5.model.CloseOrderRequest;
 import com.wechat.pay.java.service.payment.h5.model.PrepayRequest;
 import com.wechat.pay.java.service.payment.h5.model.PrepayResponse;
@@ -108,8 +109,7 @@ public class H5Service {
             .httpMethod(HttpMethod.POST)
             .url(requestPath)
             .headers(headers)
-            .body(
-                new JsonRequestBody.Builder().body(GsonUtil.getGson().toJson(realRequest)).build())
+            .body(createRequestBody(realRequest))
             .build();
     httpClient.execute(httpRequest, null);
   }
@@ -137,8 +137,7 @@ public class H5Service {
             .httpMethod(HttpMethod.POST)
             .url(requestPath)
             .headers(headers)
-            .body(
-                new JsonRequestBody.Builder().body(GsonUtil.getGson().toJson(realRequest)).build())
+            .body(createRequestBody(realRequest))
             .build();
     HttpResponse<PrepayResponse> httpResponse =
         httpClient.execute(httpRequest, PrepayResponse.class);
@@ -223,5 +222,9 @@ public class H5Service {
             .build();
     HttpResponse<Transaction> httpResponse = httpClient.execute(httpRequest, Transaction.class);
     return httpResponse.getServiceResponse();
+  }
+
+  private RequestBody createRequestBody(Object request) {
+    return new JsonRequestBody.Builder().body(toJson(request)).build();
   }
 }

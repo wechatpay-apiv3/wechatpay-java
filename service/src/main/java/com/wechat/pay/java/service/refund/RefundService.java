@@ -12,6 +12,7 @@
 package com.wechat.pay.java.service.refund;
 
 import static com.wechat.pay.java.core.http.UrlEncoder.urlEncode;
+import static com.wechat.pay.java.core.util.GsonUtil.toJson;
 import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.Config;
@@ -30,7 +31,7 @@ import com.wechat.pay.java.core.http.HttpResponse;
 import com.wechat.pay.java.core.http.JsonRequestBody;
 import com.wechat.pay.java.core.http.MediaType;
 import com.wechat.pay.java.core.http.QueryParameter;
-import com.wechat.pay.java.core.util.GsonUtil;
+import com.wechat.pay.java.core.http.RequestBody;
 import com.wechat.pay.java.service.refund.model.CreateRequest;
 import com.wechat.pay.java.service.refund.model.QueryByOutRefundNoRequest;
 import com.wechat.pay.java.service.refund.model.Refund;
@@ -99,8 +100,7 @@ public class RefundService {
             .httpMethod(HttpMethod.POST)
             .url(requestPath)
             .headers(headers)
-            .body(
-                new JsonRequestBody.Builder().body(GsonUtil.getGson().toJson(realRequest)).build())
+            .body(createRequestBody(realRequest))
             .build();
     HttpResponse<Refund> httpResponse = httpClient.execute(httpRequest, Refund.class);
     return httpResponse.getServiceResponse();
@@ -143,5 +143,9 @@ public class RefundService {
             .build();
     HttpResponse<Refund> httpResponse = httpClient.execute(httpRequest, Refund.class);
     return httpResponse.getServiceResponse();
+  }
+
+  private RequestBody createRequestBody(Object request) {
+    return new JsonRequestBody.Builder().body(toJson(request)).build();
   }
 }
