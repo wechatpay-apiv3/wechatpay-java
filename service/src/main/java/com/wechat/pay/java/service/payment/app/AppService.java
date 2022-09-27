@@ -54,7 +54,12 @@ public class AppService {
 
     private HttpClient httpClient;
     private HostName hostName;
-
+    /**
+     * 设置请求配置，以该配置构造默认的httpClient，若未调用httpClient()方法，则必须调用该方法
+     *
+     * @param config 请求配置
+     * @return Builder
+     */
     public Builder config(Config config) {
       this.httpClient =
           new DefaultHttpClientBuilder()
@@ -64,17 +69,32 @@ public class AppService {
 
       return this;
     }
-
+    /**
+     * 设置微信支付域名，可选，默认为api.mch.weixin.qq.com
+     *
+     * @param hostName 微信支付域名
+     * @return Builder
+     */
     public Builder hostName(HostName hostName) {
       this.hostName = hostName;
       return this;
     }
-
+    /**
+     * 设置自定义httpClient，若未调用config()，则必须调用该方法
+     *
+     * @param httpClient httpClient
+     * @return Builder
+     */
     public Builder httpClient(HttpClient httpClient) {
       this.httpClient = httpClient;
       return this;
     }
 
+    /**
+     * 构造服务
+     *
+     * @return AppService
+     */
     public AppService build() {
       return new AppService(httpClient, hostName);
     }
