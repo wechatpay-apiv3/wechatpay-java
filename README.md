@@ -103,11 +103,11 @@ public class QuickStart {
 ```java
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.RSAConfig;
-import com.wechat.pay.java.service.payment.jsapi.JsapiService;
-import com.wechat.pay.java.service.payment.jsapi.model.Amount;
-import com.wechat.pay.java.service.payment.jsapi.model.Payer;
-import com.wechat.pay.java.service.payment.jsapi.model.PrepayRequest;
-import com.wechat.pay.java.service.payment.jsapi.model.PrepayResponse;
+import com.wechat.pay.java.service.payments.jsapi.JsapiService;
+import com.wechat.pay.java.service.payments.jsapi.model.Amount;
+import com.wechat.pay.java.service.payments.jsapi.model.Payer;
+import com.wechat.pay.java.service.payments.jsapi.model.PrepayRequest;
+import com.wechat.pay.java.service.payments.jsapi.model.PrepayResponse;
 
 public class JsapiExample {
   public static void main(String[] args) {
@@ -171,7 +171,7 @@ service.closeOrder(closeRequest);
 
 为了方便开发者快速上手，微信支付给每个服务生成了示例代码 `XxxServiceExample.java`，可以在 [example](service/src/example) 中查看。例如：
 
-+ [JsapiServiceExample.java](service/src/example/java/com/wechat/pay/java/service/payment/jsapi/JsapiServiceExample.java)
++ [JsapiServiceExample.java](service/src/example/java/com/wechat/pay/java/service/payments/jsapi/JsapiServiceExample.java)
 + [FileServiceExample.java](service/src/example/java/com/wechat/pay/java/service/file/FileUploadServiceExample.java)
 
 ## 错误处理
@@ -199,7 +199,7 @@ SDK 使用的是 unchecked exception，会抛出四种自定义异常。每种�
 
 1. 获取HTTP请求头中的 `Wechatpay-Signature` 、 `Wechatpay-Nonce` 、 `Wechatpay-Timestamp` 、 `Wechatpay-Serial` 、 `Request-ID` 、`Wechatpay-Signature-Type` 对应的值，构建 `RequestParam` 。
 2. 获取 HTTP 请求体的 `JSON` 纯文本。
-3. 根据解密后的通知数据数据结构，构造解密对象类 `DecryptObject` 。支付结果通知解密对象类为 [`Transaction`](service/src/main/java/com/wechat/pay/java/service/payment/model/Transaction.java)，退款结果通知解密对象类为 [RefundNotification](service/src/main/java/com/wechat/pay/java/service/refund/model/RefundNotification.java)。
+3. 根据解密后的通知数据数据结构，构造解密对象类 `DecryptObject` 。支付结果通知解密对象类为 [`Transaction`](service/src/main/java/com/wechat/pay/java/service/payments/model/Transaction.java)，退款结果通知解密对象类为 [RefundNotification](service/src/main/java/com/wechat/pay/java/service/refund/model/RefundNotification.java)。
 4. 使用微信支付平台证书（验签）和商户 APIv3 密钥（解密）初始化 `NotificationConfig` 和 `NotificationParser` 。
 5. 使用请求参数 `requestParam` 和 `DecryptObject.class` ，调用 `parser.parse` 验签并解密报文。
 

@@ -46,9 +46,9 @@ package com.wechat.pay.java.service;
 
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.shangmi.bc.SMConfig;
-import com.wechat.pay.java.service.payment.jsapi.JsapiService;
-import com.wechat.pay.java.service.payment.jsapi.model.QueryOrderByIdRequest;
-import com.wechat.pay.java.service.payment.model.Transaction;
+import com.wechat.pay.java.service.payments.jsapi.JsapiService;
+import com.wechat.pay.java.service.payments.jsapi.model.QueryOrderByIdRequest;
+import com.wechat.pay.java.service.payments.model.Transaction;
 
 
 public class QuickStart {
