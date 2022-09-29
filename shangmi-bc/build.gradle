@@ -4,8 +4,8 @@ plugins{
 
 ext {
     publishedArtifactId = "wechatpay-java-shangmi-bc"
-    bcprov_version = "1.71.1"
-    bcpkix_version = "1.71.1"
+    bcprov_version = "1.72"
+    bcpkix_version = "1.72"
 }
 
 dependencies {
