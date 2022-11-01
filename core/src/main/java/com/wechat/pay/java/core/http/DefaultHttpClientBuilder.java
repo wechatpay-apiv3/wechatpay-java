@@ -2,6 +2,7 @@ package com.wechat.pay.java.core.http;
 
 import static java.util.Objects.requireNonNull;
 
+import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
 import com.wechat.pay.java.core.http.okhttp.OkHttpClientAdapter;
@@ -81,6 +82,13 @@ public class DefaultHttpClientBuilder {
    */
   public DefaultHttpClientBuilder okHttpClient(okhttp3.OkHttpClient okHttpClient) {
     this.customizeOkHttpClient = okHttpClient;
+    return this;
+  }
+
+  public DefaultHttpClientBuilder config(Config config) {
+    requireNonNull(config);
+    this.credential = config.createCredential();
+    this.validator = config.createValidator();
     return this;
   }
 
