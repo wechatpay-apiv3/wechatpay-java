@@ -269,6 +269,15 @@ String plaintext = decryptor.decryptToString(ciphertext);
 
 [RSAPrivacyEncryptorTest](core/src/test/java/com/wechat/pay/java/core/cipher/RSAPrivacyEncryptorTest.java) 和 [RSAPrivacyDecryptorTest](core/src/test/java/com/wechat/pay/java/core/cipher/RSAPrivacyDecryptorTest.java) 中演示了如何使用以上函数做敏感信息加解密。
 
+## 使用国密
+
+wechatpay-java 已支持国密，目前提供
+
++ shangmi，基于 [腾讯 Kona 国密套件](https://github.com/Tencent/TencentKonaSMSuite) 的国密扩展。
++ shangmi-bc，基于 [Bouncy Castle](https://www.bouncycastle.org/java.html) 的国密扩展。
+
+推荐使用 shangmi 扩展，文档请参考 [shang/README.md](shangmi/README.md)。
+
 ## 常见问题
 
 ### 如何下载平台证书？

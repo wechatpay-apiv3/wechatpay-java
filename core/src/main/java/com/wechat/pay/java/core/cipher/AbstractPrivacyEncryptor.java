@@ -20,7 +20,7 @@ public abstract class AbstractPrivacyEncryptor implements PrivacyEncryptor {
   protected AbstractPrivacyEncryptor(
       String transformation, PublicKey publicKey, String wechatPaySerial) {
     this.publicKey = requireNonNull(publicKey);
-    this.wechatPaySerial = requireNonNull(wechatPaySerial);
+    this.wechatPaySerial = requireNonNull(wechatPaySerial).toUpperCase();
     try {
       cipher = Cipher.getInstance(transformation);
     } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {

@@ -1,5 +1,6 @@
 package com.wechat.pay.java.core.cipher;
 
+/** 认证加密器 */
 public interface AeadCipher {
   /**
    * 加密并转换为字符串

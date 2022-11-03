@@ -1,7 +1,5 @@
 package com.wechat.pay.java.core.model;
 
-import static com.wechat.pay.java.core.cipher.Constant.HEX;
-
 import com.wechat.pay.java.core.util.IOUtil;
 import com.wechat.pay.java.core.util.PemUtil;
 import java.security.PrivateKey;
@@ -42,8 +40,8 @@ public class TestConfig {
       WECHAT_PAY_PRIVATE_KEY = PemUtil.loadPrivateKeyFromString(WECHAT_PAY_PRIVATE_KEY_STRING);
       WECHAT_PAY_CERTIFICATE_STRING = IOUtil.loadStringFromPath(WECHAT_PAY_CERTIFICATE_PATH);
       WECHAT_PAY_CERTIFICATE = PemUtil.loadX509FromString(WECHAT_PAY_CERTIFICATE_STRING);
-      MERCHANT_CERTIFICATE_SERIAL_NUMBER = MERCHANT_CERTIFICATE.getSerialNumber().toString(HEX);
-      WECHAT_PAY_CERTIFICATE_SERIAL_NUMBER = WECHAT_PAY_CERTIFICATE.getSerialNumber().toString(HEX);
+      MERCHANT_CERTIFICATE_SERIAL_NUMBER = "5F1C72E2A8931B72A2E13AF8DEE92471EB397115";
+      WECHAT_PAY_CERTIFICATE_SERIAL_NUMBER = "440024045C4A427599D09BB4E3DE0279F2E813FD";
       MERCHANT_ID = "1234567891";
     } catch (Exception e) {
       throw new RuntimeException(e);

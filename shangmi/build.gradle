@@ -1,0 +1,88 @@
+plugins{
+    id "common"
+}
+
+ext {
+    publishedArtifactId = "wechatpay-java-shangmi"
+    kona_version = "1.0.3"
+}
+
+dependencies {
+    api project(":core")
+    implementation "org.slf4j:slf4j-api:${slf4jVersion}"
+    implementation("com.tencent.kona:kona-crypto:${kona_version}")
+    implementation("com.tencent.kona:kona-pkix:${kona_version}")
+    implementation("com.tencent.kona:kona-provider:${kona_version}")
+
+    testImplementation project(":service")
+    testImplementation project(":shangmi-testing")
+    testImplementation platform("org.junit:junit-bom:${junit5Version}")
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes("Automatic-Module-Name": "com.wechat.pay.java.shangmi")
+        attributes("Implementation-Version": project.version)
+    }
+}
+
+publishing {
+    java {
+        withJavadocJar()
+        withSourcesJar()
+    }
+
+    publications {
+        maven(MavenPublication) {
+            artifactId = project.ext.publishedArtifactId
+            from components.java
+
+            pom {
+                name = project.ext.publishedArtifactId
+                description = "A ShangMi extension package implemented using TencentKonaSMSuite for WeChat Pay APIv3 Java SDK"
+                url = "https://github.com/wechatpay-apiv3/wechatpay-java"
+                licenses {
+                    license {
+                        name = "The Apache Software License, Version 2.0"
+                        url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+                developers {
+                    developer {
+                        name = "WeChat Pay APIv3 Team"
+                    }
+                }
+                scm {
+                    connection = "scm:git:https://github.com/wechatpay-apiv3/wechatpay-java.git"
+                    developerConnection = "scm:git:ssh://github.com:wechatpay-apiv3/wechatpay-java.git"
+                    url = "https://github.com/wechatpay-apiv3/wechatpay-java"
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "mavencentral"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            url = version.endsWith("SNAPSHOT") ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                username System.getenv("SONATYPE_NEXUS_USERNAME")
+                password System.getenv("SONATYPE_NEXUS_PASSWORD")
+            }
+        }
+    }
+}
+
+signing {
+    def signingKey= System.getenv("SIGNING_KEY")
+    def signingPassword = System.getenv("SIGNING_PASSWORD")
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.maven
+}
