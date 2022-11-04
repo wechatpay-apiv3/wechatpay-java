@@ -271,12 +271,7 @@ String plaintext = decryptor.decryptToString(ciphertext);
 
 ## 使用国密
 
-wechatpay-java 已支持国密，目前提供
-
-+ shangmi，基于 [腾讯 Kona 国密套件](https://github.com/Tencent/TencentKonaSMSuite) 的国密扩展。
-+ shangmi-bc，基于 [Bouncy Castle](https://www.bouncycastle.org/java.html) 的国密扩展。
-
-推荐使用 shangmi 扩展，文档请参考 [shang/README.md](shangmi/README.md)。
+我们提供基于 [腾讯 Kona 国密套件](https://github.com/Tencent/TencentKonaSMSuite) 的国密扩展。文档请参考 [shangmi/README.md](shangmi/README.md)。
 
 ## 常见问题
 
