@@ -5,6 +5,7 @@ import com.wechat.pay.java.core.cipher.AbstractSigner;
 import java.security.PrivateKey;
 import java.security.Security;
 
+/** 国密签名器 */
 public class SM2Signer extends AbstractSigner {
   static {
     Security.addProvider(new KonaProvider());
