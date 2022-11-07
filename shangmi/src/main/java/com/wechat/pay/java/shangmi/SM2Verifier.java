@@ -5,6 +5,7 @@ import com.wechat.pay.java.core.certificate.CertificateProvider;
 import com.wechat.pay.java.core.cipher.AbstractVerifier;
 import java.security.Security;
 
+/** 国密验签器 */
 public class SM2Verifier extends AbstractVerifier {
 
   static {

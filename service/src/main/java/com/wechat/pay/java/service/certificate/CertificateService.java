@@ -145,6 +145,7 @@ public class CertificateService {
    * 下载微信支付平台证书列表，仅下载国密证书
    *
    * @param aeadCipher 认证加密器，用于解密证书
+   * @param certificateGenerator 从证书字符串到证书对象的生成器
    * @return 微信支付平台证书 X509Certificate 列表
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。

@@ -16,6 +16,7 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
+/** 国密配置 */
 public final class SMConfig implements Config {
 
   /** 商户号 */
@@ -120,7 +121,7 @@ public final class SMConfig implements Config {
     }
 
     /**
-     * 设置
+     * 设置微信支付平台证书提供器
      *
      * @param provider 微信支付平台证书提供器
      * @return Builder
