@@ -43,7 +43,10 @@ public class CertificateTest {
     assertDoesNotThrow(
         () -> {
           List<X509Certificate> l =
-              service.downloadCertificateShangMi(aeadCipher, SMPemUtil::loadX509FromString);
+              service.downloadCertificate(
+                  "https://api.mch.weixin.qq.com/v3/certificates?algorithm_type=SM2",
+                  aeadCipher,
+                  SMPemUtil::loadX509FromString);
         });
   }
 }
