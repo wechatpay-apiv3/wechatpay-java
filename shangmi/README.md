@@ -20,8 +20,6 @@ implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.0'
 implementation 'com.github.wechatpay-apiv3:wechatpay-java-shangmi:0.2.0'
 ```
 
-
-
 #### Maven
 加入以下依赖
 ```xml
@@ -108,6 +106,24 @@ HttpResponse<DownloadCertificateResponse> response = client.get(
         DownloadCertificateResponse.class);
 
 System.out.println(response.getServiceResponse());
+```
+
+## 如何下载国密证书
+
+调用 `CertificateService.downloadCertificate()`，并指定国密适用的参数：
+
++ `requestUrl`，指定证书类型 `algorithm_type=SM2`。
++ `aeadCipher`，使用国密消息认证解密器 `AeadSM4Cipher`
++ `certificateGenerator`，使用支持国密证书的证书生成函数 `SMPemUtil::loadX509FromString`
+
+```java
+CertificateService service = new CertificateService.Builder().config(config).build();
+AeadCipher aeadCipher = new AeadSM4Cipher(apiV3Key.getBytes(StandardCharsets.UTF_8));
+List<X509Certificate> certificates =
+    service.downloadCertificate(
+        "https://api.mch.weixin.qq.com/v3/certificates?algorithm_type=SM2",
+        aeadCipher,
+        SMPemUtil::loadX509FromString);
 ```
 
 ## 常见问题

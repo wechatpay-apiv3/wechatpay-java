@@ -35,7 +35,6 @@ public class CertificateService {
   private final HostName hostName;
 
   private static final String RSA_URL = "https://api.mch.weixin.qq.com/v3/certificates";
-  private static final String SM2_URL = RSA_URL + "?algorithm_type=SM2";
 
   private CertificateService(HttpClient httpClient, HostName hostName) {
     this.httpClient = requireNonNull(httpClient);
@@ -92,10 +91,14 @@ public class CertificateService {
    *
    * @param requestPath 下载证书的请求路径
    * @param aeadCipher 认证加密器，用于解密证书
-   * @param certificateGenerator 证书到对象的生成器
+   * @param certificateGenerator 从证书字符串到证书对象的生成器
    * @return 微信支付平台证书 X509Certificate 列表
+   * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
+   * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
+   * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
-  private List<X509Certificate> downloadCertificate(
+  public List<X509Certificate> downloadCertificate(
       String requestPath,
       AeadCipher aeadCipher,
       Function<String, X509Certificate> certificateGenerator) {
@@ -137,24 +140,6 @@ public class CertificateService {
    * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
   public List<X509Certificate> downloadCertificate(AeadCipher aeadCipher) {
-    requireNonNull(aeadCipher);
     return downloadCertificate(RSA_URL, aeadCipher, PemUtil::loadX509FromString);
-  }
-
-  /**
-   * 下载微信支付平台证书列表，仅下载国密证书
-   *
-   * @param aeadCipher 认证加密器，用于解密证书
-   * @param certificateGenerator 从证书字符串到证书对象的生成器
-   * @return 微信支付平台证书 X509Certificate 列表
-   * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
-   * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
-   * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
-   */
-  public List<X509Certificate> downloadCertificateShangMi(
-      AeadCipher aeadCipher, Function<String, X509Certificate> certificateGenerator) {
-    requireNonNull(aeadCipher);
-    return downloadCertificate(SM2_URL, aeadCipher, certificateGenerator);
   }
 }
