@@ -12,7 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public class CertificateTest {
+@Disabled("use for manual test")
+class CertificateTest {
   final String merchantId = "";
   final String privateKey = "";
   final String merchantSerialNo = "";
@@ -33,7 +34,6 @@ public class CertificateTest {
   }
 
   @Test
-  @Disabled
   void testDownloadCertificate() {
     HttpHeaders headers = new HttpHeaders();
     headers.addHeader("Accept", "application/json");

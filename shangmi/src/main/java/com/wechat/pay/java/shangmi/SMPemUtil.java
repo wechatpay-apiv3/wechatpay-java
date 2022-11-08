@@ -12,6 +12,10 @@ public class SMPemUtil {
     Security.addProvider(new KonaProvider());
   }
 
+  private SMPemUtil() {
+    throw new IllegalStateException("Utility class");
+  }
+
   /**
    * 从私钥字符串中加载EC(椭圆曲线)私钥。
    *
