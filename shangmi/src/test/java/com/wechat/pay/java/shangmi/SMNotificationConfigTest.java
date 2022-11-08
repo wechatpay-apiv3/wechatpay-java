@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-public class SMNotificationConfigTest {
+class SMNotificationConfigTest {
 
   private final String certificatePath =
       System.getProperty("user.dir")

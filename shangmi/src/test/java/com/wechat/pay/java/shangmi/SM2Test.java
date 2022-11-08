@@ -10,7 +10,7 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Vector;
 
-public class SM2Test implements BaseSM2Test {
+class SM2Test implements BaseSM2Test {
 
   @Override
   public Signer createSM2Signer(String serialNumber, String privateKeyString) {
