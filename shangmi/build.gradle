@@ -22,6 +22,10 @@ dependencies {
 
 test {
     useJUnitPlatform()
+
+    jacoco {
+        enabled = false
+    }
 }
 
 jar {
