@@ -14,3 +14,4 @@
 | partnerpayments/nativepay | Native 支付 |  | ✔️ |
 | partnerpayments/h5 | H5 支付|  | ✔️ |
 | refund | 退款|✔️|✔️|
+| payrollcard | 微工卡||✔️|
