@@ -43,7 +43,7 @@ implementation 'com.github.wechatpay-apiv3:wechatpay-java-shangmi:0.2.1'
 package com.wechat.pay.java.service;
 
 import com.wechat.pay.java.core.Config;
-import com.wechat.pay.java.shangmi.kona.SMConfig;
+import com.wechat.pay.java.shangmi.SMConfig;
 import com.wechat.pay.java.service.payments.jsapi.JsapiService;
 import com.wechat.pay.java.service.payments.jsapi.model.QueryOrderByIdRequest;
 import com.wechat.pay.java.service.payments.model.Transaction;
