@@ -93,7 +93,7 @@ public class NotificationParser {
           String.format(
               "Processing WechatPay notification,signature verification failed,"
                   + "signType[%s]\tserial[%s]\tmessage[%s]\tsign[%s]",
-              requestParam.getSignature(),
+              requestParam.getSignType(),
               requestParam.getSerialNumber(),
               requestParam.getMessage(),
               requestParam.getSignature()));

@@ -7,6 +7,7 @@ import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
 import com.wechat.pay.java.core.cipher.PrivacyDecryptor;
 import com.wechat.pay.java.core.cipher.PrivacyEncryptor;
+import com.wechat.pay.java.core.cipher.Signer;
 import java.net.URI;
 import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.Test;
@@ -74,6 +75,11 @@ public class DefaultHttpClientBuilderTest {
           @Override
           public Validator createValidator() {
             return validator;
+          }
+
+          @Override
+          public Signer createSigner() {
+            return null;
           }
         };
     HttpClient httpClient =

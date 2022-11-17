@@ -8,6 +8,7 @@ import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
 import com.wechat.pay.java.core.cipher.PrivacyDecryptor;
 import com.wechat.pay.java.core.cipher.PrivacyEncryptor;
+import com.wechat.pay.java.core.cipher.Signer;
 import com.wechat.pay.java.core.http.Constant;
 import com.wechat.pay.java.core.http.DefaultHttpClientBuilder;
 import com.wechat.pay.java.core.http.HttpClient;
@@ -92,6 +93,11 @@ public class FileUploadServiceTest {
                 return true;
               }
             };
+          }
+
+          @Override
+          public Signer createSigner() {
+            return null;
           }
         };
   }
