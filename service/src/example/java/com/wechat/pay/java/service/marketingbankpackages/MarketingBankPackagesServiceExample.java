@@ -4,7 +4,6 @@ import com.wechat.pay.java.core.RSAConfig;
 import com.wechat.pay.java.service.marketingbankpackages.model.ListTaskRequest;
 import com.wechat.pay.java.service.marketingbankpackages.model.ListTaskResponse;
 import com.wechat.pay.java.service.marketingbankpackages.model.Task;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /** MarketingBankPackagesService使用示例 */
@@ -59,7 +58,7 @@ public class MarketingBankPackagesServiceExample {
         try {
             fileUploadResponse = service.uploadPackageByFile(packageId, bankType, filePath);
             System.out.println("##### upload response ##### \n" + fileUploadResponse.toString());
-        } catch (IOException e) {
+        } catch (Exception e) {
             // ...上报监控和打印日志
             System.out.println("Upload error:" + e.toString());
         }

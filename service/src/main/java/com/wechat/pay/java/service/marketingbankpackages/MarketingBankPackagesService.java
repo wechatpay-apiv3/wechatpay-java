@@ -164,7 +164,7 @@ public class MarketingBankPackagesService {
      * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
      */
     public Task uploadPackageByFile(String packageId, String bankType, String filePath)
-    throws IOException {
+    throws IllegalArgumentException {
         File file = new File(filePath);
         ArrayList < String > fileContentList = new ArrayList < > ();
         try {
