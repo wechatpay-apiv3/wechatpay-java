@@ -2,12 +2,13 @@ package com.wechat.pay.java.service;
 
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.RSAConfig;
-import com.wechat.pay.java.service.certificate.CertificateService;
-import java.nio.charset.StandardCharsets;
-import java.security.cert.X509Certificate;
-import java.util.List;
+import com.wechat.pay.java.service.payments.jsapi.JsapiService;
+import com.wechat.pay.java.service.payments.jsapi.model.Amount;
+import com.wechat.pay.java.service.payments.jsapi.model.Payer;
+import com.wechat.pay.java.service.payments.jsapi.model.PrepayRequest;
+import com.wechat.pay.java.service.payments.jsapi.model.PrepayResponse;
 
-/** 下载微信支付平台证书为例 */
+/** JSAPI 下单为例 */
 public class QuickStart {
 
   /** 商户号 */
@@ -29,8 +30,21 @@ public class QuickStart {
             .merchantSerialNumber(merchantSerialNumber)
             .wechatPayCertificatesFromPath(wechatPayCertificatePath)
             .build();
-    CertificateService certificateService = new CertificateService.Builder().config(config).build();
-    List<X509Certificate> certificates =
-        certificateService.downloadCertificate(apiV3Key.getBytes(StandardCharsets.UTF_8));
+    JsapiService service = new JsapiService.Builder().config(config).build();
+    // 调用request.setXxx(val)设置所需参数，具体参数可见Request定义
+    PrepayRequest request = new PrepayRequest();
+    Amount amount = new Amount();
+    amount.setTotal(100);
+    request.setAmount(amount);
+    request.setAppid("wxa9d9651ae******");
+    request.setMchid("190000****");
+    request.setDescription("测试商品标题");
+    request.setNotifyUrl("https://notify_url");
+    request.setOutTradeNo("out_trade_no_001");
+    Payer payer = new Payer();
+    payer.setOpenid("oLTPCuN5a-nBD4rAL_fa********");
+    request.setPayer(payer);
+    PrepayResponse response = service.prepay(request);
+    System.out.println(response.getPrepayId());
   }
 }
