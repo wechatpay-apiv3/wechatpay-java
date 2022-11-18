@@ -48,189 +48,192 @@ import java.util.ArrayList;
 /** MarketingBankPackagesService服务 */
 public class MarketingBankPackagesService {
 
-    private final HttpClient httpClient;
-    private final HostName hostName;
-    private final PrivacyEncryptor encryptor;
+  private final HttpClient httpClient;
+  private final HostName hostName;
+  private final PrivacyEncryptor encryptor;
 
-    private MarketingBankPackagesService(
-        HttpClient httpClient, HostName hostName, PrivacyEncryptor encryptor) {
-        this.httpClient = requireNonNull(httpClient);
-        this.hostName = hostName;
-        this.encryptor = requireNonNull(encryptor);
+  private MarketingBankPackagesService(
+      HttpClient httpClient, HostName hostName, PrivacyEncryptor encryptor) {
+    this.httpClient = requireNonNull(httpClient);
+    this.hostName = hostName;
+    this.encryptor = requireNonNull(encryptor);
+  }
+
+  /** MarketingBankPackagesService构造器 */
+  public static class Builder {
+
+    private HttpClient httpClient;
+    private HostName hostName;
+    private PrivacyEncryptor encryptor;
+
+    public Builder config(Config config) {
+      this.httpClient =
+          new DefaultHttpClientBuilder()
+              .credential(requireNonNull(config.createCredential()))
+              .validator(requireNonNull(config.createValidator()))
+              .build();
+      this.encryptor = config.createEncryptor();
+      return this;
     }
 
-    /** MarketingBankPackagesService构造器 */
-    public static class Builder {
-
-        private HttpClient httpClient;
-        private HostName hostName;
-        private PrivacyEncryptor encryptor;
-
-        public Builder config(Config config) {
-            this.httpClient =
-                new DefaultHttpClientBuilder()
-                .credential(requireNonNull(config.createCredential()))
-                .validator(requireNonNull(config.createValidator()))
-                .build();
-            this.encryptor = config.createEncryptor();
-            return this;
-        }
-
-        public Builder hostName(HostName hostName) {
-            this.hostName = hostName;
-            return this;
-        }
-
-        public Builder httpClient(HttpClient httpClient) {
-            this.httpClient = httpClient;
-            return this;
-        }
-
-        public Builder encryptor(PrivacyEncryptor encryptor) {
-            this.encryptor = encryptor;
-            return this;
-        }
-
-        public MarketingBankPackagesService build() {
-            return new MarketingBankPackagesService(httpClient, hostName, encryptor);
-        }
+    public Builder hostName(HostName hostName) {
+      this.hostName = hostName;
+      return this;
     }
 
-    /**
-     * 查询上传任务列表
-     *
-     * @param request 请求参数
-     * @return ListTaskResponse
-     * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
-     * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
-     * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-     * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
-     */
-    public ListTaskResponse listTask(ListTaskRequest request) {
-        String requestPath =
-            "https://api.mch.weixin.qq.com/v3/marketing/bank/packages/{package_id}/tasks";
+    public Builder httpClient(HttpClient httpClient) {
+      this.httpClient = httpClient;
+      return this;
+    }
 
-        ListTaskRequest realRequest = request;
-        // 添加 path param
-        requestPath =
-            requestPath.replace("{" + "package_id" + "}", urlEncode(realRequest.getPackageId()));
+    public Builder encryptor(PrivacyEncryptor encryptor) {
+      this.encryptor = encryptor;
+      return this;
+    }
 
-        // 添加 query param
-        QueryParameter queryParameter = new QueryParameter();
-        if (realRequest.getFilename() != null) {
-            queryParameter.add("filename", urlEncode(realRequest.getFilename()));
-        }
-        if (realRequest.getOffset() != null) {
-            queryParameter.add("offset", urlEncode(realRequest.getOffset().toString()));
-        }
-        if (realRequest.getLimit() != null) {
-            queryParameter.add("limit", urlEncode(realRequest.getLimit().toString()));
-        }
-        if (realRequest.getStatus() != null) {
-            queryParameter.add("status", urlEncode(realRequest.getStatus().toString()));
-        }
-        requestPath += queryParameter.getQueryStr();
-        if (this.hostName != null) {
-            requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
-        }
-        HttpHeaders headers = new HttpHeaders();
-        headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
-        headers.addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue());
-        HttpRequest httpRequest =
-            new HttpRequest.Builder()
+    public MarketingBankPackagesService build() {
+      return new MarketingBankPackagesService(httpClient, hostName, encryptor);
+    }
+  }
+
+  /**
+   * 查询上传任务列表
+   *
+   * @param request 请求参数
+   * @return ListTaskResponse
+   * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
+   * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
+   * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
+   */
+  public ListTaskResponse listTask(ListTaskRequest request) {
+    String requestPath =
+        "https://api.mch.weixin.qq.com/v3/marketing/bank/packages/{package_id}/tasks";
+
+    ListTaskRequest realRequest = request;
+    // 添加 path param
+    requestPath =
+        requestPath.replace("{" + "package_id" + "}", urlEncode(realRequest.getPackageId()));
+
+    // 添加 query param
+    QueryParameter queryParameter = new QueryParameter();
+    if (realRequest.getFilename() != null) {
+      queryParameter.add("filename", urlEncode(realRequest.getFilename()));
+    }
+    if (realRequest.getOffset() != null) {
+      queryParameter.add("offset", urlEncode(realRequest.getOffset().toString()));
+    }
+    if (realRequest.getLimit() != null) {
+      queryParameter.add("limit", urlEncode(realRequest.getLimit().toString()));
+    }
+    if (realRequest.getStatus() != null) {
+      queryParameter.add("status", urlEncode(realRequest.getStatus().toString()));
+    }
+    requestPath += queryParameter.getQueryStr();
+    if (this.hostName != null) {
+      requestPath = requestPath.replaceFirst(HostName.API.getValue(), hostName.getValue());
+    }
+    HttpHeaders headers = new HttpHeaders();
+    headers.addHeader(Constant.ACCEPT, MediaType.APPLICATION_JSON.getValue());
+    headers.addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue());
+    HttpRequest httpRequest =
+        new HttpRequest.Builder()
             .httpMethod(HttpMethod.GET)
             .url(requestPath)
             .headers(headers)
             .build();
-        HttpResponse < ListTaskResponse > httpResponse =
-            httpClient.execute(httpRequest, ListTaskResponse.class);
-        return httpResponse.getServiceResponse();
+    HttpResponse<ListTaskResponse> httpResponse =
+        httpClient.execute(httpRequest, ListTaskResponse.class);
+    return httpResponse.getServiceResponse();
+  }
+
+  private RequestBody createRequestBody(Object request) {
+    return new JsonRequestBody.Builder().body(toJson(request)).build();
+  }
+
+  /**
+   * 导入定向用户协议号(创建上传任务)
+   *
+   * @param packageId 号码包id
+   * @param bankType 银行类型
+   * @param filePath 待上传的文件的绝对路径。文件行数建议不超过5500行，如果原始文件过大，商户需先切割为若干小文件再逐个上传
+   * @return Task
+   * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
+   * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
+   * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
+   */
+  public Task uploadPackageByFile(String packageId, String bankType, String filePath)
+      throws IllegalArgumentException {
+    File file = new File(filePath);
+    ArrayList<String> fileContentList = new ArrayList<>();
+    try {
+      // 读取文件
+      BufferedReader reader;
+      reader = new BufferedReader(new FileReader(file));
+      String line = reader.readLine();
+      while (line != null) {
+        fileContentList.add(line);
+        line = reader.readLine();
+      }
+      reader.close();
+      return uploadPackage(packageId, bankType, file.getName(), fileContentList);
+    } catch (IOException e) {
+      throw new IllegalArgumentException("Upload file, failed to open filePath:" + filePath);
+    }
+  }
+
+  /**
+   * 导入定向用户协议号(创建上传任务)
+   *
+   * @param packageId 号码包id
+   * @param bankType 银行类型
+   * @param fileName 文件名，非文件路径
+   * @param fileContentList 文件内容，数组中每个元素代表一条用户协议号明文。每个文件行数建议不超过5500行
+   * @return Task
+   * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
+   * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
+   * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
+   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
+   */
+  public Task uploadPackage(
+      String packageId, String bankType, String fileName, ArrayList<String> fileContentList) {
+    if (fileContentList.size() > 5500) {
+      throw new IllegalArgumentException(
+          "Number of lines should not bigger than 5500. fileContentList.size: "
+              + String.valueOf(fileContentList.size()));
     }
 
-    private RequestBody createRequestBody(Object request) {
-        return new JsonRequestBody.Builder().body(toJson(request)).build();
+    // 1、拼接url
+    String uploadPath =
+        "https://api.mch.weixin.qq.com/v3/marketing/bank/packages/"
+            + urlEncode(packageId)
+            + "/tasks";
+
+    // 2、逐行加密文件内容
+    StringBuilder sb = new StringBuilder();
+    for (String each : fileContentList) {
+      sb.append(encryptor.encrypt(each)).append("\n");
     }
+    String encryptedFileContent = sb.toString();
 
-    /**
-     * 导入定向用户协议号(创建上传任务)
-     *
-     * @param packageId 号码包id
-     * @param bankType 银行类型
-     * @param filePath 待上传的文件的绝对路径。文件行数建议不超过5500行，如果原始文件过大，商户需先切割为若干小文件再逐个上传
-     * @return Task
-     * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
-     * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
-     * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-     * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
-     */
-    public Task uploadPackageByFile(String packageId, String bankType, String filePath)
-    throws IllegalArgumentException {
-        File file = new File(filePath);
-        ArrayList < String > fileContentList = new ArrayList < > ();
-        try {
-            // 读取文件
-            BufferedReader reader;
-            reader = new BufferedReader(new FileReader(file));
-            String line = reader.readLine();
-            while (line != null) {
-                fileContentList.add(line);
-                line = reader.readLine();
-            }
-            reader.close();
-            return uploadPackage(packageId, bankType, file.getName(), fileContentList);
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Upload file, failed to open filePath:" + filePath);
-        }
-    }
+    // 3、计算sha256文件摘要
+    byte[] fileBytes = encryptedFileContent.getBytes();
+    String fileSha256 = ShaUtil.getSha256HexString(fileBytes);
 
-    /**
-     * 导入定向用户协议号(创建上传任务)
-     *
-     * @param packageId 号码包id
-     * @param bankType 银行类型
-     * @param fileName 文件名，非文件路径
-     * @param fileContentList 文件内容，数组中每个元素代表一条用户协议号明文。每个文件行数建议不超过5500行
-     * @return Task
-     * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
-     * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
-     * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-     * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
-     */
-    public Task uploadPackage(
-        String packageId, String bankType, String fileName, ArrayList < String > fileContentList) {
-        if (fileContentList.size() > 5500) {
-            throw new IllegalArgumentException(
-                "Number of lines should not bigger than 5500. fileContentList.size: " + String.valueOf(fileContentList.size()));
-        }
+    // 4、组装meta
+    String fileMeta =
+        String.format(
+            "{\"filename\":\"%s\",\"sha256\":\"%s\",\"bank_type\":\"%s\"}",
+            fileName, fileSha256, bankType);
 
-        // 1、拼接url
-        String uploadPath =
-            "https://api.mch.weixin.qq.com/v3/marketing/bank/packages/" + urlEncode(packageId) + "/tasks";
+    // 5、执行上传
+    return uploadFile(uploadPath, fileMeta, fileName, fileBytes);
+  }
 
-        // 2、逐行加密文件内容
-        StringBuilder sb = new StringBuilder();
-        for (String each: fileContentList) {
-            sb.append(encryptor.encrypt(each)).append("\n");
-        }
-        String encryptedFileContent = sb.toString();
-
-        // 3、计算sha256文件摘要
-        byte[] fileBytes = encryptedFileContent.getBytes();
-        String fileSha256 = ShaUtil.getSha256HexString(fileBytes);
-
-        // 4、组装meta
-        String fileMeta =
-            String.format(
-                "{\"filename\":\"%s\",\"sha256\":\"%s\",\"bank_type\":\"%s\"}",
-                fileName, fileSha256, bankType);
-
-        // 5、执行上传
-        return uploadFile(uploadPath, fileMeta, fileName, fileBytes);
-    }
-
-    private Task uploadFile(String uploadPath, String meta, String fileName, byte[] fileBytes) {
-        HttpRequest request =
-            new HttpRequest.Builder()
+  private Task uploadFile(String uploadPath, String meta, String fileName, byte[] fileBytes) {
+    HttpRequest request =
+        new HttpRequest.Builder()
             .addHeader(Constant.ACCEPT, " */*")
             .addHeader(Constant.WECHAT_PAY_SERIAL, encryptor.getWechatpaySerial())
             .addHeader(Constant.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA.getValue())
@@ -239,6 +242,6 @@ public class MarketingBankPackagesService {
             .body(
                 new FileRequestBody.Builder().meta(meta).fileName(fileName).file(fileBytes).build())
             .build();
-        return httpClient.execute(request, Task.class).getServiceResponse();
-    }
+    return httpClient.execute(request, Task.class).getServiceResponse();
+  }
 }
