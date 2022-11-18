@@ -8,7 +8,7 @@
 
 ## 项目状态
 
-当前版本`0.2.0`为测试版本，项目规划详如下。
+当前版本`0.2.1`为测试版本，项目规划详如下。
 
 | 工作项 | 状态 |
 | ----- | ---- |
@@ -24,7 +24,7 @@
 - [成为微信支付商户](https://pay.weixin.qq.com/index.php/apply/applyment_home/guide_normal)。
 - [商户 API 证书](https://wechatpay-api.gitbook.io/wechatpay-api-v3/ren-zheng/zheng-shu#shang-hu-api-zheng-shu)：指由商户申请的，包含商户的商户号、公司名称、公钥信息的证书。
 - [商户 API 私钥](https://wechatpay-api.gitbook.io/wechatpay-api-v3/ren-zheng/zheng-shu#shang-hu-api-si-yao)：商户申请商户API证书时，会生成商户私钥，并保存在本地证书文件夹的文件 apiclient_key.pem 中。
-- [微信支付平台 API 证书](https://wechatpay-api.gitbook.io/wechatpay-api-v3/ren-zheng/zheng-shu#ping-tai-zheng-shu)：由微信支付负责申请的，包含微信支付平台标识、公钥信息的证书。
+- [微信支付平台证书](https://wechatpay-api.gitbook.io/wechatpay-api-v3/ren-zheng/zheng-shu#ping-tai-zheng-shu)：由微信支付负责申请的，包含微信支付平台标识、公钥信息的证书。首次下载平台证书可使用[微信支付 APIv3 平台证书下载工具](https://github.com/wechatpay-apiv3/CertificateDownloader)。
 - [APIv3 密钥](https://wechatpay-api.gitbook.io/wechatpay-api-v3/ren-zheng/api-v3-mi-yao)：为了保证安全性，微信支付在回调通知和平台证书下载接口中，对关键信息进行了 AES-256-GCM 加密。APIv3 密钥是加密时使用的对称密钥。
 
 ## 快速开始
@@ -51,19 +51,20 @@ implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.1'
 
 ### 调用业务请求接口
 
-以下载微信支付平台证书为例，先构建 `config` 和 `service`，再发送请求。详细代码可参考 [QuickStart](service/src/example/java/com/wechat/pay/java/service/QuickStart.java)。
+以 JSAPI 下单为例，先构建 `config` 和 `service`，再发送请求。详细代码可参考 [QuickStart](service/src/example/java/com/wechat/pay/java/service/QuickStart.java)。
 
 ```java
 package com.wechat.pay.java.service;
 
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.RSAConfig;
-import com.wechat.pay.java.service.certificate.CertificateService;
-import java.nio.charset.StandardCharsets;
-import java.security.cert.X509Certificate;
-import java.util.List;
+import com.wechat.pay.java.service.payments.jsapi.JsapiService;
+import com.wechat.pay.java.service.payments.jsapi.model.Amount;
+import com.wechat.pay.java.service.payments.jsapi.model.Payer;
+import com.wechat.pay.java.service.payments.jsapi.model.PrepayRequest;
+import com.wechat.pay.java.service.payments.jsapi.model.PrepayResponse;
 
-/** 下载微信支付平台证书为例 */
+/** JSAPI 下单为例 */
 public class QuickStart {
 
   /** 商户号 */
@@ -85,42 +86,8 @@ public class QuickStart {
             .merchantSerialNumber(merchantSerialNumber)
             .wechatPayCertificatesFromPath(wechatPayCertificatePath)
             .build();
-    CertificateService certificateService = new CertificateService.Builder().config(config).build();
-    List<X509Certificate> certificates =
-        certificateService.downloadCertificate(apiV3Key.getBytes(StandardCharsets.UTF_8));
-  }
-}
-```
-
-从示例可见，使用 SDK 并不需要计算请求签名和验证应答签名。
-
-## 示例
-
-### JSAPI 支付下单
-
-请求参数需使用你自己的商户号、证书密钥、AppID 以及对应的 OpenID。
-
-```java
-import com.wechat.pay.java.core.Config;
-import com.wechat.pay.java.core.RSAConfig;
-import com.wechat.pay.java.service.payments.jsapi.JsapiService;
-import com.wechat.pay.java.service.payments.jsapi.model.Amount;
-import com.wechat.pay.java.service.payments.jsapi.model.Payer;
-import com.wechat.pay.java.service.payments.jsapi.model.PrepayRequest;
-import com.wechat.pay.java.service.payments.jsapi.model.PrepayResponse;
-
-public class JsapiExample {
-  public static void main(String[] args) {
-    Config config =
-        new RSAConfig.Builder()
-            .merchantId(merchantId)
-            .privateKeyFromPath(privateKeyPath)
-            .merchantSerialNumber(merchantSerialNumber)
-            .wechatPayCertificatesFromPath(wechatPayCertificatePath)
-            .build();
-
     JsapiService service = new JsapiService.Builder().config(config).build();
-
+    // 调用request.setXxx(val)设置所需参数，具体参数可见Request定义
     PrepayRequest request = new PrepayRequest();
     Amount amount = new Amount();
     amount.setTotal(100);
@@ -133,12 +100,15 @@ public class JsapiExample {
     Payer payer = new Payer();
     payer.setOpenid("oLTPCuN5a-nBD4rAL_fa********");
     request.setPayer(payer);
-
     PrepayResponse response = service.prepay(request);
     System.out.println(response.getPrepayId());
   }
 }
 ```
+
+从示例可见，使用 SDK 并不需要计算请求签名和验证应答签名。
+
+## 示例
 
 ### 查询支付订单
 
@@ -274,9 +244,6 @@ String plaintext = decryptor.decryptToString(ciphertext);
 我们提供基于 [腾讯 Kona 国密套件](https://github.com/Tencent/TencentKonaSMSuite) 的国密扩展。文档请参考 [shangmi/README.md](shangmi/README.md)。
 
 ## 常见问题
-
-### 如何下载平台证书？
-使用[微信支付 APIv3 平台证书下载工具](https://github.com/wechatpay-apiv3/CertificateDownloader)。
 
 ### 为什么收到应答中的证书序列号和发起请求的证书序列号不一致？
 
