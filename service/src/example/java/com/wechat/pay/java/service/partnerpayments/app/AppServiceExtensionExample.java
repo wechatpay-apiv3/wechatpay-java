@@ -16,7 +16,7 @@ public class AppServiceExtensionExample {
   public static String privateKeyPath = "";
   public static String merchantSerialNumber = "";
   public static String wechatPayCertificatePath = "";
-  public static AppServiceExtension serviceExtension;
+  public static AppServiceExtension service;
 
   public static void main(String[] args) {
     // 初始化商户配置
@@ -29,7 +29,7 @@ public class AppServiceExtensionExample {
             .wechatPayCertificatesFromPath(wechatPayCertificatePath)
             .build();
     // 初始化服务
-    serviceExtension = new AppServiceExtension.Builder().config(config).build();
+    service = new AppServiceExtension.Builder().config(config).build();
     try {
       // ... 调用接口
       PrepayWithRequestPaymentResponse response = prepayWithRequestPayment();
@@ -48,7 +48,7 @@ public class AppServiceExtensionExample {
     CloseOrderRequest request = new CloseOrderRequest();
     // 调用request.setXxx(val)设置所需参数，具体参数可见Request定义
     // 调用接口
-    serviceExtension.closeOrder(request);
+    service.closeOrder(request);
   }
   /** APP支付下单，并返回APP调起支付数据 */
   public static PrepayWithRequestPaymentResponse prepayWithRequestPayment() {
@@ -57,7 +57,7 @@ public class AppServiceExtensionExample {
     PrepayRequest request = new PrepayRequest();
     // 调用request.setXxx(val)设置所需参数，具体参数可见Request定义
     // 调用接口
-    return serviceExtension.prepayWithRequestPayment(request, requestPaymentAppid);
+    return service.prepayWithRequestPayment(request, requestPaymentAppid);
   }
   /** 微信支付订单号查询订单 */
   public static Transaction queryOrderById() {
@@ -65,7 +65,7 @@ public class AppServiceExtensionExample {
     QueryOrderByIdRequest request = new QueryOrderByIdRequest();
     // 调用request.setXxx(val)设置所需参数，具体参数可见Request定义
     // 调用接口
-    return serviceExtension.queryOrderById(request);
+    return service.queryOrderById(request);
   }
   /** 商户订单号查询订单 */
   public static Transaction queryOrderByOutTradeNo() {
@@ -73,6 +73,6 @@ public class AppServiceExtensionExample {
     QueryOrderByOutTradeNoRequest request = new QueryOrderByOutTradeNoRequest();
     // 调用request.setXxx(val)设置所需参数，具体参数可见Request定义
     // 调用接口
-    return serviceExtension.queryOrderByOutTradeNo(request);
+    return service.queryOrderByOutTradeNo(request);
   }
 }

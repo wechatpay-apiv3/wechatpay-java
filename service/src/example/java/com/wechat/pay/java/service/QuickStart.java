@@ -2,13 +2,13 @@ package com.wechat.pay.java.service;
 
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.RSAConfig;
-import com.wechat.pay.java.service.payments.jsapi.JsapiService;
+import com.wechat.pay.java.service.payments.jsapi.JsapiServiceExtension;
 import com.wechat.pay.java.service.payments.jsapi.model.Amount;
 import com.wechat.pay.java.service.payments.jsapi.model.Payer;
 import com.wechat.pay.java.service.payments.jsapi.model.PrepayRequest;
-import com.wechat.pay.java.service.payments.jsapi.model.PrepayResponse;
+import com.wechat.pay.java.service.payments.jsapi.model.PrepayWithRequestPaymentResponse;
 
-/** JSAPI 下单为例 */
+/** JSAPI 下单并返回调起支付数据为例 */
 public class QuickStart {
 
   /** 商户号 */
@@ -19,8 +19,6 @@ public class QuickStart {
   public static String merchantSerialNumber = "";
   /** 微信支付平台证书路径 */
   public static String wechatPayCertificatePath = "";
-  /** 微信支付 APIv3 密钥 */
-  public static String apiV3Key = "";
 
   public static void main(String[] args) {
     Config config =
@@ -30,8 +28,8 @@ public class QuickStart {
             .merchantSerialNumber(merchantSerialNumber)
             .wechatPayCertificatesFromPath(wechatPayCertificatePath)
             .build();
-    JsapiService service = new JsapiService.Builder().config(config).build();
-    // 调用request.setXxx(val)设置所需参数，具体参数可见Request定义
+    JsapiServiceExtension service = new JsapiServiceExtension.Builder().config(config).build();
+    // 调用service.setXxx(val)设置所需参数，具体参数可见Request定义
     PrepayRequest request = new PrepayRequest();
     Amount amount = new Amount();
     amount.setTotal(100);
@@ -44,7 +42,7 @@ public class QuickStart {
     Payer payer = new Payer();
     payer.setOpenid("oLTPCuN5a-nBD4rAL_fa********");
     request.setPayer(payer);
-    PrepayResponse response = service.prepay(request);
-    System.out.println(response.getPrepayId());
+    PrepayWithRequestPaymentResponse response = service.prepayWithRequestPayment(request);
+    System.out.println(response);
   }
 }

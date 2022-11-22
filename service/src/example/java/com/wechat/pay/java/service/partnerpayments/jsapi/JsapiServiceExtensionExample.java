@@ -17,7 +17,7 @@ public class JsapiServiceExtensionExample {
   public static String privateKeyPath = "";
   public static String merchantSerialNumber = "";
   public static String wechatPayCertificatePath = "";
-  public static JsapiServiceExtension serviceExtension;
+  public static JsapiServiceExtension service;
 
   public static void main(String[] args) {
     // 初始化商户配置
@@ -30,13 +30,12 @@ public class JsapiServiceExtensionExample {
             .wechatPayCertificatesFromPath(wechatPayCertificatePath)
             .build();
     // 初始化服务
-    serviceExtension =
+    service =
         new JsapiServiceExtension.Builder()
             .config(config)
             .signType("RSA") // 不填则默认为RSA
             .build();
     try {
-
       PrepayWithRequestPaymentResponse response = prepayWithRequestPayment();
       System.out.println(response);
     } catch (HttpException e) { // 发送HTTP请求失败
@@ -53,7 +52,7 @@ public class JsapiServiceExtensionExample {
     CloseOrderRequest request = new CloseOrderRequest();
     // 调用request.setXxx(val)设置所需参数，具体参数可见Request定义
     // 调用接口
-    serviceExtension.closeOrder(request);
+    service.closeOrder(request);
   }
   /** JSAPI支付下单，并返回JSAPI调起支付数据 */
   public static com.wechat.pay.java.service.partnerpayments.jsapi.model
@@ -65,7 +64,7 @@ public class JsapiServiceExtensionExample {
     // 调用request.setXxx(val)设置所需参数，具体参数可见Request定义
     request.setSpAppid("test-sp-appid");
     // 调用接口
-    return serviceExtension.prepayWithRequestPayment(request, requestPaymentAppid);
+    return service.prepayWithRequestPayment(request, requestPaymentAppid);
   }
   /** 微信支付订单号查询订单 */
   public static Transaction queryOrderById() {
@@ -73,7 +72,7 @@ public class JsapiServiceExtensionExample {
     QueryOrderByIdRequest request = new QueryOrderByIdRequest();
     // 调用request.setXxx(val)设置所需参数，具体参数可见Request定义
     // 调用接口
-    return serviceExtension.queryOrderById(request);
+    return service.queryOrderById(request);
   }
   /** 商户订单号查询订单 */
   public static Transaction queryOrderByOutTradeNo() {
@@ -81,6 +80,6 @@ public class JsapiServiceExtensionExample {
     QueryOrderByOutTradeNoRequest request = new QueryOrderByOutTradeNoRequest();
     // 调用request.setXxx(val)设置所需参数，具体参数可见Request定义
     // 调用接口
-    return serviceExtension.queryOrderByOutTradeNo(request);
+    return service.queryOrderByOutTradeNo(request);
   }
 }
