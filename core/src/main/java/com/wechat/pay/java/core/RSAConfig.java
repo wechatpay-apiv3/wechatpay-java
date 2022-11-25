@@ -9,18 +9,22 @@ import com.wechat.pay.java.core.auth.WechatPay2Credential;
 import com.wechat.pay.java.core.auth.WechatPay2Validator;
 import com.wechat.pay.java.core.certificate.CertificateProvider;
 import com.wechat.pay.java.core.certificate.InMemoryCertificateProvider;
+import com.wechat.pay.java.core.certificate.RSAAutoCertificateProvider;
 import com.wechat.pay.java.core.cipher.PrivacyDecryptor;
 import com.wechat.pay.java.core.cipher.PrivacyEncryptor;
 import com.wechat.pay.java.core.cipher.RSAPrivacyDecryptor;
 import com.wechat.pay.java.core.cipher.RSAPrivacyEncryptor;
 import com.wechat.pay.java.core.cipher.RSASigner;
 import com.wechat.pay.java.core.cipher.RSAVerifier;
+import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.util.PemUtil;
+import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** 调用微信支付服务需要的RSA相关配置 */
 public final class RSAConfig implements Config {
@@ -33,6 +37,8 @@ public final class RSAConfig implements Config {
   private final String merchantSerialNumber;
   /** 微信支付平台证书Provider */
   private final CertificateProvider certificateProvider;
+
+  Logger logger = LoggerFactory.getLogger(RSAConfig.class);
 
   private RSAConfig(
       String merchantId,
@@ -72,7 +78,11 @@ public final class RSAConfig implements Config {
     private String merchantId;
     private PrivateKey privateKey;
     private String merchantSerialNumber;
+
     private List<X509Certificate> wechatPayCertificates;
+    private byte[] apiV3Key;
+
+    private HttpClient httpClient;
 
     public Builder merchantId(String merchantId) {
       this.merchantId = merchantId;
@@ -127,11 +137,6 @@ public final class RSAConfig implements Config {
       return this;
     }
 
-    public Builder wechatPayCertificates(X509Certificate... wechatPayCertificates) {
-      this.wechatPayCertificates = Arrays.asList(wechatPayCertificates);
-      return this;
-    }
-
     public Builder wechatPayCertificatesFromPath(String... certPaths) {
       this.wechatPayCertificates = new ArrayList<>();
       for (String certPath : certPaths) {
@@ -143,20 +148,36 @@ public final class RSAConfig implements Config {
       return this;
     }
 
+    public Builder httpClient(HttpClient httpClient) {
+      this.httpClient = httpClient;
+      return this;
+    }
+
+    public Builder apiV3Key(String apiV3key) {
+      this.apiV3Key = apiV3key.getBytes(StandardCharsets.UTF_8);
+      return this;
+    }
+
     public RSAConfig build() {
       requireNonNull(privateKey);
       requireNonNull(merchantSerialNumber);
       requireNonNull(merchantId);
-      if (wechatPayCertificates.isEmpty()) {
-        throw new IllegalArgumentException(
-            "Build RSAConfig, wechatPayCertificates is empty.Please "
-                + "call wechatPayCertificates() or wechatPayCertificatesFromPath() method.");
+      CertificateProvider provider;
+      if (wechatPayCertificates == null || wechatPayCertificates.isEmpty()) {
+        Credential credential =
+            new WechatPay2Credential(merchantId, new RSASigner(merchantSerialNumber, privateKey));
+        provider =
+            new RSAAutoCertificateProvider.Builder()
+                .merchantId(merchantId)
+                .apiV3Key(apiV3Key)
+                .credential(credential)
+                .httpClient(httpClient)
+                .build();
+      } else {
+        provider = new InMemoryCertificateProvider(wechatPayCertificates);
       }
-      return new RSAConfig(
-          merchantId,
-          privateKey,
-          merchantSerialNumber,
-          new InMemoryCertificateProvider(wechatPayCertificates));
+
+      return new RSAConfig(merchantId, privateKey, merchantSerialNumber, provider);
     }
   }
 }
