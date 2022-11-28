@@ -6,6 +6,7 @@ import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
 import com.wechat.pay.java.core.http.okhttp.OkHttpClientAdapter;
+import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
 /** 默认HttpClient构造器 */
@@ -18,6 +19,7 @@ public class DefaultHttpClientBuilder {
   private int readTimeoutMs = -1;
   private int writeTimeoutMs = -1;
   private int connectTimeoutMs = -1;
+  private Proxy proxy;
 
   /**
    * 设置读超时
@@ -92,6 +94,11 @@ public class DefaultHttpClientBuilder {
     return this;
   }
 
+  public DefaultHttpClientBuilder proxy(Proxy proxy) {
+    requireNonNull(proxy);
+    this.proxy = proxy;
+    return this;
+  }
   /**
    * 构建默认HttpClient
    *
@@ -110,6 +117,9 @@ public class DefaultHttpClientBuilder {
     }
     if (writeTimeoutMs >= 0) {
       okHttpClientBuilder.writeTimeout(writeTimeoutMs, TimeUnit.MILLISECONDS);
+    }
+    if (proxy != null) {
+      okHttpClientBuilder.proxy(proxy);
     }
     return new OkHttpClientAdapter(credential, validator, okHttpClientBuilder.build());
   }
