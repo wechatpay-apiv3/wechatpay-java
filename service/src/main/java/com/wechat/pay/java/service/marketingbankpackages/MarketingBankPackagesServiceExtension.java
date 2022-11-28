@@ -11,16 +11,15 @@ import com.wechat.pay.java.core.exception.ServiceException;
 import com.wechat.pay.java.core.exception.ValidationException;
 import com.wechat.pay.java.core.http.Constant;
 import com.wechat.pay.java.core.http.DefaultHttpClientBuilder;
+import com.wechat.pay.java.core.http.FileRequestBody;
 import com.wechat.pay.java.core.http.HostName;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpMethod;
 import com.wechat.pay.java.core.http.HttpRequest;
 import com.wechat.pay.java.core.http.MediaType;
+import com.wechat.pay.java.core.util.ShaUtil;
 import com.wechat.pay.java.service.marketingbankpackages.model.ListTaskRequest;
 import com.wechat.pay.java.service.marketingbankpackages.model.ListTaskResponse;
-
-import com.wechat.pay.java.core.http.FileRequestBody;
-import com.wechat.pay.java.core.util.ShaUtil;
 import com.wechat.pay.java.service.marketingbankpackages.model.Task;
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,8 +34,10 @@ public class MarketingBankPackagesServiceExtension {
   private final HttpClient httpClient;
   private final PrivacyEncryptor encryptor;
 
-  private MarketingBankPackagesServiceExtension(Config config, HttpClient httpClient, HostName hostName, PrivacyEncryptor encryptor) {
-    MarketingBankPackagesService.Builder builder = new MarketingBankPackagesService.Builder().config(config);
+  private MarketingBankPackagesServiceExtension(
+      Config config, HttpClient httpClient, HostName hostName, PrivacyEncryptor encryptor) {
+    MarketingBankPackagesService.Builder builder =
+        new MarketingBankPackagesService.Builder().config(config);
     if (httpClient != null) {
       builder.httpClient(httpClient);
     }
@@ -101,7 +102,6 @@ public class MarketingBankPackagesServiceExtension {
     return packagesService.listTask(request);
   }
 
-  
   /**
    * 导入定向用户协议号(创建上传任务)
    *
@@ -195,5 +195,4 @@ public class MarketingBankPackagesServiceExtension {
             .build();
     return httpClient.execute(request, Task.class).getServiceResponse();
   }
-
 }
