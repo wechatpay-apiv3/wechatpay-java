@@ -51,20 +51,20 @@ implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.1'
 
 ### 调用业务请求接口
 
-以 JSAPI 下单并返回调起支付数据为例，先构建 `config` 和 `service`，再发送请求。详细代码可参考 [QuickStart](service/src/example/java/com/wechat/pay/java/service/QuickStart.java)。
+以 JSAPI 下单为例，先构建 `config` 和 `service`，再发送请求。详细代码可参考 [QuickStart](service/src/example/java/com/wechat/pay/java/service/QuickStart.java)。
 
 ```java
 package com.wechat.pay.java.service;
 
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.RSAConfig;
-import com.wechat.pay.java.service.payments.jsapi.JsapiServiceExtension;
+import com.wechat.pay.java.service.payments.jsapi.JsapiService;
 import com.wechat.pay.java.service.payments.jsapi.model.Amount;
 import com.wechat.pay.java.service.payments.jsapi.model.Payer;
 import com.wechat.pay.java.service.payments.jsapi.model.PrepayRequest;
-import com.wechat.pay.java.service.payments.jsapi.model.PrepayWithRequestPaymentResponse;
+import com.wechat.pay.java.service.payments.jsapi.model.PrepayResponse;
 
-/** JSAPI 下单并返回调起支付数据为例 */
+/** JSAPI 下单为例 */
 public class QuickStart {
 
   /** 商户号 */
@@ -84,7 +84,7 @@ public class QuickStart {
             .merchantSerialNumber(merchantSerialNumber)
             .wechatPayCertificatesFromPath(wechatPayCertificatePath)
             .build();
-    JsapiServiceExtension service = new JsapiServiceExtension.Builder().config(config).build();
+    JsapiService service = new JsapiService.Builder().config(config).build();
     // 调用service.setXxx(val)设置所需参数，具体参数可见Request定义
     PrepayRequest request = new PrepayRequest();
     Amount amount = new Amount();
@@ -98,7 +98,7 @@ public class QuickStart {
     Payer payer = new Payer();
     payer.setOpenid("oLTPCuN5a-nBD4rAL_fa********");
     request.setPayer(payer);
-    PrepayWithRequestPaymentResponse response = service.prepayWithRequestPayment(request);
+    PrepayResponse response = service.prepay(request);
     System.out.println(response);
   }
 }
