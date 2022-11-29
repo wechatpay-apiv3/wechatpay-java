@@ -85,7 +85,7 @@ public class QuickStart {
             .wechatPayCertificatesFromPath(wechatPayCertificatePath)
             .build();
     JsapiService service = new JsapiService.Builder().config(config).build();
-    // 调用service.setXxx(val)设置所需参数，具体参数可见Request定义
+    // request.setXxx(val)设置所需参数，具体参数可见Request定义
     PrepayRequest request = new PrepayRequest();
     Amount amount = new Amount();
     amount.setTotal(100);
@@ -99,7 +99,7 @@ public class QuickStart {
     payer.setOpenid("oLTPCuN5a-nBD4rAL_fa********");
     request.setPayer(payer);
     PrepayResponse response = service.prepay(request);
-    System.out.println(response);
+    System.out.println(response.getPrepayId());
   }
 }
 ```

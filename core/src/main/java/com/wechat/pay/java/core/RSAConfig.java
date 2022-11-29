@@ -60,7 +60,7 @@ public final class RSAConfig implements Config {
 
   @Override
   public Credential createCredential() {
-    return new WechatPay2Credential(merchantId, new RSASigner(merchantSerialNumber, privateKey));
+    return new WechatPay2Credential(merchantId, createSigner());
   }
 
   @Override
