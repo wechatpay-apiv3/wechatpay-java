@@ -1,6 +1,7 @@
 package com.wechat.pay.java.service.marketingbankpackages;
 
 import static com.wechat.pay.java.core.http.UrlEncoder.urlEncode;
+import static com.wechat.pay.java.core.util.GsonUtil.toJson;
 import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.Config;
@@ -18,6 +19,7 @@ import com.wechat.pay.java.core.http.HttpMethod;
 import com.wechat.pay.java.core.http.HttpRequest;
 import com.wechat.pay.java.core.http.MediaType;
 import com.wechat.pay.java.core.util.ShaUtil;
+import com.wechat.pay.java.service.marketingbankpackages.model.FileMeta;
 import com.wechat.pay.java.service.marketingbankpackages.model.ListTaskRequest;
 import com.wechat.pay.java.service.marketingbankpackages.model.ListTaskResponse;
 import com.wechat.pay.java.service.marketingbankpackages.model.Task;
@@ -123,10 +125,10 @@ public class MarketingBankPackagesServiceExtension {
         line = reader.readLine();
       }
       reader.close();
-      return uploadPackage(packageId, bankType, file.getName(), fileContentList);
     } catch (IOException e) {
       throw new IllegalArgumentException("Upload file, failed to open filePath:" + filePath);
     }
+    return uploadPackage(packageId, bankType, file.getName(), fileContentList);
   }
 
   /**
@@ -168,13 +170,13 @@ public class MarketingBankPackagesServiceExtension {
     String fileSha256 = ShaUtil.getSha256HexString(fileBytes);
 
     // 4、组装meta
-    String fileMeta =
-        String.format(
-            "{\"filename\":\"%s\",\"sha256\":\"%s\",\"bank_type\":\"%s\"}",
-            fileName, fileSha256, bankType);
+    FileMeta fileMeta = new FileMeta();
+    fileMeta.setFilename(fileName);
+    fileMeta.setSha256(fileSha256);
+    fileMeta.setBankType(bankType);
 
     // 5、执行上传
-    return uploadFile(uploadPath, fileMeta, fileName, fileBytes);
+    return uploadFile(uploadPath, toJson(fileMeta), fileName, fileBytes);
   }
 
   private Task uploadFile(String uploadPath, String meta, String fileName, byte[] fileBytes) {
