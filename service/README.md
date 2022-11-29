@@ -15,3 +15,4 @@
 | partnerpayments/h5 | H5 支付|  | ✔️ |
 | refund | 退款|✔️|✔️|
 | payrollcard | 微工卡||✔️|
+| marketingbankpackages | 银行号码包|✔️|✔️|
