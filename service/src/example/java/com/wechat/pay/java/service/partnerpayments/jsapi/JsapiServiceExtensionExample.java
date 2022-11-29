@@ -55,9 +55,7 @@ public class JsapiServiceExtensionExample {
     service.closeOrder(request);
   }
   /** JSAPI支付下单，并返回JSAPI调起支付数据 */
-  public static com.wechat.pay.java.service.partnerpayments.jsapi.model
-          .PrepayWithRequestPaymentResponse
-      prepayWithRequestPayment() {
+  public static PrepayWithRequestPaymentResponse prepayWithRequestPayment() {
     // 商户申请的公众号对应的appid，由微信支付生成，可在公众号后台查看
     String requestPaymentAppid = "test-request-payment-appid";
     PrepayRequest request = new PrepayRequest();
