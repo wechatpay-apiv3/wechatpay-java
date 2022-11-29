@@ -35,12 +35,9 @@ public class MarketingBankPackagesServiceExtension {
   private final PrivacyEncryptor encryptor;
 
   private MarketingBankPackagesServiceExtension(
-      Config config, HttpClient httpClient, HostName hostName, PrivacyEncryptor encryptor) {
-    MarketingBankPackagesService.Builder builder =
-        new MarketingBankPackagesService.Builder().config(config);
-    if (httpClient != null) {
-      builder.httpClient(httpClient);
-    }
+      HttpClient httpClient, HostName hostName, PrivacyEncryptor encryptor) {
+    MarketingBankPackagesService.Builder builder = new MarketingBankPackagesService.Builder();
+    builder.httpClient(httpClient);
     if (hostName != null) {
       builder.hostName(hostName);
     }
@@ -52,13 +49,11 @@ public class MarketingBankPackagesServiceExtension {
   /** MarketingBankPackagesServiceExtension构造器 */
   public static class Builder {
 
-    private Config config;
     private HostName hostName;
     private HttpClient httpClient;
     private PrivacyEncryptor encryptor;
 
     public Builder config(Config config) {
-      this.config = config;
       this.httpClient =
           new DefaultHttpClientBuilder()
               .credential(requireNonNull(config.createCredential()))
@@ -84,7 +79,7 @@ public class MarketingBankPackagesServiceExtension {
     }
 
     public MarketingBankPackagesServiceExtension build() {
-      return new MarketingBankPackagesServiceExtension(config, httpClient, hostName, encryptor);
+      return new MarketingBankPackagesServiceExtension(httpClient, hostName, encryptor);
     }
   }
 

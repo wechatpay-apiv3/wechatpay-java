@@ -28,18 +28,23 @@ public class MarketingBankPackagesServiceExtensionExample {
     // 初始化服务
     service = new MarketingBankPackagesServiceExtension.Builder().config(config).build();
 
-    // 如需通过代理调用微信支付API，可以构造OkHttpClient来初始化服务
+    // 如需通过代理调用微信支付API，可构造OkHttpClient来初始化服务，参考以下示例
     // String hostName = "localhost";
     // int port = 1080;
     // OkHttpClient okHttpClient = new OkHttpClient.Builder()
     //         .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(hostName, port)))
     //         .build();
+    // 示例一：
     // HttpClient okHttpClientAdapter = new OkHttpClientAdapter(config.createCredential(),
     // config.createValidator(),
     //         okHttpClient);
     // service = new
-    // MarketingBankPackagesServiceExtension.Builder().config(config).httpClient(okHttpClientAdapter)
-    //         .build();
+    // MarketingBankPackagesServiceExtension.Builder().encryptor(config.createEncryptor()).httpClient(okHttpClientAdapter).build();
+    // 示例二：
+    // HttpClient httpClient = new
+    // DefaultHttpClientBuilder().config(config).okHttpClient(okHttpClient).build();
+    // service = new
+    // MarketingBankPackagesServiceExtension.Builder().encryptor(config.createEncryptor()).httpClient(httpClient).build();
 
     // ... 调用接口
     // uploadPackageByFile();
