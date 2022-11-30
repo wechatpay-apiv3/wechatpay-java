@@ -4,9 +4,11 @@ import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.certificate.CertificateProvider;
 import com.wechat.pay.java.core.certificate.InMemoryCertificateProvider;
+import com.wechat.pay.java.core.certificate.RSAAutoCertificateProvider;
 import com.wechat.pay.java.core.cipher.*;
 import com.wechat.pay.java.core.util.PemUtil;
 import java.nio.charset.StandardCharsets;
+import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,6 +51,9 @@ public final class RSANotificationConfig implements NotificationConfig {
 
     private List<X509Certificate> certificates;
     private byte[] apiV3Key;
+    private String merchantId;
+    private PrivateKey privateKey;
+    private String merchantSerialNumber;
 
     public Builder certificates(X509Certificate... certificates) {
       this.certificates = Arrays.asList(certificates);
@@ -80,9 +85,42 @@ public final class RSANotificationConfig implements NotificationConfig {
       return this;
     }
 
+    public Builder merchantId(String merchantId) {
+      this.merchantId = merchantId;
+      return this;
+    }
+
+    public Builder privateKeyFromStr(String privateKeyStr) {
+      this.privateKey = PemUtil.loadPrivateKeyFromString(privateKeyStr);
+      return this;
+    }
+
+    public Builder privateKeyFromPath(String privateKeyPath) {
+      this.privateKey = PemUtil.loadPrivateKeyFromPath(privateKeyPath);
+      return this;
+    }
+
+    public Builder merchantSerialNumber(String merchantSerialNumber) {
+      this.merchantSerialNumber = merchantSerialNumber;
+      return this;
+    }
+
     public RSANotificationConfig build() {
-      return new RSANotificationConfig(
-          new InMemoryCertificateProvider(requireNonNull(certificates)), requireNonNull(apiV3Key));
+      requireNonNull(apiV3Key);
+      CertificateProvider certificateProvider;
+      if (certificates == null || certificates.isEmpty()) {
+        // 使用自动更新证书提供器
+        certificateProvider =
+            new RSAAutoCertificateProvider.Builder()
+                .merchantId(requireNonNull(merchantId))
+                .apiV3Key(apiV3Key)
+                .privateKey(requireNonNull(privateKey))
+                .merchantSerialNumber(requireNonNull(merchantSerialNumber))
+                .build();
+      } else {
+        certificateProvider = new InMemoryCertificateProvider(requireNonNull(certificates));
+      }
+      return new RSANotificationConfig(certificateProvider, apiV3Key);
     }
   }
 }

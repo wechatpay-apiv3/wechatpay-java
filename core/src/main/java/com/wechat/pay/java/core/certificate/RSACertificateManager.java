@@ -14,6 +14,7 @@ public class RSACertificateManager extends AbstractCertificateManager {
 
   private static final String REQUEST_URL =
       "https://api.mch.weixin.qq.com/v3/certificates"; // 下载证书url
+  private static final String ALGORITHM_TYPE = "RSA"; // 算法类型
   private static final Function<String, X509Certificate> certificateGenerator =
       PemUtil::loadX509FromString; // 将平台证书从String转换为X509Certificate的方法
 
@@ -30,7 +31,13 @@ public class RSACertificateManager extends AbstractCertificateManager {
   @Override
   public void putMerchant(String merchantId, HttpClient httpClient, AeadCipher aeadCipher) {
     super.putMerchant(
-        merchantId, httpClient, aeadCipher, REQUEST_URL, certificateGenerator, this::toVerifier);
+        merchantId,
+        httpClient,
+        aeadCipher,
+        REQUEST_URL,
+        certificateGenerator,
+        this::toVerifier,
+        ALGORITHM_TYPE);
   }
 
   /** 平台证书管理器实例持有类 */

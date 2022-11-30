@@ -164,13 +164,12 @@ public final class RSAConfig implements Config {
       requireNonNull(merchantId);
       CertificateProvider provider;
       if (wechatPayCertificates == null || wechatPayCertificates.isEmpty()) {
-        Credential credential =
-            new WechatPay2Credential(merchantId, new RSASigner(merchantSerialNumber, privateKey));
         provider =
             new RSAAutoCertificateProvider.Builder()
                 .merchantId(merchantId)
                 .apiV3Key(apiV3Key)
-                .credential(credential)
+                .privateKey(privateKey)
+                .merchantSerialNumber(merchantSerialNumber)
                 .httpClient(httpClient)
                 .build();
       } else {

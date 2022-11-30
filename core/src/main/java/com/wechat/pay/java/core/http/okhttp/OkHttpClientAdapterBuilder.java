@@ -15,14 +15,14 @@ public class OkHttpClientAdapterBuilder implements HttpClientBuilder {
   private Validator validator;
 
   public OkHttpClientAdapterBuilder(
-      Credential credential, OkHttpClient okHttpClient, Validator validator) {
+      Credential credential, Validator validator, OkHttpClient okHttpClient) {
     this.credential = requireNonNull(credential);
     this.okHttpClient = requireNonNull(okHttpClient);
     this.validator = requireNonNull(validator);
   }
 
   @Override
-  public HttpClientBuilder updateValidator(Validator validator) {
+  public HttpClientBuilder validator(Validator validator) {
     this.validator = requireNonNull(validator);
     return this;
   }

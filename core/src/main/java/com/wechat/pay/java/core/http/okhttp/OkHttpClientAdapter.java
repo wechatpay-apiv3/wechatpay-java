@@ -129,6 +129,6 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
 
   @Override
   public HttpClientBuilder newBuilder() {
-    return new OkHttpClientAdapterBuilder(credential, okHttpClient, validator);
+    return new OkHttpClientAdapterBuilder(credential, validator, okHttpClient);
   }
 }

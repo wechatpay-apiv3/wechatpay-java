@@ -58,7 +58,8 @@ public abstract class AbstractCertificateManager implements CertificateManager {
       AeadCipher aeadCipher,
       String requestUrl,
       Function<String, X509Certificate> certificateGenerator,
-      Function<List<X509Certificate>, Verifier> verifierGenerator) {
+      Function<List<X509Certificate>, Verifier> verifierGenerator,
+      String algorithmType) {
     requireNonNull(merchantId);
     requireNonNull(httpClient);
     requireNonNull(aeadCipher);
@@ -73,7 +74,7 @@ public abstract class AbstractCertificateManager implements CertificateManager {
       this.httpClientMap.put(merchantId, httpClient);
       downloadAndUpdateMerchant(merchantId);
       if (executor == null) {
-        beginScheduleUpdate("rsa");
+        beginScheduleUpdate(algorithmType);
       }
     }
   }
@@ -81,16 +82,16 @@ public abstract class AbstractCertificateManager implements CertificateManager {
   /**
    * 开启自动更新
    *
-   * @param threadName 更新线程名称
+   * @param algorithmType 算法类型
    */
-  protected void beginScheduleUpdate(String threadName) {
+  protected void beginScheduleUpdate(String algorithmType) {
     if (executor != null) {
       return;
     }
     executor = new SafeSingleScheduleExecutor();
     Runnable runnable =
         () -> {
-          String realThreadName = threadName + THREAD_NAME_SUFFIX;
+          String realThreadName = algorithmType + THREAD_NAME_SUFFIX;
           Thread.currentThread().setName(realThreadName);
           log.info("{}:Begin update Certificates.Date:{}", realThreadName, Instant.now());
           for (Map.Entry<String, HttpClient> entry : httpClientMap.entrySet()) {
@@ -145,7 +146,7 @@ public abstract class AbstractCertificateManager implements CertificateManager {
     }
     Validator validator =
         new WechatPay2Validator(verifierGenerator.apply(new ArrayList<>(downloadCertMap.values())));
-    HttpClient newHttpClient = httpClient.newBuilder().updateValidator(validator).build();
+    HttpClient newHttpClient = httpClient.newBuilder().validator(validator).build();
     this.httpClientMap.put(merchantId, newHttpClient);
     this.certificateMap.put(merchantId, downloadCertMap);
   }

@@ -1,12 +1,17 @@
 package com.wechat.pay.java.core.certificate;
 
+import static java.util.Objects.requireNonNull;
+
 import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
+import com.wechat.pay.java.core.auth.WechatPay2Credential;
 import com.wechat.pay.java.core.cipher.AeadAesCipher;
 import com.wechat.pay.java.core.cipher.AeadCipher;
+import com.wechat.pay.java.core.cipher.RSASigner;
+import com.wechat.pay.java.core.http.DefaultHttpClientBuilder;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpHeaders;
-import com.wechat.pay.java.core.http.okhttp.OkHttpClientAdapter;
+import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import okhttp3.OkHttpClient;
 
@@ -38,6 +43,8 @@ public class RSAAutoCertificateProvider implements CertificateProvider {
     private byte[] apiV3Key;
 
     private Credential credential;
+    private PrivateKey privateKey;
+    private String merchantSerialNumber;
     private HttpClient httpClient;
 
     public Builder merchantId(String merchantId) {
@@ -60,6 +67,16 @@ public class RSAAutoCertificateProvider implements CertificateProvider {
       return this;
     }
 
+    public Builder privateKey(PrivateKey privateKey) {
+      this.privateKey = privateKey;
+      return this;
+    }
+
+    public Builder merchantSerialNumber(String merchantSerialNumber) {
+      this.merchantSerialNumber = merchantSerialNumber;
+      return this;
+    }
+
     private final Validator emptyValidator =
         new Validator() {
           @Override
@@ -69,8 +86,19 @@ public class RSAAutoCertificateProvider implements CertificateProvider {
         };
 
     public RSAAutoCertificateProvider build() {
+      requireNonNull(merchantId);
       if (httpClient == null) {
-        httpClient = new OkHttpClientAdapter(credential, emptyValidator, new OkHttpClient());
+        DefaultHttpClientBuilder httpClientBuilder =
+            new DefaultHttpClientBuilder()
+                .validator(emptyValidator)
+                .okHttpClient(new OkHttpClient());
+        if (credential == null) {
+          httpClientBuilder.credential(
+              new WechatPay2Credential(
+                  merchantId,
+                  new RSASigner(requireNonNull(merchantSerialNumber), requireNonNull(privateKey))));
+        }
+        httpClient = httpClientBuilder.build();
       }
       return new RSAAutoCertificateProvider(httpClient, merchantId, new AeadAesCipher(apiV3Key));
     }
