@@ -117,9 +117,9 @@ public final class RSANotificationConfig implements NotificationConfig {
                 .privateKey(requireNonNull(privateKey))
                 .merchantSerialNumber(requireNonNull(merchantSerialNumber))
                 .build();
-      } else {
-        certificateProvider = new InMemoryCertificateProvider(requireNonNull(certificates));
+        return new RSANotificationConfig(certificateProvider, apiV3Key);
       }
+      certificateProvider = new InMemoryCertificateProvider(requireNonNull(certificates));
       return new RSANotificationConfig(certificateProvider, apiV3Key);
     }
   }

@@ -120,7 +120,7 @@ public abstract class AbstractCertificateManager implements CertificateManager {
    *
    * @param merchantId 商户号
    */
-  private void downloadAndUpdateMerchant(String merchantId) {
+  protected void downloadAndUpdateMerchant(String merchantId) {
     HttpClient httpClient = httpClientMap.get(merchantId);
     AeadCipher aeadCipher = aeadCipherMap.get(merchantId);
     HttpRequest request =

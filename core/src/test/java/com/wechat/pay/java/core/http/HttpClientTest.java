@@ -200,4 +200,10 @@ public interface HttpClientTest {
     assertThrows(
         HttpException.class, () -> client.get(null, "http://url.not.avalible", Response.class));
   }
+
+  @Test
+  default void testNewBuilder() {
+    HttpClient client = createHttpClient();
+    assertNotNull(client.newBuilder());
+  }
 }
