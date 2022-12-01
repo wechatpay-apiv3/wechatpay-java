@@ -12,6 +12,8 @@ public class SM2Signer extends AbstractSigner {
   }
 
   /**
+   * SM2Signer 构造函数
+   *
    * @param certificateSerialNumber 商户API证书序列号
    * @param privateKey 商户API私钥
    */
