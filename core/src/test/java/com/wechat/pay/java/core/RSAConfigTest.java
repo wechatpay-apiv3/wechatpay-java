@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class RSAConfigTest implements ConfigTest {
+class RSAConfigTest implements ConfigTest {
 
   @Test
-  public void testBuildConfigFromString() {
+  void testBuildConfigFromString() {
     Config rsaConfig =
         new RSAConfig.Builder()
             .merchantId(MERCHANT_ID)
@@ -36,7 +36,7 @@ public class RSAConfigTest implements ConfigTest {
   }
 
   @Test
-  public void testBuildConfigFromPath() {
+  void testBuildConfigFromPath() {
     Config rsaConfig =
         new RSAConfig.Builder()
             .merchantId(MERCHANT_ID)
@@ -48,22 +48,18 @@ public class RSAConfigTest implements ConfigTest {
   }
 
   @Test
-  public void testBuildConfigWithAutoUpdateCert() {
-    assertThrows(
-        ServiceException.class,
-        () -> {
-          Config rsaConfig =
-              new RSAConfig.Builder()
-                  .merchantId(MERCHANT_ID)
-                  .privateKey(MERCHANT_PRIVATE_KEY)
-                  .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER)
-                  .apiV3Key(API_V3_KEY)
-                  .build();
-        });
+  void testBuildConfigWithAutoUpdateCert() {
+    RSAConfig.Builder builder =
+        new RSAConfig.Builder()
+            .merchantId(MERCHANT_ID)
+            .privateKey(MERCHANT_PRIVATE_KEY)
+            .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER)
+            .apiV3Key(API_V3_KEY);
+    assertThrows(ServiceException.class, builder::build);
   }
 
   @Test
-  public void testBuildConfigWithProvider() {
+  void testBuildConfigWithProvider() {
     List<X509Certificate> certificatesList = new ArrayList<>();
     certificatesList.add(WECHAT_PAY_CERTIFICATE);
     Config rsaConfig =

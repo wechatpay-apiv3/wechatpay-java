@@ -3,6 +3,7 @@ package com.wechat.pay.java.core.notification;
 import static com.wechat.pay.java.core.model.TestConfig.API_V3_KEY;
 import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_CERTIFICATE_SERIAL_NUMBER;
 import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_ID;
+import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_PRIVATE_KEY_PATH;
 import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_PRIVATE_KEY_STRING;
 import static com.wechat.pay.java.core.model.TestConfig.WECHAT_PAY_CERTIFICATE;
 import static com.wechat.pay.java.core.model.TestConfig.WECHAT_PAY_CERTIFICATE_PATH;
@@ -37,17 +38,24 @@ public class RSANotificationConfigTest implements NotificationConfigTest {
 
   @Test
   public void testBuildConfigWithCertificateProvider() {
-    assertThrows(
-        ServiceException.class,
-        () -> {
-          NotificationConfig config =
-              new RSANotificationConfig.Builder()
-                  .privateKeyFromStr(MERCHANT_PRIVATE_KEY_STRING)
-                  .merchantId(MERCHANT_ID)
-                  .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER)
-                  .apiV3Key(API_V3_KEY)
-                  .build();
-        });
+    RSANotificationConfig.Builder builder =
+        new RSANotificationConfig.Builder()
+            .privateKeyFromStr(MERCHANT_PRIVATE_KEY_STRING)
+            .merchantId(MERCHANT_ID)
+            .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER)
+            .apiV3Key(API_V3_KEY);
+    assertThrows(ServiceException.class, builder::build);
+  }
+
+  @Test
+  public void testBuildConfigWithCertificateProvider2() {
+    RSANotificationConfig.Builder builder =
+        new RSANotificationConfig.Builder()
+            .privateKeyFromPath(MERCHANT_PRIVATE_KEY_PATH)
+            .merchantId(MERCHANT_ID)
+            .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER)
+            .apiV3Key(API_V3_KEY);
+    assertThrows(ServiceException.class, builder::build);
   }
 
   @Override
