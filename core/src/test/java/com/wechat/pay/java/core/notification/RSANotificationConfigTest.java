@@ -14,10 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.wechat.pay.java.core.exception.ServiceException;
 import org.junit.jupiter.api.Test;
 
-public class RSANotificationConfigTest implements NotificationConfigTest {
+class RSANotificationConfigTest implements NotificationConfigTest {
 
   @Test
-  public void testBuildConfigFromStr() {
+  void testBuildConfigFromStr() {
     NotificationConfig config =
         new RSANotificationConfig.Builder()
             .certificates(WECHAT_PAY_CERTIFICATE_STRING)
@@ -27,7 +27,7 @@ public class RSANotificationConfigTest implements NotificationConfigTest {
   }
 
   @Test
-  public void testBuildConfigFromPath() {
+  void testBuildConfigFromPath() {
     NotificationConfig config =
         new RSANotificationConfig.Builder()
             .certificatesFromPath(WECHAT_PAY_CERTIFICATE_PATH)
@@ -37,7 +37,7 @@ public class RSANotificationConfigTest implements NotificationConfigTest {
   }
 
   @Test
-  public void testBuildConfigWithCertificateProvider() {
+  void testBuildConfigWithCertificateProvider() {
     RSANotificationConfig.Builder builder =
         new RSANotificationConfig.Builder()
             .privateKeyFromStr(MERCHANT_PRIVATE_KEY_STRING)
@@ -48,7 +48,7 @@ public class RSANotificationConfigTest implements NotificationConfigTest {
   }
 
   @Test
-  public void testBuildConfigWithCertificateProvider2() {
+  void testBuildConfigWithCertificateProvider2() {
     RSANotificationConfig.Builder builder =
         new RSANotificationConfig.Builder()
             .privateKeyFromPath(MERCHANT_PRIVATE_KEY_PATH)
