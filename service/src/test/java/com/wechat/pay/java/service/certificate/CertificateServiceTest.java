@@ -9,6 +9,7 @@ import com.wechat.pay.java.core.cipher.AbstractAeadCipher;
 import com.wechat.pay.java.core.cipher.AeadCipher;
 import com.wechat.pay.java.core.cipher.PrivacyDecryptor;
 import com.wechat.pay.java.core.cipher.PrivacyEncryptor;
+import com.wechat.pay.java.core.cipher.Signer;
 import com.wechat.pay.java.core.http.Constant;
 import com.wechat.pay.java.core.http.DefaultHttpClientBuilder;
 import com.wechat.pay.java.core.http.HostName;
@@ -93,6 +94,11 @@ public class CertificateServiceTest {
                 return true;
               }
             };
+          }
+
+          @Override
+          public Signer createSigner() {
+            return null;
           }
         };
   }

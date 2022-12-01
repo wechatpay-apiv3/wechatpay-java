@@ -11,6 +11,7 @@ import com.wechat.pay.java.core.certificate.CertificateProvider;
 import com.wechat.pay.java.core.certificate.InMemoryCertificateProvider;
 import com.wechat.pay.java.core.cipher.PrivacyDecryptor;
 import com.wechat.pay.java.core.cipher.PrivacyEncryptor;
+import com.wechat.pay.java.core.cipher.Signer;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -75,6 +76,16 @@ public final class SMConfig implements Config {
   @Override
   public Validator createValidator() {
     return new WechatPay2Validator(new SM2Verifier(certificateProvider));
+  }
+
+  /**
+   * 创建签名器
+   *
+   * @return 签名器
+   */
+  @Override
+  public Signer createSigner() {
+    return new SM2Signer(merchantSerialNumber, privateKey);
   }
 
   public static class Builder {

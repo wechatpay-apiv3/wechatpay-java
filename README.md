@@ -75,8 +75,6 @@ public class QuickStart {
   public static String merchantSerialNumber = "";
   /** 微信支付平台证书路径 */
   public static String wechatPayCertificatePath = "";
-  /** 微信支付 APIv3 密钥 */
-  public static String apiV3Key = "";
 
   public static void main(String[] args) {
     Config config =
@@ -87,7 +85,7 @@ public class QuickStart {
             .wechatPayCertificatesFromPath(wechatPayCertificatePath)
             .build();
     JsapiService service = new JsapiService.Builder().config(config).build();
-    // 调用request.setXxx(val)设置所需参数，具体参数可见Request定义
+    // request.setXxx(val)设置所需参数，具体参数可见Request定义
     PrepayRequest request = new PrepayRequest();
     Amount amount = new Amount();
     amount.setTotal(100);
@@ -139,9 +137,9 @@ service.closeOrder(closeRequest);
 
 ### 更多示例
 
-为了方便开发者快速上手，微信支付给每个服务生成了示例代码 `XxxServiceExample.java`，可以在 [example](service/src/example) 中查看。例如：
-
-+ [JsapiServiceExample.java](service/src/example/java/com/wechat/pay/java/service/payments/jsapi/JsapiServiceExample.java)
+为了方便开发者快速上手，微信支付给每个服务生成了示例代码 `XxxServiceExample.java`。JSAPI 支付和 APP 支付推荐使用服务拓展类 XxxServiceExtension，包含下单并返回调起支付数据方法。可以在 [example](service/src/example) 中查看。
+例如：
++ [JsapiServiceExtensionExample.java](service/src/example/java/com/wechat/pay/java/service/payments/jsapi/JsapiServiceExtensionExample.java)
 + [FileServiceExample.java](service/src/example/java/com/wechat/pay/java/service/file/FileUploadServiceExample.java)
 
 ## 错误处理

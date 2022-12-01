@@ -81,6 +81,11 @@ public final class HttpResponse<T> {
       return this;
     }
 
+    /**
+     * 构造 HttpResponse
+     *
+     * @return httpResponse
+     */
     public HttpResponse<T> build() {
       Objects.requireNonNull(originalResponse);
       if (originalResponse.getBody() == null

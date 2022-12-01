@@ -16,6 +16,7 @@ import com.wechat.pay.java.core.cipher.RSAPrivacyDecryptor;
 import com.wechat.pay.java.core.cipher.RSAPrivacyEncryptor;
 import com.wechat.pay.java.core.cipher.RSASigner;
 import com.wechat.pay.java.core.cipher.RSAVerifier;
+import com.wechat.pay.java.core.cipher.Signer;
 import com.wechat.pay.java.core.util.PemUtil;
 import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
@@ -64,12 +65,17 @@ public final class RSAConfig implements Config {
 
   @Override
   public Credential createCredential() {
-    return new WechatPay2Credential(merchantId, new RSASigner(merchantSerialNumber, privateKey));
+    return new WechatPay2Credential(merchantId, createSigner());
   }
 
   @Override
   public Validator createValidator() {
     return new WechatPay2Validator(new RSAVerifier(certificateProvider));
+  }
+
+  @Override
+  public Signer createSigner() {
+    return new RSASigner(merchantSerialNumber, privateKey);
   }
 
   public static class Builder {

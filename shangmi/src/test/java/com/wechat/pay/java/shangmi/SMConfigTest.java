@@ -23,6 +23,7 @@ class SMConfigTest {
     assertNotNull(c.createValidator());
     assertNotNull(c.createDecryptor());
     assertNotNull(c.createEncryptor());
+    assertNotNull(c.createSigner());
   }
 
   static Stream<SMConfig.Builder> BuilderProvider() {

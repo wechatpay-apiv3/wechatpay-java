@@ -17,6 +17,8 @@ public abstract class AbstractSigner implements Signer {
   private final Signature signature;
 
   /**
+   * AbstractSigner 构造函数
+   *
    * @param algorithm 微信支付的签名算法，例如SHA256-RSA2048
    * @param algorithmName 获取Signature对象时指定的算法，例如SHA256withRSA
    * @param certificateSerialNumber 商户API证书序列号
