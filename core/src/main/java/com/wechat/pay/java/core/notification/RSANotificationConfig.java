@@ -55,6 +55,8 @@ public final class RSANotificationConfig implements NotificationConfig {
     private PrivateKey privateKey;
     private String merchantSerialNumber;
 
+    private CertificateProvider certificateProvider;
+
     public Builder certificates(X509Certificate... certificates) {
       this.certificates = Arrays.asList(certificates);
       return this;
@@ -105,9 +107,16 @@ public final class RSANotificationConfig implements NotificationConfig {
       return this;
     }
 
+    public Builder certificateProvider(CertificateProvider certificateProvider) {
+      this.certificateProvider = certificateProvider;
+      return this;
+    }
+
     public RSANotificationConfig build() {
       requireNonNull(apiV3Key);
-      CertificateProvider certificateProvider;
+      if (certificateProvider != null) {
+        return new RSANotificationConfig(certificateProvider, apiV3Key);
+      }
       if (certificates == null || certificates.isEmpty()) {
         // 使用自动更新证书提供器
         certificateProvider =
@@ -119,8 +128,8 @@ public final class RSANotificationConfig implements NotificationConfig {
                 .build();
         return new RSANotificationConfig(certificateProvider, apiV3Key);
       }
-      certificateProvider = new InMemoryCertificateProvider(requireNonNull(certificates));
-      return new RSANotificationConfig(certificateProvider, apiV3Key);
+      return new RSANotificationConfig(
+          new InMemoryCertificateProvider(requireNonNull(certificates)), apiV3Key);
     }
   }
 }

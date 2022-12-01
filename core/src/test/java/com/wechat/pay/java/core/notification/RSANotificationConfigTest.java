@@ -11,7 +11,9 @@ import static com.wechat.pay.java.core.model.TestConfig.WECHAT_PAY_CERTIFICATE_S
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.wechat.pay.java.core.certificate.CertificateProvider;
 import com.wechat.pay.java.core.exception.ServiceException;
+import java.security.cert.X509Certificate;
 import org.junit.jupiter.api.Test;
 
 class RSANotificationConfigTest implements NotificationConfigTest {
@@ -37,7 +39,7 @@ class RSANotificationConfigTest implements NotificationConfigTest {
   }
 
   @Test
-  void testBuildConfigWithCertificateProvider() {
+  void testBuildConfigWithInnerCertificateProvider() {
     RSANotificationConfig.Builder builder =
         new RSANotificationConfig.Builder()
             .privateKeyFromStr(MERCHANT_PRIVATE_KEY_STRING)
@@ -48,7 +50,7 @@ class RSANotificationConfigTest implements NotificationConfigTest {
   }
 
   @Test
-  void testBuildConfigWithCertificateProvider2() {
+  void testBuildConfigWithInnerCertificateProvider2() {
     RSANotificationConfig.Builder builder =
         new RSANotificationConfig.Builder()
             .privateKeyFromPath(MERCHANT_PRIVATE_KEY_PATH)
@@ -56,6 +58,28 @@ class RSANotificationConfigTest implements NotificationConfigTest {
             .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER)
             .apiV3Key(API_V3_KEY);
     assertThrows(ServiceException.class, builder::build);
+  }
+
+  @Test
+  void testBuildConfigWithCertificateProvider2() {
+    CertificateProvider certificateProvider =
+        new CertificateProvider() {
+          @Override
+          public X509Certificate getCertificate(String serialNumber) {
+            return null;
+          }
+
+          @Override
+          public X509Certificate getAvailableCertificate() {
+            return null;
+          }
+        };
+    NotificationConfig config =
+        new RSANotificationConfig.Builder()
+            .certificateProvider(certificateProvider)
+            .apiV3Key(API_V3_KEY)
+            .build();
+    assertNotNull(config);
   }
 
   @Override
