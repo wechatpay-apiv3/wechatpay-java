@@ -8,34 +8,34 @@ import com.wechat.pay.java.core.auth.WechatPay2Credential;
 import com.wechat.pay.java.core.cipher.AeadAesCipher;
 import com.wechat.pay.java.core.cipher.AeadCipher;
 import com.wechat.pay.java.core.cipher.RSASigner;
+import com.wechat.pay.java.core.cipher.RSAVerifier;
+import com.wechat.pay.java.core.cipher.Verifier;
 import com.wechat.pay.java.core.http.DefaultHttpClientBuilder;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpHeaders;
+import com.wechat.pay.java.core.util.PemUtil;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
+import java.util.List;
 import okhttp3.OkHttpClient;
 
 /** RSA自动更新平台证书提供器 */
-public class RSAAutoCertificateProvider implements CertificateProvider {
+public class RSAAutoCertificateProvider extends AbstractAutoCertificateProvider {
 
-  private final CertificateManager certificateManager =
-      RSACertificateManager.getInstance(); // 平台证书管理器
-  private final String merchantId; // 商户号
+  private static final String REQUEST_URL =
+      "https://api.mch.weixin.qq.com/v3/certificates"; // 下载证书url
 
-  private RSAAutoCertificateProvider(
-      HttpClient httpClient, String merchantId, AeadCipher aeadCipher) {
-    this.merchantId = merchantId;
-    certificateManager.putMerchant(merchantId, httpClient, aeadCipher);
+  private static Verifier toVerifier(List<X509Certificate> certificateList) {
+    return new RSAVerifier(new InMemoryCertificateProvider(certificateList));
   }
 
-  @Override
-  public X509Certificate getCertificate(String serialNumber) {
-    return certificateManager.getCertificate(merchantId, serialNumber);
-  }
-
-  @Override
-  public X509Certificate getAvailableCertificate() {
-    return certificateManager.getAvailableCertificate(merchantId);
+  private RSAAutoCertificateProvider(AeadCipher aeadCipher, HttpClient httpClient) {
+    super(
+        REQUEST_URL,
+        PemUtil::loadX509FromString,
+        RSAAutoCertificateProvider::toVerifier,
+        aeadCipher,
+        httpClient);
   }
 
   public static class Builder {
@@ -86,7 +86,6 @@ public class RSAAutoCertificateProvider implements CertificateProvider {
         };
 
     public RSAAutoCertificateProvider build() {
-      requireNonNull(merchantId);
       if (httpClient == null) {
         DefaultHttpClientBuilder httpClientBuilder =
             new DefaultHttpClientBuilder()
@@ -95,12 +94,12 @@ public class RSAAutoCertificateProvider implements CertificateProvider {
         if (credential == null) {
           httpClientBuilder.credential(
               new WechatPay2Credential(
-                  merchantId,
+                  requireNonNull(merchantId),
                   new RSASigner(requireNonNull(merchantSerialNumber), requireNonNull(privateKey))));
         }
         httpClient = httpClientBuilder.build();
       }
-      return new RSAAutoCertificateProvider(httpClient, merchantId, new AeadAesCipher(apiV3Key));
+      return new RSAAutoCertificateProvider(new AeadAesCipher(apiV3Key), httpClient);
     }
   }
 }

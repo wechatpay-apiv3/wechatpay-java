@@ -16,7 +16,6 @@ import com.wechat.pay.java.core.cipher.RSAPrivacyDecryptor;
 import com.wechat.pay.java.core.cipher.RSAPrivacyEncryptor;
 import com.wechat.pay.java.core.cipher.RSASigner;
 import com.wechat.pay.java.core.cipher.RSAVerifier;
-import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.util.PemUtil;
 import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
@@ -82,7 +81,7 @@ public final class RSAConfig implements Config {
     private List<X509Certificate> wechatPayCertificates;
     private byte[] apiV3Key;
 
-    private HttpClient httpClient;
+    private CertificateProvider certificateProvider;
 
     public Builder merchantId(String merchantId) {
       this.merchantId = merchantId;
@@ -148,13 +147,13 @@ public final class RSAConfig implements Config {
       return this;
     }
 
-    public Builder httpClient(HttpClient httpClient) {
-      this.httpClient = httpClient;
+    public Builder apiV3Key(String apiV3key) {
+      this.apiV3Key = apiV3key.getBytes(StandardCharsets.UTF_8);
       return this;
     }
 
-    public Builder apiV3Key(String apiV3key) {
-      this.apiV3Key = apiV3key.getBytes(StandardCharsets.UTF_8);
+    public Builder certificateProvider(CertificateProvider certificateProvider) {
+      this.certificateProvider = certificateProvider;
       return this;
     }
 
@@ -162,21 +161,24 @@ public final class RSAConfig implements Config {
       requireNonNull(privateKey);
       requireNonNull(merchantSerialNumber);
       requireNonNull(merchantId);
-      CertificateProvider provider;
+      if (this.certificateProvider != null) {
+        return new RSAConfig(merchantId, privateKey, merchantSerialNumber, certificateProvider);
+      }
       if (wechatPayCertificates == null || wechatPayCertificates.isEmpty()) {
-        provider =
+        certificateProvider =
             new RSAAutoCertificateProvider.Builder()
                 .merchantId(merchantId)
                 .apiV3Key(apiV3Key)
                 .privateKey(privateKey)
                 .merchantSerialNumber(merchantSerialNumber)
-                .httpClient(httpClient)
                 .build();
-      } else {
-        provider = new InMemoryCertificateProvider(wechatPayCertificates);
+        return new RSAConfig(merchantId, privateKey, merchantSerialNumber, certificateProvider);
       }
-
-      return new RSAConfig(merchantId, privateKey, merchantSerialNumber, provider);
+      return new RSAConfig(
+          merchantId,
+          privateKey,
+          merchantSerialNumber,
+          new InMemoryCertificateProvider(wechatPayCertificates));
     }
   }
 }

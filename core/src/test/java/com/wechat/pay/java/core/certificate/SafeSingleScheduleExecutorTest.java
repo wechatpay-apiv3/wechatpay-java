@@ -7,7 +7,7 @@ public class SafeSingleScheduleExecutorTest {
 
   @Test
   public void scheduleAtFixRate_success() {
-    SafeSingleScheduleExecutor executor = new SafeSingleScheduleExecutor();
+    SafeSingleScheduleExecutor executor = SafeSingleScheduleExecutor.getInstance();
     Runnable runnable = () -> System.out.println("hello world");
     executor.scheduleAtFixedRate(runnable, 0, 1, TimeUnit.MINUTES);
   }

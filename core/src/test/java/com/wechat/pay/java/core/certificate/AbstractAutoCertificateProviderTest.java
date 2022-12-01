@@ -11,8 +11,8 @@ import static org.mockito.Mockito.doReturn;
 
 import com.wechat.pay.java.core.auth.Validator;
 import com.wechat.pay.java.core.auth.WechatPay2Credential;
+import com.wechat.pay.java.core.certificate.RSAAutoCertificateProvider.Builder;
 import com.wechat.pay.java.core.certificate.model.DownloadCertificateResponse;
-import com.wechat.pay.java.core.cipher.AeadAesCipher;
 import com.wechat.pay.java.core.cipher.RSASigner;
 import com.wechat.pay.java.core.http.DefaultHttpClientBuilder;
 import com.wechat.pay.java.core.http.HttpClient;
@@ -24,12 +24,11 @@ import com.wechat.pay.java.core.http.OriginalResponse;
 import java.nio.charset.StandardCharsets;
 import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-public class RSACertificateManagerTest implements CertificateManagerTest {
+public class AbstractAutoCertificateProviderTest implements CertificateProviderTest {
 
-  static AbstractCertificateManager spyManager;
+  static AbstractAutoCertificateProvider spyAutoProvider;
   static HttpClient httpClient;
 
   @BeforeAll
@@ -85,17 +84,17 @@ public class RSACertificateManagerTest implements CertificateManagerTest {
                 .build())
         .when(httpClient)
         .execute(any(), eq(DownloadCertificateResponse.class));
-    spyManager = new RSACertificateManager();
-  }
-
-  @Test
-  void testPutMerchant() {
-    spyManager.putMerchant(
-        MERCHANT_ID, httpClient, new AeadAesCipher(API_V3_KEY.getBytes(StandardCharsets.UTF_8)));
+    spyAutoProvider =
+        new Builder()
+            .privateKey(MERCHANT_PRIVATE_KEY)
+            .merchantId(MERCHANT_ID)
+            .httpClient(httpClient)
+            .apiV3Key(API_V3_KEY.getBytes(StandardCharsets.UTF_8))
+            .build();
   }
 
   @Override
-  public CertificateManager createCertificateManager() {
-    return new RSACertificateManager();
+  public CertificateProvider createCertificateProvider() {
+    return spyAutoProvider;
   }
 }
