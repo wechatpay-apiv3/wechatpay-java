@@ -10,7 +10,7 @@ import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
 /** 默认HttpClient构造器 */
-public class DefaultHttpClientBuilder implements HttpClientBuilder {
+public class DefaultHttpClientBuilder {
 
   private Credential credential;
   private Validator validator;

@@ -92,12 +92,12 @@ public final class RSANotificationConfig implements NotificationConfig {
       return this;
     }
 
-    public Builder privateKeyFromStr(String privateKeyStr) {
+    public Builder autoUpdateCertWithKeyStr(String privateKeyStr) {
       this.privateKey = PemUtil.loadPrivateKeyFromString(privateKeyStr);
       return this;
     }
 
-    public Builder privateKeyFromPath(String privateKeyPath) {
+    public Builder autoUpdateCertWithKeyPath(String privateKeyPath) {
       this.privateKey = PemUtil.loadPrivateKeyFromPath(privateKeyPath);
       return this;
     }
@@ -117,7 +117,13 @@ public final class RSANotificationConfig implements NotificationConfig {
       if (certificateProvider != null) {
         return new RSANotificationConfig(certificateProvider, apiV3Key);
       }
-      if (certificates == null || certificates.isEmpty()) {
+      if (privateKey == null && (certificates == null || certificates.isEmpty())) {
+        throw new IllegalArgumentException("One of privateKey and certificates must be set.");
+      }
+      if (privateKey != null && certificates != null && !certificates.isEmpty()) {
+        throw new IllegalArgumentException("Only One of privateKey and certificates can be set.");
+      }
+      if (privateKey != null) {
         // 使用自动更新证书提供器
         certificateProvider =
             new RSAAutoCertificateProvider.Builder()

@@ -137,11 +137,4 @@ public interface HttpClient {
         new HttpRequest.Builder().url(url).httpMethod(HttpMethod.DELETE).headers(headers).build();
     return execute(httpRequest, responseClass);
   }
-
-  /**
-   * 返回一个新的HttpclientBuilder，拥有原来的HttpClient的配置信息
-   *
-   * @return builder
-   */
-  HttpClientBuilder newBuilder();
 }

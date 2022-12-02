@@ -7,11 +7,13 @@ import com.wechat.pay.java.core.certificate.model.DownloadCertificateResponse;
 import com.wechat.pay.java.core.certificate.model.EncryptCertificate;
 import com.wechat.pay.java.core.cipher.AeadCipher;
 import com.wechat.pay.java.core.cipher.Verifier;
+import com.wechat.pay.java.core.exception.ValidationException;
 import com.wechat.pay.java.core.http.Constant;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpMethod;
 import com.wechat.pay.java.core.http.HttpRequest;
 import com.wechat.pay.java.core.http.HttpResponse;
+import com.wechat.pay.java.core.http.JsonResponseBody;
 import com.wechat.pay.java.core.http.MediaType;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
@@ -38,6 +40,8 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
       SafeSingleScheduleExecutor.getInstance(); // 安全的单线程定时执行器实例
   protected AeadCipher aeadCipher; // 解密平台证书的aeadCipher
   protected HttpClient httpClient; // 下载平台证书的httpClient
+  protected String aeadCipherAlgorithm; // aead加解密器算法
+  protected Validator validator; // 验证器
   protected Map<String, X509Certificate> certificateMap = new HashMap<>(); // 证书map
 
   AbstractAutoCertificateProvider(
@@ -45,12 +49,14 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
       Function<String, X509Certificate> certificateGenerator,
       Function<List<X509Certificate>, Verifier> verifierGenerator,
       AeadCipher aeadCipher,
-      HttpClient httpClient) {
+      HttpClient httpClient,
+      String aeadCipherAlgorithm) {
     this.requestUrl = requestUrl;
     this.certificateGenerator = certificateGenerator;
     this.verifierGenerator = verifierGenerator;
     this.aeadCipher = aeadCipher;
     this.httpClient = httpClient;
+    this.aeadCipherAlgorithm = aeadCipherAlgorithm;
     downloadAndUpdate();
     Runnable runnable =
         () -> {
@@ -63,40 +69,84 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
 
   /** 下载和更新证书 */
   protected void downloadAndUpdate() {
-    this.certificateMap = download();
-    Validator validator =
+    HttpResponse<DownloadCertificateResponse> httpResponse = downloadCertificate();
+    if (httpResponse == null) {
+      return;
+    }
+    validateCertificate(httpResponse);
+    updateCertificate(httpResponse);
+    this.validator =
         new WechatPay2Validator(verifierGenerator.apply(new ArrayList<>(certificateMap.values())));
-    httpClient = httpClient.newBuilder().validator(validator).build();
   }
 
   /**
    * 下载证书
    *
-   * @return 下载得到的证书map
+   * @return httpResponse
    */
-  protected Map<String, X509Certificate> download() {
-    HttpRequest request =
-        new HttpRequest.Builder()
-            .httpMethod(HttpMethod.GET)
-            .url(requestUrl)
-            .addHeader(Constant.ACCEPT, " */*")
-            .addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue())
-            .build();
-    HttpResponse<DownloadCertificateResponse> httpResponse =
-        httpClient.execute(request, DownloadCertificateResponse.class);
+  protected HttpResponse<DownloadCertificateResponse> downloadCertificate() {
+    HttpResponse<DownloadCertificateResponse> httpResponse = null;
+    try {
+      HttpRequest request =
+          new HttpRequest.Builder()
+              .httpMethod(HttpMethod.GET)
+              .url(requestUrl)
+              .addHeader(Constant.ACCEPT, " */*")
+              .addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue())
+              .build();
+      httpResponse = httpClient.execute(request, DownloadCertificateResponse.class);
+    } catch (Exception e) {
+      if (validator == null) {
+        throw e;
+      }
+      log.error("DownloadCertificate failed.", e);
+    }
+    return httpResponse;
+  }
+
+  /**
+   * 校验下载证书
+   *
+   * @param httpResponse httpResponse
+   */
+  protected void validateCertificate(HttpResponse<DownloadCertificateResponse> httpResponse) {
+    JsonResponseBody responseBody = (JsonResponseBody) (httpResponse.getBody());
+    if (validator != null
+        && !validator.validate(httpResponse.getHeaders(), responseBody.getBody())) {
+      throw new ValidationException(
+          String.format(
+              "Validate response failed,the WechatPay signature is incorrect.responseHeader[%s]\tresponseBody[%.1024s]",
+              httpResponse.getHeaders(), httpResponse.getServiceResponse()));
+    }
+  }
+
+  /**
+   * 更新证书
+   *
+   * @param httpResponse httpResponse
+   */
+  protected void updateCertificate(HttpResponse<DownloadCertificateResponse> httpResponse) {
     List<Data> dataList = httpResponse.getServiceResponse().getData();
     Map<String, X509Certificate> downloadCertMap = new HashMap<>();
     for (Data data : dataList) {
       EncryptCertificate encryptCertificate = data.getEncryptCertificate();
-      String decryptCertificate =
-          aeadCipher.decrypt(
-              encryptCertificate.getAssociatedData().getBytes(StandardCharsets.UTF_8),
-              encryptCertificate.getNonce().getBytes(StandardCharsets.UTF_8),
-              Base64.getDecoder().decode(encryptCertificate.getCiphertext()));
-      X509Certificate certificate = certificateGenerator.apply(decryptCertificate);
-      downloadCertMap.put(certificate.getSerialNumber().toString(16).toUpperCase(), certificate);
+      X509Certificate certificate;
+      try {
+        String decryptCertificate =
+            aeadCipher.decrypt(
+                encryptCertificate.getAssociatedData().getBytes(StandardCharsets.UTF_8),
+                encryptCertificate.getNonce().getBytes(StandardCharsets.UTF_8),
+                Base64.getDecoder().decode(encryptCertificate.getCiphertext()));
+        certificate = certificateGenerator.apply(decryptCertificate);
+        downloadCertMap.put(certificate.getSerialNumber().toString(16).toUpperCase(), certificate);
+      } catch (Exception e) {
+        if (validator == null) {
+          throw e;
+        }
+        log.error("Decrypt Wechat Pay Certificate failed.", e);
+      }
     }
-    return downloadCertMap;
+    this.certificateMap = downloadCertMap;
   }
 
   @Override

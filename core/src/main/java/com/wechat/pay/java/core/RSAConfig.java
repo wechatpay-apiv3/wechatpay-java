@@ -153,7 +153,7 @@ public final class RSAConfig implements Config {
       return this;
     }
 
-    public Builder apiV3Key(String apiV3key) {
+    public Builder autoUpdateWechatPayCertificate(String apiV3key) {
       this.apiV3Key = apiV3key.getBytes(StandardCharsets.UTF_8);
       return this;
     }
@@ -170,7 +170,15 @@ public final class RSAConfig implements Config {
       if (this.certificateProvider != null) {
         return new RSAConfig(merchantId, privateKey, merchantSerialNumber, certificateProvider);
       }
-      if (wechatPayCertificates == null || wechatPayCertificates.isEmpty()) {
+      if (apiV3Key == null && (wechatPayCertificates == null || wechatPayCertificates.isEmpty())) {
+        throw new IllegalArgumentException(
+            "One of apiV3Key and wechatPayCertificates must be set.");
+      }
+      if (apiV3Key != null && wechatPayCertificates != null && !wechatPayCertificates.isEmpty()) {
+        throw new IllegalArgumentException(
+            "Only one of apiV3Key and wechatPayCertificates can be set.");
+      }
+      if (apiV3Key != null) {
         certificateProvider =
             new RSAAutoCertificateProvider.Builder()
                 .merchantId(merchantId)

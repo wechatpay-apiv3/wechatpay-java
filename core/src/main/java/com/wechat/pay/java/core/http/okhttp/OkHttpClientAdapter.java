@@ -8,7 +8,6 @@ import com.wechat.pay.java.core.exception.HttpException;
 import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.http.AbstractHttpClient;
 import com.wechat.pay.java.core.http.FileRequestBody;
-import com.wechat.pay.java.core.http.HttpClientBuilder;
 import com.wechat.pay.java.core.http.HttpRequest;
 import com.wechat.pay.java.core.http.JsonRequestBody;
 import com.wechat.pay.java.core.http.OriginalResponse;
@@ -29,15 +28,11 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
   private static final String META_NAME = "meta";
   private static final String FILE_NAME = "file";
 
-  private final Credential credential;
-  private final Validator validator;
   private final okhttp3.OkHttpClient okHttpClient;
 
   public OkHttpClientAdapter(
       Credential credential, Validator validator, okhttp3.OkHttpClient client) {
     super(credential, validator);
-    this.credential = credential;
-    this.validator = validator;
     this.okHttpClient = requireNonNull(client);
   }
 
@@ -125,10 +120,5 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
               "Assemble OriginalResponse,get responseBody failed.%nHttpRequest[%s]",
               wechatPayRequest));
     }
-  }
-
-  @Override
-  public HttpClientBuilder newBuilder() {
-    return new OkHttpClientAdapterBuilder(credential, validator, okHttpClient);
   }
 }

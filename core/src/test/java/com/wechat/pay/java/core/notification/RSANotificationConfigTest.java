@@ -11,12 +11,28 @@ import static com.wechat.pay.java.core.model.TestConfig.WECHAT_PAY_CERTIFICATE_S
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.wechat.pay.java.core.certificate.CertificateProvider;
+import com.wechat.pay.java.core.certificate.InMemoryCertificateProvider;
 import com.wechat.pay.java.core.exception.ServiceException;
-import java.security.cert.X509Certificate;
+import com.wechat.pay.java.core.notification.RSANotificationConfig.Builder;
+import java.util.Collections;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class RSANotificationConfigTest implements NotificationConfigTest {
+
+  @ParameterizedTest
+  @MethodSource("BuilderProvider")
+  void testConfigWithBuilderProvider(Builder builder) {
+    RSANotificationConfig c = builder.build();
+
+    assertNotNull(c);
+    assertNotNull(c.createAeadCipher());
+    assertNotNull(c.createVerifier());
+    assertNotNull(c.getCipherType());
+    assertNotNull(c.getSignType());
+  }
 
   @Test
   void testBuildConfigFromStr() {
@@ -28,58 +44,51 @@ class RSANotificationConfigTest implements NotificationConfigTest {
     assertNotNull(config);
   }
 
-  @Test
-  void testBuildConfigFromPath() {
-    NotificationConfig config =
+  static Stream<Builder> BuilderProvider() {
+    return Stream.of(
+        // from string
         new RSANotificationConfig.Builder()
-            .certificatesFromPath(WECHAT_PAY_CERTIFICATE_PATH)
             .apiV3Key(API_V3_KEY)
-            .build();
-    assertNotNull(config);
+            .certificates(WECHAT_PAY_CERTIFICATE),
+
+        // form path
+        new RSANotificationConfig.Builder()
+            .apiV3Key(API_V3_KEY)
+            .certificatesFromPath(WECHAT_PAY_CERTIFICATE_PATH),
+
+        // with provider
+        new RSANotificationConfig.Builder()
+            .apiV3Key(API_V3_KEY)
+            .certificateProvider(
+                new InMemoryCertificateProvider(
+                    Collections.singletonList(WECHAT_PAY_CERTIFICATE))));
   }
 
   @Test
-  void testBuildConfigWithInnerCertificateProvider() {
-    RSANotificationConfig.Builder builder =
+  void testBuildConfigWithIllegalParam() {
+    Builder builder =
         new RSANotificationConfig.Builder()
-            .privateKeyFromStr(MERCHANT_PRIVATE_KEY_STRING)
+            .apiV3Key(API_V3_KEY)
+            .certificates(WECHAT_PAY_CERTIFICATE)
+            .autoUpdateCertWithKeyStr(MERCHANT_PRIVATE_KEY_STRING);
+    assertThrows(IllegalArgumentException.class, builder::build);
+  }
+
+  @Test
+  void testBuildConfigWithoutEnoughParam() {
+    Builder builder = new RSANotificationConfig.Builder().apiV3Key(API_V3_KEY);
+    assertThrows(IllegalArgumentException.class, builder::build);
+  }
+
+  @Test
+  void testBuildConfigWithAutoUpdateCert() {
+    Builder builder =
+        new RSANotificationConfig.Builder()
+            .apiV3Key(API_V3_KEY)
             .merchantId(MERCHANT_ID)
             .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER)
-            .apiV3Key(API_V3_KEY);
+            .autoUpdateCertWithKeyPath(MERCHANT_PRIVATE_KEY_PATH);
     assertThrows(ServiceException.class, builder::build);
-  }
-
-  @Test
-  void testBuildConfigWithInnerCertificateProvider2() {
-    RSANotificationConfig.Builder builder =
-        new RSANotificationConfig.Builder()
-            .privateKeyFromPath(MERCHANT_PRIVATE_KEY_PATH)
-            .merchantId(MERCHANT_ID)
-            .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER)
-            .apiV3Key(API_V3_KEY);
-    assertThrows(ServiceException.class, builder::build);
-  }
-
-  @Test
-  void testBuildConfigWithCertificateProvider2() {
-    CertificateProvider certificateProvider =
-        new CertificateProvider() {
-          @Override
-          public X509Certificate getCertificate(String serialNumber) {
-            return null;
-          }
-
-          @Override
-          public X509Certificate getAvailableCertificate() {
-            return null;
-          }
-        };
-    NotificationConfig config =
-        new RSANotificationConfig.Builder()
-            .certificateProvider(certificateProvider)
-            .apiV3Key(API_V3_KEY)
-            .build();
-    assertNotNull(config);
   }
 
   @Override
