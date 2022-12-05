@@ -17,3 +17,5 @@
 | payrollcard | 微工卡||✔️|
 | marketingbankpackages | 银行号码包|✔️|✔️|
 | weixinpayscanandride | 微信支付码乘车 |✔️|✔️|
+| lovefeast | 爱心餐 |✔️||
+
