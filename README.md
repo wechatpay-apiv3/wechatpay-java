@@ -73,8 +73,8 @@ public class QuickStart {
   public static String privateKeyPath = "";
   /** 商户证书序列号 */
   public static String merchantSerialNumber = "";
-  /** 微信支付平台证书路径 */
-  public static String wechatPayCertificatePath = "";
+  /** 商户APIV3密钥 */
+  public static String apiV3key = "";
 
   public static void main(String[] args) {
     Config config =
@@ -82,7 +82,8 @@ public class QuickStart {
             .merchantId(merchantId)
             .privateKeyFromPath(privateKeyPath)
             .merchantSerialNumber(merchantSerialNumber)
-            .wechatPayCertificatesFromPath(wechatPayCertificatePath)
+            // 自动更新平台证书
+            .autoUpdateWechatPayCertificate(apiV3key)
             .build();
     JsapiService service = new JsapiService.Builder().config(config).build();
     // request.setXxx(val)设置所需参数，具体参数可见Request定义
@@ -168,8 +169,9 @@ SDK 使用的是 unchecked exception，会抛出四种自定义异常。每种�
 1. 获取HTTP请求头中的 `Wechatpay-Signature` 、 `Wechatpay-Nonce` 、 `Wechatpay-Timestamp` 、 `Wechatpay-Serial` 、 `Request-ID` 、`Wechatpay-Signature-Type` 对应的值，构建 `RequestParam` 。
 2. 获取 HTTP 请求体的 `JSON` 纯文本。
 3. 根据解密后的通知数据数据结构，构造解密对象类 `DecryptObject` 。支付结果通知解密对象类为 [`Transaction`](service/src/main/java/com/wechat/pay/java/service/payments/model/Transaction.java)，退款结果通知解密对象类为 [RefundNotification](service/src/main/java/com/wechat/pay/java/service/refund/model/RefundNotification.java)。
-4. 使用微信支付平台证书（验签）和商户 APIv3 密钥（解密）初始化 `NotificationConfig` 和 `NotificationParser` 。
-5. 使用请求参数 `requestParam` 和 `DecryptObject.class` ，调用 `parser.parse` 验签并解密报文。
+4. 使用微信支付平台证书（验签）和商户 APIv3 密钥（解密）初始化 `NotificationConfig` 。微信支付平台证书可以基于 SDK 的自动更新平台能力提供，也可以使用本地证书。
+5. 初始化 `NotificationParser` 。
+6. 使用请求参数 `requestParam` 和 `DecryptObject.class` ，调用 `parser.parse` 验签并解密报文。
 
 ```java
 // 构造 RequestParam
@@ -183,7 +185,15 @@ RequestParam requestParam = new Builder()
         .body(requestBody)
         .build();
 
-// 初始化 NotificationConfig
+// 初始化 NotificationConfig 方式一：使用自动更新平台证书能力，需要额外设置商户号、商户证书序列号、商户私钥。
+NotificationConfig rsaNotificationConfig = new RSANotificationConfig.Builder()
+        .apiV3Key(apiV3Key)
+        .merchantId(merchantId)
+        .merchantSerialNumber(merchantSerialNumber)
+        .autoUpdateCertWithKeyStr(privateKey)
+        .build();
+
+// 初始化 NotificationConfig 方式二：使用本地的微信支付平台证书
 NotificationConfig rsaNotificationConfig = new RSANotificationConfig.Builder()
         .apiV3Key(apiV3Key)
         .certificates(wechatPayCertificateString)

@@ -17,8 +17,8 @@ public class QuickStart {
   public static String privateKeyPath = "";
   /** 商户证书序列号 */
   public static String merchantSerialNumber = "";
-  /** 微信支付平台证书路径 */
-  public static String wechatPayCertificatePath = "";
+  /** 商户APIV3密钥 */
+  public static String apiV3key = "";
 
   public static void main(String[] args) {
     Config config =
@@ -26,7 +26,8 @@ public class QuickStart {
             .merchantId(merchantId)
             .privateKeyFromPath(privateKeyPath)
             .merchantSerialNumber(merchantSerialNumber)
-            .wechatPayCertificatesFromPath(wechatPayCertificatePath)
+            // 自动更新平台证书
+            .autoUpdateWechatPayCertificate(apiV3key)
             .build();
     JsapiService service = new JsapiService.Builder().config(config).build();
     // request.setXxx(val)设置所需参数，具体参数可见Request定义
