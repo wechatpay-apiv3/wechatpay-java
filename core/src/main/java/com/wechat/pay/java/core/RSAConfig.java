@@ -167,16 +167,26 @@ public final class RSAConfig implements Config {
       requireNonNull(privateKey);
       requireNonNull(merchantSerialNumber);
       requireNonNull(merchantId);
-      if (this.certificateProvider != null) {
-        return new RSAConfig(merchantId, privateKey, merchantSerialNumber, certificateProvider);
+      if (this.certificateProvider == null) {
+        initCertificateProvider();
+      } else if (wechatPayCertificates != null || apiV3Key != null) {
+        throw new IllegalArgumentException(
+            "Can not call certificateProvider() or autoUpdateWechatPayCertificate or "
+                + "wechatPayCertificates/wechatPayCertificatesFromPath method at the same time.");
       }
+      return new RSAConfig(merchantId, privateKey, merchantSerialNumber, certificateProvider);
+    }
+
+    private void initCertificateProvider() {
       if (apiV3Key == null && (wechatPayCertificates == null || wechatPayCertificates.isEmpty())) {
         throw new IllegalArgumentException(
-            "One of apiV3Key and wechatPayCertificates must be set.");
+            "Must call autoUpdateWechatPayCertificate or "
+                + "wechatPayCertificates/wechatPayCertificatesFromPath method.");
       }
-      if (apiV3Key != null && wechatPayCertificates != null && !wechatPayCertificates.isEmpty()) {
+      if (apiV3Key != null && wechatPayCertificates != null) {
         throw new IllegalArgumentException(
-            "Only one of apiV3Key and wechatPayCertificates can be set.");
+            "Can not call autoUpdateWechatPayCertificate or "
+                + "wechatPayCertificates/wechatPayCertificatesFromPath method at the same time.");
       }
       if (apiV3Key != null) {
         certificateProvider =
@@ -186,13 +196,9 @@ public final class RSAConfig implements Config {
                 .privateKey(privateKey)
                 .merchantSerialNumber(merchantSerialNumber)
                 .build();
-        return new RSAConfig(merchantId, privateKey, merchantSerialNumber, certificateProvider);
+      } else {
+        certificateProvider = new InMemoryCertificateProvider(wechatPayCertificates);
       }
-      return new RSAConfig(
-          merchantId,
-          privateKey,
-          merchantSerialNumber,
-          new InMemoryCertificateProvider(wechatPayCertificates));
     }
   }
 }

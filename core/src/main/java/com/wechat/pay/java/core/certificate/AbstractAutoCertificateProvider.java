@@ -58,23 +58,29 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
     this.httpClient = httpClient;
     this.aeadCipherAlgorithm = aeadCipherAlgorithm;
     downloadAndUpdate();
+    log.info("Init WechatPay certificates.Date:{}", Instant.now());
     Runnable runnable =
         () -> {
           log.info("Begin update Certificates.Date:{}", Instant.now());
           downloadAndUpdate();
           log.info("Finish update Certificates.Date:{}", Instant.now());
         };
-    executor.scheduleAtFixedRate(runnable, 0, UPDATE_INTERVAL_MINUTE, TimeUnit.MINUTES);
+    executor.scheduleAtFixedRate(
+        runnable, UPDATE_INTERVAL_MINUTE, UPDATE_INTERVAL_MINUTE, TimeUnit.MINUTES);
   }
 
   /** 下载和更新证书 */
   protected void downloadAndUpdate() {
-    HttpResponse<DownloadCertificateResponse> httpResponse = downloadCertificate();
-    if (httpResponse == null) {
-      return;
+    try {
+      HttpResponse<DownloadCertificateResponse> httpResponse = downloadCertificate();
+      validateCertificate(httpResponse);
+      updateCertificate(httpResponse);
+    } catch (Exception e) {
+      if (validator == null) {
+        throw e;
+      }
+      log.error("Download and update WechatPay certificates failed.", e);
     }
-    validateCertificate(httpResponse);
-    updateCertificate(httpResponse);
     this.validator =
         new WechatPay2Validator(verifierGenerator.apply(new ArrayList<>(certificateMap.values())));
   }
@@ -85,22 +91,15 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
    * @return httpResponse
    */
   protected HttpResponse<DownloadCertificateResponse> downloadCertificate() {
-    HttpResponse<DownloadCertificateResponse> httpResponse = null;
-    try {
-      HttpRequest request =
-          new HttpRequest.Builder()
-              .httpMethod(HttpMethod.GET)
-              .url(requestUrl)
-              .addHeader(Constant.ACCEPT, " */*")
-              .addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue())
-              .build();
-      httpResponse = httpClient.execute(request, DownloadCertificateResponse.class);
-    } catch (Exception e) {
-      if (validator == null) {
-        throw e;
-      }
-      log.error("DownloadCertificate failed.", e);
-    }
+    HttpResponse<DownloadCertificateResponse> httpResponse;
+    HttpRequest request =
+        new HttpRequest.Builder()
+            .httpMethod(HttpMethod.GET)
+            .url(requestUrl)
+            .addHeader(Constant.ACCEPT, " */*")
+            .addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue())
+            .build();
+    httpResponse = httpClient.execute(request, DownloadCertificateResponse.class);
     return httpResponse;
   }
 
@@ -131,20 +130,13 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
     for (Data data : dataList) {
       EncryptCertificate encryptCertificate = data.getEncryptCertificate();
       X509Certificate certificate;
-      try {
-        String decryptCertificate =
-            aeadCipher.decrypt(
-                encryptCertificate.getAssociatedData().getBytes(StandardCharsets.UTF_8),
-                encryptCertificate.getNonce().getBytes(StandardCharsets.UTF_8),
-                Base64.getDecoder().decode(encryptCertificate.getCiphertext()));
-        certificate = certificateGenerator.apply(decryptCertificate);
-        downloadCertMap.put(certificate.getSerialNumber().toString(16).toUpperCase(), certificate);
-      } catch (Exception e) {
-        if (validator == null) {
-          throw e;
-        }
-        log.error("Decrypt Wechat Pay Certificate failed.", e);
-      }
+      String decryptCertificate =
+          aeadCipher.decrypt(
+              encryptCertificate.getAssociatedData().getBytes(StandardCharsets.UTF_8),
+              encryptCertificate.getNonce().getBytes(StandardCharsets.UTF_8),
+              Base64.getDecoder().decode(encryptCertificate.getCiphertext()));
+      certificate = certificateGenerator.apply(decryptCertificate);
+      downloadCertMap.put(certificate.getSerialNumber().toString(16).toUpperCase(), certificate);
     }
     this.certificateMap = downloadCertMap;
   }

@@ -114,14 +114,26 @@ public final class RSANotificationConfig implements NotificationConfig {
 
     public RSANotificationConfig build() {
       requireNonNull(apiV3Key);
-      if (certificateProvider != null) {
-        return new RSANotificationConfig(certificateProvider, apiV3Key);
+      if (certificateProvider == null) {
+        initCertificateProvider();
+      } else if (certificates != null || privateKey != null) {
+        throw new IllegalArgumentException(
+            "Can not call initCertificateProvider or autoUpdateCertWithKeyStr/autoUpdateCertWithKeyPath or"
+                + " certificates/certificatesFromPath method at the same time.");
       }
+      return new RSANotificationConfig(certificateProvider, apiV3Key);
+    }
+
+    private void initCertificateProvider() {
       if (privateKey == null && (certificates == null || certificates.isEmpty())) {
-        throw new IllegalArgumentException("One of privateKey and certificates must be set.");
+        throw new IllegalArgumentException(
+            "Must call autoUpdateCertWithKeyStr/autoUpdateCertWithKeyPath or"
+                + " certificates/certificatesFromPath method.");
       }
-      if (privateKey != null && certificates != null && !certificates.isEmpty()) {
-        throw new IllegalArgumentException("Only One of privateKey and certificates can be set.");
+      if (privateKey != null && certificates != null) {
+        throw new IllegalArgumentException(
+            "Can not call autoUpdateCertWithKeyStr/autoUpdateCertWithKeyPath or"
+                + " certificates/certificatesFromPath method at the same time.");
       }
       if (privateKey != null) {
         // 使用自动更新证书提供器
@@ -132,10 +144,9 @@ public final class RSANotificationConfig implements NotificationConfig {
                 .privateKey(requireNonNull(privateKey))
                 .merchantSerialNumber(requireNonNull(merchantSerialNumber))
                 .build();
-        return new RSANotificationConfig(certificateProvider, apiV3Key);
+      } else {
+        certificateProvider = new InMemoryCertificateProvider(requireNonNull(certificates));
       }
-      return new RSANotificationConfig(
-          new InMemoryCertificateProvider(requireNonNull(certificates)), apiV3Key);
     }
   }
 }
