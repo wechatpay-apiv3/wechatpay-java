@@ -24,8 +24,6 @@ public class RSAAutoCertificateProvider extends AbstractAutoCertificateProvider 
   private static final String REQUEST_URL =
       "https://api.mch.weixin.qq.com/v3/certificates"; // 下载证书url
 
-  private static final String AEAD_CIPHER_ALGORITHM = "AEAD_AES_256_GCM"; // aead加解密器算法
-
   private static Verifier toVerifier(List<X509Certificate> certificateList) {
     return new RSAVerifier(new InMemoryCertificateProvider(certificateList));
   }
@@ -36,8 +34,7 @@ public class RSAAutoCertificateProvider extends AbstractAutoCertificateProvider 
         PemUtil::loadX509FromString,
         RSAAutoCertificateProvider::toVerifier,
         aeadCipher,
-        httpClient,
-        AEAD_CIPHER_ALGORITHM);
+        httpClient);
   }
 
   public static class Builder {

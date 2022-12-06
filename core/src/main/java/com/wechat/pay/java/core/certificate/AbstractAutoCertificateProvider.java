@@ -40,7 +40,6 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
       SafeSingleScheduleExecutor.getInstance(); // 安全的单线程定时执行器实例
   protected AeadCipher aeadCipher; // 解密平台证书的aeadCipher
   protected HttpClient httpClient; // 下载平台证书的httpClient
-  protected String aeadCipherAlgorithm; // aead加解密器算法
   protected Validator validator; // 验证器
   protected Map<String, X509Certificate> certificateMap = new HashMap<>(); // 证书map
 
@@ -49,14 +48,12 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
       Function<String, X509Certificate> certificateGenerator,
       Function<List<X509Certificate>, Verifier> verifierGenerator,
       AeadCipher aeadCipher,
-      HttpClient httpClient,
-      String aeadCipherAlgorithm) {
+      HttpClient httpClient) {
     this.requestUrl = requestUrl;
     this.certificateGenerator = certificateGenerator;
     this.verifierGenerator = verifierGenerator;
     this.aeadCipher = aeadCipher;
     this.httpClient = httpClient;
-    this.aeadCipherAlgorithm = aeadCipherAlgorithm;
     downloadAndUpdate();
     log.info("Init WechatPay certificates.Date:{}", Instant.now());
     Runnable runnable =
@@ -143,9 +140,6 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
 
   @Override
   public X509Certificate getAvailableCertificate() {
-    if (certificateMap.isEmpty()) {
-      throw new IllegalArgumentException("The parameter list of constructor is empty.");
-    }
     // 假设拿到的都是可用的，选取一个能用最久的
     X509Certificate longest = null;
     for (X509Certificate item : certificateMap.values()) {
