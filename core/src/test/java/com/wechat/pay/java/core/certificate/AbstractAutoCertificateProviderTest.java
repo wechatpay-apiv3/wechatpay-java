@@ -70,6 +70,7 @@ public class AbstractAutoCertificateProviderTest implements CertificateProviderT
     data.setEncryptCertificate(encryptCertificate);
     dataList.add(data);
     downloadResp.setData(dataList);
+    System.out.println(data);
     OriginalResponse originalResponse =
         new OriginalResponse.Builder()
             .contentType("application/json")

@@ -1,7 +1,7 @@
 package com.wechat.pay.java.service;
 
 import com.wechat.pay.java.core.Config;
-import com.wechat.pay.java.core.RSAConfig;
+import com.wechat.pay.java.core.RSAAutoCertificateConfig;
 import com.wechat.pay.java.service.payments.jsapi.JsapiService;
 import com.wechat.pay.java.service.payments.jsapi.model.Amount;
 import com.wechat.pay.java.service.payments.jsapi.model.Payer;
@@ -21,13 +21,13 @@ public class QuickStart {
   public static String apiV3key = "";
 
   public static void main(String[] args) {
+    // 使用自动更新平台证书的RSA配置
     Config config =
-        new RSAConfig.Builder()
+        new RSAAutoCertificateConfig.Builder()
             .merchantId(merchantId)
             .privateKeyFromPath(privateKeyPath)
             .merchantSerialNumber(merchantSerialNumber)
-            // 自动更新平台证书
-            .autoUpdateWechatPayCertificate(apiV3key)
+            .apiV3Key(apiV3key)
             .build();
     JsapiService service = new JsapiService.Builder().config(config).build();
     // request.setXxx(val)设置所需参数，具体参数可见Request定义

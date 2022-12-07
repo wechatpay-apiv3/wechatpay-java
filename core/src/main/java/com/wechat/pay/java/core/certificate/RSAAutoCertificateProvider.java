@@ -96,7 +96,8 @@ public class RSAAutoCertificateProvider extends AbstractAutoCertificateProvider 
         }
         httpClient = httpClientBuilder.credential(credential).build();
       }
-      return new RSAAutoCertificateProvider(new AeadAesCipher(apiV3Key), httpClient);
+      return new RSAAutoCertificateProvider(
+          new AeadAesCipher(requireNonNull(apiV3Key)), httpClient);
     }
   }
 }

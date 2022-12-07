@@ -56,7 +56,7 @@ implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.1'
 package com.wechat.pay.java.service;
 
 import com.wechat.pay.java.core.Config;
-import com.wechat.pay.java.core.RSAConfig;
+import com.wechat.pay.java.core.RSAAutoCertificateConfig;
 import com.wechat.pay.java.service.payments.jsapi.JsapiService;
 import com.wechat.pay.java.service.payments.jsapi.model.Amount;
 import com.wechat.pay.java.service.payments.jsapi.model.Payer;
@@ -76,13 +76,13 @@ public class QuickStart {
   public static String apiV3key = "";
 
   public static void main(String[] args) {
+    // 使用自动更新平台证书的RSA配置
     Config config =
-        new RSAConfig.Builder()
+        new RSAAutoCertificateConfig.Builder()
             .merchantId(merchantId)
             .privateKeyFromPath(privateKeyPath)
             .merchantSerialNumber(merchantSerialNumber)
-            // 自动更新平台证书
-            .autoUpdateWechatPayCertificate(apiV3key)
+            .apiV3Key(apiV3key)
             .build();
     JsapiService service = new JsapiService.Builder().config(config).build();
     // request.setXxx(val)设置所需参数，具体参数可见Request定义
@@ -184,15 +184,15 @@ RequestParam requestParam = new Builder()
         .body(requestBody)
         .build();
 
-// 初始化 NotificationConfig 方式一：使用自动更新平台证书能力，需要额外设置商户号、商户证书序列号、商户私钥。
-NotificationConfig rsaNotificationConfig = new RSANotificationConfig.Builder()
+// 初始化 NotificationConfig 方式一：使用自动更新平台证书能力，需要设置APIv3 密钥、商户号、商户证书序列号、商户私钥。
+NotificationConfig rsaNotificationConfig = new RSAAutoCertificateNotificationConfig.Builder()
         .apiV3Key(apiV3Key)
         .merchantId(merchantId)
         .merchantSerialNumber(merchantSerialNumber)
         .autoUpdateCertWithKeyStr(privateKey)
         .build();
 
-// 初始化 NotificationConfig 方式二：使用本地的微信支付平台证书
+// 初始化 NotificationConfig 方式二：使用本地的微信支付平台证书，需要设置 APIv3 密钥、微信支付平台证书。
 NotificationConfig rsaNotificationConfig = new RSANotificationConfig.Builder()
         .apiV3Key(apiV3Key)
         .certificates(wechatPayCertificateString)

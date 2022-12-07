@@ -1,14 +1,10 @@
 package com.wechat.pay.java.core.notification;
 
-import static java.util.Objects.requireNonNull;
-
 import com.wechat.pay.java.core.certificate.CertificateProvider;
 import com.wechat.pay.java.core.certificate.InMemoryCertificateProvider;
-import com.wechat.pay.java.core.certificate.RSAAutoCertificateProvider;
 import com.wechat.pay.java.core.cipher.*;
 import com.wechat.pay.java.core.util.PemUtil;
 import java.nio.charset.StandardCharsets;
-import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,11 +47,6 @@ public final class RSANotificationConfig implements NotificationConfig {
 
     private List<X509Certificate> certificates;
     private byte[] apiV3Key;
-    private String merchantId;
-    private PrivateKey privateKey;
-    private String merchantSerialNumber;
-
-    private CertificateProvider certificateProvider;
 
     public Builder certificates(X509Certificate... certificates) {
       this.certificates = Arrays.asList(certificates);
@@ -87,66 +78,9 @@ public final class RSANotificationConfig implements NotificationConfig {
       return this;
     }
 
-    public Builder merchantId(String merchantId) {
-      this.merchantId = merchantId;
-      return this;
-    }
-
-    public Builder autoUpdateCertWithKeyStr(String privateKeyStr) {
-      this.privateKey = PemUtil.loadPrivateKeyFromString(privateKeyStr);
-      return this;
-    }
-
-    public Builder autoUpdateCertWithKeyPath(String privateKeyPath) {
-      this.privateKey = PemUtil.loadPrivateKeyFromPath(privateKeyPath);
-      return this;
-    }
-
-    public Builder merchantSerialNumber(String merchantSerialNumber) {
-      this.merchantSerialNumber = merchantSerialNumber;
-      return this;
-    }
-
-    public Builder certificateProvider(CertificateProvider certificateProvider) {
-      this.certificateProvider = certificateProvider;
-      return this;
-    }
-
     public RSANotificationConfig build() {
-      requireNonNull(apiV3Key);
-      if (certificateProvider == null) {
-        initCertificateProvider();
-      } else if (certificates != null || privateKey != null) {
-        throw new IllegalArgumentException(
-            "Can not call initCertificateProvider or autoUpdateCertWithKeyStr/autoUpdateCertWithKeyPath or"
-                + " certificates/certificatesFromPath method at the same time.");
-      }
+      CertificateProvider certificateProvider = new InMemoryCertificateProvider(certificates);
       return new RSANotificationConfig(certificateProvider, apiV3Key);
-    }
-
-    private void initCertificateProvider() {
-      if (privateKey == null && (certificates == null || certificates.isEmpty())) {
-        throw new IllegalArgumentException(
-            "Must call autoUpdateCertWithKeyStr/autoUpdateCertWithKeyPath or"
-                + " certificates/certificatesFromPath method.");
-      }
-      if (privateKey != null && certificates != null) {
-        throw new IllegalArgumentException(
-            "Can not call autoUpdateCertWithKeyStr/autoUpdateCertWithKeyPath or"
-                + " certificates/certificatesFromPath method at the same time.");
-      }
-      if (privateKey != null) {
-        // 使用自动更新证书提供器
-        certificateProvider =
-            new RSAAutoCertificateProvider.Builder()
-                .merchantId(requireNonNull(merchantId))
-                .apiV3Key(apiV3Key)
-                .privateKey(requireNonNull(privateKey))
-                .merchantSerialNumber(requireNonNull(merchantSerialNumber))
-                .build();
-      } else {
-        certificateProvider = new InMemoryCertificateProvider(requireNonNull(certificates));
-      }
     }
   }
 }
