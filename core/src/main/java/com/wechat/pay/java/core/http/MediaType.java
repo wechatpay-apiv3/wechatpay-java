@@ -19,7 +19,7 @@ public enum MediaType {
     return value;
   }
 
-  public boolean equals(String string) {
+  public boolean equalsWith(String string) {
     requireNonNull(string);
     return string.startsWith(value);
   }

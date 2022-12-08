@@ -126,7 +126,7 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
           .headers(responseHeaders)
           .statusCode(okHttpResponse.code())
           .contentType(
-              okHttpResponse.body().contentType() == null
+              okHttpResponse.body() == null || okHttpResponse.body().contentType() == null
                   ? null
                   : okHttpResponse.body().contentType().toString())
           .body(okHttpResponse.body().string())
