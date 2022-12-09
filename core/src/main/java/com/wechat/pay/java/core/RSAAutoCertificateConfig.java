@@ -9,7 +9,6 @@ import com.wechat.pay.java.core.auth.WechatPay2Credential;
 import com.wechat.pay.java.core.auth.WechatPay2Validator;
 import com.wechat.pay.java.core.certificate.CertificateProvider;
 import com.wechat.pay.java.core.certificate.RSAAutoCertificateProvider;
-import com.wechat.pay.java.core.certificate.RSAAutoCertificateProvider.Builder;
 import com.wechat.pay.java.core.cipher.PrivacyDecryptor;
 import com.wechat.pay.java.core.cipher.PrivacyEncryptor;
 import com.wechat.pay.java.core.cipher.RSAPrivacyDecryptor;
@@ -17,8 +16,10 @@ import com.wechat.pay.java.core.cipher.RSAPrivacyEncryptor;
 import com.wechat.pay.java.core.cipher.RSASigner;
 import com.wechat.pay.java.core.cipher.RSAVerifier;
 import com.wechat.pay.java.core.cipher.Signer;
+import com.wechat.pay.java.core.http.DefaultHttpClientBuilder;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.util.PemUtil;
+import java.net.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
@@ -82,6 +83,8 @@ public class RSAAutoCertificateConfig implements Config {
 
     private byte[] apiV3Key;
 
+    private Proxy proxy;
+
     public Builder merchantId(String merchantId) {
       this.merchantId = merchantId;
       return this;
@@ -117,6 +120,11 @@ public class RSAAutoCertificateConfig implements Config {
       return this;
     }
 
+    public Builder proxy(Proxy proxy) {
+      this.proxy = proxy;
+      return this;
+    }
+
     public RSAAutoCertificateConfig build() {
       RSAAutoCertificateProvider.Builder providerBuilder =
           new RSAAutoCertificateProvider.Builder()
@@ -124,12 +132,30 @@ public class RSAAutoCertificateConfig implements Config {
               .apiV3Key(requireNonNull(apiV3Key))
               .privateKey(requireNonNull(privateKey))
               .merchantSerialNumber(requireNonNull(merchantSerialNumber));
-      if (httpClient != null) {
-        providerBuilder.httpClient(requireNonNull(httpClient));
+      if (httpClient != null && proxy != null) {
+        throw new IllegalArgumentException(
+            "Only one of httpClient() and proxy() method can be called.");
       }
-      CertificateProvider certificateProvider = providerBuilder.build();
+      if (proxy != null) {
+        initHttpClientWithProxy();
+      }
+      if (httpClient != null) {
+        providerBuilder.httpClient(httpClient);
+      }
       return new RSAAutoCertificateConfig(
-          merchantId, privateKey, merchantSerialNumber, certificateProvider);
+          merchantId, privateKey, merchantSerialNumber, providerBuilder.build());
+    }
+
+    private void initHttpClientWithProxy() {
+      Credential credential =
+          new WechatPay2Credential(merchantId, new RSASigner(merchantSerialNumber, privateKey));
+      Validator validator = new WechatPay2Validator((serialNumber, message, signature) -> true);
+      httpClient =
+          new DefaultHttpClientBuilder()
+              .proxy(proxy)
+              .credential(credential)
+              .validator(validator)
+              .build();
     }
   }
 }

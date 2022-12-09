@@ -1,12 +1,13 @@
 package com.wechat.pay.java.core.certificate;
 
+import static com.wechat.pay.java.core.cipher.Constant.HEX;
+
 import com.wechat.pay.java.core.auth.Validator;
 import com.wechat.pay.java.core.auth.WechatPay2Validator;
 import com.wechat.pay.java.core.certificate.model.Data;
 import com.wechat.pay.java.core.certificate.model.DownloadCertificateResponse;
 import com.wechat.pay.java.core.certificate.model.EncryptCertificate;
 import com.wechat.pay.java.core.cipher.AeadCipher;
-import com.wechat.pay.java.core.cipher.Verifier;
 import com.wechat.pay.java.core.exception.ValidationException;
 import com.wechat.pay.java.core.http.Constant;
 import com.wechat.pay.java.core.http.HttpClient;
@@ -24,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,9 +32,7 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractAutoCertificateProvider implements CertificateProvider {
   private static final Logger log = LoggerFactory.getLogger(AbstractAutoCertificateProvider.class);
   private final String requestUrl; // 下载证书url
-  private final Function<String, X509Certificate>
-      certificateGenerator; // 将证书从String转为X509Certificate的方法
-  private final Function<List<X509Certificate>, Verifier> verifierGenerator; // 生成verifier的方法
+  private final CertificateHandler certificateHandler; // 证书处理器
   protected static final int UPDATE_INTERVAL_MINUTE = 60; // 定时更新时间，1小时
   protected final SafeSingleScheduleExecutor executor =
       SafeSingleScheduleExecutor.getInstance(); // 安全的单线程定时执行器实例
@@ -45,13 +43,11 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
 
   AbstractAutoCertificateProvider(
       String requestUrl,
-      Function<String, X509Certificate> certificateGenerator,
-      Function<List<X509Certificate>, Verifier> verifierGenerator,
+      CertificateHandler certificateHandler,
       AeadCipher aeadCipher,
       HttpClient httpClient) {
     this.requestUrl = requestUrl;
-    this.certificateGenerator = certificateGenerator;
-    this.verifierGenerator = verifierGenerator;
+    this.certificateHandler = certificateHandler;
     this.aeadCipher = aeadCipher;
     this.httpClient = httpClient;
     downloadAndUpdate();
@@ -72,14 +68,15 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
       HttpResponse<DownloadCertificateResponse> httpResponse = downloadCertificate();
       validateCertificate(httpResponse);
       updateCertificate(httpResponse);
+      this.validator =
+          new WechatPay2Validator(
+              certificateHandler.generateVerifier(new ArrayList<>(certificateMap.values())));
     } catch (Exception e) {
       if (validator == null) {
         throw e;
       }
       log.error("Download and update WechatPay certificates failed.", e);
     }
-    this.validator =
-        new WechatPay2Validator(verifierGenerator.apply(new ArrayList<>(certificateMap.values())));
   }
 
   /**
@@ -132,8 +129,8 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
               encryptCertificate.getAssociatedData().getBytes(StandardCharsets.UTF_8),
               encryptCertificate.getNonce().getBytes(StandardCharsets.UTF_8),
               Base64.getDecoder().decode(encryptCertificate.getCiphertext()));
-      certificate = certificateGenerator.apply(decryptCertificate);
-      downloadCertMap.put(certificate.getSerialNumber().toString(16).toUpperCase(), certificate);
+      certificate = certificateHandler.generateCertificate(decryptCertificate);
+      downloadCertMap.put(certificate.getSerialNumber().toString(HEX).toUpperCase(), certificate);
     }
     this.certificateMap = downloadCertMap;
   }

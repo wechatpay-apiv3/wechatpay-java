@@ -9,7 +9,6 @@ import com.wechat.pay.java.core.auth.WechatPay2Credential;
 import com.wechat.pay.java.core.auth.WechatPay2Validator;
 import com.wechat.pay.java.core.certificate.CertificateProvider;
 import com.wechat.pay.java.core.certificate.InMemoryCertificateProvider;
-import com.wechat.pay.java.core.certificate.RSAAutoCertificateProvider;
 import com.wechat.pay.java.core.cipher.PrivacyDecryptor;
 import com.wechat.pay.java.core.cipher.PrivacyEncryptor;
 import com.wechat.pay.java.core.cipher.RSAPrivacyDecryptor;
@@ -18,7 +17,6 @@ import com.wechat.pay.java.core.cipher.RSASigner;
 import com.wechat.pay.java.core.cipher.RSAVerifier;
 import com.wechat.pay.java.core.cipher.Signer;
 import com.wechat.pay.java.core.util.PemUtil;
-import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -85,9 +83,6 @@ public final class RSAConfig implements Config {
     private String merchantSerialNumber;
 
     private List<X509Certificate> wechatPayCertificates;
-    private byte[] apiV3Key;
-
-    private CertificateProvider certificateProvider;
 
     public Builder merchantId(String merchantId) {
       this.merchantId = merchantId;
@@ -153,52 +148,15 @@ public final class RSAConfig implements Config {
       return this;
     }
 
-    public Builder autoUpdateWechatPayCertificate(String apiV3key) {
-      this.apiV3Key = apiV3key.getBytes(StandardCharsets.UTF_8);
-      return this;
-    }
-
-    public Builder certificateProvider(CertificateProvider certificateProvider) {
-      this.certificateProvider = certificateProvider;
-      return this;
-    }
-
     public RSAConfig build() {
       requireNonNull(privateKey);
       requireNonNull(merchantSerialNumber);
       requireNonNull(merchantId);
-      if (this.certificateProvider == null) {
-        initCertificateProvider();
-      } else if (wechatPayCertificates != null || apiV3Key != null) {
-        throw new IllegalArgumentException(
-            "Can not call certificateProvider() or autoUpdateWechatPayCertificate or "
-                + "wechatPayCertificates/wechatPayCertificatesFromPath method at the same time.");
-      }
-      return new RSAConfig(merchantId, privateKey, merchantSerialNumber, certificateProvider);
-    }
-
-    private void initCertificateProvider() {
-      if (apiV3Key == null && (wechatPayCertificates == null || wechatPayCertificates.isEmpty())) {
-        throw new IllegalArgumentException(
-            "Must call autoUpdateWechatPayCertificate or "
-                + "wechatPayCertificates/wechatPayCertificatesFromPath method.");
-      }
-      if (apiV3Key != null && wechatPayCertificates != null) {
-        throw new IllegalArgumentException(
-            "Can not call autoUpdateWechatPayCertificate or "
-                + "wechatPayCertificates/wechatPayCertificatesFromPath method at the same time.");
-      }
-      if (apiV3Key != null) {
-        certificateProvider =
-            new RSAAutoCertificateProvider.Builder()
-                .merchantId(merchantId)
-                .apiV3Key(apiV3Key)
-                .privateKey(privateKey)
-                .merchantSerialNumber(merchantSerialNumber)
-                .build();
-      } else {
-        certificateProvider = new InMemoryCertificateProvider(wechatPayCertificates);
-      }
+      return new RSAConfig(
+          merchantId,
+          privateKey,
+          merchantSerialNumber,
+          new InMemoryCertificateProvider(requireNonNull(wechatPayCertificates)));
     }
   }
 }

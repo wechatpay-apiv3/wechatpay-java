@@ -1,5 +1,7 @@
 package com.wechat.pay.java.shangmi;
 
+import static com.wechat.pay.java.core.cipher.Constant.HEX;
+
 import com.wechat.pay.java.core.certificate.InMemoryCertificateProvider;
 import com.wechat.pay.java.core.cipher.PrivacyDecryptor;
 import com.wechat.pay.java.core.cipher.PrivacyEncryptor;
@@ -27,7 +29,7 @@ class SM2Test implements BaseSM2Test {
   @Override
   public PrivacyEncryptor createPrivacyEncryptor(String certificate) {
     X509Certificate c = SMPemUtil.loadX509FromString(certificate);
-    return new SM2PrivacyEncryptor(c.getPublicKey(), c.getSerialNumber().toString(16));
+    return new SM2PrivacyEncryptor(c.getPublicKey(), c.getSerialNumber().toString(HEX));
   }
 
   @Override

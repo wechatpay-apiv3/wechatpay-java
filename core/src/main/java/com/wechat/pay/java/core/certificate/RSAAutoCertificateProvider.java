@@ -8,33 +8,21 @@ import com.wechat.pay.java.core.auth.WechatPay2Credential;
 import com.wechat.pay.java.core.cipher.AeadAesCipher;
 import com.wechat.pay.java.core.cipher.AeadCipher;
 import com.wechat.pay.java.core.cipher.RSASigner;
-import com.wechat.pay.java.core.cipher.RSAVerifier;
-import com.wechat.pay.java.core.cipher.Verifier;
 import com.wechat.pay.java.core.http.DefaultHttpClientBuilder;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpHeaders;
-import com.wechat.pay.java.core.util.PemUtil;
 import java.security.PrivateKey;
-import java.security.cert.X509Certificate;
-import java.util.List;
 
 /** RSA自动更新平台证书提供器 */
 public class RSAAutoCertificateProvider extends AbstractAutoCertificateProvider {
 
   private static final String REQUEST_URL =
-      "https://api.mch.weixin.qq.com/v3/certificates"; // 下载证书url
+      "https://api.mch.weixin.qq.com/v3/certificates?algorithm_type=RSA"; // 下载证书url
 
-  private static Verifier toVerifier(List<X509Certificate> certificateList) {
-    return new RSAVerifier(new InMemoryCertificateProvider(certificateList));
-  }
+  private static final CertificateHandler certificateHandler = new RSACertificateHandler();
 
   private RSAAutoCertificateProvider(AeadCipher aeadCipher, HttpClient httpClient) {
-    super(
-        REQUEST_URL,
-        PemUtil::loadX509FromString,
-        RSAAutoCertificateProvider::toVerifier,
-        aeadCipher,
-        httpClient);
+    super(REQUEST_URL, certificateHandler, aeadCipher, httpClient);
   }
 
   public static class Builder {

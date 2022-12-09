@@ -1,5 +1,7 @@
 package com.wechat.pay.java.shangmi;
 
+import static com.wechat.pay.java.core.cipher.Constant.HEX;
+
 import com.tencent.kona.KonaProvider;
 import com.wechat.pay.java.core.cipher.AbstractAeadCipher;
 import java.security.MessageDigest;
@@ -33,7 +35,7 @@ public final class AeadSM4Cipher extends AbstractAeadCipher {
   private static byte[] covertSM4Key(byte[] apiV3Key) {
     try {
       MessageDigest md = MessageDigest.getInstance("SM3", KonaProvider.NAME);
-      return Arrays.copyOf(md.digest(apiV3Key), 16);
+      return Arrays.copyOf(md.digest(apiV3Key), HEX);
     } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
       throw new IllegalStateException(e);
     }
