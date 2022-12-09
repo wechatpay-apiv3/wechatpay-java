@@ -79,9 +79,21 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
     return null;
   }
 
+  @SuppressWarnings("deprecation")
+  private okhttp3.RequestBody createRequestBody(String content, okhttp3.MediaType mediaType) {
+    // use an OkHttp3.x compatible method
+    // see https://github.com/wechatpay-apiv3/wechatpay-java/issues/70
+    return okhttp3.RequestBody.create(mediaType, content);
+  }
+
+  @SuppressWarnings("deprecation")
+  private okhttp3.RequestBody createRequestBody(byte[] content, okhttp3.MediaType mediaType) {
+    return okhttp3.RequestBody.create(mediaType, content);
+  }
+
   private RequestBody createOkHttpRequestBody(
       com.wechat.pay.java.core.http.RequestBody wechatPayRequestBody) {
-    return okhttp3.RequestBody.create(
+    return createRequestBody(
         ((JsonRequestBody) wechatPayRequestBody).getBody(),
         okhttp3.MediaType.parse(wechatPayRequestBody.getContentType()));
   }
@@ -90,7 +102,7 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
       com.wechat.pay.java.core.http.RequestBody wechatPayRequestBody) {
     FileRequestBody fileRequestBody = (FileRequestBody) wechatPayRequestBody;
     okhttp3.RequestBody okHttpFileBody =
-        okhttp3.RequestBody.create(
+        createRequestBody(
             fileRequestBody.getFile(), okhttp3.MediaType.parse(fileRequestBody.getContentType()));
     return new okhttp3.MultipartBody.Builder()
         .setType(MultipartBody.FORM)
@@ -102,14 +114,19 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
   private OriginalResponse assembleOriginalResponse(
       HttpRequest wechatPayRequest, Response okHttpResponse) {
     Map<String, String> responseHeaders = new ConcurrentHashMap<>();
-    okHttpResponse.headers().forEach((k) -> responseHeaders.put(k.getFirst(), k.getSecond()));
+    // use an OkHttp3.x compatible method
+    int headerSize = okHttpResponse.headers().size();
+    for (int i = 0; i < headerSize; ++i) {
+      responseHeaders.put(okHttpResponse.headers().name(i), okHttpResponse.headers().value(i));
+    }
+
     try {
       return new OriginalResponse.Builder()
           .request(wechatPayRequest)
           .headers(responseHeaders)
           .statusCode(okHttpResponse.code())
           .contentType(
-              okHttpResponse.body().contentType() == null
+              okHttpResponse.body() == null || okHttpResponse.body().contentType() == null
                   ? null
                   : okHttpResponse.body().contentType().toString())
           .body(okHttpResponse.body().string())
