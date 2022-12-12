@@ -3,77 +3,23 @@ package com.wechat.pay.java.core;
 import static com.wechat.pay.java.core.cipher.Constant.HEX;
 import static java.util.Objects.requireNonNull;
 
-import com.wechat.pay.java.core.auth.Credential;
-import com.wechat.pay.java.core.auth.Validator;
-import com.wechat.pay.java.core.auth.WechatPay2Credential;
-import com.wechat.pay.java.core.auth.WechatPay2Validator;
 import com.wechat.pay.java.core.certificate.CertificateProvider;
 import com.wechat.pay.java.core.certificate.InMemoryCertificateProvider;
-import com.wechat.pay.java.core.cipher.PrivacyDecryptor;
-import com.wechat.pay.java.core.cipher.PrivacyEncryptor;
-import com.wechat.pay.java.core.cipher.RSAPrivacyDecryptor;
-import com.wechat.pay.java.core.cipher.RSAPrivacyEncryptor;
-import com.wechat.pay.java.core.cipher.RSASigner;
-import com.wechat.pay.java.core.cipher.RSAVerifier;
-import com.wechat.pay.java.core.cipher.Signer;
 import com.wechat.pay.java.core.util.PemUtil;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /** 调用微信支付服务需要的RSA相关配置 */
-public final class RSAConfig implements Config {
-
-  /** 商户号 */
-  private final String merchantId;
-  /** 商户私钥 */
-  private final PrivateKey privateKey;
-  /** 商户证书序列号 */
-  private final String merchantSerialNumber;
-  /** 微信支付平台证书Provider */
-  private final CertificateProvider certificateProvider;
-
-  Logger logger = LoggerFactory.getLogger(RSAConfig.class);
+public final class RSAConfig extends AbstractRSAConfig {
 
   private RSAConfig(
       String merchantId,
       PrivateKey privateKey,
       String merchantSerialNumber,
       CertificateProvider certificateProvider) {
-    this.merchantId = merchantId;
-    this.privateKey = privateKey;
-    this.merchantSerialNumber = merchantSerialNumber;
-    this.certificateProvider = certificateProvider;
-  }
-
-  @Override
-  public PrivacyEncryptor createEncryptor() {
-    X509Certificate certificate = certificateProvider.getAvailableCertificate();
-    return new RSAPrivacyEncryptor(
-        certificate.getPublicKey(), certificate.getSerialNumber().toString(HEX));
-  }
-
-  @Override
-  public PrivacyDecryptor createDecryptor() {
-    return new RSAPrivacyDecryptor(privateKey);
-  }
-
-  @Override
-  public Credential createCredential() {
-    return new WechatPay2Credential(merchantId, createSigner());
-  }
-
-  @Override
-  public Validator createValidator() {
-    return new WechatPay2Validator(new RSAVerifier(certificateProvider));
-  }
-
-  @Override
-  public Signer createSigner() {
-    return new RSASigner(merchantSerialNumber, privateKey);
+    super(merchantId, privateKey, merchantSerialNumber, certificateProvider);
   }
 
   public static class Builder {

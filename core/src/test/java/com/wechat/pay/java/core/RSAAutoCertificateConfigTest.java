@@ -125,7 +125,7 @@ class RSAAutoCertificateConfigTest implements ConfigTest {
   @Test
   void testBuildConfigWithoutEnoughParam() {
     RSAAutoCertificateConfig.Builder builder =
-        new RSAAutoCertificateConfig.Builder()
+        new Builder()
             .merchantId(MERCHANT_ID)
             .privateKey(MERCHANT_PRIVATE_KEY)
             .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER);
@@ -135,10 +135,10 @@ class RSAAutoCertificateConfigTest implements ConfigTest {
   @Test
   void testBuildConfigWithProxy() {
     RSAAutoCertificateConfig.Builder builder =
-        new RSAAutoCertificateConfig.Builder()
+        new Builder()
+            .apiV3Key(API_V3_KEY)
             .merchantId(MERCHANT_ID)
             .privateKey(MERCHANT_PRIVATE_KEY)
-            .apiV3Key(API_V3_KEY)
             .proxy(new Proxy(Type.SOCKS, new InetSocketAddress("localhost", 8099)))
             .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER);
     assertThrows(HttpException.class, builder::build);
@@ -147,10 +147,10 @@ class RSAAutoCertificateConfigTest implements ConfigTest {
   @Override
   public Config createConfig() {
     return new RSAAutoCertificateConfig.Builder()
+        .apiV3Key(API_V3_KEY)
         .merchantId(MERCHANT_ID)
         .privateKey(MERCHANT_PRIVATE_KEY)
         .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER)
-        .apiV3Key(API_V3_KEY)
         .httpClient(httpClient)
         .build();
   }

@@ -2,7 +2,6 @@ package com.wechat.pay.java.core.notification;
 
 import com.wechat.pay.java.core.certificate.CertificateProvider;
 import com.wechat.pay.java.core.certificate.InMemoryCertificateProvider;
-import com.wechat.pay.java.core.cipher.*;
 import com.wechat.pay.java.core.util.PemUtil;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
@@ -11,36 +10,10 @@ import java.util.Arrays;
 import java.util.List;
 
 /** 签名类型为RSA的通知配置参数 */
-public final class RSANotificationConfig implements NotificationConfig {
-
-  public static final String RSA_SIGN_TYPE = "WECHATPAY2-SHA256-RSA2048";
-  private static final String CIPHER_ALGORITHM = "AEAD_AES_256_GCM";
-  private final CertificateProvider certificateProvider;
-  private final byte[] apiV3Key;
+public final class RSANotificationConfig extends AbstractRSANotificationConfig {
 
   private RSANotificationConfig(CertificateProvider certificateProvider, byte[] apiV3Key) {
-    this.certificateProvider = certificateProvider;
-    this.apiV3Key = apiV3Key;
-  }
-
-  @Override
-  public String getSignType() {
-    return RSA_SIGN_TYPE;
-  }
-
-  @Override
-  public String getCipherType() {
-    return CIPHER_ALGORITHM;
-  }
-
-  @Override
-  public Verifier createVerifier() {
-    return new RSAVerifier(certificateProvider);
-  }
-
-  @Override
-  public AeadCipher createAeadCipher() {
-    return new AeadAesCipher(apiV3Key);
+    super(certificateProvider, apiV3Key);
   }
 
   public static class Builder {
