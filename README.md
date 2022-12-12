@@ -8,7 +8,7 @@
 
 ## 项目状态
 
-当前版本`0.2.1`为测试版本，项目规划详如下。
+当前版本`0.2.2`为测试版本，项目规划详如下。
 
 | 工作项 | 状态 |
 | ----- | ---- |
@@ -36,7 +36,7 @@
 #### Gradle
 在你的 build.gradle 文件中加入如下的依赖
 ```groovy
-implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.1'
+implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.2'
 ```
 
 #### Maven
@@ -45,7 +45,7 @@ implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.1'
 <dependency>
   <groupId>com.github.wechatpay-apiv3</groupId>
   <artifactId>wechatpay-java</artifactId>
-  <version>0.2.1</version>
+  <version>0.2.2</version>
 </dependency>
 ```
 
