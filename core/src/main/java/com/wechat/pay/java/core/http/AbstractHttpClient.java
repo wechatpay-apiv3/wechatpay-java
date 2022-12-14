@@ -20,8 +20,8 @@ import com.wechat.pay.java.core.http.HttpRequest.Builder;
 /** 请求客户端抽象基类 */
 public abstract class AbstractHttpClient implements HttpClient {
 
-  private final Credential credential;
-  private final Validator validator;
+  protected final Credential credential;
+  protected final Validator validator;
 
   public AbstractHttpClient(Credential credential, Validator validator) {
     this.credential = requireNonNull(credential);

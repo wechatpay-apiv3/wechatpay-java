@@ -1,17 +1,30 @@
 package com.wechat.pay.java.core.http.okhttp;
 
+import static com.wechat.pay.java.core.http.Constant.ACCEPT;
+import static com.wechat.pay.java.core.http.Constant.AUTHORIZATION;
+import static com.wechat.pay.java.core.http.Constant.OS;
+import static com.wechat.pay.java.core.http.Constant.USER_AGENT;
+import static com.wechat.pay.java.core.http.Constant.USER_AGENT_FORMAT;
+import static com.wechat.pay.java.core.http.Constant.VERSION;
+import static java.net.HttpURLConnection.HTTP_MULT_CHOICE;
+import static java.net.HttpURLConnection.HTTP_OK;
 import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
 import com.wechat.pay.java.core.exception.HttpException;
 import com.wechat.pay.java.core.exception.MalformedMessageException;
+import com.wechat.pay.java.core.exception.ServiceException;
 import com.wechat.pay.java.core.http.AbstractHttpClient;
 import com.wechat.pay.java.core.http.FileRequestBody;
+import com.wechat.pay.java.core.http.HttpMethod;
 import com.wechat.pay.java.core.http.HttpRequest;
 import com.wechat.pay.java.core.http.JsonRequestBody;
 import com.wechat.pay.java.core.http.OriginalResponse;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import okhttp3.MultipartBody;
@@ -137,5 +150,45 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
               "Assemble OriginalResponse,get responseBody failed.%nHttpRequest[%s]",
               wechatPayRequest));
     }
+  }
+
+  @Override
+  public InputStream download(String url) throws IOException {
+    URI uri;
+    try {
+      uri = new URI(url);
+    } catch (URISyntaxException e) {
+      throw new IllegalArgumentException(e);
+    }
+    String authorization = credential.getAuthorization(uri, HttpMethod.GET.name(), "");
+    String userAgent =
+        String.format(
+            USER_AGENT_FORMAT,
+            getClass().getPackage().getImplementationVersion(),
+            OS,
+            VERSION == null ? "Unknown" : VERSION,
+            credential.getClass().getSimpleName(),
+            validator.getClass().getSimpleName(),
+            getHttpClientInfo());
+    HttpRequest httpRequest =
+        new HttpRequest.Builder()
+            .url(url)
+            .httpMethod(HttpMethod.GET)
+            .addHeader(AUTHORIZATION, authorization)
+            .addHeader(ACCEPT, "*/*")
+            .addHeader(USER_AGENT, userAgent)
+            .build();
+    Request okHttpRequest = buildOkHttpRequest(httpRequest);
+    Response okHttpResponse;
+    okHttpResponse = okHttpClient.newCall(okHttpRequest).execute();
+    if (okHttpResponse.code() < HTTP_OK || okHttpResponse.code() >= HTTP_MULT_CHOICE) {
+      throw new ServiceException(
+          httpRequest, okHttpResponse.code(), okHttpResponse.body().string());
+    }
+    InputStream responseBodyStream = null;
+    if (okHttpResponse.body() != null) {
+      responseBodyStream = okHttpResponse.body().byteStream();
+    }
+    return responseBodyStream;
   }
 }
