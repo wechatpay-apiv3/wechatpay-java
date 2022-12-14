@@ -12,17 +12,40 @@ import com.wechat.pay.java.core.http.DefaultHttpClientBuilder;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpHeaders;
 import java.security.PrivateKey;
+import java.security.cert.X509Certificate;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /** RSA自动更新平台证书提供器 */
 public class RSAAutoCertificateProvider extends AbstractAutoCertificateProvider {
 
+  private static final Map<String, Map<String, X509Certificate>> wechatPayCertificateMap =
+      new ConcurrentHashMap<>();
+  private static final Map<String, Validator> validatorMap = new ConcurrentHashMap<>();
+  private static final CertificateHandler certificateHandler = new RSACertificateHandler();
   private static final String REQUEST_URL =
       "https://api.mch.weixin.qq.com/v3/certificates?algorithm_type=RSA"; // 下载证书url
 
-  private static final CertificateHandler certificateHandler = new RSACertificateHandler();
+  private RSAAutoCertificateProvider(
+      String merchantId, AeadCipher aeadCipher, HttpClient httpClient) {
+    super(
+        REQUEST_URL,
+        certificateHandler,
+        aeadCipher,
+        httpClient,
+        merchantId,
+        wechatPayCertificateMap,
+        validatorMap);
+  }
 
-  private RSAAutoCertificateProvider(AeadCipher aeadCipher, HttpClient httpClient) {
-    super(REQUEST_URL, certificateHandler, aeadCipher, httpClient);
+  @Override
+  public X509Certificate getCertificate(String serialNumber) {
+    return wechatPayCertificateMap.get(merchantId).get(serialNumber);
+  }
+
+  @Override
+  public X509Certificate getAvailableCertificate() {
+    return getAvailableCertificate(wechatPayCertificateMap.get(merchantId));
   }
 
   public static class Builder {
@@ -85,7 +108,7 @@ public class RSAAutoCertificateProvider extends AbstractAutoCertificateProvider 
         httpClient = httpClientBuilder.credential(credential).build();
       }
       return new RSAAutoCertificateProvider(
-          new AeadAesCipher(requireNonNull(apiV3Key)), httpClient);
+          merchantId, new AeadAesCipher(requireNonNull(apiV3Key)), httpClient);
     }
   }
 }

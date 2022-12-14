@@ -16,7 +16,6 @@ import com.wechat.pay.java.core.certificate.model.Data;
 import com.wechat.pay.java.core.certificate.model.DownloadCertificateResponse;
 import com.wechat.pay.java.core.certificate.model.EncryptCertificate;
 import com.wechat.pay.java.core.cipher.RSASigner;
-import com.wechat.pay.java.core.exception.HttpException;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpHeaders;
 import com.wechat.pay.java.core.http.okhttp.OkHttpClientAdapter;
@@ -128,7 +127,7 @@ class RSAAutoCertificateNotificationConfigTest {
             .proxy(new Proxy(Type.SOCKS, new InetSocketAddress("localhost", 8999)))
             .apiV3Key(API_V3_KEY)
             .privateKeyFromPath(MERCHANT_PRIVATE_KEY_PATH);
-    assertThrows(HttpException.class, builder::build);
+    builder.build();
   }
 
   @Test

@@ -16,6 +16,7 @@ import com.wechat.pay.java.core.http.HttpRequest;
 import com.wechat.pay.java.core.http.HttpResponse;
 import com.wechat.pay.java.core.http.JsonResponseBody;
 import com.wechat.pay.java.core.http.MediaType;
+import com.wechat.pay.java.core.util.NonceUtil;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
 import java.time.Instant;
@@ -31,31 +32,42 @@ import org.slf4j.LoggerFactory;
 /** 自动更新平台证书提供器抽象类 */
 public abstract class AbstractAutoCertificateProvider implements CertificateProvider {
   private static final Logger log = LoggerFactory.getLogger(AbstractAutoCertificateProvider.class);
-  private final String requestUrl; // 下载证书url
-  private final CertificateHandler certificateHandler; // 证书处理器
   protected static final int UPDATE_INTERVAL_MINUTE = 60; // 定时更新时间，1小时
   protected final SafeSingleScheduleExecutor executor =
       SafeSingleScheduleExecutor.getInstance(); // 安全的单线程定时执行器实例
-  protected AeadCipher aeadCipher; // 解密平台证书的aeadCipher
-  protected HttpClient httpClient; // 下载平台证书的httpClient
-  protected Validator validator; // 验证器
-  protected Map<String, X509Certificate> certificateMap = new HashMap<>(); // 证书map
+  protected String requestUrl;
+  protected String merchantId;
+  protected CertificateHandler certificateHandler;
+  protected AeadCipher aeadCipher;// 解密平台证书的aeadCipher;
+  protected HttpClient httpClient;// 下载平台证书的httpClient
 
-  AbstractAutoCertificateProvider(
+  protected AbstractAutoCertificateProvider(
       String requestUrl,
       CertificateHandler certificateHandler,
       AeadCipher aeadCipher,
-      HttpClient httpClient) {
+      HttpClient httpClient,
+      String merchantId,
+      Map<String, Map<String, X509Certificate>> wechatPayCertificateMap,
+      Map<String, Validator> validatorMap) {
+    this.merchantId = merchantId;
+    synchronized (AbstractAutoCertificateProvider.class) {
+      if (!wechatPayCertificateMap.containsKey(merchantId)) {
+        wechatPayCertificateMap.put(merchantId, new HashMap<>());
+      } else {
+        throw new IllegalStateException("The merchantId already exists provider.");
+      }
+    }
     this.requestUrl = requestUrl;
     this.certificateHandler = certificateHandler;
     this.aeadCipher = aeadCipher;
     this.httpClient = httpClient;
-    downloadAndUpdate();
-    log.info("Init WechatPay certificates.Date:{}", Instant.now());
+    downloadAndUpdate(wechatPayCertificateMap, validatorMap);
+    log.info(
+        "Init WechatPay certificates.randoStr:{},Date:{}", NonceUtil.createNonce(5), Instant.now());
     Runnable runnable =
         () -> {
           log.info("Begin update Certificates.Date:{}", Instant.now());
-          downloadAndUpdate();
+          downloadAndUpdate(wechatPayCertificateMap, validatorMap);
           log.info("Finish update Certificates.Date:{}", Instant.now());
         };
     executor.scheduleAtFixedRate(
@@ -63,16 +75,21 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
   }
 
   /** 下载和更新证书 */
-  protected void downloadAndUpdate() {
+  protected void downloadAndUpdate(
+      Map<String, Map<String, X509Certificate>> wechatPayCertificateMap,
+      Map<String, Validator> validatorMap) {
     try {
-      HttpResponse<DownloadCertificateResponse> httpResponse = downloadCertificate();
-      validateCertificate(httpResponse);
-      updateCertificate(httpResponse);
-      this.validator =
+      HttpResponse<DownloadCertificateResponse> httpResponse =
+          downloadCertificate(requestUrl, httpClient);
+      validateCertificate(httpResponse, validatorMap.get(merchantId));
+      updateCertificate(httpResponse, wechatPayCertificateMap);
+      Validator validator =
           new WechatPay2Validator(
-              certificateHandler.generateVerifier(new ArrayList<>(certificateMap.values())));
+              certificateHandler.generateVerifier(
+                  new ArrayList<>(wechatPayCertificateMap.get(merchantId).values())));
+      validatorMap.put(merchantId, validator);
     } catch (Exception e) {
-      if (validator == null) {
+      if (validatorMap.get(merchantId) == null) {
         throw e;
       }
       log.error("Download and update WechatPay certificates failed.", e);
@@ -84,7 +101,8 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
    *
    * @return httpResponse
    */
-  protected HttpResponse<DownloadCertificateResponse> downloadCertificate() {
+  protected HttpResponse<DownloadCertificateResponse> downloadCertificate(
+      String requestUrl, HttpClient httpClient) {
     HttpResponse<DownloadCertificateResponse> httpResponse;
     HttpRequest request =
         new HttpRequest.Builder()
@@ -102,7 +120,8 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
    *
    * @param httpResponse httpResponse
    */
-  protected void validateCertificate(HttpResponse<DownloadCertificateResponse> httpResponse) {
+  protected void validateCertificate(
+      HttpResponse<DownloadCertificateResponse> httpResponse, Validator validator) {
     JsonResponseBody responseBody = (JsonResponseBody) (httpResponse.getBody());
     if (validator != null
         && !validator.validate(httpResponse.getHeaders(), responseBody.getBody())) {
@@ -118,7 +137,9 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
    *
    * @param httpResponse httpResponse
    */
-  protected void updateCertificate(HttpResponse<DownloadCertificateResponse> httpResponse) {
+  protected void updateCertificate(
+      HttpResponse<DownloadCertificateResponse> httpResponse,
+      Map<String, Map<String, X509Certificate>> wechatPayCertificateMap) {
     List<Data> dataList = httpResponse.getServiceResponse().getData();
     Map<String, X509Certificate> downloadCertMap = new HashMap<>();
     for (Data data : dataList) {
@@ -132,11 +153,10 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
       certificate = certificateHandler.generateCertificate(decryptCertificate);
       downloadCertMap.put(certificate.getSerialNumber().toString(HEX).toUpperCase(), certificate);
     }
-    this.certificateMap = downloadCertMap;
+    wechatPayCertificateMap.put(merchantId, downloadCertMap);
   }
 
-  @Override
-  public X509Certificate getAvailableCertificate() {
+  public X509Certificate getAvailableCertificate(Map<String, X509Certificate> certificateMap) {
     // 假设拿到的都是可用的，选取一个能用最久的
     X509Certificate longest = null;
     for (X509Certificate item : certificateMap.values()) {
@@ -145,10 +165,5 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
       }
     }
     return longest;
-  }
-
-  @Override
-  public X509Certificate getCertificate(String serialNumber) {
-    return certificateMap.get(serialNumber);
   }
 }
