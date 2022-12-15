@@ -12,7 +12,7 @@ public class ShaUtil {
 
   private ShaUtil() {}
 
-  public static final int BUFFER_SIZE = 1024;
+  public static final int BUFFER_SIZE = 4096;
   public static final String SHA1 = "SHA-1";
   public static final String SHA256 = "SHA-256";
 

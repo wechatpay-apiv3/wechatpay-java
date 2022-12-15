@@ -24,8 +24,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.security.MessageDigest;
 import java.util.zip.GZIPInputStream;
 
 public class BillService {
@@ -76,22 +78,26 @@ public class BillService {
    */
   public void downloadBill(String downloadUrl, String hashValue, TarType tarType, String billPath)
       throws IOException {
-    InputStream responseBodyStream = httpClient.download(downloadUrl);
-    File file = new File(billPath);
-    if (tarType != null) {
-      if (!tarType.equals(TarType.GZIP)) {
-        throw new IllegalArgumentException("Unsupported compression type: " + tarType.name());
+    try (InputStream responseBodyStream = httpClient.download(downloadUrl)) {
+      File file = new File(billPath);
+      if (tarType != null) {
+        if (!tarType.equals(TarType.GZIP)) {
+          throw new IllegalArgumentException("Unsupported compression type: " + tarType.name());
+        }
+        try (GZIPInputStream gzipInputStream = new GZIPInputStream(responseBodyStream)) {
+          Files.copy(gzipInputStream, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
+      } else {
+        Files.copy(responseBodyStream, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
       }
-      GZIPInputStream gzipInputStream = new GZIPInputStream(responseBodyStream);
-      Files.copy(gzipInputStream, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-    } else {
-      Files.copy(responseBodyStream, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-    }
-    FileInputStream fileInputStream = new FileInputStream(file);
-    String hash = ShaUtil.getSha1HexString(fileInputStream);
-    if (!hash.equals(hashValue)) {
-      file.deleteOnExit();
-      throw new ValidationException("Validate bill hashValue failed.");
+      try (FileInputStream fileInputStream = new FileInputStream(file)) {
+        String hash = ShaUtil.getSha1HexString(fileInputStream);
+        if (!MessageDigest.isEqual(
+            hash.getBytes(StandardCharsets.UTF_8), hashValue.getBytes(StandardCharsets.UTF_8))) {
+          file.deleteOnExit();
+          throw new ValidationException("Validate bill hashValue failed.");
+        }
+      }
     }
   }
 
