@@ -38,8 +38,8 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
   protected String requestUrl;
   protected String merchantId;
   protected CertificateHandler certificateHandler;
-  protected AeadCipher aeadCipher;// 解密平台证书的aeadCipher;
-  protected HttpClient httpClient;// 下载平台证书的httpClient
+  protected AeadCipher aeadCipher; // 解密平台证书的aeadCipher;
+  protected HttpClient httpClient; // 下载平台证书的httpClient
 
   protected AbstractAutoCertificateProvider(
       String requestUrl,
