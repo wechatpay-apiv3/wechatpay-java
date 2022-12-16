@@ -100,7 +100,7 @@ class RSAAutoCertificateNotificationConfigTest {
     return Stream.of(
         // from string
         new Builder()
-            .merchantId(MERCHANT_ID)
+            .merchantId("323456")
             .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER)
             .apiV3Key(API_V3_KEY)
             .httpClient(httpClient)
@@ -108,7 +108,7 @@ class RSAAutoCertificateNotificationConfigTest {
 
         // form path
         new Builder()
-            .merchantId(MERCHANT_ID)
+            .merchantId("423456")
             .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER)
             .httpClient(httpClient)
             .apiV3Key(API_V3_KEY)

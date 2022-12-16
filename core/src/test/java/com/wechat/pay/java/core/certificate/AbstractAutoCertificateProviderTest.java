@@ -2,7 +2,6 @@ package com.wechat.pay.java.core.certificate;
 
 import static com.wechat.pay.java.core.model.TestConfig.API_V3_KEY;
 import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_CERTIFICATE_SERIAL_NUMBER;
-import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_ID;
 import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_PRIVATE_KEY;
 import static java.net.HttpURLConnection.HTTP_OK;
 
@@ -77,14 +76,13 @@ public class AbstractAutoCertificateProviderTest implements CertificateProviderT
     httpClient =
         new OkHttpClientAdapter(
             new WechatPay2Credential(
-                MERCHANT_ID,
-                new RSASigner(MERCHANT_CERTIFICATE_SERIAL_NUMBER, MERCHANT_PRIVATE_KEY)),
+                "7123456", new RSASigner(MERCHANT_CERTIFICATE_SERIAL_NUMBER, MERCHANT_PRIVATE_KEY)),
             validator,
             okHttpClient);
     spyAutoProvider =
         new Builder()
             .privateKey(MERCHANT_PRIVATE_KEY)
-            .merchantId(MERCHANT_ID)
+            .merchantId("5123456")
             .httpClient(httpClient)
             .apiV3Key(API_V3_KEY.getBytes(StandardCharsets.UTF_8))
             .build();

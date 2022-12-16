@@ -21,6 +21,7 @@ import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpHeaders;
 import com.wechat.pay.java.core.http.okhttp.OkHttpClientAdapter;
 import com.wechat.pay.java.core.util.GsonUtil;
+import com.wechat.pay.java.core.util.NonceUtil;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 import okhttp3.MediaType;
@@ -83,8 +84,7 @@ class RSAAutoCertificateConfigTest implements ConfigTest {
     httpClient =
         new OkHttpClientAdapter(
             new WechatPay2Credential(
-                MERCHANT_ID,
-                new RSASigner(MERCHANT_CERTIFICATE_SERIAL_NUMBER, MERCHANT_PRIVATE_KEY)),
+                "8123456", new RSASigner(MERCHANT_CERTIFICATE_SERIAL_NUMBER, MERCHANT_PRIVATE_KEY)),
             validator,
             okHttpClient);
   }
@@ -103,7 +103,7 @@ class RSAAutoCertificateConfigTest implements ConfigTest {
     return Stream.of(
         // from string
         new Builder()
-            .merchantId(MERCHANT_ID)
+            .merchantId("123456")
             .privateKey(MERCHANT_PRIVATE_KEY_STRING)
             .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER)
             .httpClient(httpClient)
@@ -111,7 +111,7 @@ class RSAAutoCertificateConfigTest implements ConfigTest {
 
         // from path
         new Builder()
-            .merchantId(MERCHANT_ID)
+            .merchantId("223456")
             .privateKeyFromPath(MERCHANT_PRIVATE_KEY_PATH)
             .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER)
             .httpClient(httpClient)
@@ -132,7 +132,7 @@ class RSAAutoCertificateConfigTest implements ConfigTest {
   public Config createConfig() {
     return new RSAAutoCertificateConfig.Builder()
         .apiV3Key(API_V3_KEY)
-        .merchantId(MERCHANT_ID)
+        .merchantId(NonceUtil.createNonce(6))
         .privateKey(MERCHANT_PRIVATE_KEY)
         .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER)
         .httpClient(httpClient)
