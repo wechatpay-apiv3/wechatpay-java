@@ -17,14 +17,10 @@ import com.wechat.pay.java.core.certificate.model.Data;
 import com.wechat.pay.java.core.certificate.model.DownloadCertificateResponse;
 import com.wechat.pay.java.core.certificate.model.EncryptCertificate;
 import com.wechat.pay.java.core.cipher.RSASigner;
-import com.wechat.pay.java.core.exception.HttpException;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpHeaders;
 import com.wechat.pay.java.core.http.okhttp.OkHttpClientAdapter;
 import com.wechat.pay.java.core.util.GsonUtil;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.Proxy.Type;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 import okhttp3.MediaType;
@@ -130,18 +126,6 @@ class RSAAutoCertificateConfigTest implements ConfigTest {
             .privateKey(MERCHANT_PRIVATE_KEY)
             .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER);
     assertThrows(NullPointerException.class, builder::build);
-  }
-
-  @Test
-  void testBuildConfigWithProxy() {
-    RSAAutoCertificateConfig.Builder builder =
-        new Builder()
-            .apiV3Key(API_V3_KEY)
-            .merchantId(MERCHANT_ID)
-            .privateKey(MERCHANT_PRIVATE_KEY)
-            .proxy(new Proxy(Type.SOCKS, new InetSocketAddress("localhost", 8099)))
-            .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER);
-    assertThrows(HttpException.class, builder::build);
   }
 
   @Override

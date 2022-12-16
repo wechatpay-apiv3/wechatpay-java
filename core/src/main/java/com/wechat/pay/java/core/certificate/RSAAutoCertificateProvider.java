@@ -20,9 +20,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RSAAutoCertificateProvider extends AbstractAutoCertificateProvider {
 
   private static final Map<String, Map<String, X509Certificate>> wechatPayCertificateMap =
-      new ConcurrentHashMap<>();
-  private static final Map<String, Validator> validatorMap = new ConcurrentHashMap<>();
-  private static final CertificateHandler certificateHandler = new RSACertificateHandler();
+      new ConcurrentHashMap<>(); // 证书Map
+  private static final Map<String, Integer> updatesMap = new ConcurrentHashMap<>(); // 证书更新次数Map
+  private static final Map<String, Validator> validatorMap = new ConcurrentHashMap<>(); // 验证器Map
+  private static final CertificateHandler certificateHandler = new RSACertificateHandler(); // 证书处理器
   private static final String REQUEST_URL =
       "https://api.mch.weixin.qq.com/v3/certificates?algorithm_type=RSA"; // 下载证书url
 
@@ -35,7 +36,8 @@ public class RSAAutoCertificateProvider extends AbstractAutoCertificateProvider 
         httpClient,
         merchantId,
         wechatPayCertificateMap,
-        validatorMap);
+        validatorMap,
+        updatesMap);
   }
 
   @Override

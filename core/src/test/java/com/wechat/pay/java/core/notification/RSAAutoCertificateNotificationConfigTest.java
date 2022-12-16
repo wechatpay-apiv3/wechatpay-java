@@ -21,9 +21,6 @@ import com.wechat.pay.java.core.http.HttpHeaders;
 import com.wechat.pay.java.core.http.okhttp.OkHttpClientAdapter;
 import com.wechat.pay.java.core.notification.RSAAutoCertificateNotificationConfig.Builder;
 import com.wechat.pay.java.core.util.GsonUtil;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.Proxy.Type;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 import okhttp3.MediaType;
@@ -116,18 +113,6 @@ class RSAAutoCertificateNotificationConfigTest {
             .httpClient(httpClient)
             .apiV3Key(API_V3_KEY)
             .privateKeyFromPath(MERCHANT_PRIVATE_KEY_PATH));
-  }
-
-  @Test
-  void testBuildConfigWithProxy() {
-    Builder builder =
-        new Builder()
-            .merchantId(MERCHANT_ID)
-            .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER)
-            .proxy(new Proxy(Type.SOCKS, new InetSocketAddress("localhost", 8999)))
-            .apiV3Key(API_V3_KEY)
-            .privateKeyFromPath(MERCHANT_PRIVATE_KEY_PATH);
-    builder.build();
   }
 
   @Test
