@@ -1,18 +1,22 @@
 package com.wechat.pay.java.core.notification;
 
+import static com.wechat.pay.java.core.notification.Constant.AES_CIPHER_ALGORITHM;
+import static com.wechat.pay.java.core.notification.Constant.RSA_SIGN_TYPE;
 import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.AbstractRSAConfigBuilder;
 import com.wechat.pay.java.core.certificate.CertificateProvider;
 import com.wechat.pay.java.core.certificate.RSAAutoCertificateProvider;
+import com.wechat.pay.java.core.cipher.AeadAesCipher;
+import com.wechat.pay.java.core.cipher.AeadCipher;
 import com.wechat.pay.java.core.http.HttpClient;
 import java.nio.charset.StandardCharsets;
 
-public final class RSAAutoCertificateNotificationConfig extends AbstractRSANotificationConfig {
+public final class AutoCertificateNotificationConfig extends AbstractNotificationConfig {
 
-  private RSAAutoCertificateNotificationConfig(
-      CertificateProvider certificateProvider, byte[] apiV3Key) {
-    super(certificateProvider, apiV3Key);
+  private AutoCertificateNotificationConfig(
+      CertificateProvider certificateProvider, AeadCipher aeadAesCipher) {
+    super(RSA_SIGN_TYPE, AES_CIPHER_ALGORITHM, certificateProvider, aeadAesCipher);
   }
 
   public static class Builder extends AbstractRSAConfigBuilder<Builder> {
@@ -34,7 +38,7 @@ public final class RSAAutoCertificateNotificationConfig extends AbstractRSANotif
       return this;
     }
 
-    public RSAAutoCertificateNotificationConfig build() {
+    public AutoCertificateNotificationConfig build() {
       RSAAutoCertificateProvider.Builder builder =
           new RSAAutoCertificateProvider.Builder()
               .apiV3Key(requireNonNull(apiV3Key))
@@ -44,7 +48,8 @@ public final class RSAAutoCertificateNotificationConfig extends AbstractRSANotif
       if (httpClient != null) {
         builder.httpClient(httpClient);
       }
-      return new RSAAutoCertificateNotificationConfig(builder.build(), apiV3Key);
+      return new AutoCertificateNotificationConfig(
+          builder.build(), new AeadAesCipher(requireNonNull(apiV3Key)));
     }
   }
 }

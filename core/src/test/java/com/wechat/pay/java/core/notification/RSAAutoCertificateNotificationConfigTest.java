@@ -19,7 +19,7 @@ import com.wechat.pay.java.core.cipher.RSASigner;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpHeaders;
 import com.wechat.pay.java.core.http.okhttp.OkHttpClientAdapter;
-import com.wechat.pay.java.core.notification.RSAAutoCertificateNotificationConfig.Builder;
+import com.wechat.pay.java.core.notification.AutoCertificateNotificationConfig.Builder;
 import com.wechat.pay.java.core.util.GsonUtil;
 import java.util.ArrayList;
 import java.util.stream.Stream;

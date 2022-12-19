@@ -1,32 +1,36 @@
 package com.wechat.pay.java.core.notification;
 
 import com.wechat.pay.java.core.certificate.CertificateProvider;
-import com.wechat.pay.java.core.cipher.AeadAesCipher;
 import com.wechat.pay.java.core.cipher.AeadCipher;
 import com.wechat.pay.java.core.cipher.RSAVerifier;
 import com.wechat.pay.java.core.cipher.Verifier;
 
-public abstract class AbstractRSANotificationConfig implements NotificationConfig {
+public abstract class AbstractNotificationConfig implements NotificationConfig {
 
-  public static final String RSA_SIGN_TYPE = "WECHATPAY2-SHA256-RSA2048";
-  private static final String CIPHER_ALGORITHM = "AEAD_AES_256_GCM";
+  public final String signType;
+  private final String cipherAlgorithm;
   private final CertificateProvider certificateProvider;
-  private final byte[] apiV3Key;
+  private final AeadCipher aeadCipher;
 
-  protected AbstractRSANotificationConfig(
-      CertificateProvider certificateProvider, byte[] apiV3Key) {
+  protected AbstractNotificationConfig(
+      String signType,
+      String cipherAlgorithm,
+      CertificateProvider certificateProvider,
+      AeadCipher aeadCipher) {
+    this.signType = signType;
+    this.cipherAlgorithm = cipherAlgorithm;
     this.certificateProvider = certificateProvider;
-    this.apiV3Key = apiV3Key;
+    this.aeadCipher = aeadCipher;
   }
 
   @Override
   public String getSignType() {
-    return RSA_SIGN_TYPE;
+    return signType;
   }
 
   @Override
   public String getCipherType() {
-    return CIPHER_ALGORITHM;
+    return cipherAlgorithm;
   }
 
   @Override
@@ -36,6 +40,6 @@ public abstract class AbstractRSANotificationConfig implements NotificationConfi
 
   @Override
   public AeadCipher createAeadCipher() {
-    return new AeadAesCipher(apiV3Key);
+    return aeadCipher;
   }
 }
