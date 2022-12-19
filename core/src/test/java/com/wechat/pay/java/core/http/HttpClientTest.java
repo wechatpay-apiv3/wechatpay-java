@@ -7,6 +7,9 @@ import com.wechat.pay.java.core.exception.HttpException;
 import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.exception.ServiceException;
 import com.wechat.pay.java.core.exception.ValidationException;
+import com.wechat.pay.java.core.util.IOUtil;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.stream.Stream;
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockResponse;
@@ -18,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public interface HttpClientTest {
   HttpClient createHttpClient();
@@ -199,5 +203,45 @@ public interface HttpClientTest {
     HttpClient client = createHttpClient();
     assertThrows(
         HttpException.class, () -> client.get(null, "http://url.not.avalible", Response.class));
+  }
+
+  @Test
+  default void testDownload_Response_200Ok() throws IOException {
+    HttpClient client = createHttpClient();
+    MockWebServer server = new MockWebServer();
+    server.start();
+    HttpUrl requestUrl = server.url(testUrl);
+    server.enqueue(
+        new MockResponse()
+            .setBody(testResponseBody)
+            .setHeader("Test-Header", "HeaderValue")
+            .setHeader("Content-Type", "application/json; charset=utf-8"));
+    InputStream inputStream = client.download(requestUrl.toString());
+    String respBody = IOUtil.toString(inputStream);
+    server.shutdown();
+    assertEquals(testResponseBody, respBody);
+  }
+
+  @Test
+  default void testDownload_IllegalArgumentException() {
+    HttpClient client = createHttpClient();
+    assertThrows(IllegalArgumentException.class, () -> client.download("illegal.url"));
+  }
+
+  @ParameterizedTest
+  @ValueSource(ints = {199, 300})
+  default void testDownload_ServiceException(int responseCode) throws IOException {
+    HttpClient client = createHttpClient();
+    MockWebServer server = new MockWebServer();
+    server.start();
+    HttpUrl requestUrl = server.url(testUrl);
+    server.enqueue(
+        new MockResponse()
+            .setBody(testResponseBody)
+            .setResponseCode(responseCode)
+            .setHeader("Test-Header", "HeaderValue")
+            .setHeader("Content-Type", "application/json; charset=utf-8"));
+    String url = requestUrl.toString();
+    assertThrows(ServiceException.class, () -> client.download(url));
   }
 }
