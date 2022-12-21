@@ -22,6 +22,7 @@ public class QuickStart {
 
   public static void main(String[] args) {
     // 使用自动更新平台证书的RSA配置
+    // 一个商户号只能初始化一个配置，否则会因为重复的下载任务报错
     Config config =
         new RSAAutoCertificateConfig.Builder()
             .merchantId(merchantId)

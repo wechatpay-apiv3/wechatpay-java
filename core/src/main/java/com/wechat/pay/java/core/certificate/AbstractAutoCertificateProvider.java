@@ -39,6 +39,9 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
   protected AeadCipher aeadCipher; // 解密平台证书的aeadCipher;
   protected HttpClient httpClient; // 下载平台证书的httpClient
   private final HttpRequest httpRequest; // http请求
+  private Validator validator; // 验证器
+
+  private int updateTime; // 自动更新次数
 
   protected AbstractAutoCertificateProvider(
       String requestUrl,
@@ -46,9 +49,7 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
       AeadCipher aeadCipher,
       HttpClient httpClient,
       String merchantId,
-      Map<String, Map<String, X509Certificate>> wechatPayCertificateMap,
-      Map<String, Validator> validatorMap,
-      Map<String, Integer> updatesMap) {
+      Map<String, Map<String, X509Certificate>> wechatPayCertificateMap) {
     this.merchantId = merchantId;
     synchronized (AbstractAutoCertificateProvider.class) {
       if (!wechatPayCertificateMap.containsKey(merchantId)) {
@@ -69,18 +70,14 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
             .addHeader(Constant.ACCEPT, " */*")
             .addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue())
             .build();
-    downloadAndUpdate(wechatPayCertificateMap, validatorMap, updatesMap);
+    downloadAndUpdate(wechatPayCertificateMap);
     Runnable runnable =
         () -> {
           log.info(
-              "Begin update Certificates.merchantId:{},total updates:{}",
-              merchantId,
-              updatesMap.getOrDefault(merchantId, 1));
-          downloadAndUpdate(wechatPayCertificateMap, validatorMap, updatesMap);
+              "Begin update Certificates.merchantId:{},total updates:{}", merchantId, updateTime);
+          downloadAndUpdate(wechatPayCertificateMap);
           log.info(
-              "Finish update Certificates.merchantId:{},total updates:{}",
-              merchantId,
-              updatesMap.get(merchantId));
+              "Finish update Certificates.merchantId:{},total updates:{}", merchantId, updateTime);
         };
     executor.scheduleAtFixedRate(
         runnable, UPDATE_INTERVAL_MINUTE, UPDATE_INTERVAL_MINUTE, TimeUnit.MINUTES);
@@ -88,21 +85,18 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
 
   /** 下载和更新证书 */
   protected void downloadAndUpdate(
-      Map<String, Map<String, X509Certificate>> wechatPayCertificateMap,
-      Map<String, Validator> validatorMap,
-      Map<String, Integer> updatesMap) {
+      Map<String, Map<String, X509Certificate>> wechatPayCertificateMap) {
     try {
       HttpResponse<DownloadCertificateResponse> httpResponse = downloadCertificate(httpClient);
-      validateCertificate(httpResponse, validatorMap.get(merchantId));
+      validateCertificate(httpResponse);
       updateCertificate(httpResponse, wechatPayCertificateMap);
-      Validator validator =
+      validator =
           new WechatPay2Validator(
               certificateHandler.generateVerifier(
                   new ArrayList<>(wechatPayCertificateMap.get(merchantId).values())));
-      validatorMap.put(merchantId, validator);
-      updatesMap.put(merchantId, updatesMap.getOrDefault(merchantId, 0) + 1);
+      updateTime++;
     } catch (Exception e) {
-      if (validatorMap.get(merchantId) == null) {
+      if (validator == null) {
         throw e;
       }
       log.error("Download and update WechatPay certificates failed.", e);
@@ -125,8 +119,7 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
    *
    * @param httpResponse httpResponse
    */
-  protected void validateCertificate(
-      HttpResponse<DownloadCertificateResponse> httpResponse, Validator validator) {
+  protected void validateCertificate(HttpResponse<DownloadCertificateResponse> httpResponse) {
     JsonResponseBody responseBody = (JsonResponseBody) (httpResponse.getBody());
     if (validator != null
         && !validator.validate(httpResponse.getHeaders(), responseBody.getBody())) {

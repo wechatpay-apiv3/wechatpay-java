@@ -1,6 +1,5 @@
 package com.wechat.pay.java.core;
 
-import static com.wechat.pay.java.core.cipher.Constant.HEX;
 import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.certificate.CertificateProvider;
@@ -22,53 +21,12 @@ public final class RSAConfig extends AbstractRSAConfig {
     super(merchantId, privateKey, merchantSerialNumber, certificateProvider);
   }
 
-  public static class Builder {
-
-    private String merchantId;
-    private PrivateKey privateKey;
-    private String merchantSerialNumber;
+  public static class Builder extends AbstractRSAConfigBuilder<Builder> {
 
     private List<X509Certificate> wechatPayCertificates;
 
-    public Builder merchantId(String merchantId) {
-      this.merchantId = merchantId;
-      return this;
-    }
-
-    public Builder privateKey(String privateKey) {
-      this.privateKey = PemUtil.loadPrivateKeyFromString(privateKey);
-      return this;
-    }
-
-    public Builder privateKey(PrivateKey privateKey) {
-      this.privateKey = privateKey;
-      return this;
-    }
-
-    public Builder privateKeyFromPath(String keyPath) {
-      this.privateKey = PemUtil.loadPrivateKeyFromPath(keyPath);
-      return this;
-    }
-
-    public Builder merchantSerialNumber(String merchantSerialNumber) {
-      this.merchantSerialNumber = merchantSerialNumber;
-      return this;
-    }
-
-    public Builder merchantSerialNumberFromCertificate(X509Certificate merchantCertificate) {
-      this.merchantSerialNumber = merchantCertificate.getSerialNumber().toString(HEX);
-      return this;
-    }
-
-    public Builder merchantSerialNumberFromCertificate(String merchantCertificate) {
-      X509Certificate x509Certificate = PemUtil.loadX509FromString(merchantCertificate);
-      this.merchantSerialNumber = x509Certificate.getSerialNumber().toString(HEX);
-      return this;
-    }
-
-    public Builder merchantSerialNumberFromPath(String path) {
-      X509Certificate x509Certificate = PemUtil.loadX509FromPath(path);
-      this.merchantSerialNumber = x509Certificate.getSerialNumber().toString(HEX);
+    @Override
+    protected Builder self() {
       return this;
     }
 
@@ -95,13 +53,10 @@ public final class RSAConfig extends AbstractRSAConfig {
     }
 
     public RSAConfig build() {
-      requireNonNull(privateKey);
-      requireNonNull(merchantSerialNumber);
-      requireNonNull(merchantId);
       return new RSAConfig(
-          merchantId,
-          privateKey,
-          merchantSerialNumber,
+          requireNonNull(merchantId),
+          requireNonNull(privateKey),
+          requireNonNull(merchantSerialNumber),
           new InMemoryCertificateProvider(requireNonNull(wechatPayCertificates)));
     }
   }
