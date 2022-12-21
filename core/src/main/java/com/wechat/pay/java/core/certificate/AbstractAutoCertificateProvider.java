@@ -35,7 +35,7 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
       SafeSingleScheduleExecutor.getInstance(); // 安全的单线程定时执行器实例
   protected String requestUrl; // 请求URl
   protected String merchantId; // 商户号
-  protected CertificateHandler certificateHandler;
+  protected CertificateHandler certificateHandler; // 证书处理器
   protected AeadCipher aeadCipher; // 解密平台证书的aeadCipher;
   protected HttpClient httpClient; // 下载平台证书的httpClient
   private final HttpRequest httpRequest; // http请求
@@ -92,8 +92,7 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
       Map<String, Validator> validatorMap,
       Map<String, Integer> updatesMap) {
     try {
-      HttpResponse<DownloadCertificateResponse> httpResponse =
-          downloadCertificate(requestUrl, httpClient);
+      HttpResponse<DownloadCertificateResponse> httpResponse = downloadCertificate(httpClient);
       validateCertificate(httpResponse, validatorMap.get(merchantId));
       updateCertificate(httpResponse, wechatPayCertificateMap);
       Validator validator =
@@ -115,8 +114,7 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
    *
    * @return httpResponse
    */
-  protected HttpResponse<DownloadCertificateResponse> downloadCertificate(
-      String requestUrl, HttpClient httpClient) {
+  protected HttpResponse<DownloadCertificateResponse> downloadCertificate(HttpClient httpClient) {
     HttpResponse<DownloadCertificateResponse> httpResponse;
     httpResponse = httpClient.execute(httpRequest, DownloadCertificateResponse.class);
     return httpResponse;
