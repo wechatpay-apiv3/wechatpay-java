@@ -35,6 +35,7 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
       SafeSingleScheduleExecutor.getInstance(); // 安全的单线程定时执行器实例
   protected String requestUrl; // 请求URl
   protected String merchantId; // 商户号
+
   protected CertificateHandler certificateHandler; // 证书处理器
   protected AeadCipher aeadCipher; // 解密平台证书的aeadCipher;
   protected HttpClient httpClient; // 下载平台证书的httpClient
@@ -42,6 +43,7 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
   private Validator validator; // 验证器
 
   private int updateTime; // 自动更新次数
+  private final Map<String, Map<String, X509Certificate>> certificateMap; // 证书map
 
   protected AbstractAutoCertificateProvider(
       String requestUrl,
@@ -63,6 +65,7 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
     this.certificateHandler = certificateHandler;
     this.aeadCipher = aeadCipher;
     this.httpClient = httpClient;
+    this.certificateMap = wechatPayCertificateMap;
     httpRequest =
         new HttpRequest.Builder()
             .httpMethod(HttpMethod.GET)
@@ -163,5 +166,15 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
       }
     }
     return longest;
+  }
+
+  @Override
+  public X509Certificate getCertificate(String serialNumber) {
+    return certificateMap.get(merchantId).get(serialNumber);
+  }
+
+  @Override
+  public X509Certificate getAvailableCertificate() {
+    return getAvailableCertificate(certificateMap.get(merchantId));
   }
 }

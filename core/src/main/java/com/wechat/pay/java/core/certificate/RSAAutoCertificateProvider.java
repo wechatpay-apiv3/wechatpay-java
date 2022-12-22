@@ -37,16 +37,6 @@ public class RSAAutoCertificateProvider extends AbstractAutoCertificateProvider 
         wechatPayCertificateMap);
   }
 
-  @Override
-  public X509Certificate getCertificate(String serialNumber) {
-    return wechatPayCertificateMap.get(merchantId).get(serialNumber);
-  }
-
-  @Override
-  public X509Certificate getAvailableCertificate() {
-    return getAvailableCertificate(wechatPayCertificateMap.get(merchantId));
-  }
-
   public static class Builder {
     private String merchantId;
     private byte[] apiV3Key;
