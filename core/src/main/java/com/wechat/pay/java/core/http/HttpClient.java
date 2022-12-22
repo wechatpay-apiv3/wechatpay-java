@@ -4,7 +4,6 @@ import com.wechat.pay.java.core.exception.HttpException;
 import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.exception.ServiceException;
 import com.wechat.pay.java.core.exception.ValidationException;
-import java.io.IOException;
 import java.io.InputStream;
 
 /** HTTP请求客户端，自动生成签名和验证签名 */
@@ -145,7 +144,6 @@ public interface HttpClient {
    *
    * @param url 请求URL
    * @return 文件流
-   * @throws IOException 下载失败、I/O异常
    */
-  InputStream download(String url) throws IOException;
+  InputStream download(String url);
 }

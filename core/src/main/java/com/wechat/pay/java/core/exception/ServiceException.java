@@ -12,7 +12,7 @@ public class ServiceException extends WechatPayException {
 
   private final HttpRequest httpRequest;
   private final int httpStatusCode;
-  private final String responseBody;
+  private String responseBody;
   private String errorCode;
   private String errorMessage;
 
@@ -38,6 +38,12 @@ public class ServiceException extends WechatPayException {
       this.errorCode = code == null ? null : code.getAsString();
       this.errorMessage = message == null ? null : message.getAsString();
     }
+  }
+
+  public ServiceException(HttpRequest httpRequest, int httpStatusCode) {
+    super(String.format("Wrong HttpStatusCode[%d]\tHttpRequest[%s]", httpStatusCode, httpRequest));
+    this.httpRequest = httpRequest;
+    this.httpStatusCode = httpStatusCode;
   }
 
   /**

@@ -1,30 +1,19 @@
 package com.wechat.pay.java.core.http.okhttp;
 
-import static com.wechat.pay.java.core.http.Constant.ACCEPT;
-import static com.wechat.pay.java.core.http.Constant.AUTHORIZATION;
-import static com.wechat.pay.java.core.http.Constant.OS;
-import static com.wechat.pay.java.core.http.Constant.USER_AGENT;
-import static com.wechat.pay.java.core.http.Constant.USER_AGENT_FORMAT;
-import static com.wechat.pay.java.core.http.Constant.VERSION;
-import static java.net.HttpURLConnection.HTTP_MULT_CHOICE;
-import static java.net.HttpURLConnection.HTTP_OK;
 import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
 import com.wechat.pay.java.core.exception.HttpException;
 import com.wechat.pay.java.core.exception.MalformedMessageException;
-import com.wechat.pay.java.core.exception.ServiceException;
 import com.wechat.pay.java.core.http.AbstractHttpClient;
 import com.wechat.pay.java.core.http.FileRequestBody;
-import com.wechat.pay.java.core.http.HttpMethod;
 import com.wechat.pay.java.core.http.HttpRequest;
 import com.wechat.pay.java.core.http.JsonRequestBody;
+import com.wechat.pay.java.core.http.OriginFileResponse;
 import com.wechat.pay.java.core.http.OriginalResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import okhttp3.MultipartBody;
@@ -124,15 +113,19 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
         .build();
   }
 
-  private OriginalResponse assembleOriginalResponse(
-      HttpRequest wechatPayRequest, Response okHttpResponse) {
+  private Map<String, String> assembleResponseHeader(Response okHttpResponse) {
     Map<String, String> responseHeaders = new ConcurrentHashMap<>();
     // use an OkHttp3.x compatible method
     int headerSize = okHttpResponse.headers().size();
     for (int i = 0; i < headerSize; ++i) {
       responseHeaders.put(okHttpResponse.headers().name(i), okHttpResponse.headers().value(i));
     }
+    return responseHeaders;
+  }
 
+  private OriginalResponse assembleOriginalResponse(
+      HttpRequest wechatPayRequest, Response okHttpResponse) {
+    Map<String, String> responseHeaders = assembleResponseHeader(okHttpResponse);
     try {
       return new OriginalResponse.Builder()
           .request(wechatPayRequest)
@@ -153,42 +146,27 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
   }
 
   @Override
-  public InputStream download(String url) throws IOException {
-    URI uri;
-    try {
-      uri = new URI(url);
-    } catch (URISyntaxException e) {
-      throw new IllegalArgumentException(e);
-    }
-    String authorization = credential.getAuthorization(uri, HttpMethod.GET.name(), "");
-    String userAgent =
-        String.format(
-            USER_AGENT_FORMAT,
-            getClass().getPackage().getImplementationVersion(),
-            OS,
-            VERSION == null ? "Unknown" : VERSION,
-            credential.getClass().getSimpleName(),
-            validator.getClass().getSimpleName(),
-            getHttpClientInfo());
-    HttpRequest httpRequest =
-        new HttpRequest.Builder()
-            .url(url)
-            .httpMethod(HttpMethod.GET)
-            .addHeader(AUTHORIZATION, authorization)
-            .addHeader(ACCEPT, "*/*")
-            .addHeader(USER_AGENT, userAgent)
-            .build();
+  protected OriginFileResponse innerDownload(HttpRequest httpRequest) {
     Request okHttpRequest = buildOkHttpRequest(httpRequest);
-    Response okHttpResponse;
-    okHttpResponse = okHttpClient.newCall(okHttpRequest).execute();
-    if (okHttpResponse.code() < HTTP_OK || okHttpResponse.code() >= HTTP_MULT_CHOICE) {
-      throw new ServiceException(
-          httpRequest, okHttpResponse.code(), okHttpResponse.body().string());
+    try {
+      Response okHttpResponse = okHttpClient.newCall(okHttpRequest).execute();
+      return assembleOriginFileResponse(httpRequest, okHttpResponse);
+    } catch (IOException e) {
+      throw new HttpException(httpRequest, e);
     }
+  }
+
+  private OriginFileResponse assembleOriginFileResponse(
+      HttpRequest wechatPayRequest, Response okHttpResponse) {
     InputStream responseBodyStream = null;
     if (okHttpResponse.body() != null) {
       responseBodyStream = okHttpResponse.body().byteStream();
     }
-    return responseBodyStream;
+    return new OriginFileResponse.Builder()
+        .request(wechatPayRequest)
+        .bodyStream(responseBodyStream)
+        .statusCode(okHttpResponse.code())
+        .headers(assembleResponseHeader(okHttpResponse))
+        .build();
   }
 }
