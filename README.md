@@ -1,5 +1,5 @@
 [![JavaDoc](http://img.shields.io/badge/javadoc-reference-blue.svg)](https://www.javadoc.io/doc/com.github.wechatpay-apiv3/wechatpay-java/latest/index.html)
-![Maven Central](https://img.shields.io/maven-central/v/com.github.wechatpay-apiv3/wechatpay-java?versionPrefix=0.2.2)
+![Maven Central](https://img.shields.io/maven-central/v/com.github.wechatpay-apiv3/wechatpay-java?versionPrefix=0.2.3)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=wechatpay-apiv3_wechatpay-java&metric=coverage)](https://sonarcloud.io/summary/new_code?id=wechatpay-apiv3_wechatpay-java)
 
 #微信支付 APIv3 Java SDK
@@ -7,18 +7,19 @@
 [微信支付 APIv3](https://wechatpay-api.gitbook.io/wechatpay-api-v3/) 官方 Java 语言客户端开发库。
 
 开发库由 `core` 和 `service` 组成：
+
 - core 为基础库，包含自动签名和验签的 HTTP 客户端、回调处理、加解密库。
-- service 为业务服务，包含[业务接口](service/src/main/java/com/wechat/pay/java/service)和[使用示例](service/src/example/java/com/wechat/pay/java/service)，根据接口契约自动生成，证书服务 `certificate` 和文件服务 `file` 除外。
+- service 为业务服务，包含[业务接口](service/src/main/java/com/wechat/pay/java/service)和[使用示例](service/src/example/java/com/wechat/pay/java/service)。
 
 ## 项目状态
 
-当前版本`0.2.2`为测试版本，项目规划详如下。
+当前版本`0.2.3`为测试版本，项目规划详如下。
 
 | 工作项 | 状态 |
-| ----- | ---- |
-| 证书下载、文件上传 | 已完成 |
-| 平台证书自动下载 | 已完成 |
-| 账单下载 | 规划中，欢迎 PR |
+| ----- | -- |
+| 证书下载、文件上传 | 已支持 |
+| 平台证书自动下载 | `v0.2.3` 已支持 |
+| 账单下载 | 进行中 |
 | 业务服务（基于接口契约自动生成）| 进行中，有需要请提 issue |
 | 其他 HttpClient 适配器 | 有需要请提 issue，欢迎 PR |
 
@@ -39,7 +40,7 @@
 #### Gradle
 在你的 build.gradle 文件中加入如下的依赖
 ```groovy
-implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.2'
+implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.3'
 ```
 
 #### Maven
@@ -48,7 +49,7 @@ implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.2'
 <dependency>
   <groupId>com.github.wechatpay-apiv3</groupId>
   <artifactId>wechatpay-java</artifactId>
-  <version>0.2.2</version>
+  <version>0.2.3</version>
 </dependency>
 ```
 
@@ -80,8 +81,6 @@ public class QuickStart {
   public static String apiV3key = "";
 
   public static void main(String[] args) {
-    // 使用自动更新平台证书的RSA配置。
-    // 一个商户号只能初始化一个配置，否则会因为重复的下载任务报错
     Config config =
         new RSAAutoCertificateConfig.Builder()
             .merchantId(merchantId)
@@ -166,6 +165,41 @@ SDK 使用的是 unchecked exception，会抛出四种自定义异常。每种�
   - 解析回调请求体为 JSON 字符串失败：上报监控和日志打印。
   - 解密回调通知内容失败：确认传入的 apiV3 密钥是否正确。
 
+## 自动更新微信支付平台证书
+
+在 API 请求过程中，客户端需使用微信支付平台证书，验证服务器应答的真实性和完整性。 
+在 v0.2.3 版本，我们加入了自动更新平台证书的配置类 `RSAAutoCertificateConfig`。
+
+```java
+Config config =
+    new RSAAutoCertificateConfig.Builder()
+        .merchantId(merchantId)
+        .privateKeyFromPath(privateKeyPath)
+        .merchantSerialNumber(merchantSerialNumber)
+        .apiV3Key(apiV3key)
+        .build();
+```
+
+`RSAAutoCertificateConfig` 通过 `RSAAutoCertificateProvider` 自动下载微信支付平台证书。
+同时，`RSAAutoCertificateProvider` 会启动一个后台线程，定时更新证书（目前设计为60分钟），以实现证书过期时的新老证书平滑切换。
+
+> **Note**
+> 每个商户号只能创建一个 `RSAAutoCertificateConfig`。我们建议你将配置类作为全局变量。
+
+### 使用本地的微信支付平台证书
+
+如果你不想使用 SDK 提供的定时更新平台证书，你可以使用配置类 `RSAConfig` 加载本地证书。
+
+```java
+Config config =
+    new RSAConfig.Builder()
+        .merchantId(merchantId)
+        .privateKeyFromPath(privateKeyPath)
+        .merchantSerialNumber(merchantSerialNumber)
+        .wechatPayCertificatesFromPath(wechatPayCertificatePath)
+        .build();
+```
+
 ## 回调通知验签和解密
 
 可以使用 [notification](core/src/main/java/com/wechat/pay/java/core/notification) 中的 `NotificationParser` 解析回调通知。具体步骤如下：
@@ -173,8 +207,8 @@ SDK 使用的是 unchecked exception，会抛出四种自定义异常。每种�
 1. 获取HTTP请求头中的 `Wechatpay-Signature` 、 `Wechatpay-Nonce` 、 `Wechatpay-Timestamp` 、 `Wechatpay-Serial` 、 `Request-ID` 、`Wechatpay-Signature-Type` 对应的值，构建 `RequestParam` 。
 2. 获取 HTTP 请求体的 `JSON` 纯文本。
 3. 根据解密后的通知数据数据结构，构造解密对象类 `DecryptObject` 。支付结果通知解密对象类为 [`Transaction`](service/src/main/java/com/wechat/pay/java/service/payments/model/Transaction.java)，退款结果通知解密对象类为 [RefundNotification](service/src/main/java/com/wechat/pay/java/service/refund/model/RefundNotification.java)。
-4. 使用微信支付平台证书（验签）和商户 APIv3 密钥（解密）初始化 `NotificationConfig` 。微信支付平台证书可以基于 SDK 的自动更新平台能力提供，也可以使用本地证书。
-5. 初始化 `NotificationParser` 。
+4. 初始化 `AutoCertificateNotificationConfig`。微信支付平台证书由 SDK 的自动更新平台能力提供，也可以使用本地证书。
+5. 初始化 `NotificationParser`。
 6. 使用请求参数 `requestParam` 和 `DecryptObject.class` ，调用 `parser.parse` 验签并解密报文。
 
 ```java
@@ -189,18 +223,12 @@ RequestParam requestParam = new Builder()
         .body(requestBody)
         .build();
 
-// 初始化 NotificationConfig 方式一：使用自动更新平台证书能力，需要设置APIv3 密钥、商户号、商户证书序列号、商户私钥。
+// 初始化 NotificationConfig 使用自动更新平台证书能力，需要设置 APIv3 密钥、商户号、商户证书序列号、商户私钥。
 NotificationConfig rsaNotificationConfig = new RSAAutoCertificateNotificationConfig.Builder()
         .apiV3Key(apiV3Key)
         .merchantId(merchantId)
         .merchantSerialNumber(merchantSerialNumber)
         .autoUpdateCertWithKeyStr(privateKey)
-        .build();
-
-// 初始化 NotificationConfig 方式二：使用本地的微信支付平台证书，需要设置 APIv3 密钥、微信支付平台证书。
-NotificationConfig rsaNotificationConfig = new RSANotificationConfig.Builder()
-        .apiV3Key(apiV3Key)
-        .certificates(wechatPayCertificateString)
         .build();
 
 // 初始化 NotificationParser
@@ -231,7 +259,12 @@ DecryptObject decryptObject = parser.parse(requestParam,DecryptObject.class);
 
 详见 [接口规则 - 敏感信息加解密](https://wechatpay-api.gitbook.io/wechatpay-api-v3/qian-ming-zhi-nan-1/min-gan-xin-xi-jia-mi)。
 
-可以使用 [cipher](core/src/main/java/com/wechat/pay/java/core/cipher) 中的 `RSAPrivacyEncryptor` 和 `RSAPrivacyDecryptor` ，手动对敏感信息加解密。
+如果是 SDK 已支持的接口，例如商家转账，SDK 将根据契约自动对敏感信息做加解密：
+
++ 发起请求时，开发者设置原文。SDK 自动加密敏感信息，并设置 `Wechatpay-Serial` 请求头
++ 收到应答时，解密器自动解密敏感信息，开发者得到原文
+
+如果是 SDK 尚未支持的接口，你可以使用 [cipher](core/src/main/java/com/wechat/pay/java/core/cipher) 中的 `RSAPrivacyEncryptor` 和 `RSAPrivacyDecryptor` ，手动对敏感信息加解密。
 
 ```java
 // 微信支付平台证书中的公钥
