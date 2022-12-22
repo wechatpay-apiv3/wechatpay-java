@@ -1,33 +1,66 @@
 package com.wechat.pay.java.core.notification;
 
 import static com.wechat.pay.java.core.model.TestConfig.API_V3_KEY;
+import static com.wechat.pay.java.core.model.TestConfig.WECHAT_PAY_CERTIFICATE;
 import static com.wechat.pay.java.core.model.TestConfig.WECHAT_PAY_CERTIFICATE_PATH;
 import static com.wechat.pay.java.core.model.TestConfig.WECHAT_PAY_CERTIFICATE_STRING;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Assert;
-import org.junit.Test;
+import com.wechat.pay.java.core.notification.RSANotificationConfig.Builder;
+import java.util.stream.Stream;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-public class RSANotificationConfigTest {
+class RSANotificationConfigTest implements NotificationConfigTest {
+
+  @ParameterizedTest
+  @MethodSource("BuilderProvider")
+  void testConfigWithBuilderProvider(Builder builder) {
+    RSANotificationConfig c = builder.build();
+
+    assertNotNull(c);
+    assertNotNull(c.createAeadCipher());
+    assertNotNull(c.createVerifier());
+    assertNotNull(c.getCipherType());
+    assertNotNull(c.getSignType());
+  }
 
   @Test
-  public void testBuildConfigFromString() {
+  void testBuildConfigFromStr() {
     NotificationConfig config =
         new RSANotificationConfig.Builder()
             .certificates(WECHAT_PAY_CERTIFICATE_STRING)
             .apiV3Key(API_V3_KEY)
             .build();
-    Assert.assertNotNull(config.createAeadCipher());
-    Assert.assertNotNull(config.createVerifier());
+    assertNotNull(config);
+  }
+
+  static Stream<Builder> BuilderProvider() {
+    return Stream.of(
+        // from string
+        new RSANotificationConfig.Builder()
+            .apiV3Key(API_V3_KEY)
+            .certificates(WECHAT_PAY_CERTIFICATE),
+
+        // form path
+        new RSANotificationConfig.Builder()
+            .apiV3Key(API_V3_KEY)
+            .certificatesFromPath(WECHAT_PAY_CERTIFICATE_PATH));
   }
 
   @Test
-  public void testBuildConfigFromPath() {
-    NotificationConfig config =
-        new RSANotificationConfig.Builder()
-            .certificatesFromPath(WECHAT_PAY_CERTIFICATE_PATH)
-            .apiV3Key(API_V3_KEY)
-            .build();
-    Assert.assertNotNull(config.createAeadCipher());
-    Assert.assertNotNull(config.createVerifier());
+  void testBuildConfigWithoutEnoughParam() {
+    Builder builder = new RSANotificationConfig.Builder().apiV3Key(API_V3_KEY);
+    assertThrows(NullPointerException.class, builder::build);
+  }
+
+  @Override
+  public NotificationConfig buildNotificationConfig() {
+    return new RSANotificationConfig.Builder()
+        .certificates(WECHAT_PAY_CERTIFICATE)
+        .apiV3Key(API_V3_KEY)
+        .build();
   }
 }

@@ -42,7 +42,8 @@ public class JsapiServiceExtension {
   /**
    * JSAPI支付下单，并返回JSAPI调起支付数据
    *
-   * @param request 请求参数
+   * @param request 请求参数 商户申请的公众号对应的appid
+   * @param requestPaymentAppid 商户申请的公众号对应的appid
    * @return PrepayWithRequestPaymentResponse
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。

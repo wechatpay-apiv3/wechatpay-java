@@ -1,6 +1,6 @@
 package com.wechat.pay.java.core.notification;
 
-import static com.wechat.pay.java.core.notification.RSANotificationConfig.RSA_SIGN_TYPE;
+import static com.wechat.pay.java.core.notification.Constant.RSA_SIGN_TYPE;
 
 import com.wechat.pay.java.core.util.GsonUtil;
 

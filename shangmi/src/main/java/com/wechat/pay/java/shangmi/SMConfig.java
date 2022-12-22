@@ -1,5 +1,6 @@
 package com.wechat.pay.java.shangmi;
 
+import static com.wechat.pay.java.core.cipher.Constant.HEX;
 import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.Config;
@@ -45,7 +46,7 @@ public final class SMConfig implements Config {
   public PrivacyEncryptor createEncryptor() {
     X509Certificate certificate = certificateProvider.getAvailableCertificate();
     return new SM2PrivacyEncryptor(
-        certificate.getPublicKey(), certificate.getSerialNumber().toString(16));
+        certificate.getPublicKey(), certificate.getSerialNumber().toString(HEX));
   }
 
   /**

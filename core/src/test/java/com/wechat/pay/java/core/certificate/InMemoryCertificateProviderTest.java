@@ -11,7 +11,7 @@ import java.security.cert.X509Certificate;
 import java.util.Vector;
 import org.junit.Test;
 
-public class InMemoryCertificateProviderTest {
+public class InMemoryCertificateProviderTest implements CertificateProviderTest {
 
   @Test
   public void getCertificate() {
@@ -30,5 +30,12 @@ public class InMemoryCertificateProviderTest {
   public void testFailWithEmptyList() {
     Vector<X509Certificate> listCertificates = new Vector<>();
     new InMemoryCertificateProvider(listCertificates);
+  }
+
+  @Override
+  public CertificateProvider createCertificateProvider() {
+    Vector<X509Certificate> listCertificates = new Vector<>();
+    listCertificates.add(WECHAT_PAY_CERTIFICATE);
+    return new InMemoryCertificateProvider(listCertificates);
   }
 }

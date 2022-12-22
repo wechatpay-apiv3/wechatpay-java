@@ -8,6 +8,9 @@ import com.wechat.pay.java.core.auth.Validator;
 import com.wechat.pay.java.core.cipher.PrivacyDecryptor;
 import com.wechat.pay.java.core.cipher.PrivacyEncryptor;
 import com.wechat.pay.java.core.cipher.Signer;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.Proxy.Type;
 import java.net.URI;
 import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.Test;
@@ -49,6 +52,7 @@ public class DefaultHttpClientBuilderTest {
             .credential(credential)
             .validator(validator)
             .okHttpClient(okHttpClient)
+            .proxy(new Proxy(Type.SOCKS, new InetSocketAddress("localhost", 8099)))
             .build();
     assertNotNull(httpClient);
   }

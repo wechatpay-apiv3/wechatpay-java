@@ -1,13 +1,13 @@
 package com.wechat.pay.java.core.notification;
 
+import static com.wechat.pay.java.core.notification.Constant.AES_CIPHER_ALGORITHM;
+import static com.wechat.pay.java.core.notification.Constant.RSA_SIGN_TYPE;
 import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.certificate.CertificateProvider;
 import com.wechat.pay.java.core.certificate.InMemoryCertificateProvider;
 import com.wechat.pay.java.core.cipher.AeadAesCipher;
 import com.wechat.pay.java.core.cipher.AeadCipher;
-import com.wechat.pay.java.core.cipher.RSAVerifier;
-import com.wechat.pay.java.core.cipher.Verifier;
 import com.wechat.pay.java.core.util.PemUtil;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
@@ -16,36 +16,10 @@ import java.util.Arrays;
 import java.util.List;
 
 /** 签名类型为RSA的通知配置参数 */
-public final class RSANotificationConfig implements NotificationConfig {
+public final class RSANotificationConfig extends AbstractNotificationConfig {
 
-  public static final String RSA_SIGN_TYPE = "WECHATPAY2-SHA256-RSA2048";
-  private static final String CIPHER_ALGORITHM = "AEAD_AES_256_GCM";
-  private final CertificateProvider certificateProvider;
-  private final byte[] apiV3Key;
-
-  private RSANotificationConfig(CertificateProvider certificateProvider, byte[] apiV3Key) {
-    this.certificateProvider = certificateProvider;
-    this.apiV3Key = apiV3Key;
-  }
-
-  @Override
-  public String getSignType() {
-    return RSA_SIGN_TYPE;
-  }
-
-  @Override
-  public String getCipherType() {
-    return CIPHER_ALGORITHM;
-  }
-
-  @Override
-  public Verifier createVerifier() {
-    return new RSAVerifier(certificateProvider);
-  }
-
-  @Override
-  public AeadCipher createAeadCipher() {
-    return new AeadAesCipher(apiV3Key);
+  private RSANotificationConfig(CertificateProvider certificateProvider, AeadCipher aeadCipher) {
+    super(RSA_SIGN_TYPE, AES_CIPHER_ALGORITHM, certificateProvider, aeadCipher);
   }
 
   public static class Builder {
@@ -84,8 +58,9 @@ public final class RSANotificationConfig implements NotificationConfig {
     }
 
     public RSANotificationConfig build() {
+      CertificateProvider certificateProvider = new InMemoryCertificateProvider(certificates);
       return new RSANotificationConfig(
-          new InMemoryCertificateProvider(requireNonNull(certificates)), requireNonNull(apiV3Key));
+          certificateProvider, new AeadAesCipher(requireNonNull(apiV3Key)));
     }
   }
 }
