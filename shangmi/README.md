@@ -16,8 +16,8 @@
 ### Gradle
 在你的 build.gradle 文件中加入如下的依赖
 ```groovy
-implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.1'
-implementation 'com.github.wechatpay-apiv3:wechatpay-java-shangmi:0.2.1'
+implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.2'
+implementation 'com.github.wechatpay-apiv3:wechatpay-java-shangmi:0.2.2'
 ```
 
 #### Maven
@@ -26,12 +26,12 @@ implementation 'com.github.wechatpay-apiv3:wechatpay-java-shangmi:0.2.1'
 <dependency>
   <groupId>com.github.wechatpay-apiv3</groupId>
   <artifactId>wechatpay-java</artifactId>
-  <version>0.2.1</version>
+  <version>0.2.2</version>
 </dependency>
 <dependency>
   <groupId>com.github.wechatpay-apiv3</groupId>
   <artifactId>wechatpay-java-shangmi</artifactId>
-  <version>0.2.1</version>
+  <version>0.2.2</version>
 </dependency>
 ```
 
