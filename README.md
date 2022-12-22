@@ -183,8 +183,8 @@ Config config =
 `RSAAutoCertificateConfig` 通过 `RSAAutoCertificateProvider` 自动下载微信支付平台证书。
 同时，`RSAAutoCertificateProvider` 会启动一个后台线程，定时更新证书（目前设计为60分钟），以实现证书过期时的新老证书平滑切换。
 
-> **Info**
-每个商户号只能创建一个 `RSAAutoCertificateConfig`。我们建议你将配置类作为全局变量。
+> **Note**
+> 每个商户号只能创建一个 `RSAAutoCertificateConfig`。我们建议你将配置类作为全局变量。
 
 ### 使用本地的微信支付平台证书
 
