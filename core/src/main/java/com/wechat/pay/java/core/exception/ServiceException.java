@@ -12,7 +12,7 @@ public class ServiceException extends WechatPayException {
 
   private final HttpRequest httpRequest;
   private final int httpStatusCode;
-  private String responseBody;
+  private final String responseBody;
   private String errorCode;
   private String errorMessage;
 
@@ -31,19 +31,13 @@ public class ServiceException extends WechatPayException {
     this.httpRequest = httpRequest;
     this.httpStatusCode = httpStatusCode;
     this.responseBody = responseBody;
-    if (responseBody != null) {
+    if (responseBody != null && !responseBody.isEmpty()) {
       JsonObject jsonObject = GsonUtil.getGson().fromJson(responseBody, JsonObject.class);
       JsonElement code = jsonObject.get("code");
       JsonElement message = jsonObject.get("message");
       this.errorCode = code == null ? null : code.getAsString();
       this.errorMessage = message == null ? null : message.getAsString();
     }
-  }
-
-  public ServiceException(HttpRequest httpRequest, int httpStatusCode) {
-    super(String.format("Wrong HttpStatusCode[%d]\tHttpRequest[%s]", httpStatusCode, httpRequest));
-    this.httpRequest = httpRequest;
-    this.httpStatusCode = httpStatusCode;
   }
 
   /**

@@ -1,5 +1,7 @@
 package com.wechat.pay.java.core.http;
 
+import static com.wechat.pay.java.core.http.Constant.AUTHORIZATION;
+import static com.wechat.pay.java.core.http.Constant.USER_AGENT;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
@@ -206,7 +208,7 @@ public interface HttpClientTest {
   }
 
   @Test
-  default void testDownload_Response_200Ok() throws IOException {
+  default void testDownload_Response_200Ok() throws IOException, InterruptedException {
     HttpClient client = createHttpClient();
     MockWebServer server = new MockWebServer();
     server.start();
@@ -218,8 +220,11 @@ public interface HttpClientTest {
             .setHeader("Content-Type", "application/json; charset=utf-8"));
     InputStream inputStream = client.download(requestUrl.toString());
     String respBody = IOUtil.toString(inputStream);
-    server.shutdown();
     assertEquals(testResponseBody, respBody);
+    RecordedRequest request = server.takeRequest();
+    assertNotNull(request.getHeader(AUTHORIZATION));
+    assertNotNull(request.getHeader(USER_AGENT));
+    server.shutdown();
   }
 
   @Test

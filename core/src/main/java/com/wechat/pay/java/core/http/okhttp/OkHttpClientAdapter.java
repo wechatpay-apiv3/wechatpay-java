@@ -151,7 +151,7 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
     try {
       Response okHttpResponse = okHttpClient.newCall(okHttpRequest).execute();
       if (isInvalidHttpCode(okHttpResponse.code())) {
-        throw new ServiceException(httpRequest, okHttpResponse.code());
+        throw new ServiceException(httpRequest, okHttpResponse.code(), "");
       }
       InputStream responseBodyStream = null;
       if (okHttpResponse.body() != null) {
