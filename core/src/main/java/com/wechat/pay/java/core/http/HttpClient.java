@@ -140,7 +140,7 @@ public interface HttpClient {
   }
 
   /**
-   * 下载文件
+   * 下载文件，文件流使用完后需要关闭
    *
    * @param url 请求URL
    * @return 文件流
