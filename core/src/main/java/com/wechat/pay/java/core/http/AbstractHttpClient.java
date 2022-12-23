@@ -58,19 +58,10 @@ public abstract class AbstractHttpClient implements HttpClient {
             .addHeader(ACCEPT, "*/*")
             .addHeader(USER_AGENT, getUserAgent())
             .build();
-    OriginFileResponse fileResponse = innerDownload(httpRequest);
-    validateFileResponse(fileResponse);
-    return fileResponse.getBodyStream();
+    return innerDownload(httpRequest);
   }
 
-  private void validateFileResponse(OriginFileResponse fileResponse) {
-    if (!isInvalidHttpCode(fileResponse.getStatusCode())) {
-      return;
-    }
-    throw new ServiceException(fileResponse.getRequest(), fileResponse.getStatusCode());
-  }
-
-  protected abstract OriginFileResponse innerDownload(HttpRequest httpRequest);
+  protected abstract InputStream innerDownload(HttpRequest httpRequest);
 
   protected abstract OriginalResponse innerExecute(HttpRequest httpRequest);
 

@@ -6,11 +6,11 @@ import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
 import com.wechat.pay.java.core.exception.HttpException;
 import com.wechat.pay.java.core.exception.MalformedMessageException;
+import com.wechat.pay.java.core.exception.ServiceException;
 import com.wechat.pay.java.core.http.AbstractHttpClient;
 import com.wechat.pay.java.core.http.FileRequestBody;
 import com.wechat.pay.java.core.http.HttpRequest;
 import com.wechat.pay.java.core.http.JsonRequestBody;
-import com.wechat.pay.java.core.http.OriginFileResponse;
 import com.wechat.pay.java.core.http.OriginalResponse;
 import java.io.IOException;
 import java.io.InputStream;
@@ -146,27 +146,20 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
   }
 
   @Override
-  protected OriginFileResponse innerDownload(HttpRequest httpRequest) {
+  protected InputStream innerDownload(HttpRequest httpRequest) {
     Request okHttpRequest = buildOkHttpRequest(httpRequest);
     try {
       Response okHttpResponse = okHttpClient.newCall(okHttpRequest).execute();
-      return assembleOriginFileResponse(httpRequest, okHttpResponse);
+      if (isInvalidHttpCode(okHttpResponse.code())) {
+        throw new ServiceException(httpRequest, okHttpResponse.code());
+      }
+      InputStream responseBodyStream = null;
+      if (okHttpResponse.body() != null) {
+        responseBodyStream = okHttpResponse.body().byteStream();
+      }
+      return responseBodyStream;
     } catch (IOException e) {
       throw new HttpException(httpRequest, e);
     }
-  }
-
-  private OriginFileResponse assembleOriginFileResponse(
-      HttpRequest wechatPayRequest, Response okHttpResponse) {
-    InputStream responseBodyStream = null;
-    if (okHttpResponse.body() != null) {
-      responseBodyStream = okHttpResponse.body().byteStream();
-    }
-    return new OriginFileResponse.Builder()
-        .request(wechatPayRequest)
-        .bodyStream(responseBodyStream)
-        .statusCode(okHttpResponse.code())
-        .headers(assembleResponseHeader(okHttpResponse))
-        .build();
   }
 }
