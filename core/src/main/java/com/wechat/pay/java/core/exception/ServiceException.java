@@ -31,7 +31,7 @@ public class ServiceException extends WechatPayException {
     this.httpRequest = httpRequest;
     this.httpStatusCode = httpStatusCode;
     this.responseBody = responseBody;
-    if (responseBody != null) {
+    if (responseBody != null && !responseBody.isEmpty()) {
       JsonObject jsonObject = GsonUtil.getGson().fromJson(responseBody, JsonObject.class);
       JsonElement code = jsonObject.get("code");
       JsonElement message = jsonObject.get("message");

@@ -1,5 +1,6 @@
 package com.wechat.pay.java.core.http;
 
+import static com.wechat.pay.java.core.http.Constant.ACCEPT;
 import static com.wechat.pay.java.core.http.Constant.AUTHORIZATION;
 import static com.wechat.pay.java.core.http.Constant.OS;
 import static com.wechat.pay.java.core.http.Constant.REQUEST_ID;
@@ -16,12 +17,13 @@ import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.exception.ServiceException;
 import com.wechat.pay.java.core.exception.ValidationException;
 import com.wechat.pay.java.core.http.HttpRequest.Builder;
+import java.io.InputStream;
 
 /** 请求客户端抽象基类 */
 public abstract class AbstractHttpClient implements HttpClient {
 
-  private final Credential credential;
-  private final Validator validator;
+  protected final Credential credential;
+  protected final Validator validator;
 
   public AbstractHttpClient(Credential credential, Validator validator) {
     this.credential = requireNonNull(credential);
@@ -43,6 +45,23 @@ public abstract class AbstractHttpClient implements HttpClient {
     validateResponse(originalResponse);
     return assembleHttpResponse(originalResponse, responseClass);
   }
+
+  @Override
+  public InputStream download(String url) {
+    HttpRequest originRequest =
+        new HttpRequest.Builder().httpMethod(HttpMethod.GET).url(url).build();
+    HttpRequest httpRequest =
+        new HttpRequest.Builder()
+            .url(url)
+            .httpMethod(HttpMethod.GET)
+            .addHeader(AUTHORIZATION, getAuthorization(originRequest))
+            .addHeader(ACCEPT, "*/*")
+            .addHeader(USER_AGENT, getUserAgent())
+            .build();
+    return innerDownload(httpRequest);
+  }
+
+  protected abstract InputStream innerDownload(HttpRequest httpRequest);
 
   protected abstract OriginalResponse innerExecute(HttpRequest httpRequest);
 
@@ -74,7 +93,7 @@ public abstract class AbstractHttpClient implements HttpClient {
     }
   }
 
-  private boolean isInvalidHttpCode(int httpCode) {
+  protected boolean isInvalidHttpCode(int httpCode) {
     return httpCode < HTTP_OK || httpCode >= HTTP_MULT_CHOICE;
   }
 

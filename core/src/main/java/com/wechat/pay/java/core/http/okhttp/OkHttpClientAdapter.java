@@ -6,12 +6,14 @@ import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
 import com.wechat.pay.java.core.exception.HttpException;
 import com.wechat.pay.java.core.exception.MalformedMessageException;
+import com.wechat.pay.java.core.exception.ServiceException;
 import com.wechat.pay.java.core.http.AbstractHttpClient;
 import com.wechat.pay.java.core.http.FileRequestBody;
 import com.wechat.pay.java.core.http.HttpRequest;
 import com.wechat.pay.java.core.http.JsonRequestBody;
 import com.wechat.pay.java.core.http.OriginalResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import okhttp3.MultipartBody;
@@ -111,15 +113,19 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
         .build();
   }
 
-  private OriginalResponse assembleOriginalResponse(
-      HttpRequest wechatPayRequest, Response okHttpResponse) {
+  private Map<String, String> assembleResponseHeader(Response okHttpResponse) {
     Map<String, String> responseHeaders = new ConcurrentHashMap<>();
     // use an OkHttp3.x compatible method
     int headerSize = okHttpResponse.headers().size();
     for (int i = 0; i < headerSize; ++i) {
       responseHeaders.put(okHttpResponse.headers().name(i), okHttpResponse.headers().value(i));
     }
+    return responseHeaders;
+  }
 
+  private OriginalResponse assembleOriginalResponse(
+      HttpRequest wechatPayRequest, Response okHttpResponse) {
+    Map<String, String> responseHeaders = assembleResponseHeader(okHttpResponse);
     try {
       return new OriginalResponse.Builder()
           .request(wechatPayRequest)
@@ -136,6 +142,24 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
           String.format(
               "Assemble OriginalResponse,get responseBody failed.%nHttpRequest[%s]",
               wechatPayRequest));
+    }
+  }
+
+  @Override
+  protected InputStream innerDownload(HttpRequest httpRequest) {
+    Request okHttpRequest = buildOkHttpRequest(httpRequest);
+    try {
+      Response okHttpResponse = okHttpClient.newCall(okHttpRequest).execute();
+      if (isInvalidHttpCode(okHttpResponse.code())) {
+        throw new ServiceException(httpRequest, okHttpResponse.code(), "");
+      }
+      InputStream responseBodyStream = null;
+      if (okHttpResponse.body() != null) {
+        responseBodyStream = okHttpResponse.body().byteStream();
+      }
+      return responseBodyStream;
+    } catch (IOException e) {
+      throw new HttpException(httpRequest, e);
     }
   }
 }
