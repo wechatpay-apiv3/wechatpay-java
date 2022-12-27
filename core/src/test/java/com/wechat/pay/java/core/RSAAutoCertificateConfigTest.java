@@ -6,9 +6,10 @@ import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_ID;
 import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_PRIVATE_KEY;
 import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_PRIVATE_KEY_PATH;
 import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_PRIVATE_KEY_STRING;
+import static com.wechat.pay.java.core.notification.Constant.AES_CIPHER_ALGORITHM;
+import static com.wechat.pay.java.core.notification.Constant.RSA_SIGN_TYPE;
 import static java.net.HttpURLConnection.HTTP_OK;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.wechat.pay.java.core.RSAAutoCertificateConfig.Builder;
 import com.wechat.pay.java.core.auth.Validator;
@@ -92,11 +93,16 @@ class RSAAutoCertificateConfigTest implements ConfigTest {
   @ParameterizedTest
   @MethodSource("BuilderProvider")
   void testConfigWithBuilderProvider(Builder builder) {
-    Config config = builder.build();
+    RSAAutoCertificateConfig config = builder.build();
     assertNotNull(config.createValidator());
     assertNotNull(config.createCredential());
     assertNotNull(config.createEncryptor());
     assertNotNull(config.createDecryptor());
+    assertNotNull(config.createAeadCipher());
+    assertNotNull(config.createVerifier());
+
+    assertEquals(RSA_SIGN_TYPE, config.getSignType());
+    assertEquals(AES_CIPHER_ALGORITHM, config.getCipherType());
   }
 
   static Stream<Builder> BuilderProvider() {

@@ -2,7 +2,7 @@
 ![Maven Central](https://img.shields.io/maven-central/v/com.github.wechatpay-apiv3/wechatpay-java?versionPrefix=0.2.3)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=wechatpay-apiv3_wechatpay-java&metric=coverage)](https://sonarcloud.io/summary/new_code?id=wechatpay-apiv3_wechatpay-java)
 
-#微信支付 APIv3 Java SDK
+# 微信支付 APIv3 Java SDK
 
 [微信支付 APIv3](https://wechatpay-api.gitbook.io/wechatpay-api-v3/) 官方 Java 语言客户端开发库。
 
@@ -184,7 +184,7 @@ Config config =
 同时，`RSAAutoCertificateProvider` 会启动一个后台线程，定时更新证书（目前设计为60分钟），以实现证书过期时的新老证书平滑切换。
 
 > **Note**
-> 每个商户号只能创建一个 `RSAAutoCertificateConfig`。我们建议你将配置类作为全局变量。
+> 每个商户号只能创建一个 `RSAAutoCertificateConfig`。我们建议你将配置类作为全局变量。同一个商户号构造多个实例，会抛出 `IllegalStateException` 异常。
 
 ### 使用本地的微信支付平台证书
 
@@ -207,7 +207,7 @@ Config config =
 1. 获取HTTP请求头中的 `Wechatpay-Signature` 、 `Wechatpay-Nonce` 、 `Wechatpay-Timestamp` 、 `Wechatpay-Serial` 、 `Request-ID` 、`Wechatpay-Signature-Type` 对应的值，构建 `RequestParam` 。
 2. 获取 HTTP 请求体的 `JSON` 纯文本。
 3. 根据解密后的通知数据数据结构，构造解密对象类 `DecryptObject` 。支付结果通知解密对象类为 [`Transaction`](service/src/main/java/com/wechat/pay/java/service/payments/model/Transaction.java)，退款结果通知解密对象类为 [RefundNotification](service/src/main/java/com/wechat/pay/java/service/refund/model/RefundNotification.java)。
-4. 初始化 `AutoCertificateNotificationConfig`。微信支付平台证书由 SDK 的自动更新平台能力提供，也可以使用本地证书。
+4. 初始化 `RSAAutoCertificateConfig`。微信支付平台证书由 SDK 的自动更新平台能力提供，也可以使用本地证书。
 5. 初始化 `NotificationParser`。
 6. 使用请求参数 `requestParam` 和 `DecryptObject.class` ，调用 `parser.parse` 验签并解密报文。
 
@@ -223,16 +223,17 @@ RequestParam requestParam = new Builder()
         .body(requestBody)
         .build();
 
-// 初始化 NotificationConfig 使用自动更新平台证书能力，需要设置 APIv3 密钥、商户号、商户证书序列号、商户私钥。
-NotificationConfig rsaNotificationConfig = new RSAAutoCertificateNotificationConfig.Builder()
-        .apiV3Key(apiV3Key)
+// 如果已经初始化了 RSAAutoCertificateConfig，可直接使用
+// 没有的话，则构造一个
+Config config = new RSAAutoCertificateConfig.Builder()
         .merchantId(merchantId)
+        .privateKeyFromPath(privateKeyPath)
         .merchantSerialNumber(merchantSerialNumber)
-        .autoUpdateCertWithKeyStr(privateKey)
+        .apiV3Key(apiV3key)
         .build();
 
 // 初始化 NotificationParser
-NotificationParser parser=new NotificationParser(rsaNotificationConfig);
+NotificationParser parser = new NotificationParser(config);
 
 // 验签并解密报文
 DecryptObject decryptObject = parser.parse(requestParam,DecryptObject.class);
