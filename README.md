@@ -1,5 +1,5 @@
 [![JavaDoc](http://img.shields.io/badge/javadoc-reference-blue.svg)](https://www.javadoc.io/doc/com.github.wechatpay-apiv3/wechatpay-java/latest/index.html)
-![Maven Central](https://img.shields.io/maven-central/v/com.github.wechatpay-apiv3/wechatpay-java?versionPrefix=0.2.3)
+![Maven Central](https://img.shields.io/maven-central/v/com.github.wechatpay-apiv3/wechatpay-java?versionPrefix=0.2.4)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=wechatpay-apiv3_wechatpay-java&metric=coverage)](https://sonarcloud.io/summary/new_code?id=wechatpay-apiv3_wechatpay-java)
 
 # 微信支付 APIv3 Java SDK
@@ -13,7 +13,7 @@
 
 ## 项目状态
 
-当前版本`0.2.3`为测试版本，项目规划详如下。
+当前版本`0.2.4`为测试版本，项目规划详如下。
 
 | 工作项 | 状态 |
 | ----- | -- |
@@ -40,7 +40,7 @@
 #### Gradle
 在你的 build.gradle 文件中加入如下的依赖
 ```groovy
-implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.3'
+implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.4'
 ```
 
 #### Maven
@@ -49,7 +49,7 @@ implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.3'
 <dependency>
   <groupId>com.github.wechatpay-apiv3</groupId>
   <artifactId>wechatpay-java</artifactId>
-  <version>0.2.3</version>
+  <version>0.2.4</version>
 </dependency>
 ```
 
@@ -167,7 +167,7 @@ SDK 使用的是 unchecked exception，会抛出四种自定义异常。每种�
 
 ## 自动更新微信支付平台证书
 
-在 API 请求过程中，客户端需使用微信支付平台证书，验证服务器应答的真实性和完整性。 
+在 API 请求过程中，客户端需使用微信支付平台证书，验证服务器应答的真实性和完整性。
 在 v0.2.3 版本，我们加入了自动更新平台证书的配置类 `RSAAutoCertificateConfig`。
 
 ```java

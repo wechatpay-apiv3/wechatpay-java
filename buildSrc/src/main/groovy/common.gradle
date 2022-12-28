@@ -7,7 +7,7 @@ plugins {
     id "jacoco"
 }
 
-version "0.2.3"
+version "0.2.4"
 group "com.github.wechatpay-apiv3"
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
