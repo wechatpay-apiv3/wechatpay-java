@@ -11,18 +11,6 @@
 - core 为基础库，包含自动签名和验签的 HTTP 客户端、回调处理、加解密库。
 - service 为业务服务，包含[业务接口](service/src/main/java/com/wechat/pay/java/service)和[使用示例](service/src/example/java/com/wechat/pay/java/service)。
 
-## 项目状态
-
-当前版本`0.2.4`为测试版本，项目规划详如下。
-
-| 工作项 | 状态 |
-| ----- | -- |
-| 证书下载、文件上传 | 已支持 |
-| 平台证书自动下载 | `v0.2.3` 已支持 |
-| 账单下载 | 进行中 |
-| 业务服务（基于接口契约自动生成）| 进行中，有需要请提 issue |
-| 其他 HttpClient 适配器 | 有需要请提 issue，欢迎 PR |
-
 ## 前置条件
 
 - Java 1.8+。
@@ -159,7 +147,7 @@ SDK 使用的是 unchecked exception，会抛出四种自定义异常。每种�
     - 状态码为5xx：主动重试。
     - 状态码为其他：获取错误中的 `errorCode` 、`errorMessage`，上报监控和日志打印。
 - [MalformedMessageException](core/src/main/java/com/wechat/pay/java/core/exception/MalformedMessageException.java)：服务返回成功，返回内容异常。
-  - HTTP 返回` Content-Type` 不为 `application/json`：当前不支持其他类型的返回体，账单下载正在规划中。
+  - HTTP 返回` Content-Type` 不为 `application/json`：不支持其他类型的返回体，[下载账单](#下载账单) 应使用 `download()` 方法。
   - 解析 HTTP 返回体失败：上报监控和日志打印。
   - 回调通知参数不正确：确认传入参数是否与 HTTP 请求信息一致，传入参数是否存在编码或者 HTML 转码问题。
   - 解析回调请求体为 JSON 字符串失败：上报监控和日志打印。
@@ -225,7 +213,7 @@ RequestParam requestParam = new Builder()
 
 // 如果已经初始化了 RSAAutoCertificateConfig，可直接使用
 // 没有的话，则构造一个
-Config config = new RSAAutoCertificateConfig.Builder()
+NotificationConfig config = new RSAAutoCertificateConfig.Builder()
         .merchantId(merchantId)
         .privateKeyFromPath(privateKeyPath)
         .merchantSerialNumber(merchantSerialNumber)
@@ -245,11 +233,31 @@ DecryptObject decryptObject = parser.parse(requestParam,DecryptObject.class);
 
 发送请求步骤如下：
 
-1. 初始化 `OkHttpClientAdapter`。
-2. 构建请求 `HttpRequest` 。
+1. 初始化 `OkHttpClientAdapter`，建议使用 `DefaultHttpClientBuilder` 构建。
+2. 构建请求 `HttpRequest`。
 3. 调用 `httpClient.execute` 或者 `httpClient.get` 等方法来发送 HTTP 请求。`httpClient.execute` 支持发送 GET、PUT、POST、PATCH、DELETE 请求，也可以调用指定的 HTTP 方法发送请求。
 
 [OkHttpClientAdapterTest](core/src/test/java/com/wechat/pay/java/core/http/OkHttpClientAdapterTest.java) 中演示了如何构造和发送 HTTP 请求。如果现有的 `OkHttpClientAdapter` 实现类不满足你的需求，可以继承 [AbstractHttpClient](core/src/main/java/com/wechat/pay/java/core/http/AbstractHttpClient.java) 拓展实现。
+
+### 下载账单
+
+因为下载的账单文件可能会很大，为了平衡系统性能和签名验签的实现成本，[账单下载API](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_8.shtml) 被分成了两个步骤：
+
+1. `/v3/bill/tradebill` 申请账单下载链接，并获取账单摘要
+1. `/v3/billdownload/file` 账单文件下载，请求需签名但应答不签名
+
+SDK 提供了 `HttpClient.download()` 方法。它返回账单的输入流。开发者使用完输入流后，应自主关闭流。
+
+```java
+InputStream inputStream = httpClient.download(downloadUrl);
+
+// 非压缩的账单可使用 core.util.IOUtil 从流读入内存字符串，大账单请慎用
+String respBody = IOUtil.toString(inputStream);
+inputStream.close();
+```
+
+> **Warning**
+> 开发者在下载文件之后，应使用第一步获取的账单摘要校验文件的完整性。
 
 ## 敏感信息加解密
 
@@ -305,6 +313,14 @@ String plaintext = decryptor.decryptToString(ciphertext);
 请参考 [AeadAesCipher](core/src/main/java/com/wechat/pay/java/core/cipher/AeadAesCipher.java) 和 [AeadAesCipherTest](core/src/test/java/com/wechat/pay/java/core/cipher/AeadAesCipherTest.java) 。
 
 由于 SDK 已经提供了微信支付平台证书下载服务 `CertificateService` 以及回调通知解析器 `NotificationParser` ，这两者会完成所有的解析与解密工作。因此除非你想要自定义实现，否则你应该不需要用到 `AeadXxxCipher` 中提供的方法。
+
+### 为什么我使用 `NotificationHandler` 验证回调通知失败，抛出 `ValidationException`？
+
+如果你使用的是 SDK 自动更新的微信支付平台证书，验证失败原因是：参与验证的参数不正确。从开发者反馈来看，大部分失败案例没有使用回调原始 body，而是用 body 反序列化得到的对象再做 JSON 序列化得到的 body。很遗憾，这样的 body 几乎一定跟原始报文**不一致**，所以签名验证不通过。
+
+具体案例可参考 [#112](https://github.com/wechatpay-apiv3/wechatpay-java/issues/112)。
+
+如果你使用的是本地的微信支付平台证书，请检查微信支付平台证书是否正确，不要把商户证书和微信支付平台证书搞混了。
 
 ## 如何参与开发
 微信支付欢迎来自社区的开发者贡献你们的想法和代码。请你在提交 PR 之前，先提一个对应的 issue 说明以下内容：
