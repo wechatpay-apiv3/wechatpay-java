@@ -1,6 +1,8 @@
 [![JavaDoc](http://img.shields.io/badge/javadoc-reference-blue.svg)](https://www.javadoc.io/doc/com.github.wechatpay-apiv3/wechatpay-java/latest/index.html)
 ![Maven Central](https://img.shields.io/maven-central/v/com.github.wechatpay-apiv3/wechatpay-java?versionPrefix=0.2.4)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=wechatpay-apiv3_wechatpay-java&metric=coverage)](https://sonarcloud.io/summary/new_code?id=wechatpay-apiv3_wechatpay-java)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=wechatpay-apiv3_wechatpay-java&metric=security_rating)](https://sonarcloud.io/summary/overall?id=wechatpay-apiv3_wechatpay-java)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=wechatpay-apiv3_wechatpay-java&metric=sqale_rating)](https://sonarcloud.io/summary/overall?id=wechatpay-apiv3_wechatpay-java)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=wechatpay-apiv3_wechatpay-java&metric=coverage)](https://sonarcloud.io/summary/overall?id=wechatpay-apiv3_wechatpay-java)
 
 # 微信支付 APIv3 Java SDK
 
@@ -172,7 +174,11 @@ Config config =
 同时，`RSAAutoCertificateProvider` 会启动一个后台线程，定时更新证书（目前设计为60分钟），以实现证书过期时的新老证书平滑切换。
 
 > **Note**
-> 每个商户号只能创建一个 `RSAAutoCertificateConfig`。我们建议你将配置类作为全局变量。同一个商户号构造多个实例，会抛出 `IllegalStateException` 异常。
+> 
+> 每个商户号只能创建一个 `RSAAutoCertificateConfig`。同一个商户号构造多个实例，会抛出 `IllegalStateException` 异常。
+> 
+> 我们建议你将配置类作为全局变量。如果你的程序是多线程，建议使用**多线程安全**的单例模式。
+
 
 ### 使用本地的微信支付平台证书
 
@@ -192,8 +198,13 @@ Config config =
 
 可以使用 [notification](core/src/main/java/com/wechat/pay/java/core/notification) 中的 `NotificationParser` 解析回调通知。具体步骤如下：
 
-1. 获取HTTP请求头中的 `Wechatpay-Signature` 、 `Wechatpay-Nonce` 、 `Wechatpay-Timestamp` 、 `Wechatpay-Serial` 、 `Request-ID` 、`Wechatpay-Signature-Type` 对应的值，构建 `RequestParam` 。
-2. 获取 HTTP 请求体的 `JSON` 纯文本。
+1. 获取 HTTP 请求头中的以下值，构建 `RequestParam` 。
+    + `Wechatpay-Signature`
+    + `Wechatpay-Nonce`
+    + `Wechatpay-Timestamp`
+    + `Wechatpay-Serial`
+    + `Wechatpay-Signature-Type`
+2. 获取 HTTP 请求体 body。切记不要用 JSON 对象序列化后的字符串，避免验签的 body 和原文不一致。
 3. 根据解密后的通知数据数据结构，构造解密对象类 `DecryptObject` 。支付结果通知解密对象类为 [`Transaction`](service/src/main/java/com/wechat/pay/java/service/payments/model/Transaction.java)，退款结果通知解密对象类为 [RefundNotification](service/src/main/java/com/wechat/pay/java/service/refund/model/RefundNotification.java)。
 4. 初始化 `RSAAutoCertificateConfig`。微信支付平台证书由 SDK 的自动更新平台能力提供，也可以使用本地证书。
 5. 初始化 `NotificationParser`。
@@ -243,8 +254,8 @@ DecryptObject decryptObject = parser.parse(requestParam,DecryptObject.class);
 
 因为下载的账单文件可能会很大，为了平衡系统性能和签名验签的实现成本，[账单下载API](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_8.shtml) 被分成了两个步骤：
 
-1. `/v3/bill/tradebill` 申请账单下载链接，并获取账单摘要
-1. `/v3/billdownload/file` 账单文件下载，请求需签名但应答不签名
+1. `/v3/bill/tradebill` 申请账单下载链接，并获取账单摘要。
+1. `/v3/billdownload/file` 账单文件下载，请求需签名但应答不签名。
 
 SDK 提供了 `HttpClient.download()` 方法。它返回账单的输入流。开发者使用完输入流后，应自主关闭流。
 
@@ -257,6 +268,7 @@ inputStream.close();
 ```
 
 > **Warning**
+> 
 > 开发者在下载文件之后，应使用第一步获取的账单摘要校验文件的完整性。
 
 ## 敏感信息加解密
@@ -268,10 +280,14 @@ inputStream.close();
 
 详见 [接口规则 - 敏感信息加解密](https://wechatpay-api.gitbook.io/wechatpay-api-v3/qian-ming-zhi-nan-1/min-gan-xin-xi-jia-mi)。
 
+### 自动加解密
+
 如果是 SDK 已支持的接口，例如商家转账，SDK 将根据契约自动对敏感信息做加解密：
 
 + 发起请求时，开发者设置原文。SDK 自动加密敏感信息，并设置 `Wechatpay-Serial` 请求头
 + 收到应答时，解密器自动解密敏感信息，开发者得到原文
+
+### 手动加解密
 
 如果是 SDK 尚未支持的接口，你可以使用 [cipher](core/src/main/java/com/wechat/pay/java/core/cipher) 中的 `RSAPrivacyEncryptor` 和 `RSAPrivacyDecryptor` ，手动对敏感信息加解密。
 
@@ -316,9 +332,7 @@ String plaintext = decryptor.decryptToString(ciphertext);
 
 ### 为什么我使用 `NotificationHandler` 验证回调通知失败，抛出 `ValidationException`？
 
-如果你使用的是 SDK 自动更新的微信支付平台证书，验证失败原因是：参与验证的参数不正确。从开发者反馈来看，大部分失败案例没有使用回调原始 body，而是用 body 反序列化得到的对象再做 JSON 序列化得到的 body。很遗憾，这样的 body 几乎一定跟原始报文**不一致**，所以签名验证不通过。
-
-具体案例可参考 [#112](https://github.com/wechatpay-apiv3/wechatpay-java/issues/112)。
+如果你使用的是 SDK 自动更新的微信支付平台证书，验证失败原因是：参与验证的参数不正确。从开发者反馈来看，大部分失败案例没有使用回调原始 body，而是用 body 反序列化得到的对象再做 JSON 序列化得到的 body。很遗憾，这样的 body 几乎一定跟原始报文**不一致**，所以签名验证不通过。具体案例可参考 [#112](https://github.com/wechatpay-apiv3/wechatpay-java/issues/112)。
 
 如果你使用的是本地的微信支付平台证书，请检查微信支付平台证书是否正确，不要把商户证书和微信支付平台证书搞混了。
 
