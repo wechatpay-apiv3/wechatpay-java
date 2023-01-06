@@ -1,5 +1,5 @@
 [![JavaDoc](http://img.shields.io/badge/javadoc-reference-blue.svg)](https://www.javadoc.io/doc/com.github.wechatpay-apiv3/wechatpay-java/latest/index.html)
-![Maven Central](https://img.shields.io/maven-central/v/com.github.wechatpay-apiv3/wechatpay-java?versionPrefix=0.2.4)
+![Maven Central](https://img.shields.io/maven-central/v/com.github.wechatpay-apiv3/wechatpay-java?versionPrefix=0.2.5)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=wechatpay-apiv3_wechatpay-java&metric=security_rating)](https://sonarcloud.io/summary/overall?id=wechatpay-apiv3_wechatpay-java)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=wechatpay-apiv3_wechatpay-java&metric=sqale_rating)](https://sonarcloud.io/summary/overall?id=wechatpay-apiv3_wechatpay-java)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=wechatpay-apiv3_wechatpay-java&metric=coverage)](https://sonarcloud.io/summary/overall?id=wechatpay-apiv3_wechatpay-java)
@@ -30,7 +30,7 @@
 #### Gradle
 在你的 build.gradle 文件中加入如下的依赖
 ```groovy
-implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.4'
+implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.5'
 ```
 
 #### Maven
@@ -39,7 +39,7 @@ implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.4'
 <dependency>
   <groupId>com.github.wechatpay-apiv3</groupId>
   <artifactId>wechatpay-java</artifactId>
-  <version>0.2.4</version>
+  <version>0.2.5</version>
 </dependency>
 ```
 
@@ -174,9 +174,9 @@ Config config =
 同时，`RSAAutoCertificateProvider` 会启动一个后台线程，定时更新证书（目前设计为60分钟），以实现证书过期时的新老证书平滑切换。
 
 > **Note**
-> 
+>
 > 每个商户号只能创建一个 `RSAAutoCertificateConfig`。同一个商户号构造多个实例，会抛出 `IllegalStateException` 异常。
-> 
+>
 > 我们建议你将配置类作为全局变量。如果你的程序是多线程，建议使用**多线程安全**的单例模式。
 
 
@@ -268,7 +268,7 @@ inputStream.close();
 ```
 
 > **Warning**
-> 
+>
 > 开发者在下载文件之后，应使用第一步获取的账单摘要校验文件的完整性。
 
 ## 敏感信息加解密
