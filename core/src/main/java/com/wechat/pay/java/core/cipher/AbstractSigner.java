@@ -14,7 +14,8 @@ public abstract class AbstractSigner implements Signer {
 
   private final String certificateSerialNumber;
   private final String algorithm;
-  private final Signature signature;
+  private final String algorithmName;
+  private final PrivateKey privateKey;
 
   /**
    * AbstractSigner 构造函数
@@ -30,25 +31,26 @@ public abstract class AbstractSigner implements Signer {
       String certificateSerialNumber,
       PrivateKey privateKey) {
     this.algorithm = requireNonNull(algorithm);
+    this.algorithmName = requireNonNull(algorithmName);
     this.certificateSerialNumber = requireNonNull(certificateSerialNumber);
-    try {
-      this.signature = Signature.getInstance(algorithmName);
-      this.signature.initSign(privateKey);
-    } catch (NoSuchAlgorithmException e) {
-      throw new UnsupportedOperationException(
-          "The current Java environment does not support " + algorithmName, e);
-    } catch (InvalidKeyException e) {
-      throw new IllegalArgumentException(algorithm + " signature uses an illegal privateKey.", e);
-    }
+    this.privateKey = requireNonNull(privateKey);
   }
 
   @Override
   public SignatureResult sign(String message) {
     requireNonNull(message);
+
     byte[] sign;
     try {
+      Signature signature = Signature.getInstance(algorithmName);
+      signature.initSign(privateKey);
       signature.update(message.getBytes(StandardCharsets.UTF_8));
       sign = signature.sign();
+    } catch (NoSuchAlgorithmException e) {
+      throw new UnsupportedOperationException(
+          "The current Java environment does not support " + algorithmName, e);
+    } catch (InvalidKeyException e) {
+      throw new IllegalArgumentException(algorithm + " signature uses an illegal privateKey.", e);
     } catch (SignatureException e) {
       throw new RuntimeException("An error occurred during the sign process.", e);
     }
