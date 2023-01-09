@@ -142,8 +142,8 @@ service.closeOrder(closeRequest);
 为了方便开发者快速上手，微信支付给每个服务生成了示例代码 `XxxServiceExample.java`。JSAPI 支付和 APP 支付推荐使用服务拓展类 XxxServiceExtension，包含下单并返回调起支付数据方法。可以在 [example](service/src/example) 中查看。
 例如：
 
--[JsapiServiceExtensionExample.java](service/src/example/java/com/wechat/pay/java/service/payments/jsapi/JsapiServiceExtensionExample.java)
--[FileServiceExample.java](service/src/example/java/com/wechat/pay/java/service/file/FileUploadServiceExample.java)
+- [JsapiServiceExtensionExample.java](service/src/example/java/com/wechat/pay/java/service/payments/jsapi/JsapiServiceExtensionExample.java)
+- [FileServiceExample.java](service/src/example/java/com/wechat/pay/java/service/file/FileUploadServiceExample.java)
 
 ## 错误处理
 
@@ -155,8 +155,8 @@ SDK 使用的是 unchecked exception，会抛出四种自定义异常。每种�
   - 验证微信支付返回签名失败：上报监控和日志打印。
   - 验证微信支付回调通知签名失败：确认输入参数与 HTTP 请求信息是否一致，若一致，说明该回调通知参数被篡改导致验签失败。
 - [ServiceException](core/src/main/java/com/wechat/pay/java/core/exception/ServiceException.java)：调用微信支付服务，发送 HTTP 请求成功，HTTP 状态码小于200或大于等于300。
-    - 状态码为5xx：主动重试。
-    - 状态码为其他：获取错误中的 `errorCode` 、`errorMessage`，上报监控和日志打印。
+  - 状态码为5xx：主动重试。
+  - 状态码为其他：获取错误中的 `errorCode` 、`errorMessage`，上报监控和日志打印。
 - [MalformedMessageException](core/src/main/java/com/wechat/pay/java/core/exception/MalformedMessageException.java)：服务返回成功，返回内容异常。
   - HTTP 返回 `Content-Type` 不为 `application/json`：不支持其他类型的返回体，[下载账单](#下载账单) 应使用 `download()` 方法。
   - 解析 HTTP 返回体失败：上报监控和日志打印。
@@ -283,8 +283,8 @@ inputStream.close();
 
 为了保证通信过程中敏感信息字段（如用户的住址、银行卡号、手机号码等）的机密性，
 
-+ 微信支付要求加密上送的敏感信息
-+ 微信支付会加密下行的敏感信息
+- 微信支付要求加密上送的敏感信息
+- 微信支付会加密下行的敏感信息
 
 详见 [接口规则 - 敏感信息加解密](https://wechatpay-api.gitbook.io/wechatpay-api-v3/qian-ming-zhi-nan-1/min-gan-xin-xi-jia-mi)。
 
@@ -292,8 +292,8 @@ inputStream.close();
 
 如果是 SDK 已支持的接口，例如商家转账，SDK 将根据契约自动对敏感信息做加解密：
 
-+ 发起请求时，开发者设置原文。SDK 自动加密敏感信息，并设置 `Wechatpay-Serial` 请求头
-+ 收到应答时，解密器自动解密敏感信息，开发者得到原文
+- 发起请求时，开发者设置原文。SDK 自动加密敏感信息，并设置 `Wechatpay-Serial` 请求头
+- 收到应答时，解密器自动解密敏感信息，开发者得到原文
 
 ### 手动加解密
 
@@ -334,8 +334,8 @@ SDK 的日志会跟你的日志记录在一起。
 
 请求和应答使用 [数字签名](https://zh.wikipedia.org/wiki/%E6%95%B8%E4%BD%8D%E7%B0%BD%E7%AB%A0) ，保证数据传递的真实、完整和不可否认。为了验签方能识别数字签名使用的密钥（特别是密钥和证书更换期间），微信支付 APIv3 要求签名和相应的证书序列号一起传输。
 
-+ 商户请求使用**商户API私钥**签名。商户应上送商户证书序列号。
-+ 微信支付应答使用**微信支付平台私钥**签名。微信支付应答返回微信支付平台证书序列号。
+- 商户请求使用**商户API私钥**签名。商户应上送商户证书序列号。
+- 微信支付应答使用**微信支付平台私钥**签名。微信支付应答返回微信支付平台证书序列号。
 
 综上所述，请求和应答的证书序列号是不一致的。
 
