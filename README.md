@@ -13,6 +13,10 @@
 - core 为基础库，包含自动签名和验签的 HTTP 客户端、回调处理、加解密库。
 - service 为业务服务，包含[业务接口](service/src/main/java/com/wechat/pay/java/service)和[使用示例](service/src/example/java/com/wechat/pay/java/service)。
 
+## 帮助微信支付改进
+
+为了向广大开发者提供更好的使用体验，微信支付诚挚邀请您反馈使用微信支付 Java SDK 中的感受。您的反馈将对改进 SDK 大有帮助，点击参与[问卷调查](https://wj.qq.com/s2/11503706/aa9a/)。
+
 ## 前置条件
 
 - Java 1.8+。
@@ -28,13 +32,17 @@
 最新版本已经在 [Maven Central](https://search.maven.org/artifact/com.github.wechatpay-apiv3/wechatpay-java) 发布。
 
 #### Gradle
+
 在你的 build.gradle 文件中加入如下的依赖
+
 ```groovy
 implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.5'
 ```
 
 #### Maven
+
 加入以下依赖
+
 ```xml
 <dependency>
   <groupId>com.github.wechatpay-apiv3</groupId>
@@ -129,27 +137,42 @@ closeRequest.setOutTradeNo("out_trade_no_001");
 service.closeOrder(closeRequest);
 ```
 
+### 下单并生成调起支付的参数
+
+JSAPI 支付和 APP 支付推荐使用服务拓展类 [JsapiServiceExtension](https://github.com/wechatpay-apiv3/wechatpay-java/blob/main/service/src/main/java/com/wechat/pay/java/service/payments/jsapi/JsapiServiceExtension.java) 和 [AppServiceExtension](https://github.com/wechatpay-apiv3/wechatpay-java/blob/main/service/src/main/java/com/wechat/pay/java/service/payments/app/AppServiceExtension.java)，两者包含了下单并返回调起支付参数方法。
+
+```java
+JsapiServiceExtension service = new JsapiServiceExtension.Builder().config(config).build();
+
+// 跟之前下单示例一样，填充预下单参数
+PrepayRequest request = new PrepayRequest();
+
+// response包含了调起支付所需的所有参数，可直接用于前端调起支付
+PrepayWithRequestPaymentResponse response = service.prepayWithRequestPayment(request);
+```
+
 ### 更多示例
 
-为了方便开发者快速上手，微信支付给每个服务生成了示例代码 `XxxServiceExample.java`。JSAPI 支付和 APP 支付推荐使用服务拓展类 XxxServiceExtension，包含下单并返回调起支付数据方法。可以在 [example](service/src/example) 中查看。
+为了方便开发者快速上手，微信支付给每个服务生成了示例代码 `XxxServiceExample.java`，可以在 [example](service/src/example) 中查看。
 例如：
-+ [JsapiServiceExtensionExample.java](service/src/example/java/com/wechat/pay/java/service/payments/jsapi/JsapiServiceExtensionExample.java)
-+ [FileServiceExample.java](service/src/example/java/com/wechat/pay/java/service/file/FileUploadServiceExample.java)
+
+- [JsapiServiceExtensionExample.java](service/src/example/java/com/wechat/pay/java/service/payments/jsapi/JsapiServiceExtensionExample.java)
+- [FileServiceExample.java](service/src/example/java/com/wechat/pay/java/service/file/FileUploadServiceExample.java)
 
 ## 错误处理
 
 SDK 使用的是 unchecked exception，会抛出四种自定义异常。每种异常发生的场景及推荐的处理方式如下：
 
 - [HttpException](core/src/main/java/com/wechat/pay/java/core/exception/HttpException.java)：调用微信支付服务，当发生 HTTP 请求异常时抛出该异常。
-    - 构建请求参数失败、发送请求失败、I/O错误：推荐上报监控和打印日志，并获取异常中的 HTTP 请求信息以定位问题。
+  - 构建请求参数失败、发送请求失败、I/O错误：推荐上报监控和打印日志，并获取异常中的 HTTP 请求信息以定位问题。
 - [ValidationException](core/src/main/java/com/wechat/pay/java/core/exception/ValidationException.java) ：当验证微信支付签名失败时抛出该异常。
   - 验证微信支付返回签名失败：上报监控和日志打印。
   - 验证微信支付回调通知签名失败：确认输入参数与 HTTP 请求信息是否一致，若一致，说明该回调通知参数被篡改导致验签失败。
 - [ServiceException](core/src/main/java/com/wechat/pay/java/core/exception/ServiceException.java)：调用微信支付服务，发送 HTTP 请求成功，HTTP 状态码小于200或大于等于300。
-    - 状态码为5xx：主动重试。
-    - 状态码为其他：获取错误中的 `errorCode` 、`errorMessage`，上报监控和日志打印。
+  - 状态码为5xx：主动重试。
+  - 状态码为其他：获取错误中的 `errorCode` 、`errorMessage`，上报监控和日志打印。
 - [MalformedMessageException](core/src/main/java/com/wechat/pay/java/core/exception/MalformedMessageException.java)：服务返回成功，返回内容异常。
-  - HTTP 返回` Content-Type` 不为 `application/json`：不支持其他类型的返回体，[下载账单](#下载账单) 应使用 `download()` 方法。
+  - HTTP 返回 `Content-Type` 不为 `application/json`：不支持其他类型的返回体，[下载账单](#下载账单) 应使用 `download()` 方法。
   - 解析 HTTP 返回体失败：上报监控和日志打印。
   - 回调通知参数不正确：确认传入参数是否与 HTTP 请求信息一致，传入参数是否存在编码或者 HTML 转码问题。
   - 解析回调请求体为 JSON 字符串失败：上报监控和日志打印。
@@ -179,7 +202,6 @@ Config config =
 >
 > 我们建议你将配置类作为全局变量。如果你的程序是多线程，建议使用**多线程安全**的单例模式。
 
-
 ### 使用本地的微信支付平台证书
 
 如果你不想使用 SDK 提供的定时更新平台证书，你可以使用配置类 `RSAConfig` 加载本地证书。
@@ -199,11 +221,11 @@ Config config =
 可以使用 [notification](core/src/main/java/com/wechat/pay/java/core/notification) 中的 `NotificationParser` 解析回调通知。具体步骤如下：
 
 1. 获取 HTTP 请求头中的以下值，构建 `RequestParam` 。
-    + `Wechatpay-Signature`
-    + `Wechatpay-Nonce`
-    + `Wechatpay-Timestamp`
-    + `Wechatpay-Serial`
-    + `Wechatpay-Signature-Type`
+    - `Wechatpay-Signature`
+    - `Wechatpay-Nonce`
+    - `Wechatpay-Timestamp`
+    - `Wechatpay-Serial`
+    - `Wechatpay-Signature-Type`
 2. 获取 HTTP 请求体 body。切记不要用 JSON 对象序列化后的字符串，避免验签的 body 和原文不一致。
 3. 根据解密后的通知数据数据结构，构造解密对象类 `DecryptObject` 。支付结果通知解密对象类为 [`Transaction`](service/src/main/java/com/wechat/pay/java/service/payments/model/Transaction.java)，退款结果通知解密对象类为 [RefundNotification](service/src/main/java/com/wechat/pay/java/service/refund/model/RefundNotification.java)。
 4. 初始化 `RSAAutoCertificateConfig`。微信支付平台证书由 SDK 的自动更新平台能力提供，也可以使用本地证书。
@@ -275,8 +297,8 @@ inputStream.close();
 
 为了保证通信过程中敏感信息字段（如用户的住址、银行卡号、手机号码等）的机密性，
 
-+ 微信支付要求加密上送的敏感信息
-+ 微信支付会加密下行的敏感信息
+- 微信支付要求加密上送的敏感信息
+- 微信支付会加密下行的敏感信息
 
 详见 [接口规则 - 敏感信息加解密](https://wechatpay-api.gitbook.io/wechatpay-api-v3/qian-ming-zhi-nan-1/min-gan-xin-xi-jia-mi)。
 
@@ -284,8 +306,8 @@ inputStream.close();
 
 如果是 SDK 已支持的接口，例如商家转账，SDK 将根据契约自动对敏感信息做加解密：
 
-+ 发起请求时，开发者设置原文。SDK 自动加密敏感信息，并设置 `Wechatpay-Serial` 请求头
-+ 收到应答时，解密器自动解密敏感信息，开发者得到原文
+- 发起请求时，开发者设置原文。SDK 自动加密敏感信息，并设置 `Wechatpay-Serial` 请求头
+- 收到应答时，解密器自动解密敏感信息，开发者得到原文
 
 ### 手动加解密
 
@@ -309,6 +331,13 @@ String plaintext = decryptor.decryptToString(ciphertext);
 
 [RSAPrivacyEncryptorTest](core/src/test/java/com/wechat/pay/java/core/cipher/RSAPrivacyEncryptorTest.java) 和 [RSAPrivacyDecryptorTest](core/src/test/java/com/wechat/pay/java/core/cipher/RSAPrivacyDecryptorTest.java) 中演示了如何使用以上函数做敏感信息加解密。
 
+## 日志
+
+SDK 使用了 [SLF4j](http://www.slf4j.org/) 作为日志框架的接口。这样，你可以使用你熟悉的日志框架，例如 [Logback](https://logback.qos.ch/documentation.html)、[Log4j2](https://github.com/apache/logging-log4j2) 或者 [SLF4j-simple](https://www.slf4j.org/manual.html)。
+SDK 的日志会跟你的日志记录在一起。
+
+为了启用日志，你应在你的构建脚本中添加日志框架的依赖。如果不配置日志框架，默认是使用 SLF4j 提供的 空（NOP）日志实现，它不会记录任何日志。
+
 ## 使用国密
 
 我们提供基于 [腾讯 Kona 国密套件](https://github.com/Tencent/TencentKonaSMSuite) 的国密扩展。文档请参考 [shangmi/README.md](shangmi/README.md)。
@@ -319,8 +348,8 @@ String plaintext = decryptor.decryptToString(ciphertext);
 
 请求和应答使用 [数字签名](https://zh.wikipedia.org/wiki/%E6%95%B8%E4%BD%8D%E7%B0%BD%E7%AB%A0) ，保证数据传递的真实、完整和不可否认。为了验签方能识别数字签名使用的密钥（特别是密钥和证书更换期间），微信支付 APIv3 要求签名和相应的证书序列号一起传输。
 
-+ 商户请求使用**商户API私钥**签名。商户应上送商户证书序列号。
-+ 微信支付应答使用**微信支付平台私钥**签名。微信支付应答返回微信支付平台证书序列号。
+- 商户请求使用**商户API私钥**签名。商户应上送商户证书序列号。
+- 微信支付应答使用**微信支付平台私钥**签名。微信支付应答返回微信支付平台证书序列号。
 
 综上所述，请求和应答的证书序列号是不一致的。
 
@@ -336,7 +365,16 @@ String plaintext = decryptor.decryptToString(ciphertext);
 
 如果你使用的是本地的微信支付平台证书，请检查微信支付平台证书是否正确，不要把商户证书和微信支付平台证书搞混了。
 
+### 如何计算前端签名？
+
+有一部分 API 需要计算前端签名，例如调起支付、调起支付分小程序等。
+
+- 调起支付签名，SDK 提供了下单并生成调起支付参数的方法，请参考 [示例](#下单并生成调起支付的参数)。
+
+- 其他场景计算签名，请参考 [JsapiServiceExtension](https://github.com/wechatpay-apiv3/wechatpay-java/blob/968a2ff8fb35c808f82827342abb100e30691a98/service/src/main/java/com/wechat/pay/java/service/payments/jsapi/JsapiServiceExtension.java#L59) 使用 [Signer](https://github.com/wechatpay-apiv3/wechatpay-java/blob/main/core/src/main/java/com/wechat/pay/java/core/cipher/Signer.java) 计算签名的例子。
+
 ## 如何参与开发
+
 微信支付欢迎来自社区的开发者贡献你们的想法和代码。请你在提交 PR 之前，先提一个对应的 issue 说明以下内容：
 
 - 背景（如，遇到的问题）和目的。

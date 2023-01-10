@@ -1,6 +1,6 @@
 plugins {
-    id "com.diffplug.spotless"
-    id "com.github.johnrengelman.shadow"
+    id 'com.diffplug.spotless' apply false
+    id 'com.github.johnrengelman.shadow' apply false
     id 'org.sonarqube'
 }
 
@@ -9,5 +9,6 @@ sonarqube {
         property "sonar.projectKey", "wechatpay-apiv3_wechatpay-java"
         property "sonar.organization", "wechatpay-apiv3"
         property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.projectVersion", projectPropVersion
     }
 }
