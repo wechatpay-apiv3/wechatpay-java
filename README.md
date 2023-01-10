@@ -15,7 +15,7 @@
 
 ## 帮助微信支付改进
 
-为了向广大开发者提供更好的使用体验，微信支付诚挚邀请您反馈使用微信支付 Java SDK 中的感受。您的反馈将对改进 SDK 大有帮助，点击参与 [问卷调查](https://wj.qq.com/s2/11503706/aa9a/)。
+为了向广大开发者提供更好的使用体验，微信支付诚挚邀请您反馈使用微信支付 Java SDK 中的感受。您的反馈将对改进 SDK 大有帮助，点击参与[问卷调查](https://wj.qq.com/s2/11503706/aa9a/)。
 
 ## 前置条件
 
@@ -137,9 +137,23 @@ closeRequest.setOutTradeNo("out_trade_no_001");
 service.closeOrder(closeRequest);
 ```
 
+### 下单并生成调起支付的参数
+
+JSAPI 支付和 APP 支付推荐使用服务拓展类 [JsapiServiceExtension](https://github.com/wechatpay-apiv3/wechatpay-java/blob/main/service/src/main/java/com/wechat/pay/java/service/payments/jsapi/JsapiServiceExtension.java) 和 [AppServiceExtension](https://github.com/wechatpay-apiv3/wechatpay-java/blob/main/service/src/main/java/com/wechat/pay/java/service/payments/app/AppServiceExtension.java)，两者包含了下单并返回调起支付参数方法。
+
+```java
+JsapiServiceExtension service = new JsapiServiceExtension.Builder().config(config).build();
+
+// 跟之前下单示例一样，填充预下单参数
+PrepayRequest request = new PrepayRequest();
+
+// response包含了调起支付所需的所有参数，可直接用于前端调起支付
+PrepayWithRequestPaymentResponse response = service.prepayWithRequestPayment(request);
+```
+
 ### 更多示例
 
-为了方便开发者快速上手，微信支付给每个服务生成了示例代码 `XxxServiceExample.java`。JSAPI 支付和 APP 支付推荐使用服务拓展类 XxxServiceExtension，包含下单并返回调起支付数据方法。可以在 [example](service/src/example) 中查看。
+为了方便开发者快速上手，微信支付给每个服务生成了示例代码 `XxxServiceExample.java`，可以在 [example](service/src/example) 中查看。
 例如：
 
 - [JsapiServiceExtensionExample.java](service/src/example/java/com/wechat/pay/java/service/payments/jsapi/JsapiServiceExtensionExample.java)
@@ -350,6 +364,14 @@ SDK 的日志会跟你的日志记录在一起。
 如果你使用的是 SDK 自动更新的微信支付平台证书，验证失败原因是：参与验证的参数不正确。从开发者反馈来看，大部分失败案例没有使用回调原始 body，而是用 body 反序列化得到的对象再做 JSON 序列化得到的 body。很遗憾，这样的 body 几乎一定跟原始报文**不一致**，所以签名验证不通过。具体案例可参考 [#112](https://github.com/wechatpay-apiv3/wechatpay-java/issues/112)。
 
 如果你使用的是本地的微信支付平台证书，请检查微信支付平台证书是否正确，不要把商户证书和微信支付平台证书搞混了。
+
+### 如何计算前端签名？
+
+有一部分 API 需要计算前端签名，例如调起支付、调起支付分小程序等。
+
+- 调起支付签名，SDK 提供了下单并生成调起支付参数的方法，请参考 [示例](#下单并生成调起支付的参数)。
+
+- 其他场景计算签名，请参考 [JsapiServiceExtension](https://github.com/wechatpay-apiv3/wechatpay-java/blob/968a2ff8fb35c808f82827342abb100e30691a98/service/src/main/java/com/wechat/pay/java/service/payments/jsapi/JsapiServiceExtension.java#L59) 使用 [Signer](https://github.com/wechatpay-apiv3/wechatpay-java/blob/main/core/src/main/java/com/wechat/pay/java/core/cipher/Signer.java) 计算签名的例子。
 
 ## 如何参与开发
 
