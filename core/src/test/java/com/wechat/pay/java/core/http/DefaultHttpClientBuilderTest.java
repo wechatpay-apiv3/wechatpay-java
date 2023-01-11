@@ -15,7 +15,7 @@ import java.net.URI;
 import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.Test;
 
-public class DefaultHttpClientBuilderTest {
+class DefaultHttpClientBuilderTest {
 
   Credential credential =
       new Credential() {
@@ -46,7 +46,7 @@ public class DefaultHttpClientBuilderTest {
   OkHttpClient okHttpClient = new OkHttpClient();
 
   @Test
-  public void buildWithCredentialAndValidator() {
+  void buildWithCredentialAndValidator() {
     HttpClient httpClient =
         new DefaultHttpClientBuilder()
             .credential(credential)
@@ -58,7 +58,7 @@ public class DefaultHttpClientBuilderTest {
   }
 
   @Test
-  public void buildWithConfig() {
+  void buildWithConfig() {
     Config config =
         new Config() {
           @Override

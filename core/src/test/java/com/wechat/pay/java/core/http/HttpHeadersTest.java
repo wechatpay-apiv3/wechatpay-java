@@ -22,7 +22,7 @@ public class HttpHeadersTest {
   @Test
   public void testGetHeaders() {
     Map<String, String> headers = httpHeaders.getHeaders();
-    Assert.assertEquals(headers.get(HEADER_KEY_1), HEADER_VALUE_1);
+    Assert.assertEquals(HEADER_VALUE_1, headers.get(HEADER_KEY_1));
   }
 
   @Test
@@ -30,7 +30,7 @@ public class HttpHeadersTest {
     String key = "key2";
     String value = "value2";
     httpHeaders.addHeader(key, value);
-    Assert.assertEquals(httpHeaders.getHeaders().size(), 2);
-    Assert.assertEquals(httpHeaders.getHeader(key), value);
+    Assert.assertEquals(2, httpHeaders.getHeaders().size());
+    Assert.assertEquals(value, httpHeaders.getHeader(key));
   }
 }
