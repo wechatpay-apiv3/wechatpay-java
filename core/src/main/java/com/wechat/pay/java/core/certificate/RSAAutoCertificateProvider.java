@@ -8,6 +8,7 @@ import com.wechat.pay.java.core.auth.WechatPay2Credential;
 import com.wechat.pay.java.core.cipher.AeadAesCipher;
 import com.wechat.pay.java.core.cipher.AeadCipher;
 import com.wechat.pay.java.core.cipher.RSASigner;
+import com.wechat.pay.java.core.http.AbstractHttpClientBuilder;
 import com.wechat.pay.java.core.http.DefaultHttpClientBuilder;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpHeaders;
@@ -45,6 +46,7 @@ public class RSAAutoCertificateProvider extends AbstractAutoCertificateProvider 
     private PrivateKey privateKey;
     private String merchantSerialNumber;
     private HttpClient httpClient;
+    private AbstractHttpClientBuilder<?> httpClientBuilder;
 
     public Builder merchantId(String merchantId) {
       this.merchantId = merchantId;
@@ -76,6 +78,11 @@ public class RSAAutoCertificateProvider extends AbstractAutoCertificateProvider 
       return this;
     }
 
+    public Builder httpClientBuilder(AbstractHttpClientBuilder<?> builder) {
+      this.httpClientBuilder = builder;
+      return this;
+    }
+
     private final Validator emptyValidator =
         new Validator() {
           @Override
@@ -86,8 +93,10 @@ public class RSAAutoCertificateProvider extends AbstractAutoCertificateProvider 
 
     public RSAAutoCertificateProvider build() {
       if (httpClient == null) {
-        DefaultHttpClientBuilder httpClientBuilder =
-            new DefaultHttpClientBuilder().validator(emptyValidator);
+        AbstractHttpClientBuilder<?> httpClientBuilder =
+            (this.httpClientBuilder != null)
+                ? this.httpClientBuilder
+                : new DefaultHttpClientBuilder().validator(emptyValidator);
         if (credential == null) {
           credential =
               new WechatPay2Credential(

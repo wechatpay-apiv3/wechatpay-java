@@ -6,10 +6,8 @@ import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.certificate.CertificateProvider;
 import com.wechat.pay.java.core.certificate.RSAAutoCertificateProvider;
-import com.wechat.pay.java.core.cipher.AeadAesCipher;
-import com.wechat.pay.java.core.cipher.AeadCipher;
-import com.wechat.pay.java.core.cipher.RSAVerifier;
-import com.wechat.pay.java.core.cipher.Verifier;
+import com.wechat.pay.java.core.cipher.*;
+import com.wechat.pay.java.core.http.AbstractHttpClientBuilder;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.notification.NotificationConfig;
 import java.nio.charset.StandardCharsets;
@@ -75,6 +73,7 @@ public final class RSAAutoCertificateConfig extends AbstractRSAConfig
     protected HttpClient httpClient;
     protected byte[] apiV3Key;
     protected CertificateProvider certificateProvider;
+    protected AbstractHttpClientBuilder<?> httpClientBuilder;
 
     public Builder apiV3Key(String apiV3key) {
       this.apiV3Key = apiV3key.getBytes(StandardCharsets.UTF_8);
@@ -83,6 +82,11 @@ public final class RSAAutoCertificateConfig extends AbstractRSAConfig
 
     public Builder httpClient(HttpClient httpClient) {
       this.httpClient = httpClient;
+      return this;
+    }
+
+    public Builder httpClientBuilder(AbstractHttpClientBuilder<?> builder) {
+      httpClientBuilder = builder;
       return this;
     }
 
@@ -98,8 +102,13 @@ public final class RSAAutoCertificateConfig extends AbstractRSAConfig
               .apiV3Key(requireNonNull(apiV3Key))
               .privateKey(requireNonNull(privateKey))
               .merchantSerialNumber(requireNonNull(merchantSerialNumber));
+
       if (httpClient != null) {
         providerBuilder.httpClient(httpClient);
+      }
+
+      if (httpClientBuilder != null) {
+        providerBuilder.httpClientBuilder(httpClientBuilder);
       }
 
       certificateProvider = providerBuilder.build();

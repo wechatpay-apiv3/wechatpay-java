@@ -10,7 +10,8 @@ import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
 /** 默认HttpClient构造器 */
-public class DefaultHttpClientBuilder {
+public class DefaultHttpClientBuilder
+    implements AbstractHttpClientBuilder<DefaultHttpClientBuilder> {
 
   private Credential credential;
   private Validator validator;
@@ -60,6 +61,7 @@ public class DefaultHttpClientBuilder {
    * @param credential 凭据生成器
    * @return defaultHttpClientBuilder
    */
+  @Override
   public DefaultHttpClientBuilder credential(Credential credential) {
     this.credential = credential;
     return this;
@@ -71,6 +73,7 @@ public class DefaultHttpClientBuilder {
    * @param validator 验证器
    * @return defaultHttpClientBuilder
    */
+  @Override
   public DefaultHttpClientBuilder validator(Validator validator) {
     this.validator = validator;
     return this;
@@ -104,7 +107,8 @@ public class DefaultHttpClientBuilder {
    *
    * @return httpClient
    */
-  public HttpClient build() {
+  @Override
+  public AbstractHttpClient build() {
     requireNonNull(credential);
     requireNonNull(validator);
     okhttp3.OkHttpClient.Builder okHttpClientBuilder =
