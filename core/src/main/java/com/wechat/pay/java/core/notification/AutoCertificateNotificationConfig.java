@@ -12,7 +12,12 @@ import com.wechat.pay.java.core.cipher.AeadCipher;
 import com.wechat.pay.java.core.http.HttpClient;
 import java.nio.charset.StandardCharsets;
 
-/** @deprecated Use RSAAutoCertificateConfig instead */
+/**
+ * 通知回调配置类
+ *
+ * @deprecated Use RSAAutoCertificateConfig instead. As of v0.2.4, This class is redundant and not
+ *     fully functional. We will remove this deprecated code someday in a future release.
+ */
 @Deprecated
 public final class AutoCertificateNotificationConfig extends AbstractNotificationConfig {
 

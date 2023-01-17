@@ -93,17 +93,18 @@ public class RSAAutoCertificateProvider extends AbstractAutoCertificateProvider 
 
     public RSAAutoCertificateProvider build() {
       if (httpClient == null) {
-        AbstractHttpClientBuilder<?> httpClientBuilder =
-            (this.httpClientBuilder != null)
-                ? this.httpClientBuilder
-                : new DefaultHttpClientBuilder().validator(emptyValidator);
-        if (credential == null) {
+        if (httpClientBuilder == null) {
+          httpClientBuilder = new DefaultHttpClientBuilder();
+        }
+
+        if (credential == null && privateKey != null) {
           credential =
               new WechatPay2Credential(
                   requireNonNull(merchantId),
-                  new RSASigner(requireNonNull(merchantSerialNumber), requireNonNull(privateKey)));
+                  new RSASigner(requireNonNull(merchantSerialNumber), privateKey));
         }
-        httpClient = httpClientBuilder.credential(credential).build();
+
+        httpClient = httpClientBuilder.credential(credential).validator(emptyValidator).build();
       }
       return new RSAAutoCertificateProvider(
           merchantId, new AeadAesCipher(requireNonNull(apiV3Key)), httpClient);
