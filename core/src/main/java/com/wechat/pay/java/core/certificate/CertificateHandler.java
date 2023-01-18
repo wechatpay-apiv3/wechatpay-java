@@ -22,4 +22,12 @@ public interface CertificateHandler {
    * @return verifier
    */
   Verifier generateVerifier(List<X509Certificate> certificateList);
+
+  /**
+   * * 验证证书链
+   *
+   * @param certificate 微信支付平台证书
+   * @throws com.wechat.pay.java.core.exception.ValidationException 证书验证失败
+   */
+  void validateCertPath(X509Certificate certificate);
 }
