@@ -79,7 +79,8 @@ public class RSAAutoCertificateProvider extends AbstractAutoCertificateProvider 
     }
 
     public Builder httpClientBuilder(AbstractHttpClientBuilder<?> builder) {
-      this.httpClientBuilder = builder;
+      // httpClientBuilder 不是不可变的，所以为了避免过程中修改入参或者值发生变化，这里制作了一个副本
+      this.httpClientBuilder = builder.newInstance();
       return this;
     }
 

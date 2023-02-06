@@ -23,6 +23,24 @@ public class DefaultHttpClientBuilder
   private Proxy proxy;
 
   /**
+   * 复制工厂，复制一个当前对象
+   *
+   * @return 对象的副本
+   */
+  @Override
+  public DefaultHttpClientBuilder newInstance() {
+    DefaultHttpClientBuilder result = new DefaultHttpClientBuilder();
+    result.credential = this.credential;
+    result.validator = this.validator;
+    result.customizeOkHttpClient = this.customizeOkHttpClient;
+    result.readTimeoutMs = this.readTimeoutMs;
+    result.writeTimeoutMs = this.writeTimeoutMs;
+    result.connectTimeoutMs = this.connectTimeoutMs;
+    result.proxy = this.proxy;
+    return result;
+  }
+
+  /**
    * 设置读超时
    *
    * @param readTimeoutMs 读超时，单位毫秒
