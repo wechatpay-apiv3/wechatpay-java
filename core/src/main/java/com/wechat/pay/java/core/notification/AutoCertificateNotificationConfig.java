@@ -15,8 +15,8 @@ import java.nio.charset.StandardCharsets;
 /**
  * 通知回调配置类
  *
- * @deprecated Use RSAAutoCertificateConfig instead. As of v0.2.4, This class is redundant and not
- *     fully functional. We will remove this deprecated code someday in a future release.
+ * @deprecated 请使用 RSAAutoCertificateConfig。 从版本 v0.2.4 起, 该类是多余的，而且功能不完整。
+ *     开发者应尽快迁移。我们将在未来某个时间移除这段废弃的代码。
  */
 @Deprecated
 public final class AutoCertificateNotificationConfig extends AbstractNotificationConfig {
