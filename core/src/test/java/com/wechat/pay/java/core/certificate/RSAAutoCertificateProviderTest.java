@@ -4,6 +4,7 @@ import static com.wechat.pay.java.core.model.TestConfig.API_V3_KEY;
 import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_CERTIFICATE_SERIAL_NUMBER;
 import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_PRIVATE_KEY;
 import static java.net.HttpURLConnection.HTTP_OK;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.wechat.pay.java.core.auth.Validator;
@@ -105,15 +106,22 @@ public class RSAAutoCertificateProviderTest implements CertificateProviderTest {
     Builder provider =
         new Builder()
             .privateKey(MERCHANT_PRIVATE_KEY)
+            .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER)
             .merchantId("5123456-0-1")
             .apiV3Key(API_V3_KEY.getBytes(StandardCharsets.UTF_8));
 
     DefaultHttpClientBuilder builder =
         new DefaultHttpClientBuilder()
+            .okHttpClient(createOkHttpClient())
             .connectTimeoutMs(1000)
             .readTimeoutMs(1000)
             .writeTimeoutMs(1000);
-    provider.httpClientBuilder(builder);
+
+    assertDoesNotThrow(
+        () -> {
+          provider.httpClientBuilder(builder);
+          provider.build();
+        });
   }
 
   @ParameterizedTest
