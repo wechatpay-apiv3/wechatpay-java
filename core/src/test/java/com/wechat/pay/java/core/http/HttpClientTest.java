@@ -158,11 +158,9 @@ public interface HttpClientTest {
             .setBody("{\"code\":\"INVALID_REQUEST\",\"message\":\"test message\"}")
             .setHeader("Content-Type", "application/json; charset=utf-8"));
     server.start();
-    HttpUrl requestUrl = server.url(testUrl);
-
+    String requestUrl = server.url(testUrl).toString();
     final ServiceException thrown =
-        assertThrows(
-            ServiceException.class, () -> client.get(null, requestUrl.toString(), Response.class));
+        assertThrows(ServiceException.class, () -> client.get(null, requestUrl, Response.class));
     assertEquals(400, thrown.getHttpStatusCode());
     assertEquals("INVALID_REQUEST", thrown.getErrorCode());
     assertEquals("test message", thrown.getErrorMessage());
@@ -178,10 +176,9 @@ public interface HttpClientTest {
             .setBody("testResponseBody")
             .setHeader("Content-Type", "text/plain; charset=utf-8"));
     server.start();
-    HttpUrl requestUrl = server.url(testUrl);
+    String requestUrl = server.url(testUrl).toString();
     assertThrows(
-        MalformedMessageException.class,
-        () -> client.get(null, requestUrl.toString(), Response.class));
+        MalformedMessageException.class, () -> client.get(null, requestUrl, Response.class));
 
     server.shutdown();
   }
@@ -192,10 +189,9 @@ public interface HttpClientTest {
     MockWebServer server = new MockWebServer();
     server.enqueue(new MockResponse().setStatus("HTTP/1.1 204 No Content"));
     server.start();
-    HttpUrl requestUrl = server.url(testUrl);
+    String requestUrl = server.url(testUrl).toString();
 
-    assertThrows(
-        ValidationException.class, () -> client.get(null, requestUrl.toString(), Response.class));
+    assertThrows(ValidationException.class, () -> client.get(null, requestUrl, Response.class));
 
     server.shutdown();
   }

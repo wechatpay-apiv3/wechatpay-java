@@ -8,6 +8,7 @@ import com.wechat.pay.java.core.auth.WechatPay2Credential;
 import com.wechat.pay.java.core.cipher.AeadAesCipher;
 import com.wechat.pay.java.core.cipher.AeadCipher;
 import com.wechat.pay.java.core.cipher.RSASigner;
+import com.wechat.pay.java.core.http.AbstractHttpClientBuilder;
 import com.wechat.pay.java.core.http.DefaultHttpClientBuilder;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpHeaders;
@@ -45,6 +46,7 @@ public class RSAAutoCertificateProvider extends AbstractAutoCertificateProvider 
     private PrivateKey privateKey;
     private String merchantSerialNumber;
     private HttpClient httpClient;
+    private AbstractHttpClientBuilder<?> httpClientBuilder;
 
     public Builder merchantId(String merchantId) {
       this.merchantId = merchantId;
@@ -76,6 +78,12 @@ public class RSAAutoCertificateProvider extends AbstractAutoCertificateProvider 
       return this;
     }
 
+    public Builder httpClientBuilder(AbstractHttpClientBuilder<?> builder) {
+      // httpClientBuilder 不是不可变的，所以为了避免过程中修改入参或者值发生变化，这里制作了一个副本
+      this.httpClientBuilder = builder.newInstance();
+      return this;
+    }
+
     private final Validator emptyValidator =
         new Validator() {
           @Override
@@ -86,15 +94,18 @@ public class RSAAutoCertificateProvider extends AbstractAutoCertificateProvider 
 
     public RSAAutoCertificateProvider build() {
       if (httpClient == null) {
-        DefaultHttpClientBuilder httpClientBuilder =
-            new DefaultHttpClientBuilder().validator(emptyValidator);
-        if (credential == null) {
+        if (httpClientBuilder == null) {
+          httpClientBuilder = new DefaultHttpClientBuilder();
+        }
+
+        if (credential == null && privateKey != null) {
           credential =
               new WechatPay2Credential(
                   requireNonNull(merchantId),
-                  new RSASigner(requireNonNull(merchantSerialNumber), requireNonNull(privateKey)));
+                  new RSASigner(requireNonNull(merchantSerialNumber), privateKey));
         }
-        httpClient = httpClientBuilder.credential(credential).build();
+
+        httpClient = httpClientBuilder.credential(credential).validator(emptyValidator).build();
       }
       return new RSAAutoCertificateProvider(
           merchantId, new AeadAesCipher(requireNonNull(apiV3Key)), httpClient);

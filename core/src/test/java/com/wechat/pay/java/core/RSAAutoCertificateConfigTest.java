@@ -18,11 +18,14 @@ import com.wechat.pay.java.core.certificate.model.Data;
 import com.wechat.pay.java.core.certificate.model.DownloadCertificateResponse;
 import com.wechat.pay.java.core.certificate.model.EncryptCertificate;
 import com.wechat.pay.java.core.cipher.RSASigner;
+import com.wechat.pay.java.core.http.DefaultHttpClientBuilder;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpHeaders;
 import com.wechat.pay.java.core.http.okhttp.OkHttpClientAdapter;
 import com.wechat.pay.java.core.util.GsonUtil;
 import com.wechat.pay.java.core.util.NonceUtil;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 import okhttp3.MediaType;
@@ -31,6 +34,7 @@ import okhttp3.Protocol;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -38,6 +42,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 class RSAAutoCertificateConfigTest implements ConfigTest {
 
   static HttpClient httpClient;
+  static OkHttpClient okHttpClient;
 
   @BeforeAll
   static void initHttpClient() {
@@ -48,7 +53,7 @@ class RSAAutoCertificateConfigTest implements ConfigTest {
             return true;
           }
         };
-    OkHttpClient okHttpClient =
+    okHttpClient =
         new OkHttpClient.Builder()
             .addInterceptor(
                 chain -> {
@@ -121,7 +126,16 @@ class RSAAutoCertificateConfigTest implements ConfigTest {
             .privateKeyFromPath(MERCHANT_PRIVATE_KEY_PATH)
             .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER)
             .httpClient(httpClient)
-            .apiV3Key(API_V3_KEY));
+            .apiV3Key(API_V3_KEY),
+
+        // with http client builder
+        new Builder()
+            .merchantId("1123456")
+            .privateKeyFromPath(MERCHANT_PRIVATE_KEY_PATH)
+            .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER)
+            .apiV3Key(API_V3_KEY)
+            .httpClientBuilder(
+                new DefaultHttpClientBuilder().writeTimeoutMs(1000).okHttpClient(okHttpClient)));
   }
 
   @Test
@@ -143,5 +157,24 @@ class RSAAutoCertificateConfigTest implements ConfigTest {
         .merchantSerialNumber(MERCHANT_CERTIFICATE_SERIAL_NUMBER)
         .httpClient(httpClient)
         .build();
+  }
+
+  @Disabled("only available in production environment")
+  @Test
+  void testAutoCertificateWithProxy() {
+    DefaultHttpClientBuilder clientBuilder =
+        new DefaultHttpClientBuilder()
+            .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 12639)));
+
+    RSAAutoCertificateConfig config =
+        new Builder()
+            .merchantId("")
+            .privateKey("")
+            .merchantSerialNumber("")
+            .httpClientBuilder(clientBuilder)
+            .apiV3Key("")
+            .build();
+
+    assertNotNull(config.createValidator());
   }
 }

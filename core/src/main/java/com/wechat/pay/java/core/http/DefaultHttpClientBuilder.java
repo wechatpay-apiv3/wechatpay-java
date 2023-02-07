@@ -10,7 +10,8 @@ import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
 /** 默认HttpClient构造器 */
-public class DefaultHttpClientBuilder {
+public class DefaultHttpClientBuilder
+    implements AbstractHttpClientBuilder<DefaultHttpClientBuilder> {
 
   private Credential credential;
   private Validator validator;
@@ -20,6 +21,24 @@ public class DefaultHttpClientBuilder {
   private int writeTimeoutMs = -1;
   private int connectTimeoutMs = -1;
   private Proxy proxy;
+
+  /**
+   * 复制工厂，复制一个当前对象
+   *
+   * @return 对象的副本
+   */
+  @Override
+  public DefaultHttpClientBuilder newInstance() {
+    DefaultHttpClientBuilder result = new DefaultHttpClientBuilder();
+    result.credential = this.credential;
+    result.validator = this.validator;
+    result.customizeOkHttpClient = this.customizeOkHttpClient;
+    result.readTimeoutMs = this.readTimeoutMs;
+    result.writeTimeoutMs = this.writeTimeoutMs;
+    result.connectTimeoutMs = this.connectTimeoutMs;
+    result.proxy = this.proxy;
+    return result;
+  }
 
   /**
    * 设置读超时
@@ -60,6 +79,7 @@ public class DefaultHttpClientBuilder {
    * @param credential 凭据生成器
    * @return defaultHttpClientBuilder
    */
+  @Override
   public DefaultHttpClientBuilder credential(Credential credential) {
     this.credential = credential;
     return this;
@@ -71,6 +91,7 @@ public class DefaultHttpClientBuilder {
    * @param validator 验证器
    * @return defaultHttpClientBuilder
    */
+  @Override
   public DefaultHttpClientBuilder validator(Validator validator) {
     this.validator = validator;
     return this;
@@ -104,7 +125,8 @@ public class DefaultHttpClientBuilder {
    *
    * @return httpClient
    */
-  public HttpClient build() {
+  @Override
+  public AbstractHttpClient build() {
     requireNonNull(credential);
     requireNonNull(validator);
     okhttp3.OkHttpClient.Builder okHttpClientBuilder =
