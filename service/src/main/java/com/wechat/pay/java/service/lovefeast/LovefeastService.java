@@ -56,11 +56,7 @@ public class LovefeastService {
     private HostName hostName;
 
     public Builder config(Config config) {
-      this.httpClient =
-          new DefaultHttpClientBuilder()
-              .credential(requireNonNull(config.createCredential()))
-              .validator(requireNonNull(config.createValidator()))
-              .build();
+      this.httpClient = new DefaultHttpClientBuilder().config(config).build();
 
       return this;
     }

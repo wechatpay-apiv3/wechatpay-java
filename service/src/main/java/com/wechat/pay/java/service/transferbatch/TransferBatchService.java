@@ -71,11 +71,7 @@ public class TransferBatchService {
     private PrivacyDecryptor decryptor;
 
     public Builder config(Config config) {
-      this.httpClient =
-          new DefaultHttpClientBuilder()
-              .credential(requireNonNull(config.createCredential()))
-              .validator(requireNonNull(config.createValidator()))
-              .build();
+      this.httpClient = new DefaultHttpClientBuilder().config(config).build();
       this.encryptor = config.createEncryptor();
       this.decryptor = config.createDecryptor();
       return this;
