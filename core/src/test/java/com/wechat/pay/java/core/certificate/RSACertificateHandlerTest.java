@@ -38,9 +38,10 @@ class RSACertificateHandlerTest {
             + "-----END CERTIFICATE-----";
     X509Certificate certificate = PemUtil.loadX509FromString(validCertificate);
 
+    CertificateHandler handler = new RSACertificateHandler();
     assertDoesNotThrow(
         () -> {
-          new RSACertificateHandler().validateCertPath(certificate);
+          handler.validateCertPath(certificate);
         });
   }
 
@@ -76,10 +77,11 @@ class RSACertificateHandlerTest {
             + "-----END CERTIFICATE-----";
     X509Certificate certificate = PemUtil.loadX509FromString(validCertificate);
 
+    CertificateHandler handler = new RSACertificateHandler();
     assertThrows(
         ValidationException.class,
         () -> {
-          new RSACertificateHandler().validateCertPath(certificate);
+          handler.validateCertPath(certificate);
         });
   }
 }
