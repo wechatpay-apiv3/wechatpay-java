@@ -67,7 +67,10 @@ class RSACertificateHandler implements CertificateHandler {
       validator.validate(certPath, params);
     } catch (Exception e) {
       throw new ValidationException(
-          String.format("certificate validation failed: %s", e.getMessage()), e);
+          String.format(
+              "certificate[%s] validation failed: %s",
+              PemUtil.getSerialNumber(certificate), e.getMessage()),
+          e);
     }
   }
 }

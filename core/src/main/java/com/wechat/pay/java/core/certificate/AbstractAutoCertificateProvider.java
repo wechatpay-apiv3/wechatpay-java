@@ -1,18 +1,16 @@
 package com.wechat.pay.java.core.certificate;
 
-import static com.wechat.pay.java.core.cipher.Constant.HEX;
-
 import com.wechat.pay.java.core.certificate.model.Data;
 import com.wechat.pay.java.core.certificate.model.DownloadCertificateResponse;
 import com.wechat.pay.java.core.certificate.model.EncryptCertificate;
 import com.wechat.pay.java.core.cipher.AeadCipher;
-import com.wechat.pay.java.core.exception.ValidationException;
 import com.wechat.pay.java.core.http.Constant;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpMethod;
 import com.wechat.pay.java.core.http.HttpRequest;
 import com.wechat.pay.java.core.http.HttpResponse;
 import com.wechat.pay.java.core.http.MediaType;
+import com.wechat.pay.java.core.util.PemUtil;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
@@ -117,15 +115,7 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
   }
 
   protected void validateCertificate(Map<String, X509Certificate> certificates) {
-    certificates.forEach(
-        (serialNo, cert) -> {
-          try {
-            certificateHandler.validateCertPath(cert);
-          } catch (ValidationException e) {
-            log.error(String.format("WeChatPay certificate (%s)", serialNo), e);
-            throw e;
-          }
-        });
+    certificates.forEach((serialNo, cert) -> certificateHandler.validateCertPath(cert));
   }
 
   /**
@@ -146,7 +136,7 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
               encryptCertificate.getNonce().getBytes(StandardCharsets.UTF_8),
               Base64.getDecoder().decode(encryptCertificate.getCiphertext()));
       certificate = certificateHandler.generateCertificate(decryptCertificate);
-      downloadCertMap.put(certificate.getSerialNumber().toString(HEX).toUpperCase(), certificate);
+      downloadCertMap.put(PemUtil.getSerialNumber(certificate), certificate);
     }
     return downloadCertMap;
   }
