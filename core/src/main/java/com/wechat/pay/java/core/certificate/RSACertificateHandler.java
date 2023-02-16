@@ -1,13 +1,11 @@
 package com.wechat.pay.java.core.certificate;
 
-import com.wechat.pay.java.core.cipher.RSAVerifier;
-import com.wechat.pay.java.core.cipher.Verifier;
 import com.wechat.pay.java.core.exception.ValidationException;
 import com.wechat.pay.java.core.util.PemUtil;
 import java.security.cert.*;
 import java.util.*;
 
-class RSACertificateHandler implements CertificateHandler {
+final class RSACertificateHandler implements CertificateHandler {
 
   private static final X509Certificate tenpayCACert =
       PemUtil.loadX509FromString(
@@ -44,11 +42,6 @@ class RSACertificateHandler implements CertificateHandler {
   @Override
   public X509Certificate generateCertificate(String certificate) {
     return PemUtil.loadX509FromString(certificate);
-  }
-
-  @Override
-  public Verifier generateVerifier(List<X509Certificate> certificateList) {
-    return new RSAVerifier(new InMemoryCertificateProvider(certificateList));
   }
 
   @Override

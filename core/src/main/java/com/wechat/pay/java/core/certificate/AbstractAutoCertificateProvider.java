@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 /** 自动更新平台证书提供器抽象类 */
 public abstract class AbstractAutoCertificateProvider implements CertificateProvider {
   private static final Logger log = LoggerFactory.getLogger(AbstractAutoCertificateProvider.class);
-  protected static final int UPDATE_INTERVAL_MINUTE = 60; // 定时更新时间，1小时
+  protected static final int UPDATE_INTERVAL_MINUTE = 60; // 定时更新时间，60分钟，即1小时
   protected final SafeSingleScheduleExecutor executor =
       SafeSingleScheduleExecutor.getInstance(); // 安全的单线程定时执行器实例
 
@@ -46,6 +46,24 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
       HttpClient httpClient,
       String merchantId,
       Map<String, Map<String, X509Certificate>> wechatPayCertificateMap) {
+    this(
+        requestUrl,
+        certificateHandler,
+        aeadCipher,
+        httpClient,
+        merchantId,
+        wechatPayCertificateMap,
+        UPDATE_INTERVAL_MINUTE * 60);
+  }
+
+  protected AbstractAutoCertificateProvider(
+      String requestUrl,
+      CertificateHandler certificateHandler,
+      AeadCipher aeadCipher,
+      HttpClient httpClient,
+      String merchantId,
+      Map<String, Map<String, X509Certificate>> wechatPayCertificateMap,
+      int updateInterval) {
     this.merchantId = merchantId;
     synchronized (AbstractAutoCertificateProvider.class) {
       if (!wechatPayCertificateMap.containsKey(merchantId)) {
@@ -89,11 +107,14 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
               updateCount,
               succeedCount);
         };
-    executor.scheduleAtFixedRate(
-        runnable, UPDATE_INTERVAL_MINUTE, UPDATE_INTERVAL_MINUTE, TimeUnit.MINUTES);
+    executor.scheduleAtFixedRate(runnable, updateInterval, updateInterval, TimeUnit.SECONDS);
   }
 
-  /** 下载和更新证书 */
+  /**
+   * 下载并更新证书
+   *
+   * @param wechatPayCertificateMap 存放多商户对应证书的Map
+   */
   protected void downloadAndUpdate(
       Map<String, Map<String, X509Certificate>> wechatPayCertificateMap) {
     HttpResponse<DownloadCertificateResponse> httpResponse = downloadCertificate(httpClient);
@@ -106,6 +127,7 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
   /**
    * 下载证书
    *
+   * @param httpClient 下载使用的HttpClient
    * @return httpResponse
    */
   protected HttpResponse<DownloadCertificateResponse> downloadCertificate(HttpClient httpClient) {
@@ -122,6 +144,7 @@ public abstract class AbstractAutoCertificateProvider implements CertificateProv
    * 从应答报文中解密证书
    *
    * @param httpResponse httpResponse
+   * @return 应答报文解密后，生成X.509证书对象的Map
    */
   protected Map<String, X509Certificate> decryptCertificate(
       HttpResponse<DownloadCertificateResponse> httpResponse) {

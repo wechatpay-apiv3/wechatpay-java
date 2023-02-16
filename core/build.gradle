@@ -27,7 +27,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation "com.squareup.okhttp3:mockwebserver:${okhttpVersion}"
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:${junit5Version}")
-
+    testRuntimeOnly("org.slf4j:slf4j-simple:${slf4jVersion}")
 }
 
 test {
