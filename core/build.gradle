@@ -22,12 +22,14 @@ dependencies {
 
     testImplementation "junit:junit:${junitVersion}"
     testImplementation "org.mockito:mockito-inline:${mockitoInlineVersion}"
+    testImplementation "com.squareup.okhttp3:mockwebserver:${okhttpVersion}"
+    testImplementation "org.awaitility:awaitility:${awaitilityVersion}"
 
     testImplementation platform("org.junit:junit-bom:${junit5Version}")
     testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation "com.squareup.okhttp3:mockwebserver:${okhttpVersion}"
-    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:${junit5Version}")
-    testRuntimeOnly("org.slf4j:slf4j-simple:${slf4jVersion}")
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine'
+
+    testRuntimeOnly "org.slf4j:slf4j-simple:${slf4jVersion}"
 }
 
 test {

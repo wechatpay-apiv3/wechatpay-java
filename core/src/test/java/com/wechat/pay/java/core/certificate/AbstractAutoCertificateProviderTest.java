@@ -1,5 +1,7 @@
 package com.wechat.pay.java.core.certificate;
 
+import static org.awaitility.Awaitility.await;
+import static org.awaitility.Awaitility.with;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.wechat.pay.java.core.auth.Credential;
@@ -17,6 +19,7 @@ import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -25,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Timeout;
 
 class AbstractAutoCertificateProviderTest {
 
@@ -242,7 +244,6 @@ class AbstractAutoCertificateProviderTest {
   }
 
   @Test
-  @Timeout(10)
   void testUpdate() throws Exception {
     Credential fakeCredential = new FakeCredential();
     Validator fakeHttpValidator = new FakeValidator();
@@ -260,15 +261,17 @@ class AbstractAutoCertificateProviderTest {
     assertNotNull(provider.getAvailableCertificate());
     assertNotNull(provider.getCertificate("39FACCC173F3485C76C61FD5C0D662AE4A838AA9"));
 
-    Thread.sleep(3500);
+    await()
+        .atLeast(3000, TimeUnit.MILLISECONDS)
+        .atMost(3500, TimeUnit.MILLISECONDS)
+        .untilAsserted(
+            () ->
+                assertNotNull(provider.getCertificate("699AE9A3A00228BFE133FA9A4A99E31D4D2571B4")));
 
-    assertNotNull(provider.getAvailableCertificate());
-    assertNotNull(provider.getCertificate("699AE9A3A00228BFE133FA9A4A99E31D4D2571B4"));
     assertNull(provider.getCertificate("39FACCC173F3485C76C61FD5C0D662AE4A838AA9"));
   }
 
   @Test
-  @Timeout(5)
   void testUpdateWith500() throws Exception {
     Credential fakeCredential = new FakeCredential();
     Validator fakeHttpValidator = new FakeValidator();
@@ -286,12 +289,15 @@ class AbstractAutoCertificateProviderTest {
     assertNotNull(provider.getAvailableCertificate());
     assertNotNull(provider.getCertificate("39FACCC173F3485C76C61FD5C0D662AE4A838AA9"));
 
-    Thread.sleep(3500);
-    assertNotNull(provider.getCertificate("39FACCC173F3485C76C61FD5C0D662AE4A838AA9"));
+    with()
+        .pollDelay(3500, TimeUnit.MILLISECONDS)
+        .await()
+        .untilAsserted(
+            () ->
+                assertNotNull(provider.getCertificate("39FACCC173F3485C76C61FD5C0D662AE4A838AA9")));
   }
 
   @Test
-  @Timeout(5)
   void testUpdateWithBadBody() throws Exception {
     Credential fakeCredential = new FakeCredential();
     Validator fakeHttpValidator = new FakeValidator();
@@ -312,8 +318,12 @@ class AbstractAutoCertificateProviderTest {
     assertNotNull(provider.getAvailableCertificate());
     assertNotNull(provider.getCertificate("39FACCC173F3485C76C61FD5C0D662AE4A838AA9"));
 
-    Thread.sleep(3500);
-    assertNotNull(provider.getCertificate("39FACCC173F3485C76C61FD5C0D662AE4A838AA9"));
+    with()
+        .pollDelay(3500, TimeUnit.MILLISECONDS)
+        .await()
+        .untilAsserted(
+            () ->
+                assertNotNull(provider.getCertificate("39FACCC173F3485C76C61FD5C0D662AE4A838AA9")));
   }
 
   @Test
