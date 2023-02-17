@@ -1,6 +1,10 @@
 package com.wechat.pay.java.core.certificate;
 
-import static com.wechat.pay.java.core.model.TestConfig.*;
+import static com.wechat.pay.java.core.model.TestConfig.API_V3_KEY;
+import static com.wechat.pay.java.core.model.TestConfig.DOWNLOAD_CERTIFICATE_RESPONSE;
+import static com.wechat.pay.java.core.model.TestConfig.DOWNLOAD_CERTIFICATE_SERIAL_NUMBER;
+import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_CERTIFICATE_SERIAL_NUMBER;
+import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_PRIVATE_KEY;
 import static java.net.HttpURLConnection.HTTP_OK;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

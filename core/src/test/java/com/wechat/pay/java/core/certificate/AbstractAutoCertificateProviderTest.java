@@ -2,7 +2,9 @@ package com.wechat.pay.java.core.certificate;
 
 import static org.awaitility.Awaitility.await;
 import static org.awaitility.Awaitility.with;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
@@ -31,7 +33,7 @@ import org.junit.jupiter.api.Test;
 
 class AbstractAutoCertificateProviderTest {
 
-  // 因为每个任务都在后台运行,所以一直mock服务需要存在
+  // 因为每个任务都在后台运行,所以需要mock服务一直存在
   static MockWebServer server = new MockWebServer();
 
   static BlockingQueue<MockResponse> newUpdateQueue() {
