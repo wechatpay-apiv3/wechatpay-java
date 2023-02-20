@@ -234,11 +234,11 @@ Config config =
 
 ```java
 // 构造 RequestParam
-RequestParam requestParam = new Builder()
+RequestParam requestParam = new RequestParam.Builder()
         .serialNumber(wechatPayCertificateSerialNumber)
         .nonce(nonce)
         .signature(signature)
-        .timestamp(timstamp)
+        .timestamp(timestamp)
 // 若未设置signType，默认值为 WECHATPAY2-SHA256-RSA2048
         .signType(signType)
         .body(requestBody)
