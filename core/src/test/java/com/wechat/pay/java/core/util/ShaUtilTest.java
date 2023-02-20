@@ -1,10 +1,16 @@
 package com.wechat.pay.java.core.util;
 
+import static org.mockito.ArgumentMatchers.anyString;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 public class ShaUtilTest {
 
@@ -39,5 +45,23 @@ public class ShaUtilTest {
   public void testBytesGetSha1HexString() {
     String sha = ShaUtil.getSha1HexString(MESSAGE.getBytes(StandardCharsets.UTF_8));
     Assert.assertEquals(SHA1, sha);
+  }
+
+  @Test
+  public void testNoSuchAlgorithmException() {
+    try (MockedStatic<MessageDigest> mockDigest = Mockito.mockStatic(MessageDigest.class)) {
+      mockDigest
+          .when(() -> MessageDigest.getInstance(anyString()))
+          .thenThrow(new NoSuchAlgorithmException());
+
+      Assert.assertThrows(
+          SecurityException.class,
+          () -> ShaUtil.getSha1HexString("test".getBytes(StandardCharsets.UTF_8)));
+      Assert.assertThrows(
+          SecurityException.class,
+          () ->
+              ShaUtil.getSha1HexString(
+                  new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8))));
+    }
   }
 }
