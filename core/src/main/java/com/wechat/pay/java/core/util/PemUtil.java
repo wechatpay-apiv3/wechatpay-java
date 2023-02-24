@@ -1,5 +1,7 @@
 package com.wechat.pay.java.core.util;
 
+import static com.wechat.pay.java.core.cipher.Constant.HEX;
+
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -189,5 +191,9 @@ public class PemUtil {
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
+  }
+
+  public static String getSerialNumber(X509Certificate certificate) {
+    return certificate.getSerialNumber().toString(HEX).toUpperCase();
   }
 }

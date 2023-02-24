@@ -1,8 +1,6 @@
 package com.wechat.pay.java.core.certificate;
 
-import com.wechat.pay.java.core.cipher.Verifier;
 import java.security.cert.X509Certificate;
-import java.util.List;
 
 /** 证书处理器 */
 public interface CertificateHandler {
@@ -16,10 +14,10 @@ public interface CertificateHandler {
   X509Certificate generateCertificate(String certificate);
 
   /**
-   * 使用微信支付平台证书生成Verifier
+   * * 验证证书链
    *
-   * @param certificateList 微信支付平台证书列表
-   * @return verifier
+   * @param certificate 微信支付平台证书
+   * @throws com.wechat.pay.java.core.exception.ValidationException 证书验证失败
    */
-  Verifier generateVerifier(List<X509Certificate> certificateList);
+  void validateCertPath(X509Certificate certificate);
 }

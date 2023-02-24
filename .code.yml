@@ -3,7 +3,7 @@ source:
   # 提供产品代码库中编写的测试代码存放目录或文件名格式,以便后续代码统计环节进行排除等特殊处理
   test_source:
     #用于匹配文件; 匹配方式为正则表达式
-    filepath_regex: [ ".*Test.java" ]
+    filepath_regex: [ ".*/src/test/.*" ]
 
   # 提供产品代码库中工具或框架自动生成的且在代码库中的代码，没有可为空。以便后续代码统计环节进行排除等特殊处理。
   auto_generate_source:

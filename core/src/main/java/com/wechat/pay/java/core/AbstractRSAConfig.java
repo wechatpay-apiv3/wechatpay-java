@@ -1,7 +1,5 @@
 package com.wechat.pay.java.core;
 
-import static com.wechat.pay.java.core.cipher.Constant.HEX;
-
 import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
 import com.wechat.pay.java.core.auth.WechatPay2Credential;
@@ -14,6 +12,7 @@ import com.wechat.pay.java.core.cipher.RSAPrivacyEncryptor;
 import com.wechat.pay.java.core.cipher.RSASigner;
 import com.wechat.pay.java.core.cipher.RSAVerifier;
 import com.wechat.pay.java.core.cipher.Signer;
+import com.wechat.pay.java.core.util.PemUtil;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
@@ -44,7 +43,7 @@ public abstract class AbstractRSAConfig implements Config {
   public PrivacyEncryptor createEncryptor() {
     X509Certificate certificate = certificateProvider.getAvailableCertificate();
     return new RSAPrivacyEncryptor(
-        certificate.getPublicKey(), certificate.getSerialNumber().toString(HEX));
+        certificate.getPublicKey(), PemUtil.getSerialNumber(certificate));
   }
 
   @Override
