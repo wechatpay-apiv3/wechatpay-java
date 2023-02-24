@@ -24,38 +24,53 @@ public class ShaUtil {
    * @throws IOException 读取输入流失字节、关闭流失败等
    */
   public static String getSha1HexString(InputStream inputStream) throws IOException {
-    try {
-      return getShaHexString(inputStream, SHA1);
-    } catch (NoSuchAlgorithmException e) {
-      throw new RuntimeException(e);
-    }
+    return getShaHexString(inputStream, SHA1);
   }
 
+  /**
+   * 生成SHA1的HEX编码消息摘要字符串
+   *
+   * @param source 消息输入
+   * @return HEX编码消息摘要字符串
+   */
+  public static String getSha1HexString(byte[] source) {
+    return getShaHexString(source, SHA1);
+  }
+
+  /**
+   * 生成SHA256的HEX编码消息摘要字符串
+   *
+   * @param inputStream 消息输入流
+   * @return HEX编码消息摘要字符串
+   * @throws IOException 读取输入流失字节、关闭流失败等
+   */
   public static String getSha256HexString(InputStream inputStream) throws IOException {
-    try {
-      return getShaHexString(inputStream, SHA256);
-    } catch (NoSuchAlgorithmException e) {
-      throw new RuntimeException(e);
-    }
+    return getShaHexString(inputStream, SHA256);
   }
 
+  /**
+   * 生成SHA256的HEX编码消息摘要字符串
+   *
+   * @param source 消息输入
+   * @return HEX编码消息摘要字符串
+   */
   public static String getSha256HexString(byte[] source) {
-    try {
-      return getShaHexString(source, SHA256);
-    } catch (NoSuchAlgorithmException e) {
-      throw new RuntimeException(e);
-    }
+    return getShaHexString(source, SHA256);
   }
 
   private static String getShaHexString(InputStream inputStream, String algorithm)
-      throws NoSuchAlgorithmException, IOException {
-    MessageDigest digest = MessageDigest.getInstance(algorithm);
+      throws IOException {
     byte[] data = new byte[BUFFER_SIZE];
     int nRead;
-    while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-      digest.update(data, 0, nRead);
+    try {
+      MessageDigest digest = MessageDigest.getInstance(algorithm);
+      while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+        digest.update(data, 0, nRead);
+      }
+      return toHexString(digest.digest());
+    } catch (NoSuchAlgorithmException e) {
+      throw new SecurityException(e);
     }
-    return toHexString(digest.digest());
   }
 
   /**
@@ -64,14 +79,16 @@ public class ShaUtil {
    * @param source 消息字节数组
    * @param algorithm 具体的SHA算法，例如SHA-1、SHA-256
    * @return HEX编码消息摘要字符串
-   * @throws NoSuchAlgorithmException 没有对应的SHA算法
    */
-  private static String getShaHexString(byte[] source, String algorithm)
-      throws NoSuchAlgorithmException {
+  private static String getShaHexString(byte[] source, String algorithm) {
     requireNonNull(source);
-    MessageDigest digest = MessageDigest.getInstance(algorithm);
-    digest.update(source);
-    return toHexString(digest.digest());
+    try {
+      MessageDigest digest = MessageDigest.getInstance(algorithm);
+      digest.update(source);
+      return toHexString(digest.digest());
+    } catch (NoSuchAlgorithmException e) {
+      throw new SecurityException(e);
+    }
   }
 
   /**

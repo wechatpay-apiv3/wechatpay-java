@@ -19,6 +19,11 @@ import java.time.Instant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * APP 支付的扩展类。
+ *
+ * <p>它封装了 AppService，并提供了一个增强的 APP 下单方法 prepayWithRequestPayment。
+ */
 public class AppServiceExtension {
   private final Signer signer;
   private final AppService appService;
@@ -35,8 +40,12 @@ public class AppServiceExtension {
     }
     this.appService = builder.build();
   }
+
   /**
-   * APP支付预下单，并返回APP调起支付数据
+   * APP 支付下单，并返回 APP 调起支付数据。推荐使用！
+   *
+   * <p>请求成功后，该方法返回预支付交易会话标识 prepay_id 和客户端 APP 调起支付所需参数。 它相比 AppService.prepay
+   * 更简单易用，因为无需开发者自行计算调起支付签名。
    *
    * @param request 请求参数
    * @return PrepayWithRequestPaymentResponse
