@@ -1,14 +1,7 @@
 package com.wechat.pay.java.service.transferbatch;
 
 import com.wechat.pay.java.core.RSAConfig;
-import com.wechat.pay.java.service.transferbatch.model.GetTransferBatchByNoRequest;
-import com.wechat.pay.java.service.transferbatch.model.GetTransferBatchByOutNoRequest;
-import com.wechat.pay.java.service.transferbatch.model.GetTransferDetailByNoRequest;
-import com.wechat.pay.java.service.transferbatch.model.GetTransferDetailByOutNoRequest;
-import com.wechat.pay.java.service.transferbatch.model.InitiateBatchTransferRequest;
-import com.wechat.pay.java.service.transferbatch.model.InitiateBatchTransferResponse;
-import com.wechat.pay.java.service.transferbatch.model.TransferBatchEntity;
-import com.wechat.pay.java.service.transferbatch.model.TransferDetailEntity;
+import com.wechat.pay.java.service.transferbatch.model.*;
 
 /** TransferBatchService使用示例 */
 public class TransferBatchServiceExample {
