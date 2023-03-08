@@ -12,6 +12,10 @@
 
 package com.wechat.pay.java.service.transferbatch;
 
+import static com.wechat.pay.java.core.http.UrlEncoder.urlEncode;
+import static com.wechat.pay.java.core.util.GsonUtil.toJson;
+import static java.util.Objects.requireNonNull;
+
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.cipher.PrivacyDecryptor;
 import com.wechat.pay.java.core.cipher.PrivacyEncryptor;
@@ -19,12 +23,26 @@ import com.wechat.pay.java.core.exception.HttpException;
 import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.exception.ServiceException;
 import com.wechat.pay.java.core.exception.ValidationException;
-import com.wechat.pay.java.core.http.*;
-import com.wechat.pay.java.service.transferbatch.model.*;
-
-import static com.wechat.pay.java.core.http.UrlEncoder.urlEncode;
-import static com.wechat.pay.java.core.util.GsonUtil.toJson;
-import static java.util.Objects.requireNonNull;
+import com.wechat.pay.java.core.http.Constant;
+import com.wechat.pay.java.core.http.DefaultHttpClientBuilder;
+import com.wechat.pay.java.core.http.HostName;
+import com.wechat.pay.java.core.http.HttpClient;
+import com.wechat.pay.java.core.http.HttpHeaders;
+import com.wechat.pay.java.core.http.HttpMethod;
+import com.wechat.pay.java.core.http.HttpRequest;
+import com.wechat.pay.java.core.http.HttpResponse;
+import com.wechat.pay.java.core.http.JsonRequestBody;
+import com.wechat.pay.java.core.http.MediaType;
+import com.wechat.pay.java.core.http.QueryParameter;
+import com.wechat.pay.java.core.http.RequestBody;
+import com.wechat.pay.java.service.transferbatch.model.GetTransferBatchByNoRequest;
+import com.wechat.pay.java.service.transferbatch.model.GetTransferBatchByOutNoRequest;
+import com.wechat.pay.java.service.transferbatch.model.GetTransferDetailByNoRequest;
+import com.wechat.pay.java.service.transferbatch.model.GetTransferDetailByOutNoRequest;
+import com.wechat.pay.java.service.transferbatch.model.InitiateBatchTransferRequest;
+import com.wechat.pay.java.service.transferbatch.model.InitiateBatchTransferResponse;
+import com.wechat.pay.java.service.transferbatch.model.TransferBatchEntity;
+import com.wechat.pay.java.service.transferbatch.model.TransferDetailEntity;
 
 /** TransferBatchService服务 */
 public class TransferBatchService {

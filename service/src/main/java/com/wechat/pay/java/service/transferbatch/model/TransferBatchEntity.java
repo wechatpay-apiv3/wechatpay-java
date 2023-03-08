@@ -12,11 +12,10 @@
 
 package com.wechat.pay.java.service.transferbatch.model;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
-
 import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
+
+import com.google.gson.annotations.SerializedName;
+import java.util.List;
 
 /** TransferBatchEntity */
 public class TransferBatchEntity {

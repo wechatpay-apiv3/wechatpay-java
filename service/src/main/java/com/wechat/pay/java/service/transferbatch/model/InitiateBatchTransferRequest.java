@@ -12,14 +12,13 @@
 
 package com.wechat.pay.java.service.transferbatch.model;
 
+import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
+
 import com.google.gson.annotations.SerializedName;
 import com.wechat.pay.java.core.cipher.Encryption;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.UnaryOperator;
-
-import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
 
 /** InitiateBatchTransferRequest */
 public class InitiateBatchTransferRequest {
