@@ -220,19 +220,21 @@ Config config =
 
 ## 回调通知验签和解密
 
-可以使用 [notification](core/src/main/java/com/wechat/pay/java/core/notification) 中的 `NotificationParser` 解析回调通知。具体步骤如下：
+首先，你需要在你的服务器上创建一个公开的 HTTP 端点，接受来自微信支付的回调通知。
+当接收到回调通知，使用 [notification](core/src/main/java/com/wechat/pay/java/core/notification) 中的 `NotificationParser` 解析回调通知。
 
-1. 获取 HTTP 请求头中的以下值，构建 `RequestParam` 。
-    - `Wechatpay-Signature`
-    - `Wechatpay-Nonce`
-    - `Wechatpay-Timestamp`
-    - `Wechatpay-Serial`
-    - `Wechatpay-Signature-Type`
-2. 获取 HTTP 请求体 body。切记不要用 JSON 对象序列化后的字符串，避免验签的 body 和原文不一致。
-3. 根据解密后的通知数据数据结构，构造解密对象类 `DecryptObject` 。支付结果通知解密对象类为 [`Transaction`](service/src/main/java/com/wechat/pay/java/service/payments/model/Transaction.java)，退款结果通知解密对象类为 [RefundNotification](service/src/main/java/com/wechat/pay/java/service/refund/model/RefundNotification.java)。
-4. 初始化 `RSAAutoCertificateConfig`。微信支付平台证书由 SDK 的自动更新平台能力提供，也可以使用本地证书。
-5. 初始化 `NotificationParser`。
-6. 使用请求参数 `requestParam` 和 `DecryptObject.class` ，调用 `parser.parse` 验签并解密报文。
+具体步骤如下：
+
+1. 使用回调通知请求的数据，构建 `RequestParam`。
+    - HTTP 头 `Wechatpay-Signature`
+    - HTTP 头 `Wechatpay-Nonce`
+    - HTTP 头 `Wechatpay-Timestamp`
+    - HTTP 头 `Wechatpay-Serial`
+    - HTTP 头 `Wechatpay-Signature-Type`
+    - HTTP 请求体 body。切记使用原始报文，不要用 JSON 对象序列化后的字符串，避免验签的 body 和原文不一致。
+2. 初始化 `RSAAutoCertificateConfig`。微信支付平台证书由 SDK 的自动更新平台能力提供，也可以使用本地证书。
+3. 初始化 `NotificationParser`。
+4. 调用 `NotificationParser.parse()` 验签、解密并将 JSON 转换成具体的通知回调对象。
 
 ```java
 // 构造 RequestParam
@@ -241,8 +243,6 @@ RequestParam requestParam = new RequestParam.Builder()
         .nonce(nonce)
         .signature(signature)
         .timestamp(timestamp)
-// 若未设置signType，默认值为 WECHATPAY2-SHA256-RSA2048
-        .signType(signType)
         .body(requestBody)
         .build();
 
@@ -258,9 +258,18 @@ NotificationConfig config = new RSAAutoCertificateConfig.Builder()
 // 初始化 NotificationParser
 NotificationParser parser = new NotificationParser(config);
 
-// 验签并解密报文
-DecryptObject decryptObject = parser.parse(requestParam,DecryptObject.class);
+// 以支付通知回调为例，验签、解密并转换成 Transaction
+Transaction transaction = parser.parse(requestParam, Transaction.class);
 ```
+
+常用的通知回调对象类型：
+
++ 支付 `Transaction`
++ 退款 `RefundNotification`
++ 若 SDK 暂不支持的类型，请使用 `Map.class`，嵌套的 Json 对象将被转换成 `LinkedTreeMap`
+
+你既可以为每个通知回调使用不同的 HTTP 端点，也可以使用一个端点根据 `event_type` 处理不同的通知回调。
+我们建议，不同的通知回调使用不同的端点，直接调用 SDK 处理通知回调，避免商户自己解析报文。因为 SDK 会先验证通知回调的有效性，可有效防止"坏人"的报文攻击。
 
 ## 发送 HTTP 请求
 
