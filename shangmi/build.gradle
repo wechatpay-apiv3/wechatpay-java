@@ -4,7 +4,7 @@ plugins{
 
 ext {
     publishedArtifactId = "wechatpay-java-shangmi"
-    kona_version = "1.0.3"
+    kona_version = "1.0.7.1"
 }
 
 dependencies {
