@@ -1,5 +1,5 @@
 [![JavaDoc](http://img.shields.io/badge/javadoc-reference-blue.svg)](https://www.javadoc.io/doc/com.github.wechatpay-apiv3/wechatpay-java/latest/index.html)
-![Maven Central](https://img.shields.io/maven-central/v/com.github.wechatpay-apiv3/wechatpay-java?versionPrefix=0.2.6)
+![Maven Central](https://img.shields.io/maven-central/v/com.github.wechatpay-apiv3/wechatpay-java?versionPrefix=0.2.7)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=wechatpay-apiv3_wechatpay-java&metric=security_rating)](https://sonarcloud.io/summary/overall?id=wechatpay-apiv3_wechatpay-java)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=wechatpay-apiv3_wechatpay-java&metric=sqale_rating)](https://sonarcloud.io/summary/overall?id=wechatpay-apiv3_wechatpay-java)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=wechatpay-apiv3_wechatpay-java&metric=coverage)](https://sonarcloud.io/summary/overall?id=wechatpay-apiv3_wechatpay-java)
@@ -36,7 +36,7 @@
 在你的 build.gradle 文件中加入如下的依赖
 
 ```groovy
-implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.6'
+implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.7'
 ```
 
 #### Maven
@@ -47,66 +47,68 @@ implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.6'
 <dependency>
   <groupId>com.github.wechatpay-apiv3</groupId>
   <artifactId>wechatpay-java</artifactId>
-  <version>0.2.6</version>
+  <version>0.2.7</version>
 </dependency>
 ```
 
 ### 调用业务请求接口
 
-以 JSAPI 下单为例，先构建 `config` 和 `service`，再发送请求。详细代码可参考 [QuickStart](service/src/example/java/com/wechat/pay/java/service/QuickStart.java)。
+以 Native 支付下单为例，先补充商户号等必要参数以构建 `config`，再构建 `service` 即可调用 `prepay()` 发送请求。
 
 ```java
 package com.wechat.pay.java.service;
 
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.RSAAutoCertificateConfig;
-import com.wechat.pay.java.service.payments.jsapi.JsapiService;
-import com.wechat.pay.java.service.payments.jsapi.model.Amount;
-import com.wechat.pay.java.service.payments.jsapi.model.Payer;
-import com.wechat.pay.java.service.payments.jsapi.model.PrepayRequest;
-import com.wechat.pay.java.service.payments.jsapi.model.PrepayResponse;
+import com.wechat.pay.java.service.payments.nativepay.NativePayService;
+import com.wechat.pay.java.service.payments.nativepay.model.Amount;
+import com.wechat.pay.java.service.payments.nativepay.model.PrepayRequest;
+import com.wechat.pay.java.service.payments.nativepay.model.PrepayResponse;
 
-/** JSAPI 下单为例 */
+/** Native 支付下单为例 */
 public class QuickStart {
 
-  /** 商户号 */
-  public static String merchantId = "";
-  /** 商户API私钥路径 */
-  public static String privateKeyPath = "";
-  /** 商户证书序列号 */
-  public static String merchantSerialNumber = "";
-  /** 商户APIV3密钥 */
-  public static String apiV3key = "";
+    /** 商户号 */
+    public static String merchantId = "";
+    /** 商户API私钥路径 */
+    public static String privateKeyPath = "";
+    /** 商户证书序列号 */
+    public static String merchantSerialNumber = "";
+    /** 商户APIV3密钥 */
+    public static String apiV3key = "";
 
-  public static void main(String[] args) {
-    Config config =
-        new RSAAutoCertificateConfig.Builder()
-            .merchantId(merchantId)
-            .privateKeyFromPath(privateKeyPath)
-            .merchantSerialNumber(merchantSerialNumber)
-            .apiV3Key(apiV3key)
-            .build();
-    JsapiService service = new JsapiService.Builder().config(config).build();
-    // request.setXxx(val)设置所需参数，具体参数可见Request定义
-    PrepayRequest request = new PrepayRequest();
-    Amount amount = new Amount();
-    amount.setTotal(100);
-    request.setAmount(amount);
-    request.setAppid("wxa9d9651ae******");
-    request.setMchid("190000****");
-    request.setDescription("测试商品标题");
-    request.setNotifyUrl("https://notify_url");
-    request.setOutTradeNo("out_trade_no_001");
-    Payer payer = new Payer();
-    payer.setOpenid("oLTPCuN5a-nBD4rAL_fa********");
-    request.setPayer(payer);
-    PrepayResponse response = service.prepay(request);
-    System.out.println(response.getPrepayId());
-  }
+    public static void main(String[] args) {
+        // 使用自动更新平台证书的RSA配置
+        // 一个商户号只能初始化一个配置，否则会因为重复的下载任务报错
+        Config config =
+                new RSAAutoCertificateConfig.Builder()
+                        .merchantId(merchantId)
+                        .privateKeyFromPath(privateKeyPath)
+                        .merchantSerialNumber(merchantSerialNumber)
+                        .apiV3Key(apiV3key)
+                        .build();
+        // 构建service
+        NativePayService service = new NativePayService.Builder().config(config).build();
+        // request.setXxx(val)设置所需参数，具体参数可见Request定义
+        PrepayRequest request = new PrepayRequest();
+        Amount amount = new Amount();
+        amount.setTotal(100);
+        request.setAmount(amount);
+        request.setAppid("wxa9d9651ae******");
+        request.setMchid("190000****");
+        request.setDescription("测试商品标题");
+        request.setNotifyUrl("https://notify_url");
+        request.setOutTradeNo("out_trade_no_001");
+        // 调用下单方法，得到应答
+        PrepayResponse response = service.prepay(request);
+        // 使用微信扫描 code_url 对应的二维码，即可体验Native支付
+        System.out.println(response.getCodeUrl());
+    }
 }
+
 ```
 
-从示例可见，使用 SDK 并不需要计算请求签名和验证应答签名。
+从示例可见，使用 SDK 不需要计算请求签名和验证应答签名。详细代码可从 [QuickStart](service/src/example/java/com/wechat/pay/java/service/QuickStart.java) 获得。
 
 ## 示例
 
@@ -218,19 +220,21 @@ Config config =
 
 ## 回调通知验签和解密
 
-可以使用 [notification](core/src/main/java/com/wechat/pay/java/core/notification) 中的 `NotificationParser` 解析回调通知。具体步骤如下：
+首先，你需要在你的服务器上创建一个公开的 HTTP 端点，接受来自微信支付的回调通知。
+当接收到回调通知，使用 [notification](core/src/main/java/com/wechat/pay/java/core/notification) 中的 `NotificationParser` 解析回调通知。
 
-1. 获取 HTTP 请求头中的以下值，构建 `RequestParam` 。
-    - `Wechatpay-Signature`
-    - `Wechatpay-Nonce`
-    - `Wechatpay-Timestamp`
-    - `Wechatpay-Serial`
-    - `Wechatpay-Signature-Type`
-2. 获取 HTTP 请求体 body。切记不要用 JSON 对象序列化后的字符串，避免验签的 body 和原文不一致。
-3. 根据解密后的通知数据数据结构，构造解密对象类 `DecryptObject` 。支付结果通知解密对象类为 [`Transaction`](service/src/main/java/com/wechat/pay/java/service/payments/model/Transaction.java)，退款结果通知解密对象类为 [RefundNotification](service/src/main/java/com/wechat/pay/java/service/refund/model/RefundNotification.java)。
-4. 初始化 `RSAAutoCertificateConfig`。微信支付平台证书由 SDK 的自动更新平台能力提供，也可以使用本地证书。
-5. 初始化 `NotificationParser`。
-6. 使用请求参数 `requestParam` 和 `DecryptObject.class` ，调用 `parser.parse` 验签并解密报文。
+具体步骤如下：
+
+1. 使用回调通知请求的数据，构建 `RequestParam`。
+    - HTTP 头 `Wechatpay-Signature`
+    - HTTP 头 `Wechatpay-Nonce`
+    - HTTP 头 `Wechatpay-Timestamp`
+    - HTTP 头 `Wechatpay-Serial`
+    - HTTP 头 `Wechatpay-Signature-Type`
+    - HTTP 请求体 body。切记使用原始报文，不要用 JSON 对象序列化后的字符串，避免验签的 body 和原文不一致。
+2. 初始化 `RSAAutoCertificateConfig`。微信支付平台证书由 SDK 的自动更新平台能力提供，也可以使用本地证书。
+3. 初始化 `NotificationParser`。
+4. 调用 `NotificationParser.parse()` 验签、解密并将 JSON 转换成具体的通知回调对象。
 
 ```java
 // 构造 RequestParam
@@ -239,8 +243,6 @@ RequestParam requestParam = new RequestParam.Builder()
         .nonce(nonce)
         .signature(signature)
         .timestamp(timestamp)
-// 若未设置signType，默认值为 WECHATPAY2-SHA256-RSA2048
-        .signType(signType)
         .body(requestBody)
         .build();
 
@@ -256,9 +258,18 @@ NotificationConfig config = new RSAAutoCertificateConfig.Builder()
 // 初始化 NotificationParser
 NotificationParser parser = new NotificationParser(config);
 
-// 验签并解密报文
-DecryptObject decryptObject = parser.parse(requestParam,DecryptObject.class);
+// 以支付通知回调为例，验签、解密并转换成 Transaction
+Transaction transaction = parser.parse(requestParam, Transaction.class);
 ```
+
+常用的通知回调对象类型：
+
++ 支付 `Transaction`
++ 退款 `RefundNotification`
++ 若 SDK 暂不支持的类型，请使用 `Map.class`，嵌套的 Json 对象将被转换成 `LinkedTreeMap`
+
+你既可以为每个通知回调使用不同的 HTTP 端点，也可以使用一个端点根据 `event_type` 处理不同的通知回调。
+我们建议，不同的通知回调使用不同的端点，直接调用 SDK 处理通知回调，避免商户自己解析报文。因为 SDK 会先验证通知回调的有效性，可有效防止"坏人"的报文攻击。
 
 ## 发送 HTTP 请求
 
@@ -372,6 +383,12 @@ SDK 的日志会跟你的日志记录在一起。
 - 调起支付签名，SDK 提供了下单并生成调起支付参数的方法，请参考 [示例](#下单并生成调起支付的参数)。
 
 - 其他场景计算签名，请参考 [JsapiServiceExtension](https://github.com/wechatpay-apiv3/wechatpay-java/blob/968a2ff8fb35c808f82827342abb100e30691a98/service/src/main/java/com/wechat/pay/java/service/payments/jsapi/JsapiServiceExtension.java#L59) 使用 [Signer](https://github.com/wechatpay-apiv3/wechatpay-java/blob/main/core/src/main/java/com/wechat/pay/java/core/cipher/Signer.java) 计算签名的例子。
+
+### 为什么快速开始的示例程序执行后，程序不会退出？
+
+是的，因为示例使用了自动更新微信支付平台证书，它会启动一个背景线程以定时更新证书。这个线程不会自动退出。
+
+你可以主动终止程序，退出不会有副作用。 我们也在考虑如何提供优雅的退出方式。
 
 ## 如何参与开发
 
