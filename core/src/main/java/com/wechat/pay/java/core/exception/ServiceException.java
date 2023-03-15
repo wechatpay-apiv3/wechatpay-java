@@ -26,7 +26,7 @@ public class ServiceException extends WechatPayException {
   public ServiceException(HttpRequest httpRequest, int httpStatusCode, String responseBody) {
     super(
         String.format(
-            "Wrong HttpStatusCode[%d]%nhttResponseBody[%.1024s]\tHttpRequest[%s]",
+            "Wrong HttpStatusCode[%d]%nhttpResponseBody[%.1024s]\tHttpRequest[%s]",
             httpStatusCode, responseBody, httpRequest));
     this.httpRequest = httpRequest;
     this.httpStatusCode = httpStatusCode;
