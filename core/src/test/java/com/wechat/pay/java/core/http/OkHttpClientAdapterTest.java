@@ -23,7 +23,6 @@ import java.nio.file.Paths;
 import java.util.zip.GZIPOutputStream;
 import okhttp3.Headers;
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.OkHttpClient.Builder;
 import okhttp3.Protocol;
@@ -312,15 +311,6 @@ public class OkHttpClientAdapterTest {
             .fileName(imageName)
             .file(IOUtil.toByteArray(inputStream))
             .build();
-    okhttp3.RequestBody fileBody =
-        okhttp3.RequestBody.create(
-            requestBody.getFile(), okhttp3.MediaType.parse(requestBody.getContentType()));
-    okhttp3.RequestBody multiPartBody =
-        new MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
-            .addFormDataPart("meta", "meta")
-            .addFormDataPart("file", imageName, fileBody)
-            .build();
 
     Credential executeSendPostWithFileCredential =
         new Credential() {
@@ -373,8 +363,10 @@ public class OkHttpClientAdapterTest {
                   okhttp3.RequestBody okHttpRequestBody = chain.request().body();
 
                   Assert.assertNotNull(requestBody);
-                  Assert.assertEquals(
-                      multiPartBody.contentLength(), okHttpRequestBody.contentLength());
+
+                  Buffer bodyBuffer = new Buffer();
+                  okHttpRequestBody.writeTo(bodyBuffer);
+                  Assert.assertEquals(okHttpRequestBody.contentLength(), bodyBuffer.size());
                   Assert.assertEquals(executeSendPostWithFileMethod, HttpMethod.POST.name());
                   Assert.assertEquals(URL, chain.request().url().url().toString());
                   Assert.assertEquals(3, executeSendPostWithFileHeaders.size());

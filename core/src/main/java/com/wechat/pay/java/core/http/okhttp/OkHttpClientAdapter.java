@@ -16,15 +16,63 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okio.Buffer;
+import okio.BufferedSink;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /** OkHttp请求客户端 */
 public final class OkHttpClientAdapter extends AbstractHttpClient {
+
+  static final class ContentLengthRequestInterceptor implements Interceptor {
+    @NotNull
+    @Override
+    public Response intercept(@NotNull Chain chain) throws IOException {
+      Request original = chain.request();
+
+      if (original.body() == null || original.body().contentLength() >= 0) {
+        return chain.proceed(original);
+      }
+
+      Request newRequest =
+          original
+              .newBuilder()
+              .method(original.method(), addContentLength(original.body()))
+              .build();
+      return chain.proceed(newRequest);
+    }
+
+    private RequestBody addContentLength(final RequestBody delegate) {
+      return new RequestBody() {
+        @Nullable
+        @Override
+        public MediaType contentType() {
+          return delegate.contentType();
+        }
+
+        @Override
+        public void writeTo(@NotNull BufferedSink bufferedSink) throws IOException {
+          delegate.writeTo(bufferedSink);
+        }
+
+        @Override
+        public long contentLength() throws IOException {
+          final Buffer buffer = new Buffer();
+          delegate.writeTo(buffer);
+          return buffer.size();
+        }
+      };
+    }
+  }
 
   private static final Logger logger = LoggerFactory.getLogger(OkHttpClientAdapter.class);
   private static final String META_NAME = "meta";
@@ -35,7 +83,11 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
   public OkHttpClientAdapter(
       Credential credential, Validator validator, okhttp3.OkHttpClient client) {
     super(credential, validator);
-    this.okHttpClient = requireNonNull(client);
+
+    // OkHttpClient is immutable, add Interceptor to new copy
+    OkHttpClient.Builder builder = requireNonNull(client).newBuilder();
+    builder.interceptors().add(0, new ContentLengthRequestInterceptor());
+    this.okHttpClient = builder.build();
   }
 
   @Override
@@ -100,16 +152,39 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
         okhttp3.MediaType.parse(wechatPayRequestBody.getContentType()));
   }
 
+  /**
+   * 构造一个不会返回 Content-Length 的 RequestBody（默认是-1L） 这样构造 FormDataPart 输出 MultiPart 的时候就不会携带
+   * Content-Length
+   */
+  private RequestBody stripLength(RequestBody delegate) {
+    return new RequestBody() {
+      @Override
+      public MediaType contentType() {
+        return delegate.contentType();
+      }
+
+      @Override
+      public void writeTo(@NotNull BufferedSink sink) throws IOException {
+        delegate.writeTo(sink);
+      }
+    };
+  }
+
   private RequestBody createOkHttpMultipartRequestBody(
       com.wechat.pay.java.core.http.RequestBody wechatPayRequestBody) {
     FileRequestBody fileRequestBody = (FileRequestBody) wechatPayRequestBody;
+    okhttp3.RequestBody okHttpMetaBody =
+        createRequestBody(
+            fileRequestBody.getMeta(),
+            okhttp3.MediaType.parse(
+                com.wechat.pay.java.core.http.MediaType.APPLICATION_JSON.getValue()));
     okhttp3.RequestBody okHttpFileBody =
         createRequestBody(
             fileRequestBody.getFile(), okhttp3.MediaType.parse(fileRequestBody.getContentType()));
     return new okhttp3.MultipartBody.Builder()
         .setType(MultipartBody.FORM)
-        .addFormDataPart(META_NAME, fileRequestBody.getMeta())
-        .addFormDataPart(FILE_NAME, fileRequestBody.getFileName(), okHttpFileBody)
+        .addFormDataPart(META_NAME, null, stripLength(okHttpMetaBody))
+        .addFormDataPart(FILE_NAME, fileRequestBody.getFileName(), stripLength(okHttpFileBody))
         .build();
   }
 
