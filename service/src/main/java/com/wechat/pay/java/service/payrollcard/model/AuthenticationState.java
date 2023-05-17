@@ -16,11 +16,11 @@ import com.google.gson.annotations.SerializedName;
 /** AuthenticationState */
 public enum AuthenticationState {
   @SerializedName("AUTHENTICATE_PROCESSING")
-  PROCESSING,
+  AUTHENTICATE_PROCESSING,
 
   @SerializedName("AUTHENTICATE_SUCCESS")
-  SUCCESS,
+  AUTHENTICATE_SUCCESS,
 
   @SerializedName("AUTHENTICATE_FAILED")
-  FAILED
+  AUTHENTICATE_FAILED
 }
