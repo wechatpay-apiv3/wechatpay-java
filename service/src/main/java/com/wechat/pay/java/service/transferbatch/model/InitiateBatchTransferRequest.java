@@ -44,7 +44,7 @@ public class InitiateBatchTransferRequest {
   @Encryption
   @SerializedName("transfer_detail_list")
   private List<TransferDetailInput> transferDetailList = new ArrayList<TransferDetailInput>();
-  /** 转账场景ID 说明：该批次转账使用的转账场景，如不填写则使用商家的默认场景，如无默认场景可为空，可前往“商家转账到零钱-前往功能”中申请。 如：1001-现金营销 */
+  /** 转账场景ID 说明：必填，指定该笔转账使用的转账场景ID */
   @SerializedName("transfer_scene_id")
   private String transferSceneId;
 

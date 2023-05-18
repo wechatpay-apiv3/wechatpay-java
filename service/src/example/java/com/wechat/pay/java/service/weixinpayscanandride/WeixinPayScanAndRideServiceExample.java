@@ -1,10 +1,7 @@
 package com.wechat.pay.java.service.weixinpayscanandride;
 
 import com.wechat.pay.java.core.RSAConfig;
-import com.wechat.pay.java.service.weixinpayscanandride.model.CreatePalmPayTransactionRequest;
 import com.wechat.pay.java.service.weixinpayscanandride.model.CreateTransactionRequest;
-import com.wechat.pay.java.service.weixinpayscanandride.model.PalmPayTransaction;
-import com.wechat.pay.java.service.weixinpayscanandride.model.QueryPalmPayTransactionRequest;
 import com.wechat.pay.java.service.weixinpayscanandride.model.QueryTransactionRequest;
 import com.wechat.pay.java.service.weixinpayscanandride.model.QueryUserServiceRequest;
 import com.wechat.pay.java.service.weixinpayscanandride.model.TransactionsEntity;
@@ -33,17 +30,6 @@ public class WeixinPayScanAndRideServiceExample {
     // 初始化服务
     service = new WeixinPayScanAndRideService.Builder().config(config).build();
     // ... 调用接口
-  }
-  /** 直连商户扣费受理—刷掌地铁 */
-  public static PalmPayTransaction createPalmPayTransaction() {
-    CreatePalmPayTransactionRequest request = new CreatePalmPayTransactionRequest();
-    return service.createPalmPayTransaction(request);
-  }
-  /** 直连商户查询订单—刷掌地铁 */
-  public static PalmPayTransaction queryPalmPayTransaction() {
-
-    QueryPalmPayTransactionRequest request = new QueryPalmPayTransactionRequest();
-    return service.queryPalmPayTransaction(request);
   }
   /** 扣费受理 */
   public static TransactionsEntity createTransaction() {

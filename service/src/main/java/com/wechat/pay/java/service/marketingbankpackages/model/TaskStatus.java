@@ -14,7 +14,7 @@ package com.wechat.pay.java.service.marketingbankpackages.model;
 
 import com.google.gson.annotations.SerializedName;
 
-/** TaskStatus */
+/** PROCESSING - 处理中，上传任务处理中，请等待 FINISHED - 已完成，上传任务已处理完成，任务上传的文件中的用户已导入到号码包中 */
 public enum TaskStatus {
   @SerializedName("PROCESSING")
   PROCESSING,

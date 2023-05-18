@@ -41,9 +41,6 @@ public class Task {
    */
   @SerializedName("update_time")
   private String updateTime;
-  /** 任务状态 说明：上传任务的状态：PROCESSING - 处理中，FINISHED - 已完成 */
-  @SerializedName("status")
-  private TaskStatus status;
   /** 成功数 说明：匹配成功的协议号数。仅当任务状态是FINISHED时，该数据才有效 */
   @SerializedName("success_count")
   private Long successCount;
@@ -62,6 +59,9 @@ public class Task {
    */
   @SerializedName("bank_type")
   private String bankType;
+  /** 任务状态 说明：上传任务的状态：PROCESSING - 处理中，FINISHED - 已完成 */
+  @SerializedName("status")
+  private TaskStatus status;
 
   public String getTaskId() {
     return taskId;
@@ -103,14 +103,6 @@ public class Task {
     this.updateTime = updateTime;
   }
 
-  public TaskStatus getStatus() {
-    return status;
-  }
-
-  public void setStatus(TaskStatus status) {
-    this.status = status;
-  }
-
   public Long getSuccessCount() {
     return successCount;
   }
@@ -143,6 +135,14 @@ public class Task {
     this.bankType = bankType;
   }
 
+  public TaskStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(TaskStatus status) {
+    this.status = status;
+  }
+
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
@@ -152,11 +152,11 @@ public class Task {
     sb.append("    filename: ").append(toIndentedString(filename)).append("\n");
     sb.append("    createTime: ").append(toIndentedString(createTime)).append("\n");
     sb.append("    updateTime: ").append(toIndentedString(updateTime)).append("\n");
-    sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    successCount: ").append(toIndentedString(successCount)).append("\n");
     sb.append("    failCount: ").append(toIndentedString(failCount)).append("\n");
     sb.append("    successUserCount: ").append(toIndentedString(successUserCount)).append("\n");
     sb.append("    bankType: ").append(toIndentedString(bankType)).append("\n");
+    sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
     return sb.toString();
   }

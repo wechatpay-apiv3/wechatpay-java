@@ -16,8 +16,8 @@ import com.google.gson.annotations.SerializedName;
 /** AuthenticationScene */
 public enum AuthenticationScene {
   @SerializedName("FROM_MINI_APP")
-  FROM_MINI_APP,
+  MINI_APP,
 
   @SerializedName("FROM_HARDWARE")
-  FROM_HARDWARE
+  HARDWARE
 }
