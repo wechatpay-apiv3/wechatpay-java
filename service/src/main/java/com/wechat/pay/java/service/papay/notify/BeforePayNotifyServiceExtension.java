@@ -29,11 +29,11 @@ public class BeforePayNotifyServiceExtension {
   }
 
   /**
-   * 预扣款通知
+   * 发送 预扣款通知
    *
    * @param request 请求参数
    */
-  public void notify(BeforePayNotifyRequest request) {
+  public void sendNotify(BeforePayNotifyRequest request) {
     beforePayNotifyService.sendNotify(request);
   }
 
