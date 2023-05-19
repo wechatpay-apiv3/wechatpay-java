@@ -20,3 +20,4 @@
 | lovefeast | 爱心餐 |✔️||
 | transferbatch | 商家转账 |✔️||
 | goldplan | 点金计划 ||✔️|
+| wexinpayscoreparking | 微信支付分停车 |✔️|✔️|
