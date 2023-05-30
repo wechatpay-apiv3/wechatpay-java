@@ -1,5 +1,16 @@
 package com.wechat.pay.java.core.http;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.wechat.pay.java.core.http.okhttp.OkHttpMultiDomainInterceptor;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import okhttp3.Dns;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -14,19 +25,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import com.wechat.pay.java.core.http.okhttp.OkHttpMultiDomainInterceptor;
-
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 public class OkHttpMultiDomainInterceptorTest {
   private FakeDns fakeDns;
 
@@ -39,18 +37,20 @@ public class OkHttpMultiDomainInterceptorTest {
   @Test
   void testOkHttpMultiDomain() throws IOException {
     OkHttpMultiDomainInterceptor interceptor = new OkHttpMultiDomainInterceptor();
-    final OkHttpClient client = new OkHttpClient.Builder().dns(fakeDns).addInterceptor(interceptor).build();
+    final OkHttpClient client =
+        new OkHttpClient.Builder().dns(fakeDns).addInterceptor(interceptor).build();
 
     InetAddress nullAddress = InetAddress.getByName("10.0.0.1");
     InetAddress realAddress = InetAddress.getByName("121.51.50.140");
     fakeDns.addAddress("api.mch.weixin.qq.com", nullAddress);
     fakeDns.addAddress("api2.wechatpay.cn", realAddress);
 
-    Request request = new Request.Builder()
-        .url("https://api.mch.weixin.qq.com/v3/pay/transactions/id/1234?mchid=1234")
-        .header("User-Agent", "testOkHttpMultiDomain")
-        .header("Accept", "*/*")
-        .build();
+    Request request =
+        new Request.Builder()
+            .url("https://api.mch.weixin.qq.com/v3/pay/transactions/id/1234?mchid=1234")
+            .header("User-Agent", "testOkHttpMultiDomain")
+            .header("Accept", "*/*")
+            .build();
 
     try (Response response = client.newCall(request).execute()) {
       assertEquals(401, response.code());
@@ -61,25 +61,27 @@ public class OkHttpMultiDomainInterceptorTest {
   void testOkHttpMultiDomainWithMock() throws Exception {
     MockWebServer server = new MockWebServer();
     OkHttpMultiDomainInterceptor interceptor = new OkHttpMultiDomainInterceptor();
-    final OkHttpClient client = new OkHttpClient.Builder().dns(fakeDns).addInterceptor(interceptor).build();
+    final OkHttpClient client =
+        new OkHttpClient.Builder().dns(fakeDns).addInterceptor(interceptor).build();
 
-    server.enqueue(new MockResponse()
-        .setSocketPolicy(SocketPolicy.DISCONNECT_AFTER_REQUEST));
-    server.enqueue(new MockResponse()
-        .setBody("Successful"));
+    server.enqueue(new MockResponse().setSocketPolicy(SocketPolicy.DISCONNECT_AFTER_REQUEST));
+    server.enqueue(new MockResponse().setBody("Successful"));
 
     HttpUrl mockUrl = server.url("/test");
     System.out.println(mockUrl.host());
-    fakeDns.addAddress("api.mch.weixin.qq.com",
-        InetAddress.getByAddress("api.mch.weixin.qq.com", new byte[] { 127, 0, 0, 1 }));
-    fakeDns.addAddress("api2.wechatpay.cn",
-        InetAddress.getByAddress("api2.wechatpay.cn", new byte[] { 127, 0, 0, 1 }));
+    fakeDns.addAddress(
+        "api.mch.weixin.qq.com",
+        InetAddress.getByAddress("api.mch.weixin.qq.com", new byte[] {127, 0, 0, 1}));
+    fakeDns.addAddress(
+        "api2.wechatpay.cn",
+        InetAddress.getByAddress("api2.wechatpay.cn", new byte[] {127, 0, 0, 1}));
 
-    Request request = new Request.Builder()
-        .url(mockUrl.newBuilder().host("api.mch.weixin.qq.com").build())
-        .header("User-Agent", "testOkHttpMultiDomain")
-        .header("Accept", "*/*")
-        .build();
+    Request request =
+        new Request.Builder()
+            .url(mockUrl.newBuilder().host("api.mch.weixin.qq.com").build())
+            .header("User-Agent", "testOkHttpMultiDomain")
+            .header("Accept", "*/*")
+            .build();
 
     try (Response response = client.newCall(request).execute()) {
       assertEquals(200, response.code());

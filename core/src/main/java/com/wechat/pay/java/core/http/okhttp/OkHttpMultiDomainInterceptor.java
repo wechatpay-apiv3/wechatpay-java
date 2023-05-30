@@ -1,22 +1,18 @@
 package com.wechat.pay.java.core.http.okhttp;
 
+import com.wechat.pay.java.core.http.Constant;
 import java.io.IOException;
-
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
+import okhttp3.Request;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.wechat.pay.java.core.http.Constant;
-
-import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
-import okhttp3.Request;
-
 /**
- * A dual-domain retry interceptor.
- * This is an application interceptor that retries a request using "api2.wechatpay.cn" in case of network failure.
- * It leverages disaster recovery in different city access data centers,
- * while also avoiding failures due to DNS blocking.
+ * A dual-domain retry interceptor. This is an application interceptor that retries a request using
+ * "api2.wechatpay.cn" in case of network failure. It leverages disaster recovery in different city
+ * access data centers, while also avoiding failures due to DNS blocking.
  */
 public class OkHttpMultiDomainInterceptor implements Interceptor {
   private static final Logger logger = LoggerFactory.getLogger(OkHttpMultiDomainInterceptor.class);
@@ -27,7 +23,8 @@ public class OkHttpMultiDomainInterceptor implements Interceptor {
     Request request = chain.request();
     String hostname = request.url().host();
 
-    boolean shouldRetry = (hostname.equals("api.mch.weixin.qq.com") || hostname.equals("api.wechatpay.cn"));
+    boolean shouldRetry =
+        (hostname.equals("api.mch.weixin.qq.com") || hostname.equals("api.wechatpay.cn"));
 
     if (shouldRetry) {
       try {
@@ -54,7 +51,8 @@ public class OkHttpMultiDomainInterceptor implements Interceptor {
 
     Request.Builder reqBuilder = originalRequest.newBuilder();
     reqBuilder.url(urlBuilder.build());
-    reqBuilder.header(Constant.USER_AGENT, originalRequest.header(Constant.USER_AGENT) + " (Retried-V1)");
+    reqBuilder.header(
+        Constant.USER_AGENT, originalRequest.header(Constant.USER_AGENT) + " (Retried-V1)");
 
     return reqBuilder.build();
   }
