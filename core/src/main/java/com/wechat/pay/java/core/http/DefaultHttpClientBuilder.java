@@ -6,6 +6,7 @@ import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
 import com.wechat.pay.java.core.http.okhttp.OkHttpClientAdapter;
+import com.wechat.pay.java.core.http.okhttp.OkHttpMultiDomainInterceptor;
 import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
@@ -21,6 +22,9 @@ public class DefaultHttpClientBuilder
   private int writeTimeoutMs = -1;
   private int connectTimeoutMs = -1;
   private Proxy proxy;
+  private boolean disableMultiDomain = false;
+  private static final OkHttpMultiDomainInterceptor multiDomainInterceptor =
+      new OkHttpMultiDomainInterceptor();
 
   /**
    * 复制工厂，复制一个当前对象
@@ -120,6 +124,17 @@ public class DefaultHttpClientBuilder
     this.proxy = proxy;
     return this;
   }
+
+  /**
+   * 不使用双域名容灾
+   *
+   * @return defaultHttpClientBuilder
+   */
+  public DefaultHttpClientBuilder disableMultiDomain() {
+    this.disableMultiDomain = true;
+    return this;
+  }
+
   /**
    * 构建默认HttpClient
    *
@@ -142,6 +157,9 @@ public class DefaultHttpClientBuilder
     }
     if (proxy != null) {
       okHttpClientBuilder.proxy(proxy);
+    }
+    if (!disableMultiDomain) {
+      okHttpClientBuilder.addInterceptor(multiDomainInterceptor);
     }
     return new OkHttpClientAdapter(credential, validator, okHttpClientBuilder.build());
   }
