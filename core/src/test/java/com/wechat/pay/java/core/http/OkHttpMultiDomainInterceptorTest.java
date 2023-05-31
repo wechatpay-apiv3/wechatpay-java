@@ -58,6 +58,55 @@ class OkHttpMultiDomainInterceptorTest {
   }
 
   @Test
+  void testNormalOther() throws Exception {
+    MockWebServer server = new MockWebServer();
+    server.enqueue(new MockResponse().setBody("Successful response"));
+
+    OkHttpMultiDomainInterceptor interceptor = new OkHttpMultiDomainInterceptor();
+    final OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
+    // Act
+    Request request = new Request.Builder().url(server.url("/")).build();
+    Response response = client.newCall(request).execute();
+
+    // Assert
+    assertEquals(200, response.code());
+    server.shutdown();
+  }
+
+  @Test
+  void testNormalWeChatPay() throws Exception {
+    MockWebServer server = new MockWebServer();
+    server.enqueue(new MockResponse().setBody("Successful"));
+
+    OkHttpMultiDomainInterceptor interceptor = new OkHttpMultiDomainInterceptor();
+    final OkHttpClient client =
+        new OkHttpClient.Builder().dns(fakeDns).addInterceptor(interceptor).build();
+
+    HttpUrl mockUrl = server.url("/test");
+    fakeDns.addAddress(
+        "api.wechatpay.cn",
+        InetAddress.getByAddress("api.wechatpay.cn", new byte[] {127, 0, 0, 1}));
+
+    // Act
+    Request request =
+        new Request.Builder()
+            .url(mockUrl.newBuilder().host("api.wechatpay.cn").build())
+            .header("User-Agent", "testOkHttpMultiDomain")
+            .header("Accept", "*/*")
+            .build();
+
+    Response response = client.newCall(request).execute();
+
+    // Assert
+    assertEquals(200, response.code());
+
+    RecordedRequest request1 = server.takeRequest();
+    assertEquals("testOkHttpMultiDomain", request1.getHeader("User-Agent"));
+    server.shutdown();
+  }
+
+  @Test
   void testOkHttpMultiDomainWithMock() throws Exception {
     MockWebServer server = new MockWebServer();
     OkHttpMultiDomainInterceptor interceptor = new OkHttpMultiDomainInterceptor();
@@ -68,7 +117,6 @@ class OkHttpMultiDomainInterceptorTest {
     server.enqueue(new MockResponse().setBody("Successful"));
 
     HttpUrl mockUrl = server.url("/test");
-    System.out.println(mockUrl.host());
     fakeDns.addAddress(
         "api.mch.weixin.qq.com",
         InetAddress.getByAddress("api.mch.weixin.qq.com", new byte[] {127, 0, 0, 1}));
