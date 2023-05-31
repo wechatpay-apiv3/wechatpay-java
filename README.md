@@ -356,14 +356,14 @@ SDK 使用 [OkHttp](https://square.github.io/okhttp/) 作为默认的 HTTP 客�
 
 目前支持的网络配置方法见下表。
 
-| 方法                                            | 说明                     | 默认值          | 更多信息                                                                                                                                                      |
-|-----------------------------------------------|------------------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `readTimeoutMs()`                             | 设置新连接的默认读超时            | 10*1000(10秒） | [OkHttpClient/Builder/readTimeout](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-ok-http-client/-builder/read-timeout/)                             |
-| `writeTimeoutMs()`                            | 设置新连接的默认写超时            | 10*1000(10秒) | [OkHttpClient/Builder/writeTimeout](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-ok-http-client/-builder/write-timeout/)                           |
-| `connectTimeoutMs()`                          | 设置新连接的默认连接超时           | 10*1000(10秒） | [OkHttpClient/Builder/connectTimeout](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-ok-http-client/-builder/connect-timeout/)                       |
-| `proxy()`                                     | 设置客户端创建的连接时使用的 HTTP 代理 | 无            | [OkHttpClient/Builder/proxy](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-ok-http-client/-builder/proxy/)                                          |
-| `disableRetryOnConnectionFailure()`           | 遇到网络问题时不重试             | 默认重试         | [OkHttpClient/Builder/retryOnConnectionFailure](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-ok-http-client/-builder/retry-on-connection-failure/) |
-| `enableRetryMultiDomainOnConnectionFailure()` | 遇到网络问题时重试备域名           | 默认不重试        | 推荐开启，详细说明见下                                                                                                                                               |
+| 方法                                  | 说明                     | 默认值          | 更多信息                                                                                                                                                      |
+|-------------------------------------|------------------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `readTimeoutMs()`                   | 设置新连接的默认读超时            | 10*1000(10秒） | [OkHttpClient/Builder/readTimeout](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-ok-http-client/-builder/read-timeout/)                             |
+| `writeTimeoutMs()`                  | 设置新连接的默认写超时            | 10*1000(10秒) | [OkHttpClient/Builder/writeTimeout](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-ok-http-client/-builder/write-timeout/)                           |
+| `connectTimeoutMs()`                | 设置新连接的默认连接超时           | 10*1000(10秒） | [OkHttpClient/Builder/connectTimeout](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-ok-http-client/-builder/connect-timeout/)                       |
+| `proxy()`                           | 设置客户端创建的连接时使用的 HTTP 代理 | 无            | [OkHttpClient/Builder/proxy](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-ok-http-client/-builder/proxy/)                                          |
+| `disableRetryOnConnectionFailure()` | 遇到网络问题时不重试下一个 IP       | 默认重试         | [OkHttpClient/Builder/retryOnConnectionFailure](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-ok-http-client/-builder/retry-on-connection-failure/) |
+| `enableRetryMultiDomain()`          | 遇到网络问题时重试备域名           | 默认不重试        | 推荐开启，详细说明见下                                                                                                                                               |
 
 下面的示例演示了如何使用 DefaultHttpClientBuilder 初始化某个具体的业务 Service。
 
@@ -392,11 +392,24 @@ OkHttp 默认会尝试主域名的多个 IP（当前为2个），再增加备域
 假设 `api.mch.weixin.qq.com` 解析得到 [ip1a, ip1b]，`api2.wechatpay.cn` 解析得到 [ip2a, ip2b]，不同的重试策略组合对应的尝试顺序为：
 
 + 默认：[ip1a, ip1b]
-+ enableMultiDomain：[ipa1, ip1b, ip2a, ip2b]
++ enableRetryMultiDomain：[ipa1, ip1b, ip2a, ip2b]
 + disableRetryOnConnectionFailure：[ip1a]
-+ disableRetryOnConnectionFailure + enableRetryMultiDomainOnConnectionFailure: [ip1a, ip2a]
++ disableRetryOnConnectionFailure + enableRetryMultiDomain: [ip1a, ip2a]
 
-我们推荐开发者使用 `disableRetryOnConnectionFailure` 和 `enableRetryMultiDomainOnConnectionFailure` 的组合，开启双域名容灾但不增加重试的总数。
+我们推荐开发者使用 `disableRetryOnConnectionFailure` 和 `enableRetryMultiDomain` 的组合，开启双域名容灾但不增加重试的总数。
+
+```java
+// 开启双域名重试，并关闭 OkHttp 默认的连接失败后重试
+HttpClient httpClient =
+    new DefaultHttpClientBuilder()
+        .config(config)
+        .disableRetryOnConnectionFailure()
+        .enableRetryMultiDomain()
+        .build();
+
+// 以JsapiService为例，使用 httpclient 初始化 service
+JsapiService service = new JsapiService.Builder().httpclient(httpClient).build();
+```
 
 ## 使用国密
 
