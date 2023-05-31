@@ -136,9 +136,7 @@ public class DefaultHttpClientBuilder
     return this;
   }
 
-  /**
-   * OkHttp 在网络问题时不重试
-   */
+  /** OkHttp 在网络问题时不重试 */
   public DefaultHttpClientBuilder disableRetryOnConnectionFailure() {
     this.retryOnConnectionFailure = false;
     return this;
