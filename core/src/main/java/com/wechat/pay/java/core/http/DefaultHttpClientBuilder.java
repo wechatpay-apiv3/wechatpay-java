@@ -22,7 +22,8 @@ public class DefaultHttpClientBuilder
   private int writeTimeoutMs = -1;
   private int connectTimeoutMs = -1;
   private Proxy proxy;
-  private boolean disableMultiDomain = false;
+  private boolean retryMultiDomainOnConnectionFailure = false;
+  private boolean retryOnConnectionFailure = true;
   private static final OkHttpMultiDomainInterceptor multiDomainInterceptor =
       new OkHttpMultiDomainInterceptor();
 
@@ -126,12 +127,20 @@ public class DefaultHttpClientBuilder
   }
 
   /**
-   * 不使用双域名容灾
+   * 启用双域名容灾
    *
    * @return defaultHttpClientBuilder
    */
-  public DefaultHttpClientBuilder disableMultiDomain() {
-    this.disableMultiDomain = true;
+  public DefaultHttpClientBuilder enableRetryMultiDomainOnConnectionFailure() {
+    this.retryMultiDomainOnConnectionFailure = true;
+    return this;
+  }
+
+  /**
+   * OkHttp 在网络问题时不重试
+   */
+  public DefaultHttpClientBuilder disableRetryOnConnectionFailure() {
+    this.retryOnConnectionFailure = false;
     return this;
   }
 
@@ -158,8 +167,11 @@ public class DefaultHttpClientBuilder
     if (proxy != null) {
       okHttpClientBuilder.proxy(proxy);
     }
-    if (!disableMultiDomain) {
+    if (retryMultiDomainOnConnectionFailure) {
       okHttpClientBuilder.addInterceptor(multiDomainInterceptor);
+    }
+    if (!retryOnConnectionFailure) {
+      okHttpClientBuilder.retryOnConnectionFailure(false);
     }
     return new OkHttpClientAdapter(credential, validator, okHttpClientBuilder.build());
   }
