@@ -6,6 +6,7 @@ import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
 import com.wechat.pay.java.core.http.okhttp.OkHttpClientAdapter;
+import com.wechat.pay.java.core.http.okhttp.OkHttpMultiDomainInterceptor;
 import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
@@ -21,6 +22,10 @@ public class DefaultHttpClientBuilder
   private int writeTimeoutMs = -1;
   private int connectTimeoutMs = -1;
   private Proxy proxy;
+  private boolean retryMultiDomain = false;
+  private Boolean retryOnConnectionFailure = null;
+  private static final OkHttpMultiDomainInterceptor multiDomainInterceptor =
+      new OkHttpMultiDomainInterceptor();
 
   /**
    * 复制工厂，复制一个当前对象
@@ -120,6 +125,23 @@ public class DefaultHttpClientBuilder
     this.proxy = proxy;
     return this;
   }
+
+  /**
+   * 启用双域名容灾
+   *
+   * @return defaultHttpClientBuilder
+   */
+  public DefaultHttpClientBuilder enableRetryMultiDomain() {
+    this.retryMultiDomain = true;
+    return this;
+  }
+
+  /** OkHttp 在网络问题时不重试 */
+  public DefaultHttpClientBuilder disableRetryOnConnectionFailure() {
+    this.retryOnConnectionFailure = false;
+    return this;
+  }
+
   /**
    * 构建默认HttpClient
    *
@@ -142,6 +164,12 @@ public class DefaultHttpClientBuilder
     }
     if (proxy != null) {
       okHttpClientBuilder.proxy(proxy);
+    }
+    if (retryMultiDomain) {
+      okHttpClientBuilder.addInterceptor(multiDomainInterceptor);
+    }
+    if (retryOnConnectionFailure != null && !retryOnConnectionFailure) {
+      okHttpClientBuilder.retryOnConnectionFailure(false);
     }
     return new OkHttpClientAdapter(credential, validator, okHttpClientBuilder.build());
   }

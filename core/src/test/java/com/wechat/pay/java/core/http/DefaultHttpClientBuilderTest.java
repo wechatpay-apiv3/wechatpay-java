@@ -53,6 +53,8 @@ class DefaultHttpClientBuilderTest {
             .validator(validator)
             .okHttpClient(okHttpClient)
             .proxy(new Proxy(Type.SOCKS, new InetSocketAddress("localhost", 8099)))
+            .enableRetryMultiDomain()
+            .disableRetryOnConnectionFailure()
             .build();
     assertNotNull(httpClient);
   }

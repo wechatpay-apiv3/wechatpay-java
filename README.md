@@ -349,6 +349,70 @@ SDK 的日志会跟你的日志记录在一起。
 
 为了启用日志，你应在你的构建脚本中添加日志框架的依赖。如果不配置日志框架，默认是使用 SLF4j 提供的 空（NOP）日志实现，它不会记录任何日志。
 
+## 网络配置
+
+SDK 使用 [OkHttp](https://square.github.io/okhttp/) 作为默认的 HTTP 客户端。
+如果开发者不熟悉 OkHttp，推荐使用 SDK 封装的 DefaultHttpClientBuilder 来构造 HTTP 客户端。
+
+目前支持的网络配置方法见下表。
+
+| 方法                                  | 说明                     | 默认值          | 更多信息                                                                                                                                                      |
+|-------------------------------------|------------------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `readTimeoutMs()`                   | 设置新连接的默认读超时            | 10*1000(10秒） | [OkHttpClient/Builder/readTimeout](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-ok-http-client/-builder/read-timeout/)                             |
+| `writeTimeoutMs()`                  | 设置新连接的默认写超时            | 10*1000(10秒) | [OkHttpClient/Builder/writeTimeout](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-ok-http-client/-builder/write-timeout/)                           |
+| `connectTimeoutMs()`                | 设置新连接的默认连接超时           | 10*1000(10秒） | [OkHttpClient/Builder/connectTimeout](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-ok-http-client/-builder/connect-timeout/)                       |
+| `proxy()`                           | 设置客户端创建的连接时使用的 HTTP 代理 | 无            | [OkHttpClient/Builder/proxy](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-ok-http-client/-builder/proxy/)                                          |
+| `disableRetryOnConnectionFailure()` | 遇到网络问题时不重试下一个 IP       | 默认重试         | [OkHttpClient/Builder/retryOnConnectionFailure](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-ok-http-client/-builder/retry-on-connection-failure/) |
+| `enableRetryMultiDomain()`          | 遇到网络问题时重试备域名           | 默认不重试        | 推荐开启，详细说明见下                                                                                                                                               |
+
+下面的示例演示了如何使用 DefaultHttpClientBuilder 初始化某个具体的业务 Service。
+
+```java
+HttpClient httpClient =
+    new DefaultHttpClientBuilder()
+        .config(config)
+        .connectTimeoutMs(500)
+        .build();
+
+// 以JsapiService为例，使用 httpclient 初始化 service
+JsapiService service = new JsapiService.Builder().httpclient(httpClient).build();
+```
+
+更多网络配置的说明，请看 [wiki - 网络配置](https://github.com/wechatpay-apiv3/wechatpay-java/wiki/SDK-%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3#%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE)。
+
+### 双域名容灾
+
+为提升商户系统访问 API 的稳定性，SDK 实现了双域名容灾。如果主要域名 `api.mch.weixin.qq.com` 因网络问题无法访问，我们的 SDK 可自动切换到备用域名 `api2.wechatpay.cn` 重试当前请求。
+这个机制可以最大限度减少因微信支付 API 接入点故障或主域名问题(如 DNS 劫持)对商户系统的影响。
+
+默认情况下，双域名容灾机制处于关闭状态，以避免重试降低商户系统的吞吐量。因为 OkHttp 默认会尝试主域名的多个IP地址(目前为2个)，增加备用域名重试很可能会提高异常情况下的处理时间。
+
+我们推荐开发者使用 `disableRetryOnConnectionFailure` 和 `enableRetryMultiDomain` 的组合，启用双域名容灾并关闭 OkHttp 默认重试，这样不会增加重试次数。
+
+假设 `api.mch.weixin.qq.com` 解析得到 [ip1a, ip1b]，`api2.wechatpay.cn` 解析得到 [ip2a, ip2b]，不同的重试策略组合对应的尝试顺序为：
+
++ 默认：[ip1a, ip1b]
++ disableRetryOnConnectionFailure：[ip1a]
++ enableRetryMultiDomain：[ipa1, ip1b, ip2a, ip2b]
++ （推荐）disableRetryOnConnectionFailure + enableRetryMultiDomain: [ip1a, ip2a]
+
+以下是采用推荐重试策略的示例代码：
+
+```java
+// 开启双域名重试，并关闭 OkHttp 默认的连接失败后重试
+HttpClient httpClient =
+    new DefaultHttpClientBuilder()
+        .config(config)
+        .disableRetryOnConnectionFailure()
+        .enableRetryMultiDomain()
+        .build();
+
+// 以JsapiService为例，使用 httpclient 初始化 service
+JsapiService service = new JsapiService.Builder().httpclient(httpClient).build();
+```
+
+开发者应该仔细评估自己的商户系统容量，根据自身情况选择合适的超时时间和重试策略，并做好监控和告警。
+
 ## 使用国密
 
 我们提供基于 [腾讯 Kona 国密套件](https://github.com/Tencent/TencentKonaSMSuite) 的国密扩展。文档请参考 [shangmi/README.md](shangmi/README.md)。
