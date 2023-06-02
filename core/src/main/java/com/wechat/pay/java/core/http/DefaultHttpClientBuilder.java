@@ -168,9 +168,7 @@ public class DefaultHttpClientBuilder
     if (retryMultiDomain) {
       okHttpClientBuilder.addInterceptor(multiDomainInterceptor);
     }
-    if (!retryOnConnectionFailure) {
-      okHttpClientBuilder.retryOnConnectionFailure(false);
-    }
+    okHttpClientBuilder.retryOnConnectionFailure(retryOnConnectionFailure);
     return new OkHttpClientAdapter(credential, validator, okHttpClientBuilder.build());
   }
 }

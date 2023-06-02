@@ -382,21 +382,21 @@ JsapiService service = new JsapiService.Builder().httpclient(httpClient).build()
 
 ### 双域名容灾
 
-根据微信支付[跨城容灾指引](https://pay.weixin.qq.com/wiki/doc/apiv3/Practices/chapter1_1_4.shtml)，SDK 实现了主备双域名容灾。
-具体的容灾策略为：当主域名 `api.mch.weixin.qq.com` 接入点的请求遇到网络失败，SDK 会自动使用备域名 `api2.wechatpay.cn` 接入点重试当前请求，以减小接入点故障或主域名解析劫持/污染时商户系统的影响。
+为提升商户系统访问 API 的稳定性，SDK 实现了双域名容灾。如果主要域名 `api.mch.weixin.qq.com` 因网络问题无法访问，我们的 SDK 可自动切换到备用域名 `api2.wechatpay.cn` 重试当前请求。
+这个机制可以最大限度减少因微信支付 API 接入点故障或主域名问题(如 DNS 劫持)对商户系统的影响。
 
-OkHttp 默认会尝试主域名的多个 IP（当前为2个），再增加备域名重试很可能会增加异常时的处理耗时。为了避免造成商户系统的吞吐能力下降，双域名容灾默认关闭。
-开发者可以使用 `DefaultHttpClientBuilder.enableMultiDomain()` 开启。
-开发者应谨慎评估商户系统的容量，根据自身情况选择合适的重试策略，并做好监控和告警。
+默认情况下，双域名容灾机制处于关闭状态，以避免重试降低商户系统的吞吐量。因为 OkHttp 默认会尝试主域名的多个IP地址(目前为2个)，增加备用域名重试很可能会提高异常情况下的处理时间。
+
+我们推荐开发者使用 `disableRetryOnConnectionFailure` 和 `enableRetryMultiDomain` 的组合，启用双域名容灾并关闭 OkHttp 默认重试，这样不会增加重试次数。
 
 假设 `api.mch.weixin.qq.com` 解析得到 [ip1a, ip1b]，`api2.wechatpay.cn` 解析得到 [ip2a, ip2b]，不同的重试策略组合对应的尝试顺序为：
 
 + 默认：[ip1a, ip1b]
-+ enableRetryMultiDomain：[ipa1, ip1b, ip2a, ip2b]
 + disableRetryOnConnectionFailure：[ip1a]
-+ disableRetryOnConnectionFailure + enableRetryMultiDomain: [ip1a, ip2a]
++ enableRetryMultiDomain：[ipa1, ip1b, ip2a, ip2b]
++ （推荐）disableRetryOnConnectionFailure + enableRetryMultiDomain: [ip1a, ip2a]
 
-我们推荐开发者使用 `disableRetryOnConnectionFailure` 和 `enableRetryMultiDomain` 的组合，开启双域名容灾但不增加重试的总数。
+以下是采用推荐重试策略的示例代码：
 
 ```java
 // 开启双域名重试，并关闭 OkHttp 默认的连接失败后重试
@@ -410,6 +410,8 @@ HttpClient httpClient =
 // 以JsapiService为例，使用 httpclient 初始化 service
 JsapiService service = new JsapiService.Builder().httpclient(httpClient).build();
 ```
+
+开发者应该仔细评估自己的商户系统容量，根据自身情况选择合适的超时时间和重试策略，并做好监控和告警。
 
 ## 使用国密
 

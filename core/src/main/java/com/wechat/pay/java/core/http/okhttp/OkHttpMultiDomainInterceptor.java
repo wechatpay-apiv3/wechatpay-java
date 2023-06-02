@@ -21,12 +21,8 @@ public class OkHttpMultiDomainInterceptor implements Interceptor {
   @Override
   public okhttp3.Response intercept(Chain chain) throws IOException {
     Request request = chain.request();
-    String hostname = request.url().host();
 
-    boolean shouldRetry =
-        (hostname.equals("api.mch.weixin.qq.com") || hostname.equals("api.wechatpay.cn"));
-
-    if (shouldRetry) {
+    if (shouldRetry(request)) {
       try {
         /*
          * Implementations of this interface throw IOException to signal connectivity failures.
@@ -45,9 +41,13 @@ public class OkHttpMultiDomainInterceptor implements Interceptor {
     return chain.proceed(request);
   }
 
+  private boolean shouldRetry(Request request) {
+    return Constant.PRIMARY_API_DOMAIN.contains(request.url().host());
+  }
+
   private Request modifyRequestForRetry(Request originalRequest) {
     HttpUrl.Builder urlBuilder = originalRequest.url().newBuilder();
-    urlBuilder.host("api2.wechatpay.cn");
+    urlBuilder.host(Constant.SECONDARY_API_DOMAIN);
 
     Request.Builder reqBuilder = originalRequest.newBuilder();
     reqBuilder.url(urlBuilder.build());
