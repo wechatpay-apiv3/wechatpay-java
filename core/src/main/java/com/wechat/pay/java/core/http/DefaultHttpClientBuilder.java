@@ -23,7 +23,7 @@ public class DefaultHttpClientBuilder
   private int connectTimeoutMs = -1;
   private Proxy proxy;
   private boolean retryMultiDomain = false;
-  private boolean retryOnConnectionFailure = true;
+  private Boolean retryOnConnectionFailure = null;
   private static final OkHttpMultiDomainInterceptor multiDomainInterceptor =
       new OkHttpMultiDomainInterceptor();
 
@@ -168,7 +168,9 @@ public class DefaultHttpClientBuilder
     if (retryMultiDomain) {
       okHttpClientBuilder.addInterceptor(multiDomainInterceptor);
     }
-    okHttpClientBuilder.retryOnConnectionFailure(retryOnConnectionFailure);
+    if (retryOnConnectionFailure != null && !retryOnConnectionFailure) {
+      okHttpClientBuilder.retryOnConnectionFailure(false);
+    }
     return new OkHttpClientAdapter(credential, validator, okHttpClientBuilder.build());
   }
 }
