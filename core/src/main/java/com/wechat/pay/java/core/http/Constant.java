@@ -1,6 +1,7 @@
 package com.wechat.pay.java.core.http;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /** HTTP常量 */
@@ -28,7 +29,7 @@ public final class Constant {
   public static final String CONTENT_TYPE = "Content-Type";
 
   public static final List<String> PRIMARY_API_DOMAIN =
-      Arrays.asList("api.mch.weixin.qq.com", "api.wechatpay.cn");
+      Collections.unmodifiableList(Arrays.asList("api.mch.weixin.qq.com", "api.wechatpay.cn"));
   public static final String SECONDARY_API_DOMAIN = "api2.wechatpay.cn";
 
   private Constant() {}
