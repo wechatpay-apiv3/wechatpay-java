@@ -22,3 +22,4 @@
 | goldplan | 点金计划 ||✔️|
 | wexinpayscoreparking | 微信支付分停车 |✔️|✔️|
 | merchantexclusivecoupon | 商家券 |✔️|✔️|
+| giftactivity | 支付有礼 |✔️|✔️|
