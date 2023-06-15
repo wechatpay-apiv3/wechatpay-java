@@ -17,8 +17,8 @@ import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/** TerMinateActivityRequest */
-public class TerMinateActivityRequest {
+/** TerminateActivityRequest */
+public class TerminateActivityRequest {
   /** 活动Id 说明：活动Id */
   @SerializedName("activity_id")
   @Expose(serialize = false)
@@ -35,7 +35,7 @@ public class TerMinateActivityRequest {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class TerMinateActivityRequest {\n");
+    sb.append("class TerminateActivityRequest {\n");
     sb.append("    activityId: ").append(toIndentedString(activityId)).append("\n");
     sb.append("}");
     return sb.toString();

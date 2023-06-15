@@ -47,8 +47,8 @@ import com.wechat.pay.java.service.giftactivity.model.ListActivitiesRequest;
 import com.wechat.pay.java.service.giftactivity.model.ListActivitiesResponse;
 import com.wechat.pay.java.service.giftactivity.model.ListActivityMerchantRequest;
 import com.wechat.pay.java.service.giftactivity.model.ListActivitySkuRequest;
-import com.wechat.pay.java.service.giftactivity.model.TerMinateActivityRequest;
 import com.wechat.pay.java.service.giftactivity.model.TerminateActResponse;
+import com.wechat.pay.java.service.giftactivity.model.TerminateActivityRequest;
 
 /** GiftActivityService服务 */
 public class GiftActivityService {
@@ -372,11 +372,11 @@ public class GiftActivityService {
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
    * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
-  public TerminateActResponse terMinateActivity(TerMinateActivityRequest request) {
+  public TerminateActResponse terminateActivity(TerminateActivityRequest request) {
     String requestPath =
         "https://api.mch.weixin.qq.com/v3/marketing/paygiftactivity/activities/{activity_id}/terminate";
 
-    TerMinateActivityRequest realRequest = request;
+    TerminateActivityRequest realRequest = request;
     // 添加 path param
     requestPath =
         requestPath.replace("{" + "activity_id" + "}", urlEncode(realRequest.getActivityId()));

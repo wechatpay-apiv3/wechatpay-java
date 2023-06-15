@@ -15,8 +15,8 @@ import com.wechat.pay.java.service.giftactivity.model.ListActivitiesRequest;
 import com.wechat.pay.java.service.giftactivity.model.ListActivitiesResponse;
 import com.wechat.pay.java.service.giftactivity.model.ListActivityMerchantRequest;
 import com.wechat.pay.java.service.giftactivity.model.ListActivitySkuRequest;
-import com.wechat.pay.java.service.giftactivity.model.TerMinateActivityRequest;
 import com.wechat.pay.java.service.giftactivity.model.TerminateActResponse;
+import com.wechat.pay.java.service.giftactivity.model.TerminateActivityRequest;
 
 /** GiftActivityService使用示例 */
 public class GiftActivityServiceExample {
@@ -84,9 +84,9 @@ public class GiftActivityServiceExample {
     return service.listActivitySku(request);
   }
   /** 终止活动 */
-  public static TerminateActResponse terMinateActivity() {
+  public static TerminateActResponse terminateActivity() {
 
-    TerMinateActivityRequest request = new TerMinateActivityRequest();
-    return service.terMinateActivity(request);
+    TerminateActivityRequest request = new TerminateActivityRequest();
+    return service.terminateActivity(request);
   }
 }
