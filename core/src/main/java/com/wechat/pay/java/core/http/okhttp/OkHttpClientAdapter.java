@@ -58,7 +58,8 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
     Map<String, String> headers = wechatPayRequest.getHeaders().getHeaders();
     headers.forEach(okHttpRequestBuilder::addHeader);
     String method = wechatPayRequest.getHttpMethod().name();
-    RequestBody okHttpRequestBody = buildOkHttpRequestBody(wechatPayRequest.getBody());
+    RequestBody okHttpRequestBody =
+        method.equals("GET") ? null : buildOkHttpRequestBody(wechatPayRequest.getBody());
     okHttpRequestBuilder.method(method, okHttpRequestBody);
     return okHttpRequestBuilder.build();
   }
@@ -66,7 +67,8 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
   private RequestBody buildOkHttpRequestBody(
       com.wechat.pay.java.core.http.RequestBody wechatPayRequestBody) {
     if (wechatPayRequestBody == null) {
-      return null;
+      // create an empty request body
+      return RequestBody.create("", null);
     }
     if (wechatPayRequestBody instanceof JsonRequestBody) {
       return createOkHttpRequestBody(wechatPayRequestBody);
