@@ -9,6 +9,7 @@ import com.wechat.pay.java.core.http.okhttp.OkHttpClientAdapter;
 import com.wechat.pay.java.core.http.okhttp.OkHttpMultiDomainInterceptor;
 import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
+import okhttp3.ConnectionPool;
 
 /** 默认HttpClient构造器 */
 public class DefaultHttpClientBuilder
@@ -151,8 +152,15 @@ public class DefaultHttpClientBuilder
   public AbstractHttpClient build() {
     requireNonNull(credential);
     requireNonNull(validator);
-    okhttp3.OkHttpClient.Builder okHttpClientBuilder =
-        (customizeOkHttpClient == null ? defaultOkHttpClient : customizeOkHttpClient).newBuilder();
+    okhttp3.OkHttpClient.Builder okHttpClientBuilder;
+    if (customizeOkHttpClient != null) {
+      okHttpClientBuilder = customizeOkHttpClient.newBuilder();
+    } else {
+      okHttpClientBuilder = defaultOkHttpClient.newBuilder();
+      // 7 seconds to keep the connection alive, because WeChatPay API only keeps alive 8s
+      // it would prevent idle client from unnecessary retry on connection failure
+      okHttpClientBuilder.connectionPool(new ConnectionPool(5, 7, TimeUnit.SECONDS));
+    }
     if (connectTimeoutMs >= 0) {
       okHttpClientBuilder.connectTimeout(connectTimeoutMs, TimeUnit.MILLISECONDS);
     }
