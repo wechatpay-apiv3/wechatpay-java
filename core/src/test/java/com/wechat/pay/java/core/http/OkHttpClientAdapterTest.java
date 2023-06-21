@@ -749,7 +749,7 @@ public class OkHttpClientAdapterTest {
                       executeSendDeleteHeaders.get(AUTHORIZATION));
                   Assert.assertEquals(
                       REQUEST_HEADER_VALUE, executeSendDeleteHeaders.get(REQUEST_HEADER_KEY));
-                  Assert.assertNull(chain.request().body());
+                  Assert.assertEquals(0, chain.request().body().contentLength());
 
                   return new Response.Builder()
                       .request(chain.request())
@@ -1298,7 +1298,7 @@ public class OkHttpClientAdapterTest {
                   Assert.assertEquals(
                       deleteCredential.getAuthorization(URI.create(URL), deleteMethod, ""),
                       deleteHeaders.get(AUTHORIZATION));
-                  Assert.assertNull(chain.request().body());
+                  Assert.assertEquals(0, chain.request().body().contentLength());
 
                   return new Response.Builder()
                       .request(chain.request())

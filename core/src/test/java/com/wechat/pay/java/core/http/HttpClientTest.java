@@ -41,8 +41,10 @@ public interface HttpClientTest {
   static Stream<Arguments> requestProvider() {
     return Stream.of(
         arguments(HttpMethod.GET, Named.of("无body", "")),
+        arguments(HttpMethod.GET, Named.of("null body", null)),
         arguments(HttpMethod.DELETE, Named.of("无body", "")),
         arguments(HttpMethod.POST, Named.of("无body", "")),
+        arguments(HttpMethod.POST, Named.of("null body", null)),
         arguments(HttpMethod.POST, Named.of("有body", "post-data")),
         arguments(HttpMethod.PUT, Named.of("无body", "")),
         arguments(HttpMethod.PUT, Named.of("有body", "put-data")),
@@ -72,7 +74,8 @@ public interface HttpClientTest {
         new HttpRequest.Builder().httpMethod(method).url(requestUrl.url()).headers(headers);
 
     if (method == HttpMethod.POST || method == HttpMethod.PATCH || method == HttpMethod.PUT) {
-      requestBuilder.body(new JsonRequestBody.Builder().body(requestBody).build());
+      requestBuilder.body(
+          requestBody == null ? null : new JsonRequestBody.Builder().body(requestBody).build());
     }
 
     client.execute(requestBuilder.build(), null);
@@ -82,7 +85,7 @@ public interface HttpClientTest {
     assertEquals(requestUrl, request.getRequestUrl());
     assertEquals("HeaderValue1", request.getHeader("Test-Header1"));
     assertEquals("HeaderValue2", request.getHeader("Test-Header2"));
-    assertEquals(requestBody, request.getBody().readUtf8());
+    assertEquals(requestBody == null ? "" : requestBody, request.getBody().readUtf8());
 
     server.shutdown();
   }
@@ -106,7 +109,8 @@ public interface HttpClientTest {
         new HttpRequest.Builder().httpMethod(method).url(requestUrl.url());
 
     if (method == HttpMethod.POST || method == HttpMethod.PATCH || method == HttpMethod.PUT) {
-      requestBuilder.body(new JsonRequestBody.Builder().body(requestBody).build());
+      requestBuilder.body(
+          requestBody == null ? null : new JsonRequestBody.Builder().body(requestBody).build());
     }
 
     HttpResponse<Response> response = client.execute(requestBuilder.build(), Response.class);
@@ -139,7 +143,8 @@ public interface HttpClientTest {
         new HttpRequest.Builder().httpMethod(method).url(requestUrl.url());
 
     if (method == HttpMethod.POST || method == HttpMethod.PATCH || method == HttpMethod.PUT) {
-      requestBuilder.body(new JsonRequestBody.Builder().body(requestBody).build());
+      requestBuilder.body(
+          requestBody == null ? null : new JsonRequestBody.Builder().body(requestBody).build());
     }
 
     assertDoesNotThrow(() -> client.execute(requestBuilder.build(), Response.class));
