@@ -15,6 +15,7 @@ import com.wechat.pay.java.core.http.HttpHeaders;
 import com.wechat.pay.java.core.util.PemUtil;
 import java.net.URI;
 import java.security.cert.X509Certificate;
+import java.time.Duration;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -31,7 +32,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-class AbstractAutoCertificateProviderTest {
+class AutoCertificateServiceTest {
 
   // 因为每个任务都在后台运行,所以需要mock服务一直存在
   static MockWebServer server = new MockWebServer();
@@ -173,6 +174,8 @@ class AbstractAutoCertificateProviderTest {
         };
     server.setDispatcher(dispatcher);
     server.start();
+
+    AutoCertificateService.start(Duration.ofSeconds(3));
   }
 
   @AfterAll
@@ -204,21 +207,6 @@ class AbstractAutoCertificateProviderTest {
   }
 
   static final Map<String, Map<String, X509Certificate>> testMap = new ConcurrentHashMap<>();
-
-  static class FakeAutoCertificateProvider extends AbstractAutoCertificateProvider {
-
-    public FakeAutoCertificateProvider(
-        String requestUrl, HttpClient httpClient, String merchantId, int updateInterval) {
-      super(
-          requestUrl,
-          new FakeCertificateHandler(),
-          new FakeAeadCiper(),
-          httpClient,
-          merchantId,
-          testMap,
-          updateInterval);
-    }
-  }
 
   static class FakeCredential implements Credential {
 
@@ -256,21 +244,34 @@ class AbstractAutoCertificateProviderTest {
             .validator(fakeHttpValidator)
             .build();
 
-    CertificateProvider provider =
-        new FakeAutoCertificateProvider(
-            server.url("/testUpdate").url().toString(), client, "testUpdate", 3);
+    CertificateDownloader downloader =
+        new CertificateDownloader.Builder()
+            .httpClient(client)
+            .downloadUrl(server.url("/testUpdate").url().toString())
+            .certificateHandler(new FakeCertificateHandler())
+            .aeadCipher(new FakeAeadCiper())
+            .build();
 
-    assertNotNull(provider.getAvailableCertificate());
-    assertNotNull(provider.getCertificate("39FACCC173F3485C76C61FD5C0D662AE4A838AA9"));
+    AutoCertificateService.register("testUpdate", "test", downloader);
+
+    assertNotNull(AutoCertificateService.getAvailableCertificate("testUpdate", "test"));
+    assertNotNull(
+        AutoCertificateService.getCertificate(
+            "testUpdate", "test", "39FACCC173F3485C76C61FD5C0D662AE4A838AA9"));
 
     await()
-        .atLeast(3000, TimeUnit.MILLISECONDS)
         .atMost(3500, TimeUnit.MILLISECONDS)
         .untilAsserted(
             () ->
-                assertNotNull(provider.getCertificate("699AE9A3A00228BFE133FA9A4A99E31D4D2571B4")));
+                assertNotNull(
+                    AutoCertificateService.getCertificate(
+                        "testUpdate", "test", "699AE9A3A00228BFE133FA9A4A99E31D4D2571B4")));
 
-    assertNull(provider.getCertificate("39FACCC173F3485C76C61FD5C0D662AE4A838AA9"));
+    assertNull(
+        AutoCertificateService.getCertificate(
+            "testUpdate", "test", "39FACCC173F3485C76C61FD5C0D662AE4A838AA9"));
+
+    AutoCertificateService.unregister("testUpdate", "test");
   }
 
   @Test
@@ -284,19 +285,31 @@ class AbstractAutoCertificateProviderTest {
             .validator(fakeHttpValidator)
             .build();
 
-    CertificateProvider provider =
-        new FakeAutoCertificateProvider(
-            server.url("/testUpdateWith500").url().toString(), client, "testUpdateWith500", 3);
+    CertificateDownloader downloader =
+        new CertificateDownloader.Builder()
+            .httpClient(client)
+            .downloadUrl(server.url("/testUpdateWith500").url().toString())
+            .certificateHandler(new FakeCertificateHandler())
+            .aeadCipher(new FakeAeadCiper())
+            .build();
 
-    assertNotNull(provider.getAvailableCertificate());
-    assertNotNull(provider.getCertificate("39FACCC173F3485C76C61FD5C0D662AE4A838AA9"));
+    AutoCertificateService.register("testUpdateWith500", "test", downloader);
+
+    assertNotNull(AutoCertificateService.getAvailableCertificate("testUpdateWith500", "test"));
+    assertNotNull(
+        AutoCertificateService.getCertificate(
+            "testUpdateWith500", "test", "39FACCC173F3485C76C61FD5C0D662AE4A838AA9"));
 
     with()
         .pollDelay(3500, TimeUnit.MILLISECONDS)
         .await()
         .untilAsserted(
             () ->
-                assertNotNull(provider.getCertificate("39FACCC173F3485C76C61FD5C0D662AE4A838AA9")));
+                assertNotNull(
+                    AutoCertificateService.getCertificate(
+                        "testUpdateWith500", "test", "39FACCC173F3485C76C61FD5C0D662AE4A838AA9")));
+
+    AutoCertificateService.unregister("testUpdateWith500", "test");
   }
 
   @Test
@@ -310,22 +323,33 @@ class AbstractAutoCertificateProviderTest {
             .validator(fakeHttpValidator)
             .build();
 
-    CertificateProvider provider =
-        new FakeAutoCertificateProvider(
-            server.url("testUpdateWithBadBody").url().toString(),
-            client,
-            "testUpdateWithBadBody",
-            3);
+    CertificateDownloader downloader =
+        new CertificateDownloader.Builder()
+            .httpClient(client)
+            .downloadUrl(server.url("/testUpdateWithBadBody").url().toString())
+            .certificateHandler(new FakeCertificateHandler())
+            .aeadCipher(new FakeAeadCiper())
+            .build();
 
-    assertNotNull(provider.getAvailableCertificate());
-    assertNotNull(provider.getCertificate("39FACCC173F3485C76C61FD5C0D662AE4A838AA9"));
+    AutoCertificateService.register("testUpdateWithBadBody", "test", downloader);
+
+    assertNotNull(AutoCertificateService.getAvailableCertificate("testUpdateWithBadBody", "test"));
+    assertNotNull(
+        AutoCertificateService.getCertificate(
+            "testUpdateWithBadBody", "test", "39FACCC173F3485C76C61FD5C0D662AE4A838AA9"));
 
     with()
         .pollDelay(3500, TimeUnit.MILLISECONDS)
         .await()
         .untilAsserted(
             () ->
-                assertNotNull(provider.getCertificate("39FACCC173F3485C76C61FD5C0D662AE4A838AA9")));
+                assertNotNull(
+                    AutoCertificateService.getCertificate(
+                        "testUpdateWithBadBody",
+                        "test",
+                        "39FACCC173F3485C76C61FD5C0D662AE4A838AA9")));
+
+    AutoCertificateService.unregister("testUpdateWithBadBody", "test");
   }
 
   @Test
@@ -346,14 +370,17 @@ class AbstractAutoCertificateProviderTest {
             .validator(fakeHttpValidator)
             .build();
 
+    CertificateDownloader downloader =
+        new CertificateDownloader.Builder()
+            .httpClient(client)
+            .downloadUrl(server.url("/v3/test/path").url().toString())
+            .certificateHandler(new FakeCertificateHandler())
+            .aeadCipher(new FakeAeadCiper())
+            .build();
+
     assertThrows(
         Exception.class,
-        () ->
-            new FakeAutoCertificateProvider(
-                server.url("/v3/test/path").url().toString(),
-                client,
-                "testInitWithInvalidBody",
-                3));
-    server.shutdown();
+        () -> AutoCertificateService.register("testInitWithInvalidBody", "test", downloader));
+    AutoCertificateService.unregister("testInitWithInvalidBody", "test");
   }
 }
