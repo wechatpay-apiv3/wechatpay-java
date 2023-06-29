@@ -16,8 +16,8 @@ import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
-/** RetailStoreActDeleteRepresentativeResponse */
-public class RetailStoreActDeleteRepresentativeResponse {
+/** DeleteRepresentativeResponse */
+public class DeleteRepresentativeResponse {
   /** 零售小店活动ID 说明：零售小店活动ID */
   @SerializedName("activity_id")
   private String activityId;
@@ -56,7 +56,7 @@ public class RetailStoreActDeleteRepresentativeResponse {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class RetailStoreActDeleteRepresentativeResponse {\n");
+    sb.append("class DeleteRepresentativeResponse {\n");
     sb.append("    activityId: ").append(toIndentedString(activityId)).append("\n");
     sb.append("    failedRepresentativeInfoList: ")
         .append(toIndentedString(failedRepresentativeInfoList))

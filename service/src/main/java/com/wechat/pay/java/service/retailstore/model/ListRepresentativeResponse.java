@@ -16,8 +16,8 @@ import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
-/** RetailStoreActListRepresentativeResponse */
-public class RetailStoreActListRepresentativeResponse {
+/** ListRepresentativeResponse */
+public class ListRepresentativeResponse {
   /** 小店活动业代总数 说明：小店活动业代总数 */
   @SerializedName("total_count")
   private Long totalCount;
@@ -66,7 +66,7 @@ public class RetailStoreActListRepresentativeResponse {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class RetailStoreActListRepresentativeResponse {\n");
+    sb.append("class ListRepresentativeResponse {\n");
     sb.append("    totalCount: ").append(toIndentedString(totalCount)).append("\n");
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("    offset: ").append(toIndentedString(offset)).append("\n");

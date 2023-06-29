@@ -6,15 +6,15 @@ import com.wechat.pay.java.service.retailstore.model.ApplyActivityRequest;
 import com.wechat.pay.java.service.retailstore.model.ApplyActivityResponse;
 import com.wechat.pay.java.service.retailstore.model.CreateMaterialsRequest;
 import com.wechat.pay.java.service.retailstore.model.DeleteRepresentativeRequest;
+import com.wechat.pay.java.service.retailstore.model.DeleteRepresentativeResponse;
 import com.wechat.pay.java.service.retailstore.model.ListActsByAreaRequest;
 import com.wechat.pay.java.service.retailstore.model.ListActsByAreaResponse;
 import com.wechat.pay.java.service.retailstore.model.ListRepresentativeRequest;
+import com.wechat.pay.java.service.retailstore.model.ListRepresentativeResponse;
 import com.wechat.pay.java.service.retailstore.model.LockQualificationRequest;
 import com.wechat.pay.java.service.retailstore.model.LockQualificationResponse;
-import com.wechat.pay.java.service.retailstore.model.RetailStoreActAddRepresentativeResponse;
-import com.wechat.pay.java.service.retailstore.model.RetailStoreActCreateMaterials;
-import com.wechat.pay.java.service.retailstore.model.RetailStoreActDeleteRepresentativeResponse;
-import com.wechat.pay.java.service.retailstore.model.RetailStoreActListRepresentativeResponse;
+import com.wechat.pay.java.service.retailstore.model.Materials;
+import com.wechat.pay.java.service.retailstore.model.Representatives;
 import com.wechat.pay.java.service.retailstore.model.UnlockQualificationRequest;
 import com.wechat.pay.java.service.retailstore.model.UnlockQualificationResponse;
 
@@ -65,25 +65,25 @@ public class RetailStoreServiceExample {
     return service.unlockQualification(request);
   }
   /** 添加零售小店活动业务代理 */
-  public static RetailStoreActAddRepresentativeResponse addRepresentative() {
+  public static Representatives addRepresentative() {
 
     AddRepresentativeRequest request = new AddRepresentativeRequest();
     return service.addRepresentative(request);
   }
   /** 生成小店活动物料码 */
-  public static RetailStoreActCreateMaterials createMaterials() {
+  public static Materials createMaterials() {
 
     CreateMaterialsRequest request = new CreateMaterialsRequest();
     return service.createMaterials(request);
   }
   /** 删除零售小店活动业务代理 */
-  public static RetailStoreActDeleteRepresentativeResponse deleteRepresentative() {
+  public static DeleteRepresentativeResponse deleteRepresentative() {
 
     DeleteRepresentativeRequest request = new DeleteRepresentativeRequest();
     return service.deleteRepresentative(request);
   }
   /** 查询零售小店活动业务代理 */
-  public static RetailStoreActListRepresentativeResponse listRepresentative() {
+  public static ListRepresentativeResponse listRepresentative() {
 
     ListRepresentativeRequest request = new ListRepresentativeRequest();
     return service.listRepresentative(request);

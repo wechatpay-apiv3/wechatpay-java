@@ -37,15 +37,15 @@ import com.wechat.pay.java.service.retailstore.model.ApplyActivityRequest;
 import com.wechat.pay.java.service.retailstore.model.ApplyActivityResponse;
 import com.wechat.pay.java.service.retailstore.model.CreateMaterialsRequest;
 import com.wechat.pay.java.service.retailstore.model.DeleteRepresentativeRequest;
+import com.wechat.pay.java.service.retailstore.model.DeleteRepresentativeResponse;
 import com.wechat.pay.java.service.retailstore.model.ListActsByAreaRequest;
 import com.wechat.pay.java.service.retailstore.model.ListActsByAreaResponse;
 import com.wechat.pay.java.service.retailstore.model.ListRepresentativeRequest;
+import com.wechat.pay.java.service.retailstore.model.ListRepresentativeResponse;
 import com.wechat.pay.java.service.retailstore.model.LockQualificationRequest;
 import com.wechat.pay.java.service.retailstore.model.LockQualificationResponse;
-import com.wechat.pay.java.service.retailstore.model.RetailStoreActAddRepresentativeResponse;
-import com.wechat.pay.java.service.retailstore.model.RetailStoreActCreateMaterials;
-import com.wechat.pay.java.service.retailstore.model.RetailStoreActDeleteRepresentativeResponse;
-import com.wechat.pay.java.service.retailstore.model.RetailStoreActListRepresentativeResponse;
+import com.wechat.pay.java.service.retailstore.model.Materials;
+import com.wechat.pay.java.service.retailstore.model.Representatives;
 import com.wechat.pay.java.service.retailstore.model.UnlockQualificationRequest;
 import com.wechat.pay.java.service.retailstore.model.UnlockQualificationResponse;
 
@@ -231,14 +231,13 @@ public class RetailStoreService {
    * 添加零售小店活动业务代理
    *
    * @param request 请求参数
-   * @return RetailStoreActAddRepresentativeResponse
+   * @return Representatives
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
    * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
-  public RetailStoreActAddRepresentativeResponse addRepresentative(
-      AddRepresentativeRequest request) {
+  public Representatives addRepresentative(AddRepresentativeRequest request) {
     String requestPath =
         "https://api.mch.weixin.qq.com/v3/marketing/goods-subsidy-activity/retail-store-act/{activity_id}/representative";
 
@@ -260,21 +259,21 @@ public class RetailStoreService {
             .headers(headers)
             .body(createRequestBody(realRequest))
             .build();
-    HttpResponse<RetailStoreActAddRepresentativeResponse> httpResponse =
-        httpClient.execute(httpRequest, RetailStoreActAddRepresentativeResponse.class);
+    HttpResponse<Representatives> httpResponse =
+        httpClient.execute(httpRequest, Representatives.class);
     return httpResponse.getServiceResponse();
   }
   /**
    * 生成小店活动物料码
    *
    * @param request 请求参数
-   * @return RetailStoreActCreateMaterials
+   * @return Materials
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
    * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
-  public RetailStoreActCreateMaterials createMaterials(CreateMaterialsRequest request) {
+  public Materials createMaterials(CreateMaterialsRequest request) {
     String requestPath =
         "https://api.mch.weixin.qq.com/v3/marketing/goods-subsidy-activity/retail-store-act/{brand_id}/materials";
 
@@ -295,22 +294,20 @@ public class RetailStoreService {
             .headers(headers)
             .body(createRequestBody(realRequest))
             .build();
-    HttpResponse<RetailStoreActCreateMaterials> httpResponse =
-        httpClient.execute(httpRequest, RetailStoreActCreateMaterials.class);
+    HttpResponse<Materials> httpResponse = httpClient.execute(httpRequest, Materials.class);
     return httpResponse.getServiceResponse();
   }
   /**
    * 删除零售小店活动业务代理
    *
    * @param request 请求参数
-   * @return RetailStoreActDeleteRepresentativeResponse
+   * @return DeleteRepresentativeResponse
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
    * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
-  public RetailStoreActDeleteRepresentativeResponse deleteRepresentative(
-      DeleteRepresentativeRequest request) {
+  public DeleteRepresentativeResponse deleteRepresentative(DeleteRepresentativeRequest request) {
     String requestPath =
         "https://api.mch.weixin.qq.com/v3/marketing/goods-subsidy-activity/retail-store-act/{activity_id}/representative";
 
@@ -332,22 +329,21 @@ public class RetailStoreService {
             .headers(headers)
             .body(createRequestBody(realRequest))
             .build();
-    HttpResponse<RetailStoreActDeleteRepresentativeResponse> httpResponse =
-        httpClient.execute(httpRequest, RetailStoreActDeleteRepresentativeResponse.class);
+    HttpResponse<DeleteRepresentativeResponse> httpResponse =
+        httpClient.execute(httpRequest, DeleteRepresentativeResponse.class);
     return httpResponse.getServiceResponse();
   }
   /**
    * 查询零售小店活动业务代理
    *
    * @param request 请求参数
-   * @return RetailStoreActListRepresentativeResponse
+   * @return ListRepresentativeResponse
    * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
    * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
    * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
    * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
    */
-  public RetailStoreActListRepresentativeResponse listRepresentative(
-      ListRepresentativeRequest request) {
+  public ListRepresentativeResponse listRepresentative(ListRepresentativeRequest request) {
     String requestPath =
         "https://api.mch.weixin.qq.com/v3/marketing/goods-subsidy-activity/retail-store-act/{activity_id}/representatives";
 
@@ -377,8 +373,8 @@ public class RetailStoreService {
             .url(requestPath)
             .headers(headers)
             .build();
-    HttpResponse<RetailStoreActListRepresentativeResponse> httpResponse =
-        httpClient.execute(httpRequest, RetailStoreActListRepresentativeResponse.class);
+    HttpResponse<ListRepresentativeResponse> httpResponse =
+        httpClient.execute(httpRequest, ListRepresentativeResponse.class);
     return httpResponse.getServiceResponse();
   }
 

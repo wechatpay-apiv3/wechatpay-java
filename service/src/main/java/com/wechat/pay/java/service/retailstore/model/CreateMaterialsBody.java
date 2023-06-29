@@ -15,8 +15,8 @@ import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
 
 import com.google.gson.annotations.SerializedName;
 
-/** RetailStoreActCreateMaterialsRequest */
-public class RetailStoreActCreateMaterialsRequest {
+/** CreateMaterialsBody */
+public class CreateMaterialsBody {
   /** 请求业务单据 说明：商户添加业务代理信息凭据号，商户侧需保持唯一性。可包含英文字母，数字，\\\\|，\\\\_，\\\\*，\\\\-等内容，不允许出现其他不合法符号。 */
   @SerializedName("out_request_no")
   private String outRequestNo;
@@ -43,7 +43,7 @@ public class RetailStoreActCreateMaterialsRequest {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class RetailStoreActCreateMaterialsRequest {\n");
+    sb.append("class CreateMaterialsBody {\n");
     sb.append("    outRequestNo: ").append(toIndentedString(outRequestNo)).append("\n");
     sb.append("    materialNum: ").append(toIndentedString(materialNum)).append("\n");
     sb.append("}");

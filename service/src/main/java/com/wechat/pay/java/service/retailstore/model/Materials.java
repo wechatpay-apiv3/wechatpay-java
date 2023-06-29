@@ -16,8 +16,8 @@ import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
-/** RetailStoreActCreateMaterials */
-public class RetailStoreActCreateMaterials {
+/** Materials */
+public class Materials {
   /** 成功的物料码列表 说明：成功的物料码列表 */
   @SerializedName("material_list")
   private List<MaterialInfo> materialList;
@@ -33,7 +33,7 @@ public class RetailStoreActCreateMaterials {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class RetailStoreActCreateMaterials {\n");
+    sb.append("class Materials {\n");
     sb.append("    materialList: ").append(toIndentedString(materialList)).append("\n");
     sb.append("}");
     return sb.toString();

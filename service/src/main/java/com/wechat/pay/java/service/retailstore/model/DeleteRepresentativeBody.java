@@ -17,8 +17,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-/** RetailStoreActDeleteRepresentativeRequest */
-public class RetailStoreActDeleteRepresentativeRequest {
+/** DeleteRepresentativeBody */
+public class DeleteRepresentativeBody {
   /** 业务代理信息列表 说明：业务代理信息列表 */
   @SerializedName("representative_info_list")
   private List<RepresentativeInfo> representativeInfoList = new ArrayList<RepresentativeInfo>();
@@ -56,7 +56,7 @@ public class RetailStoreActDeleteRepresentativeRequest {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class RetailStoreActDeleteRepresentativeRequest {\n");
+    sb.append("class DeleteRepresentativeBody {\n");
     sb.append("    representativeInfoList: ")
         .append(toIndentedString(representativeInfoList))
         .append("\n");
