@@ -47,6 +47,10 @@ public class AutoCertificateService {
 
   private static int updateCount;
 
+  private AutoCertificateService() {
+    throw new IllegalStateException("this class cannot be instantiated");
+  }
+
   /**
    * 注册证书下载任务 如果是第一次注册，会先下载证书。如果能成功下载，再保存下载器，供定时更新证书使用。如果下载失败，会抛出异常。
    * 如果已经注册过，当前传入的下载器将覆盖之前的下载器。如果当前下载器不能下载证书，定时更新证书会失败。

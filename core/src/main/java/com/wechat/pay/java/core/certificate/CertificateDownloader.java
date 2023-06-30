@@ -39,8 +39,6 @@ public final class CertificateDownloader {
     private AeadCipher aeadCipher;
     private CertificateHandler certificateHandler;
 
-    public Builder() {}
-
     public Builder downloadUrl(String downloadUrl) {
       this.downloadUrl = downloadUrl;
       return this;
