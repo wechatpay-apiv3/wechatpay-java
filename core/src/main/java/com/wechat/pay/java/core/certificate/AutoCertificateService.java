@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/** 定时更新证书的服务，它是一个静态类 */
 public class AutoCertificateService {
   private static final Logger log = LoggerFactory.getLogger(AutoCertificateService.class);
   protected static final int UPDATE_INTERVAL_MINUTE = 60;
@@ -36,10 +37,24 @@ public class AutoCertificateService {
               return t;
             }
           });
+
+  static {
+    // 取消时立即从工作队列中删除
+    serviceExecutor.setRemoveOnCancelPolicy(true);
+  }
+
   private static ScheduledFuture<?> future;
 
   private static int updateCount;
 
+  /**
+   * 注册证书下载任务 如果是第一次注册，会先下载证书。如果能成功下载，再保存下载器，供定时更新证书使用。如果下载失败，会抛出异常。
+   * 如果已经注册过，当前传入的下载器将覆盖之前的下载器。如果当前下载器不能下载证书，定时更新证书会失败。
+   *
+   * @param merchantId 商户号
+   * @param type 调用方自定义的证书类型，例如 RSA/ShangMi
+   * @param downloader 证书下载器
+   */
   public static void register(String merchantId, String type, CertificateDownloader downloader) {
     String key = calculateDownloadWorkerMapKey(merchantId, type);
     Runnable worker =
@@ -49,7 +64,7 @@ public class AutoCertificateService {
         };
 
     // 如果已经存在，就覆盖
-    // 但是，有可能新的配置有问题，导致更新失败
+    // 但是，有可能新的配置有问题，导致定时更新证书失败
     downloadWorkerMap.replace(key, worker);
 
     // 第一次时，先下载好证书
@@ -64,11 +79,34 @@ public class AutoCertificateService {
     start(defaultUpdateInterval);
   }
 
+  /**
+   * 注销证书下载任务
+   *
+   * @param merchantId 商户号
+   * @param type 调用方自定义的证书类型，应等于 `register()` 时的值
+   */
   public static void unregister(String merchantId, String type) {
     String key = calculateDownloadWorkerMapKey(merchantId, type);
     downloadWorkerMap.remove(key);
   }
 
+  /** 清理所有已注册的下载器和已下载的证书，并取消定时更新证书的动作。 */
+  public static void shutdown() {
+    downloadWorkerMap.clear();
+    certificateMap.clear();
+    synchronized (AutoCertificateService.class) {
+      if (future != null) {
+        future.cancel(false);
+        future = null;
+      }
+    }
+  }
+
+  /**
+   * 启动更新证书的周期性动作
+   *
+   * @param updateInterval 更新证书的周期
+   */
   public static void start(Duration updateInterval) {
     synchronized (AutoCertificateService.class) {
       if (future == null) {
@@ -88,6 +126,7 @@ public class AutoCertificateService {
         (k, v) -> {
           try {
             v.run();
+            log.info("update wechatpay certificate {} done", k);
           } catch (Exception e) {
             log.error("Download and update wechatpay certificate {} failed", k);
           }
@@ -96,7 +135,7 @@ public class AutoCertificateService {
   }
 
   private static String calculateDownloadWorkerMapKey(String merchantId, String type) {
-    return merchantId + type;
+    return merchantId + "-" + type;
   }
 
   private static X509Certificate getAvailableCertificate(
@@ -111,12 +150,14 @@ public class AutoCertificateService {
     return longest;
   }
 
+  // 根据证书序列号获取证书
   public static X509Certificate getCertificate(
       String merchantId, String type, String serialNumber) {
     String key = calculateDownloadWorkerMapKey(merchantId, type);
     return certificateMap.get(key).get(serialNumber);
   }
 
+  // 获取最新可用的微信支付平台证书
   public static X509Certificate getAvailableCertificate(String merchantId, String type) {
     String key = calculateDownloadWorkerMapKey(merchantId, type);
     return getAvailableCertificate(certificateMap.get(key));

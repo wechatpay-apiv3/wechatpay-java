@@ -175,6 +175,8 @@ class AutoCertificateServiceTest {
     server.setDispatcher(dispatcher);
     server.start();
 
+    // 避免被别的用例影响
+    AutoCertificateService.shutdown();
     AutoCertificateService.start(Duration.ofSeconds(3));
   }
 
