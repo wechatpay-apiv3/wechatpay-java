@@ -25,3 +25,6 @@
 | giftactivity | 支付有礼 |✔️|✔️|
 | cashcoupons | 代金券 |✔️|✔️|
 | retailstore | 零售小店 |✔️|✔️|
+| brandprofitsharing | 连锁品牌分账 |✔️|✔️|
+| ecommerceprofitsharing | 电商收付通分账 |✔️|✔️|
+| profitsharing | 分账 |✔️|✔️|
