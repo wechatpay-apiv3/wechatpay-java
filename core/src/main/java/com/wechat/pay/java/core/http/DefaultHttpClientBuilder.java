@@ -20,10 +20,15 @@ public class DefaultHttpClientBuilder
   private Validator validator;
 
   // 5 maxIdleConnections as OkHttp default value.
+  private static final int MAX_IDLE_CONNECTIONS = 60;
   // 7 seconds to keep the connection alive, because WeChatPay API only keeps alive 8s.
+  private static final int KEEP_ALIVE_SECONDS = 7;
   // It would prevent idle client from unnecessary retry on connection failure.
   private static final okhttp3.OkHttpClient defaultOkHttpClient =
-      new OkHttpClient.Builder().connectionPool(new ConnectionPool(5, 7, TimeUnit.SECONDS)).build();
+      new OkHttpClient.Builder()
+          .connectionPool(
+              new ConnectionPool(MAX_IDLE_CONNECTIONS, KEEP_ALIVE_SECONDS, TimeUnit.SECONDS))
+          .build();
   private okhttp3.OkHttpClient customizeOkHttpClient;
   private int readTimeoutMs = -1;
   private int writeTimeoutMs = -1;

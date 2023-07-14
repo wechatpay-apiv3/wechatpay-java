@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** 定时更新证书的服务，它是一个静态类 */
+/** 定时更新证书的服务，它是一个由静态函数构成的工具类 */
 public class AutoCertificateService {
   private static final Logger log = LoggerFactory.getLogger(AutoCertificateService.class);
   protected static final int UPDATE_INTERVAL_MINUTE = 60;
