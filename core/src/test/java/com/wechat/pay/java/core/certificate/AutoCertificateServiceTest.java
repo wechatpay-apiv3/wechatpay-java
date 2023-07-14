@@ -16,11 +16,9 @@ import com.wechat.pay.java.core.util.PemUtil;
 import java.net.URI;
 import java.security.cert.X509Certificate;
 import java.time.Duration;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import okhttp3.mockwebserver.Dispatcher;
@@ -208,8 +206,6 @@ class AutoCertificateServiceTest {
     }
   }
 
-  static final Map<String, Map<String, X509Certificate>> testMap = new ConcurrentHashMap<>();
-
   static class FakeCredential implements Credential {
 
     @Override
@@ -236,7 +232,7 @@ class AutoCertificateServiceTest {
   }
 
   @Test
-  void testUpdate() throws Exception {
+  void testUpdate() {
     Credential fakeCredential = new FakeCredential();
     Validator fakeHttpValidator = new FakeValidator();
 
@@ -277,7 +273,7 @@ class AutoCertificateServiceTest {
   }
 
   @Test
-  void testUpdateWith500() throws Exception {
+  void testUpdateWith500() {
     Credential fakeCredential = new FakeCredential();
     Validator fakeHttpValidator = new FakeValidator();
 
@@ -315,7 +311,7 @@ class AutoCertificateServiceTest {
   }
 
   @Test
-  void testUpdateWithBadBody() throws Exception {
+  void testUpdateWithBadBody() {
     Credential fakeCredential = new FakeCredential();
     Validator fakeHttpValidator = new FakeValidator();
 

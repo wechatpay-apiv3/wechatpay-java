@@ -191,8 +191,8 @@ SDK 使用的是 unchecked exception，会抛出四种自定义异常。每种�
 
 ## 自动更新微信支付平台证书
 
-在 API 请求过程中，客户端需使用微信支付平台证书，验证服务器应答的真实性和完整性。
-在 v0.2.3 版本，我们加入了自动更新平台证书的配置类 `RSAAutoCertificateConfig`。
+为确保 API 请求过程中的安全性，客户端需要使用微信支付平台证书来验证服务器响应的真实性和完整性。
+从 v0.2.3 版本开始，我们引入了一个名为 `RSAAutoCertificateConfig` 的配置类，用于自动更新平台证书。
 
 ```java
 Config config =
@@ -204,14 +204,20 @@ Config config =
         .build();
 ```
 
-`RSAAutoCertificateConfig` 通过 `RSAAutoCertificateProvider` 自动下载微信支付平台证书。
-同时，`RSAAutoCertificateProvider` 会启动一个后台线程，定时更新证书（目前设计为60分钟），以实现证书过期时的新老证书平滑切换。
+`RSAAutoCertificateConfig` 会利用 `AutoCertificateService` 自动下载微信支付平台证书。
+`AutoCertificateService` 将启动一个后台线程，定期（目前为每60分钟）更新证书，以实现证书过期时的平滑切换。
+
+在每次构建 `RSAAutoCertificateConfig` 时，SDK 首先会使用传入的商户参数下载一次微信支付平台证书。
+如果下载成功，SDK 会将商户参数注册或更新至 `AutoCertificateService`。若下载失败，将会抛出异常。
+
+为了提高性能，建议将配置类作为全局变量。
+复用 `RSAAutoCertificateConfig` 可以减少不必要的证书下载，避免资源浪费。
+只有在配置发生变更时，才需要重新构造 `RSAAutoCertificateConfig`。
+
+如果您有多个商户号，可以为每个商户构建相应的 `RSAAutoCertificateConfig`。
 
 > **Note**
->
-> 从 v0.2.10 开始，不再限制每个商户号只能创建一个 `RSAAutoCertificateConfig`。但每次创建实例时，SDK 会使用新传入的私钥等参数覆盖定时更新证书的配置。如果配置不正确，将影响证书的更新。
->
-> 为了获得更好的性能，我们建议你将配置类作为全局变量。复用 `RSAAutoCertificateConfig` 可以减少不必要的初始化，避免浪费资源。
+> 从 v0.2.10 开始，我们不再限制每个商户号只能创建一个 `RSAAutoCertificateConfig`。
 
 ### 使用本地的微信支付平台证书
 

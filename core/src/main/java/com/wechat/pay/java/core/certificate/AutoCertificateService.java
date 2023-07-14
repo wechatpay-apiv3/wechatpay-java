@@ -67,18 +67,11 @@ public class AutoCertificateService {
           certificateMap.put(key, result);
         };
 
-    // 如果已经存在，就覆盖
-    // 但是，有可能新的配置有问题，导致定时更新证书失败
-    downloadWorkerMap.replace(key, worker);
-
-    // 第一次时，先下载好证书
-    downloadWorkerMap.computeIfAbsent(
-        key,
-        k -> {
-          // 如果失败，会抛出异常
-          worker.run();
-          return worker;
-        });
+    // 下载证书，以验证配置是正确的
+    // 如果错误将抛出异常，fast-fail
+    worker.run();
+    // 更新配置
+    downloadWorkerMap.put(key, worker);
 
     start(defaultUpdateInterval);
   }
