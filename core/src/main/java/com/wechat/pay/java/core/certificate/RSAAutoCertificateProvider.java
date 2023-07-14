@@ -14,28 +14,51 @@ import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpHeaders;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /** RSA自动更新平台证书提供器 */
-public class RSAAutoCertificateProvider extends AbstractAutoCertificateProvider {
+public class RSAAutoCertificateProvider implements CertificateProvider {
 
-  private static final Map<String, Map<String, X509Certificate>> wechatPayCertificateMap =
-      new ConcurrentHashMap<>(); // 证书Map
-  private static final CertificateHandler rsaCertificateHandler =
-      new RSACertificateHandler(); // 证书处理器
+  private static final CertificateHandler rsaCertificateHandler = new RSACertificateHandler();
+  private static final String ALGORITHM_TYPE = "RSA";
   private static final String REQUEST_URL =
-      "https://api.mch.weixin.qq.com/v3/certificates?algorithm_type=RSA"; // 下载证书url
+      "https://api.mch.weixin.qq.com/v3/certificates?algorithm_type=" + ALGORITHM_TYPE;
+
+  private final String merchantId;
 
   private RSAAutoCertificateProvider(
       String merchantId, AeadCipher aeadCipher, HttpClient httpClient) {
-    super(
-        REQUEST_URL,
-        rsaCertificateHandler,
-        aeadCipher,
-        httpClient,
-        merchantId,
-        wechatPayCertificateMap);
+    this.merchantId = merchantId;
+
+    CertificateDownloader downloader =
+        new CertificateDownloader.Builder()
+            .certificateHandler(rsaCertificateHandler)
+            .downloadUrl(REQUEST_URL)
+            .aeadCipher(aeadCipher)
+            .httpClient(httpClient)
+            .build();
+
+    AutoCertificateService.register(merchantId, ALGORITHM_TYPE, downloader);
+  }
+
+  /**
+   * 根据证书序列号获取证书
+   *
+   * @param serialNumber 微信支付平台证书序列号
+   * @return X.509证书实例
+   */
+  @Override
+  public X509Certificate getCertificate(String serialNumber) {
+    return AutoCertificateService.getCertificate(merchantId, ALGORITHM_TYPE, serialNumber);
+  }
+
+  /**
+   * 获取最新可用的微信支付平台证书
+   *
+   * @return X.509证书实例
+   */
+  @Override
+  public X509Certificate getAvailableCertificate() {
+    return AutoCertificateService.getAvailableCertificate(merchantId, ALGORITHM_TYPE);
   }
 
   public static class Builder {

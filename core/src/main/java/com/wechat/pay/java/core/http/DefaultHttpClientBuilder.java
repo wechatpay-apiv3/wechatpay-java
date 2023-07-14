@@ -10,6 +10,7 @@ import com.wechat.pay.java.core.http.okhttp.OkHttpMultiDomainInterceptor;
 import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 import okhttp3.ConnectionPool;
+import okhttp3.OkHttpClient;
 
 /** 默认HttpClient构造器 */
 public class DefaultHttpClientBuilder
@@ -17,7 +18,17 @@ public class DefaultHttpClientBuilder
 
   private Credential credential;
   private Validator validator;
-  private static final okhttp3.OkHttpClient defaultOkHttpClient = new okhttp3.OkHttpClient();
+
+  // 最大空闲连接 maxIdleConnections 为5个，跟 OkHttp 默认值保持一致
+  private static final int MAX_IDLE_CONNECTIONS = 5;
+  // 连接的 Keep-Alive 空闲时长为7秒, 微信支付服务器目前是8秒
+  // 防止空闲客户端被服务器断掉，而造成不必要的重试
+  private static final int KEEP_ALIVE_SECONDS = 7;
+  private static final okhttp3.OkHttpClient defaultOkHttpClient =
+      new OkHttpClient.Builder()
+          .connectionPool(
+              new ConnectionPool(MAX_IDLE_CONNECTIONS, KEEP_ALIVE_SECONDS, TimeUnit.SECONDS))
+          .build();
   private okhttp3.OkHttpClient customizeOkHttpClient;
   private int readTimeoutMs = -1;
   private int writeTimeoutMs = -1;
@@ -152,15 +163,8 @@ public class DefaultHttpClientBuilder
   public AbstractHttpClient build() {
     requireNonNull(credential);
     requireNonNull(validator);
-    okhttp3.OkHttpClient.Builder okHttpClientBuilder;
-    if (customizeOkHttpClient != null) {
-      okHttpClientBuilder = customizeOkHttpClient.newBuilder();
-    } else {
-      okHttpClientBuilder = defaultOkHttpClient.newBuilder();
-      // 7 seconds to keep the connection alive, because WeChatPay API only keeps alive 8s
-      // it would prevent idle client from unnecessary retry on connection failure
-      okHttpClientBuilder.connectionPool(new ConnectionPool(5, 7, TimeUnit.SECONDS));
-    }
+    okhttp3.OkHttpClient.Builder okHttpClientBuilder =
+        (customizeOkHttpClient == null ? defaultOkHttpClient : customizeOkHttpClient).newBuilder();
     if (connectTimeoutMs >= 0) {
       okHttpClientBuilder.connectTimeout(connectTimeoutMs, TimeUnit.MILLISECONDS);
     }

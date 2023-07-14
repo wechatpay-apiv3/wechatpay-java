@@ -6,7 +6,7 @@
 
 # 微信支付 APIv3 Java SDK
 
-[微信支付 APIv3](https://wechatpay-api.gitbook.io/wechatpay-api-v3/) 官方 Java 语言客户端开发库。
+[微信支付 APIv3](https://pay.weixin.qq.com/docs/merchant/development/interface-rules/introduction.html) 官方 Java 语言客户端开发库。
 
 开发库由 `core` 和 `service` 组成：
 
@@ -21,9 +21,9 @@
 
 - Java 1.8+。
 - [成为微信支付商户](https://pay.weixin.qq.com/index.php/apply/applyment_home/guide_normal)。
-- [商户 API 证书](https://wechatpay-api.gitbook.io/wechatpay-api-v3/ren-zheng/zheng-shu#shang-hu-api-zheng-shu)：指由商户申请的，包含商户的商户号、公司名称、公钥信息的证书。
-- [商户 API 私钥](https://wechatpay-api.gitbook.io/wechatpay-api-v3/ren-zheng/zheng-shu#shang-hu-api-si-yao)：商户申请商户API证书时，会生成商户私钥，并保存在本地证书文件夹的文件 apiclient_key.pem 中。
-- [APIv3 密钥](https://wechatpay-api.gitbook.io/wechatpay-api-v3/ren-zheng/api-v3-mi-yao)：为了保证安全性，微信支付在回调通知和平台证书下载接口中，对关键信息进行了 AES-256-GCM 加密。APIv3 密钥是加密时使用的对称密钥。
+- [商户 API 证书](https://pay.weixin.qq.com/docs/merchant/development/interface-rules/privatekey-and-certificate.html#%E5%95%86%E6%88%B7api%E8%AF%81%E4%B9%A6)：指由商户申请的，包含[证书序列号](https://pay.weixin.qq.com/docs/merchant/development/interface-rules/certificate-faqs.html#%E5%A6%82%E4%BD%95%E6%9F%A5%E7%9C%8B%E8%AF%81%E4%B9%A6%E5%BA%8F%E5%88%97%E5%8F%B7)、商户的商户号、公司名称、公钥信息的证书。
+- [商户 API 私钥](https://pay.weixin.qq.com/docs/merchant/development/interface-rules/privatekey-and-certificate.html#%E5%95%86%E6%88%B7api%E7%A7%81%E9%92%A5)：商户申请商户API证书时，会生成商户私钥，并保存在本地证书文件夹的文件 apiclient_key.pem 中。
+- [APIv3 密钥](https://pay.weixin.qq.com/docs/merchant/development/interface-rules/apiv3key.html)：为了保证安全性，微信支付在回调通知和平台证书下载接口中，对关键信息进行了 AES-256-GCM 加密。APIv3 密钥是加密时使用的对称密钥。
 
 ## 快速开始
 
@@ -69,13 +69,13 @@ import com.wechat.pay.java.service.payments.nativepay.model.PrepayResponse;
 public class QuickStart {
 
     /** 商户号 */
-    public static String merchantId = "";
+    public static String merchantId = "190000****";
     /** 商户API私钥路径 */
-    public static String privateKeyPath = "";
+    public static String privateKeyPath = "/Users/yourname/your/path/apiclient_key.pem";
     /** 商户证书序列号 */
-    public static String merchantSerialNumber = "";
+    public static String merchantSerialNumber = "5157F09EFDC096DE15EBE81A47057A72********";
     /** 商户APIV3密钥 */
-    public static String apiV3key = "";
+    public static String apiV3key = "...";
 
     public static void main(String[] args) {
         // 使用自动更新平台证书的RSA配置
@@ -153,13 +153,22 @@ PrepayRequest request = new PrepayRequest();
 PrepayWithRequestPaymentResponse response = service.prepayWithRequestPayment(request);
 ```
 
+### 上传图片
+
+```java
+import com.wechat.pay.java.service.file.FileUploadService;
+import com.wechat.pay.java.service.file.model.FileUploadResponse;
+
+FileUploadService fileService = new FileUploadService.Builder().config(config).build();
+FileUploadResponse fileUploadResponse = fileUploadService.uploadImage(uploadUrl, meta, imagePath);
+```
+
 ### 更多示例
 
 为了方便开发者快速上手，微信支付给每个服务生成了示例代码 `XxxServiceExample.java`，可以在 [example](service/src/example) 中查看。
 例如：
 
 - [JsapiServiceExtensionExample.java](service/src/example/java/com/wechat/pay/java/service/payments/jsapi/JsapiServiceExtensionExample.java)
-- [FileServiceExample.java](service/src/example/java/com/wechat/pay/java/service/file/FileUploadServiceExample.java)
 
 ## 错误处理
 
@@ -182,8 +191,8 @@ SDK 使用的是 unchecked exception，会抛出四种自定义异常。每种�
 
 ## 自动更新微信支付平台证书
 
-在 API 请求过程中，客户端需使用微信支付平台证书，验证服务器应答的真实性和完整性。
-在 v0.2.3 版本，我们加入了自动更新平台证书的配置类 `RSAAutoCertificateConfig`。
+为确保 API 请求过程中的安全性，客户端需要使用微信支付平台证书来验证服务器响应的真实性和完整性。
+从 v0.2.3 版本开始，我们引入了一个名为 `RSAAutoCertificateConfig` 的配置类，用于自动更新平台证书。
 
 ```java
 Config config =
@@ -195,14 +204,20 @@ Config config =
         .build();
 ```
 
-`RSAAutoCertificateConfig` 通过 `RSAAutoCertificateProvider` 自动下载微信支付平台证书。
-同时，`RSAAutoCertificateProvider` 会启动一个后台线程，定时更新证书（目前设计为60分钟），以实现证书过期时的新老证书平滑切换。
+`RSAAutoCertificateConfig` 会利用 `AutoCertificateService` 自动下载微信支付平台证书。
+`AutoCertificateService` 将启动一个后台线程，定期（目前为每60分钟）更新证书，以实现证书过期时的平滑切换。
+
+在每次构建 `RSAAutoCertificateConfig` 时，SDK 首先会使用传入的商户参数下载一次微信支付平台证书。
+如果下载成功，SDK 会将商户参数注册或更新至 `AutoCertificateService`。若下载失败，将会抛出异常。
+
+为了提高性能，建议将配置类作为全局变量。
+复用 `RSAAutoCertificateConfig` 可以减少不必要的证书下载，避免资源浪费。
+只有在配置发生变更时，才需要重新构造 `RSAAutoCertificateConfig`。
+
+如果您有多个商户号，可以为每个商户构建相应的 `RSAAutoCertificateConfig`。
 
 > **Note**
->
-> 每个商户号只能创建一个 `RSAAutoCertificateConfig`。同一个商户号构造多个实例，会抛出 `IllegalStateException` 异常。
->
-> 我们建议你将配置类作为全局变量。如果你的程序是多线程，建议使用**多线程安全**的单例模式。
+> 从 v0.2.10 开始，我们不再限制每个商户号只能创建一个 `RSAAutoCertificateConfig`。
 
 ### 使用本地的微信支付平台证书
 
@@ -264,9 +279,9 @@ Transaction transaction = parser.parse(requestParam, Transaction.class);
 
 常用的通知回调对象类型：
 
-+ 支付 `Transaction`
-+ 退款 `RefundNotification`
-+ 若 SDK 暂不支持的类型，请使用 `Map.class`，嵌套的 Json 对象将被转换成 `LinkedTreeMap`
+- 支付 `Transaction`
+- 退款 `RefundNotification`
+- 若 SDK 暂不支持的类型，请使用 `Map.class`，嵌套的 Json 对象将被转换成 `LinkedTreeMap`
 
 你既可以为每个通知回调使用不同的 HTTP 端点，也可以使用一个端点根据 `event_type` 处理不同的通知回调。
 我们建议，不同的通知回调使用不同的端点，直接调用 SDK 处理通知回调，避免商户自己解析报文。因为 SDK 会先验证通知回调的有效性，可有效防止"坏人"的报文攻击。
@@ -311,7 +326,7 @@ inputStream.close();
 - 微信支付要求加密上送的敏感信息
 - 微信支付会加密下行的敏感信息
 
-详见 [接口规则 - 敏感信息加解密](https://wechatpay-api.gitbook.io/wechatpay-api-v3/qian-ming-zhi-nan-1/min-gan-xin-xi-jia-mi)。
+详见 [接口规则 - 敏感信息加解密](https://pay.weixin.qq.com/docs/merchant/development/interface-rules/sensitive-data-encryption.html)。
 
 ### 自动加解密
 
@@ -391,10 +406,10 @@ JsapiService service = new JsapiService.Builder().httpclient(httpClient).build()
 
 假设 `api.mch.weixin.qq.com` 解析得到 [ip1a, ip1b]，`api2.wechatpay.cn` 解析得到 [ip2a, ip2b]，不同的重试策略组合对应的尝试顺序为：
 
-+ 默认：[ip1a, ip1b]
-+ disableRetryOnConnectionFailure：[ip1a]
-+ enableRetryMultiDomain：[ipa1, ip1b, ip2a, ip2b]
-+ （推荐）disableRetryOnConnectionFailure + enableRetryMultiDomain: [ip1a, ip2a]
+- 默认：[ip1a, ip1b]
+- disableRetryOnConnectionFailure：[ip1a]
+- enableRetryMultiDomain：[ipa1, ip1b, ip2a, ip2b]
+- （推荐）disableRetryOnConnectionFailure + enableRetryMultiDomain: [ip1a, ip2a]
 
 以下是采用推荐重试策略的示例代码：
 
@@ -435,7 +450,7 @@ JsapiService service = new JsapiService.Builder().httpclient(httpClient).build()
 如果你是自动获取微信支付平台证书，可以通过以下方法获取证书序列号。
 
 ```java
-PrivateEncryptor encryptor = config.createEncryptor();
+PrivacyEncryptor encryptor = config.createEncryptor();
 String wechatPayCertificateSerialNumber = encryptor.getWechatpaySerial();
 ```
 
@@ -461,9 +476,7 @@ String wechatPayCertificateSerialNumber = encryptor.getWechatpaySerial();
 
 ### 为什么快速开始的示例程序执行后，程序不会退出？
 
-是的，因为示例使用了自动更新微信支付平台证书，它会启动一个背景线程以定时更新证书。这个线程不会自动退出。
-
-你可以主动终止程序，退出不会有副作用。 我们也在考虑如何提供优雅的退出方式。
+在 v0.2.10 中，我们将定时更新证书的线程设置为后台线程，程序可以正常退出了。
 
 ## 如何参与开发
 
