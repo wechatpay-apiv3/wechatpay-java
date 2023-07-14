@@ -12,7 +12,10 @@ import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.notification.NotificationConfig;
 import java.nio.charset.StandardCharsets;
 
-/** 具有自动下载平台证书能力的RSA配置类 */
+/**
+ * 具有自动下载并更新平台证书能力的RSA配置类。 每次构造，都会立即使用传入的商户参数下载微信支付平台证书。 如果下载成功，SDK 会将商户参数注册或更新至
+ * AutoCertificateService。若下载失败，将会抛出异常。 为了提高性能，建议将配置类作为全局变量，减少不必要的证书下载，避免资源浪费
+ */
 public final class RSAAutoCertificateConfig extends AbstractRSAConfig
     implements NotificationConfig {
 
