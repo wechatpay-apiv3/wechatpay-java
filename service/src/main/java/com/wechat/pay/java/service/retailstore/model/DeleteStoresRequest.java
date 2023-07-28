@@ -18,36 +18,32 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-/** DeleteRepresentativeRequest */
-public class DeleteRepresentativeRequest {
-  /** 零售小店活动ID 说明：零售小店活动ID */
-  @SerializedName("activity_id")
+/** DeleteStoresRequest */
+public class DeleteStoresRequest {
+  /** 品牌ID 说明：品牌ID */
+  @SerializedName("brand_id")
   @Expose(serialize = false)
-  private String activityId;
-  /** 业务代理信息列表 说明：业务代理信息列表 */
-  @SerializedName("representative_info_list")
-  private List<RepresentativeInfo> representativeInfoList = new ArrayList<RepresentativeInfo>();
-  /** 请求业务单据号 说明：商户删除业务代理请求的唯一标识，商户需保证唯一。可包含英文字母，数字，\\|，\\_，\\*，\\-等内容，不允许出现其他不合法符号。 */
+  private String brandId;
+  /** 请求业务单据 说明：商户删除小店活动门店凭据号，商户侧需保持唯一性。可包含英文字母，数字，\\\\|，\\\\_，\\\\*，\\\\-等内容，不允许出现其他不合法符号。 */
   @SerializedName("out_request_no")
   private String outRequestNo;
-  /** 删除时间 说明：删除时间 */
+  /**
+   * 删除时间
+   * 说明：删除时间，遵循rfc3339标准格式，格式为yyyy-MM-DDTHH:mm:ss+TIMEZONE，yyyy-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC8小时，即北京时间）。例如：2015-05-20T13:29:35+08:00表示，北京时间2015年5月20日
+   * 13点29分35秒。
+   */
   @SerializedName("delete_time")
   private String deleteTime;
+  /** 待删除的小店活动门店列表 说明：待删除的小店活动门店列表 */
+  @SerializedName("stores")
+  private List<RetailStoreInfo> stores = new ArrayList<RetailStoreInfo>();
 
-  public String getActivityId() {
-    return activityId;
+  public String getBrandId() {
+    return brandId;
   }
 
-  public void setActivityId(String activityId) {
-    this.activityId = activityId;
-  }
-
-  public List<RepresentativeInfo> getRepresentativeInfoList() {
-    return representativeInfoList;
-  }
-
-  public void setRepresentativeInfoList(List<RepresentativeInfo> representativeInfoList) {
-    this.representativeInfoList = representativeInfoList;
+  public void setBrandId(String brandId) {
+    this.brandId = brandId;
   }
 
   public String getOutRequestNo() {
@@ -66,16 +62,22 @@ public class DeleteRepresentativeRequest {
     this.deleteTime = deleteTime;
   }
 
+  public List<RetailStoreInfo> getStores() {
+    return stores;
+  }
+
+  public void setStores(List<RetailStoreInfo> stores) {
+    this.stores = stores;
+  }
+
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class DeleteRepresentativeRequest {\n");
-    sb.append("    activityId: ").append(toIndentedString(activityId)).append("\n");
-    sb.append("    representativeInfoList: ")
-        .append(toIndentedString(representativeInfoList))
-        .append("\n");
+    sb.append("class DeleteStoresRequest {\n");
+    sb.append("    brandId: ").append(toIndentedString(brandId)).append("\n");
     sb.append("    outRequestNo: ").append(toIndentedString(outRequestNo)).append("\n");
     sb.append("    deleteTime: ").append(toIndentedString(deleteTime)).append("\n");
+    sb.append("    stores: ").append(toIndentedString(stores)).append("\n");
     sb.append("}");
     return sb.toString();
   }

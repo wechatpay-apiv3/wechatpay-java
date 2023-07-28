@@ -17,25 +17,21 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-/** AddRepresentativesRequest */
-public class AddRepresentativesRequest {
-  /** 业务代理信息列表 说明：业务代理信息列表 */
-  @SerializedName("representative_info_list")
-  private List<RepresentativeInfo> representativeInfoList = new ArrayList<RepresentativeInfo>();
-  /** 请求业务单据号 说明：商户新增业务代理请求的唯一标识，商户需保证唯一。可包含英文字母，数字，\\|，\\_，\\*，\\-等内容，不允许出现其他不合法符号。 */
+/** AddStoresBody */
+public class AddStoresBody {
+  /** 请求业务单据 说明：商户新增小店活动门店凭据号，商户侧需保持唯一性。可包含英文字母，数字，\\\\|，\\\\_，\\\\*，\\\\-等内容，不允许出现其他不合法符号。 */
   @SerializedName("out_request_no")
   private String outRequestNo;
-  /** 添加时间 说明：添加时间 */
+  /**
+   * 添加时间
+   * 说明：添加时间，遵循rfc3339标准格式，格式为yyyy-MM-DDTHH:mm:ss+TIMEZONE，yyyy-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC8小时，即北京时间）。例如：2015-05-20T13:29:35+08:00表示，北京时间2015年5月20日
+   * 13点29分35秒。
+   */
   @SerializedName("add_time")
   private String addTime;
-
-  public List<RepresentativeInfo> getRepresentativeInfoList() {
-    return representativeInfoList;
-  }
-
-  public void setRepresentativeInfoList(List<RepresentativeInfo> representativeInfoList) {
-    this.representativeInfoList = representativeInfoList;
-  }
+  /** 待新增的小店活动门店列表 说明：待新增的小店活动门店列表 */
+  @SerializedName("stores")
+  private List<RetailStoreInfo> stores = new ArrayList<RetailStoreInfo>();
 
   public String getOutRequestNo() {
     return outRequestNo;
@@ -53,15 +49,21 @@ public class AddRepresentativesRequest {
     this.addTime = addTime;
   }
 
+  public List<RetailStoreInfo> getStores() {
+    return stores;
+  }
+
+  public void setStores(List<RetailStoreInfo> stores) {
+    this.stores = stores;
+  }
+
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class AddRepresentativesRequest {\n");
-    sb.append("    representativeInfoList: ")
-        .append(toIndentedString(representativeInfoList))
-        .append("\n");
+    sb.append("class AddStoresBody {\n");
     sb.append("    outRequestNo: ").append(toIndentedString(outRequestNo)).append("\n");
     sb.append("    addTime: ").append(toIndentedString(addTime)).append("\n");
+    sb.append("    stores: ").append(toIndentedString(stores)).append("\n");
     sb.append("}");
     return sb.toString();
   }
