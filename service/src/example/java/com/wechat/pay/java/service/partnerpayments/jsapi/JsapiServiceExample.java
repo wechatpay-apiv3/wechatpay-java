@@ -1,6 +1,7 @@
 package com.wechat.pay.java.service.partnerpayments.jsapi;
 
-import com.wechat.pay.java.core.RSAConfig;
+import com.wechat.pay.java.core.Config;
+import com.wechat.pay.java.core.RSAAutoCertificateConfig;
 import com.wechat.pay.java.core.exception.HttpException;
 import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.exception.ServiceException;
@@ -17,18 +18,18 @@ public class JsapiServiceExample {
   public static String merchantId = "";
   public static String privateKeyPath = "";
   public static String merchantSerialNumber = "";
-  public static String wechatPayCertificatePath = "";
+  public static String apiV3Key = "";
   public static JsapiService service;
 
   public static void main(String[] args) {
     // 初始化商户配置
-    RSAConfig config =
-        new RSAConfig.Builder()
+    Config config =
+        new RSAAutoCertificateConfig.Builder()
             .merchantId(merchantId)
             // 使用 com.wechat.pay.java.core.util 中的函数从本地文件中加载商户私钥，商户私钥会用来生成请求的签名
             .privateKeyFromPath(privateKeyPath)
             .merchantSerialNumber(merchantSerialNumber)
-            .wechatPayCertificatesFromPath(wechatPayCertificatePath)
+            .apiV3Key(apiV3Key)
             .build();
 
     // 初始化服务

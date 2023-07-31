@@ -1,6 +1,7 @@
 package com.wechat.pay.java.service.ecommerceprofitsharing;
 
-import com.wechat.pay.java.core.RSAConfig;
+import com.wechat.pay.java.core.Config;
+import com.wechat.pay.java.core.RSAAutoCertificateConfig;
 import com.wechat.pay.java.service.ecommerceprofitsharing.model.AddReceiverRequest;
 import com.wechat.pay.java.service.ecommerceprofitsharing.model.AddReceiverResponse;
 import com.wechat.pay.java.service.ecommerceprofitsharing.model.CreateAfterSalesOrderRequest;
@@ -28,18 +29,19 @@ public class EcommerceProfitSharingServiceExample {
   public static String merchantId = "";
   public static String privateKeyPath = "";
   public static String merchantSerialNumber = "";
-  public static String wechatPayCertificatePath = "";
+  public static String apiV3Key = "";
   public static EcommerceProfitSharingService service;
 
   public static void main(String[] args) {
     // 初始化商户配置
-    RSAConfig config =
-        new RSAConfig.Builder()
+    Config config =
+        new RSAAutoCertificateConfig.Builder()
             .merchantId(merchantId)
-            // 使用 com.wechat.pay.java.core.util 中的函数从本地文件中加载商户私钥，商户私钥会用来生成请求的签名
+            // 使用 com.wechat.pay.java.core.util
+            // 中的函数从本地文件中加载商户私钥，商户私钥会用来生成请求的签名
             .privateKeyFromPath(privateKeyPath)
             .merchantSerialNumber(merchantSerialNumber)
-            .wechatPayCertificatesFromPath(wechatPayCertificatePath)
+            .apiV3Key(apiV3Key)
             .build();
 
     // 初始化服务

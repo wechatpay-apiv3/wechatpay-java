@@ -1,6 +1,7 @@
 package com.wechat.pay.java.service.file;
 
-import com.wechat.pay.java.core.RSAConfig;
+import com.wechat.pay.java.core.Config;
+import com.wechat.pay.java.core.RSAAutoCertificateConfig;
 import com.wechat.pay.java.service.file.model.FileUploadResponse;
 import java.io.IOException;
 import org.slf4j.Logger;
@@ -12,23 +13,24 @@ public class FileUploadServiceExample {
   public static String merchantId = "";
   public static String privateKeyPath = "";
   public static String merchantSerialNumber = "";
-  public static String wechatPayCertificatePath = "";
+  public static String apiV3Key = "";
   public static FileUploadService fileUploadService;
   private static final Logger logger = LoggerFactory.getLogger(FileUploadServiceExample.class);
 
   public static void main(String[] args) {
     // 初始化商户配置
-    RSAConfig rsaConfig =
-        new RSAConfig.Builder()
+    Config config =
+        new RSAAutoCertificateConfig.Builder()
             .merchantId(merchantId)
-            // 使用 com.wechat.pay.java.core.util 中的函数从本地文件中加载商户私钥，商户私钥会用来生成请求的签名
+            // 使用 com.wechat.pay.java.core.util
+            // 中的函数从本地文件中加载商户私钥，商户私钥会用来生成请求的签名
             .privateKeyFromPath(privateKeyPath)
             .merchantSerialNumber(merchantSerialNumber)
-            .wechatPayCertificatesFromPath(wechatPayCertificatePath)
+            .apiV3Key(apiV3Key)
             .build();
 
     // 初始化文件上传服务
-    fileUploadService = new FileUploadService.Builder().config(rsaConfig).build();
+    fileUploadService = new FileUploadService.Builder().config(config).build();
     // ... 调用接口
   }
 
