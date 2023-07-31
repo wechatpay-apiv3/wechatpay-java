@@ -16,14 +16,14 @@ import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
-/** ListRepresentativeResponse */
-public class ListRepresentativeResponse {
-  /** 小店活动业代总数 说明：小店活动业代总数 */
+/** ListStoreResponse */
+public class ListStoreResponse {
+  /** 小店活动门店总数 说明：小店活动门店总数 */
   @SerializedName("total_count")
   private Long totalCount;
-  /** 小店活动业代集合 说明：小店活动业代集合 */
+  /** 小店活动门店集合 说明：小店活动门店集合 */
   @SerializedName("data")
-  private List<RepresentativeInfo> data;
+  private List<RetailStoreInfo> data;
   /** 分页页码 说明：页码从0开始，默认第0页 */
   @SerializedName("offset")
   private Long offset;
@@ -39,11 +39,11 @@ public class ListRepresentativeResponse {
     this.totalCount = totalCount;
   }
 
-  public List<RepresentativeInfo> getData() {
+  public List<RetailStoreInfo> getData() {
     return data;
   }
 
-  public void setData(List<RepresentativeInfo> data) {
+  public void setData(List<RetailStoreInfo> data) {
     this.data = data;
   }
 
@@ -66,7 +66,7 @@ public class ListRepresentativeResponse {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ListRepresentativeResponse {\n");
+    sb.append("class ListStoreResponse {\n");
     sb.append("    totalCount: ").append(toIndentedString(totalCount)).append("\n");
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("    offset: ").append(toIndentedString(offset)).append("\n");

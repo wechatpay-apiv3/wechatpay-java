@@ -13,38 +13,30 @@ package com.wechat.pay.java.service.retailstore.model;
 
 import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import java.util.List;
 
-/** ListRepresentativeResponse */
-public class ListRepresentativeResponse {
-  /** 小店活动业代总数 说明：小店活动业代总数 */
-  @SerializedName("total_count")
-  private Long totalCount;
-  /** 小店活动业代集合 说明：小店活动业代集合 */
-  @SerializedName("data")
-  private List<RepresentativeInfo> data;
+/** ListStoreRequest */
+public class ListStoreRequest {
+  /** 品牌ID 说明：品牌ID */
+  @SerializedName("brand_id")
+  @Expose(serialize = false)
+  private String brandId;
   /** 分页页码 说明：页码从0开始，默认第0页 */
   @SerializedName("offset")
+  @Expose(serialize = false)
   private Long offset;
-  /** 分页大小 说明：分页大小 */
+  /** 分页大小 说明：分页大小，默认查询10家门店 */
   @SerializedName("limit")
+  @Expose(serialize = false)
   private Long limit;
 
-  public Long getTotalCount() {
-    return totalCount;
+  public String getBrandId() {
+    return brandId;
   }
 
-  public void setTotalCount(Long totalCount) {
-    this.totalCount = totalCount;
-  }
-
-  public List<RepresentativeInfo> getData() {
-    return data;
-  }
-
-  public void setData(List<RepresentativeInfo> data) {
-    this.data = data;
+  public void setBrandId(String brandId) {
+    this.brandId = brandId;
   }
 
   public Long getOffset() {
@@ -66,9 +58,8 @@ public class ListRepresentativeResponse {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ListRepresentativeResponse {\n");
-    sb.append("    totalCount: ").append(toIndentedString(totalCount)).append("\n");
-    sb.append("    data: ").append(toIndentedString(data)).append("\n");
+    sb.append("class ListStoreRequest {\n");
+    sb.append("    brandId: ").append(toIndentedString(brandId)).append("\n");
     sb.append("    offset: ").append(toIndentedString(offset)).append("\n");
     sb.append("    limit: ").append(toIndentedString(limit)).append("\n");
     sb.append("}");
