@@ -15,10 +15,15 @@ import com.wechat.pay.java.service.payments.model.Transaction;
 /** H5Service使用示例 */
 public class H5ServiceExample {
 
-  public static String merchantId = "";
-  public static String privateKeyPath = "";
-  public static String merchantSerialNumber = "";
-  public static String apiV3Key = "";
+  /** 商户号 */
+  public static String merchantId = "190000****";
+  /** 商户API私钥路径 */
+  public static String privateKeyPath = "/Users/yourname/your/path/apiclient_key.pem";
+  /** 商户证书序列号 */
+  public static String merchantSerialNumber = "5157F09EFDC096DE15EBE81A47057A72********";
+  /** 商户APIV3密钥 */
+  public static String apiV3Key = "...";
+
   public static H5Service service;
 
   public static void main(String[] args) {
