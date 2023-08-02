@@ -28,3 +28,4 @@
 | brandprofitsharing | 连锁品牌分账 |✔️|✔️|
 | ecommerceprofitsharing | 电商收付通分账 |✔️|✔️|
 | profitsharing | 分账 |✔️|✔️|
+| billdownload | 账单下载 |✔️|✔️|
