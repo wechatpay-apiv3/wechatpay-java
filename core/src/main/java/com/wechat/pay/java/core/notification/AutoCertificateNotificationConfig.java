@@ -30,8 +30,8 @@ public final class AutoCertificateNotificationConfig extends AbstractNotificatio
     protected HttpClient httpClient;
     protected byte[] apiV3Key;
 
-    public Builder apiV3Key(String apiV3key) {
-      this.apiV3Key = apiV3key.getBytes(StandardCharsets.UTF_8);
+    public Builder apiV3Key(String apiV3Key) {
+      this.apiV3Key = apiV3Key.getBytes(StandardCharsets.UTF_8);
       return this;
     }
 

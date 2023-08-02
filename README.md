@@ -75,7 +75,7 @@ public class QuickStart {
     /** 商户证书序列号 */
     public static String merchantSerialNumber = "5157F09EFDC096DE15EBE81A47057A72********";
     /** 商户APIV3密钥 */
-    public static String apiV3key = "...";
+    public static String apiV3Key = "...";
 
     public static void main(String[] args) {
         // 使用自动更新平台证书的RSA配置
@@ -85,7 +85,7 @@ public class QuickStart {
                         .merchantId(merchantId)
                         .privateKeyFromPath(privateKeyPath)
                         .merchantSerialNumber(merchantSerialNumber)
-                        .apiV3Key(apiV3key)
+                        .apiV3Key(apiV3Key)
                         .build();
         // 构建service
         NativePayService service = new NativePayService.Builder().config(config).build();
@@ -200,7 +200,7 @@ Config config =
         .merchantId(merchantId)
         .privateKeyFromPath(privateKeyPath)
         .merchantSerialNumber(merchantSerialNumber)
-        .apiV3Key(apiV3key)
+        .apiV3Key(apiV3Key)
         .build();
 ```
 
@@ -267,7 +267,7 @@ NotificationConfig config = new RSAAutoCertificateConfig.Builder()
         .merchantId(merchantId)
         .privateKeyFromPath(privateKeyPath)
         .merchantSerialNumber(merchantSerialNumber)
-        .apiV3Key(apiV3key)
+        .apiV3Key(apiV3Key)
         .build();
 
 // 初始化 NotificationParser
