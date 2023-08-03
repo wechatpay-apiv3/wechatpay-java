@@ -20,6 +20,8 @@ public class DigestBillEntity {
   }
 
   private MessageDigest getMessageDigestInstance(HashType hashType) {
+    Objects.requireNonNull(hashType, "HashType must not be null");
+
     String algorithm;
     if (Objects.requireNonNull(hashType) == HashType.SHA1) {
       algorithm = "SHA-1";
@@ -57,6 +59,6 @@ public class DigestBillEntity {
    */
   public final boolean verifyHash() {
     final String digest = digestAndEncodeHex();
-    return digest.equals(hashValue.toLowerCase());
+    return digest.equalsIgnoreCase(hashValue);
   }
 }

@@ -15,6 +15,7 @@ import com.wechat.pay.java.service.billdownload.model.QueryBillEntity;
 import com.wechat.pay.java.service.billdownload.model.TarType;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 
 public class BillDownloadServiceExtension {
@@ -88,6 +89,7 @@ public class BillDownloadServiceExtension {
     private PrivacyDecryptor decryptor;
 
     public Builder config(Config config) {
+      Objects.requireNonNull(config, "Config must not be null");
       this.httpClient = new DefaultHttpClientBuilder().config(config).build();
 
       this.decryptor = config.createDecryptor();
@@ -110,6 +112,9 @@ public class BillDownloadServiceExtension {
     }
 
     public BillDownloadServiceExtension build() {
+      Objects.requireNonNull(httpClient, "HttpClient must not be null");
+      Objects.requireNonNull(decryptor, "Decryptor must not be null");
+
       return new BillDownloadServiceExtension(this);
     }
   }
