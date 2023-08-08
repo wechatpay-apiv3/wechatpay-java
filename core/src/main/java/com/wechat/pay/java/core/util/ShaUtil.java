@@ -97,7 +97,7 @@ public class ShaUtil {
    * @param bytes 字节数组
    * @return HEX编码字符串
    */
-  private static String toHexString(byte[] bytes) {
+  public static String toHexString(byte[] bytes) {
     StringBuilder sb = new StringBuilder(bytes.length * 2);
     for (byte b : bytes) {
       sb.append(String.format("%02x", b));
