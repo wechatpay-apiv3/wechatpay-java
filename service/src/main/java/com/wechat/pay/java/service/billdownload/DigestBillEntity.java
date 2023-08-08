@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Objects;
 
 public class DigestBillEntity {
   private final DigestInputStream digestInputStream;
@@ -20,10 +19,8 @@ public class DigestBillEntity {
   }
 
   private MessageDigest getMessageDigestInstance(HashType hashType) {
-    Objects.requireNonNull(hashType, "HashType must not be null");
-
     String algorithm;
-    if (Objects.requireNonNull(hashType) == HashType.SHA1) {
+    if (hashType == HashType.SHA1) {
       algorithm = "SHA-1";
     } else {
       algorithm = hashType.name();
