@@ -247,10 +247,10 @@ Config config =
     - HTTP 头 `Wechatpay-Nonce`。签名中的随机数。
     - HTTP 头 `Wechatpay-Timestamp`。签名中的时间戳。
     - HTTP 头 `Wechatpay-Signature-Type`。签名类型。
-3. 初始化 `RSAAutoCertificateConfig`。微信支付平台证书由 SDK 的自动更新平台能力提供，也可以使用本地证书。
-4. 初始化 `NotificationParser`。
-5. 调用 `NotificationParser.parse()` 验签、解密并将 JSON 转换成具体的通知回调对象。如果验签失败，SDK 会抛出 `ValidationException`。
-6. 接下来可以执行你的业务逻辑了。如果执行成功，你应返回 `200 OK` 的状态码。如果执行失败，你应返回 `4xx` 或者 `5xx`的状态码，例如数据库操作失败建议返回 `500 Internal Server Error`。
+1. 初始化 `RSAAutoCertificateConfig`。微信支付平台证书由 SDK 的自动更新平台能力提供，也可以使用本地证书。
+1. 初始化 `NotificationParser`。
+1. 调用 `NotificationParser.parse()` 验签、解密并将 JSON 转换成具体的通知回调对象。如果验签失败，SDK 会抛出 `ValidationException`。
+1. 接下来可以执行你的业务逻辑了。如果执行成功，你应返回 `200 OK` 的状态码。如果执行失败，你应返回 `4xx` 或者 `5xx`的状态码，例如数据库操作失败建议返回 `500 Internal Server Error`。
 
 ```java
 // 构造 RequestParam
@@ -308,8 +308,8 @@ return ResponseEntity.status(HttpStatus.OK);
 发送请求步骤如下：
 
 1. 初始化 `OkHttpClientAdapter`，建议使用 `DefaultHttpClientBuilder` 构建。
-2. 构建请求 `HttpRequest`。
-3. 调用 `httpClient.execute` 或者 `httpClient.get` 等方法来发送 HTTP 请求。`httpClient.execute` 支持发送 GET、PUT、POST、PATCH、DELETE 请求，也可以调用指定的 HTTP 方法发送请求。
+1. 构建请求 `HttpRequest`。
+1. 调用 `httpClient.execute` 或者 `httpClient.get` 等方法来发送 HTTP 请求。`httpClient.execute` 支持发送 GET、PUT、POST、PATCH、DELETE 请求，也可以调用指定的 HTTP 方法发送请求。
 
 [OkHttpClientAdapterTest](core/src/test/java/com/wechat/pay/java/core/http/OkHttpClientAdapterTest.java) 中演示了如何构造和发送 HTTP 请求。如果现有的 `OkHttpClientAdapter` 实现类不满足你的需求，可以继承 [AbstractHttpClient](core/src/main/java/com/wechat/pay/java/core/http/AbstractHttpClient.java) 拓展实现。
 
