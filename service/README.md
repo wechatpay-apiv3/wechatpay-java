@@ -29,3 +29,4 @@
 | ecommerceprofitsharing | 电商收付通分账 |✔️|✔️|
 | profitsharing | 分账 |✔️|✔️|
 | billdownload | 账单下载 |✔️|✔️|
+| ecommercesubsidy | 电商收付通补差 | | |
