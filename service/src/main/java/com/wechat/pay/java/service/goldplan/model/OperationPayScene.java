@@ -13,11 +13,14 @@ package com.wechat.pay.java.service.goldplan.model;
 
 import com.google.gson.annotations.SerializedName;
 
-/** OperationType */
-public enum OperationType {
-  @SerializedName("OPEN")
-  OPEN,
+/** OperationPayScene */
+public enum OperationPayScene {
+  @SerializedName("JSAPI_AND_MINIPROGRAM")
+  JSAPI_AND_MINIPROGRAM,
 
-  @SerializedName("CLOSE")
-  CLOSE
+  @SerializedName("JSAPI")
+  JSAPI,
+
+  @SerializedName("MINIPROGRAM")
+  MINIPROGRAM
 }
