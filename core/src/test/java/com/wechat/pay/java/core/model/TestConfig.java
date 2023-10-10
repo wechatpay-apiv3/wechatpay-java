@@ -29,24 +29,21 @@ public class TestConfig {
       "{\n"
           + "    \"data\": [\n"
           + "        {\n"
-          + "            \"serial_no\": \"19FBBF2A24A3F3C97F5925FA855A850D6E4624AF\",\n"
-          + "            \"effective_time \": \"2018-10-09T21:48:14+08:00\",\n"
-          + "            \"expire_time \": \"2023-10-08T21:48:14+08:00\",\n"
+          + "            \"effective_time\": \"2023-09-19T23:15:58+08:00\",\n"
           + "            \"encrypt_certificate\": {\n"
           + "                \"algorithm\": \"AEAD_AES_256_GCM\",\n"
-          + "                \"nonce\": \"1543b1cd0eb9\",\n"
           + "                \"associated_data\": \"certificate\",\n"
-          + "                \"ciphertext\": "
-          + "\"5ZQ4y+5Az+AjCgb+bg574jUQvBuQofsPzea3EKpfvvbiREnklJNkzNTVdkAX1SUz1Aaimwcnl8Jjg7R/57L30Gqz"
-          + "+QXHBPjer2wo5KwQspwpfkdxWdps9dF+G4VtyBNSqJd1EHlK5ao"
-          + "+/x2TsmcZIulBiz3f5civgFMjvtqLnJTPSqRClomJP6CZiNq00GkNJRrsMgND7VD0mzOq3vdt62tgOZNReahDbXOqj4uiHy0sLHWsiWVfOxMR0zV4FXgcvahi1L5yrJdTs4uNX1RQ+chsVAydXCeiiysJbLY/Bz0fwF1NEi0EGrAhO51qUCseGtFBJNJosCSJkn9nW1FqINJtxZ/vUliXlw7IW4gw6mKO2FqijjHe7kWeCT1KukNi8YBa+Z9CPjTBiMEKFx7SasFsAwA6cqu9mMfNGTcDFEIDfbDYGt8XMFWIOH3oOFU2k4cKRBuL9pB7A3netiZ2qUGtYMxkVAxDIz852XKo2P2+YG7TqhijX33qPygTqbo+jKhvj11joL9mHiYsWJi4zBCsxE7yR61lxpix0vnk9v+UuyZAJibVnhd6q9Lo2xFk0fuENYe0PStG5Ue4kdNNe16n+fhK/LaAhIZ5c9nHD7+7GTAifSZNrqzTnpQMuyktkK/DcMrkVPu3Z3N9+ZhcIOp2rP6utItJH52+7kYmOPk92ciMsvCi6wGOaP/kd9CQYchnL1KRjW2OuzGptMAsLOL5rULb3zfh8GGNUD9XUnT56hH6RrCYFrojjDsFzBJFfgTzfgDee+j3EZI1NeMBls2TFrNkHFsbb7XRoxffjnXzP7xoAlDuP/wkF70ASI8mdZf/4Qe0S+8h8M9PWKlQjtS0DJVnOK4ladj9QeV9zB2YycpgiAaMOsQF8mUbP7bssCX+ZZDTJNpmIgPapamb8eGYqnF7MV1R2uPUGBBnF0hcfxaA3iCESzKgeQEOpKIYE+vjXuej3S+bFk8HFd4/hzPNd8vJpaJkxtaETpAhcnmybwg7CZMdBQG6lQxQ8pYcG1ZTsAUFL0BD5QVjTL9U2N9xYGWUDutofZuEcuUqg4z7ljS0c41ORHJrsQKqzwGJGeDl/eKbDTkMkFdFRfEwLhouitJSfjdWQX5ii0KMIZcVLZ8nFq3Znh7VQ41MHg9GOeNQfKTwyI1kATSwZdNYg1lIyFEQ89GSmFBfKT1atBGZa+fo2jaj4GvMrt5bgOHLFF5qn3c3DoITKLD45SVAlvOWTvm3QhaNq89MIvsFdrVsRoSDPz+skNmNmuT6P1YqUnFGr3R8yVQvs6j355OddHOdYyFSdhUVY4sCxzOFdi8yNDs7WKx3H0BcdlNWPHIlb622e+uWtqe4sXO35T52a5tZ/UKlZsacNci6tVoZTbFnNBdV/M673jBKb5dnkr9upKp1O0ixhqrB7xuKuIjP6L4l6qzlpf3pbOv5rNK3Gv2+vpMz0OcguK0QjnIXmb+MJbHZDqE6ffRfhYJHczi3yF0tP9He0+2SB98KeF15HmXMRtgeTmzh/YUFfdKJGNBrV25lO/hK6kZ/cmp/wukTT5F/TIHIevEoMx9YnsDLxCYendxVTcvUf5NkAbRWkpLeAD2aTg5oUwu3yRqgmCGDcUW3E+SzIVar/N6lt7upwb6CUGcXgnF4a8NJM0V7woA/8+xmDdlvAkneZ+jULr2x4FD4W2rmZsM9IjrYyQTc6lQhJ/jDNNO9BpWf7kFiMbea1toeURJRuYYdXsGIfb3suBkuf3WTSoMtJI1UzL1RUuvgSjSGOGmnZhcMbBE4PwA+nvVzTVqbLoxy7sOoglXp251WIWGiVBuvJarCRyM5PYJd8nE6PNYogxp2l4JQpkEHcoRuyyzL/DtzKSJNd2JXCNkIqibsEraNgjUQpRLesEREUJT9iEb05FMBlQpJlcHYbzMT\"\n"
-          + "            }\n"
+          + "                \"ciphertext\": \"Mr/AxbvY+WL9hKlD5nIa03LOMPpn5f+CWeNxE4ujl0f5gXZ9XLJ9CldkArCOTsbU62XgKnTc3YvRMZQ7wCmE2fzwmAenAySTYsPms72JhggPWfdqVxri9YD5wBYKn8Ck0Fc5JIiVw9WlN2oxHBz83mRVsjoTGC5+cX1CdYqKuZ8pkvi0aCJIq07ZC8MHoTowUz+4jYJy9XeKqip83Z7BmUYxsePpNM+HtihBqTJIUYXJfX7Col5X0ACsApRoU9l6swfW/kzvqNpDJavhDBGasLrr5822+Fk5nVkcTi53f8Wbue7ODWjJxj1yhRYcxFCvXLtpYNB+Qa1aXtrBSdBdBI2p7o+6Imn+auHLBCzkrZqF/yd+d4vTn4tqHPLUj89XcHsMf96uBo3T/HQV8LEDeIO+6YvOK9FrIDYsvp+imN4n/mnF7eJKo9mpN/QqWJiawrFpAmMMxFKBjIdpgMnVUl3Z11RcWKyfOJ3kcmItTWcnZFNyDgR9cS0aU6QPlefa3uUW89uzBuHjcFdDl43yU3LE4qZnHLDcDgx4qt0OFCLiy51GXtEpyYs5k99YJBvKK+RyIs4Yc1/smBmClQUhxW+8bsPNOcXfDvH2yX4YzESoO4TV0RqiCgnsSd4zIFyJPiMKIGzVHiw6Kg0eGCmB4mGHEEZCQ0eN3SSPO0QVjjtBYfgXDZfVHSaAB8PjWBVNFimoViZZQrwT6Ygo0LU0Dd8+F5aHFYr4OPHPslr3hrgutEYXDTv1vTA6ABJGqknJ9Y2vtyWpy7aIwxc0kQq/1ezjs+RMVL/LRpGDnbx1/CGPDjZhYgZypKa55+PDhoaQxqkF3xCLz2DGoNHZYmFqxzAOsAK0vJZw4VcAk6ssbA6YIaMuiemEpxfLC9ZiXtRqsX9s+GWjjtA8JywOFMO+NKZm9BH/E5YNg2DDD3sHG9Mciwn7yJ6sdf8h2lAWlEExAOeiBNyshOHAQ0/S+x1ncWNiqY+Uh5n0rtonvePV2MsxVlEWR3AVHn1abcEWkzivd+G5kg7LYO0goqzGClcQfnFfZdO6KwcMXsBCnm9A1Bl4+k5LLokTIYH5/36SRIZ9j0CHGD77BQLE7x8AlNsoFS2m263tLLq78TFqvZUTIZIQcVIl+NInscS3xQbA38qqFqutCWIwoF1azuJ7woiJyMvnS3xzIpNzP+rzJ8VDXxjLjpEUBOC9WDs74+QMtsAdmh6g0KDclHEk8WJ4P2bnso4z3VCGoDT5X/0bS1C+jMZMKaOCNB21FZ08qgUHmKeDeg8ylENu+mh2Y/AaEDSGkGBHIfFbhMYO3uRxhk9hldiHEnHgdkXiVAAUWk/IhtmGijibO/L76vB74Xpes973uK+2iFKgNBk8qTLLZZnuWbcMQuA6VsFULRb/C+q9B21YuAWPMzvgBwr4EX2m/OpF5w8Q0HL7v1H5H0mIGJbrjnklUPoBYrw30W3uk7yF0KE6sfMukafFx0S9rBOL0RykGDPwC0lHSNySkXDeM5XvDJ+dtHK+RDwhJR+azfrWAHGMtZcQ+YVamjWVmHxXM03j3GeCXgqae1upwHzkPL5OwojcQ5MQi3Kv/1xtwY0cRN/yeZTOsXfujtqhkJj/Vltby4lnW4SCj4LjWQF19BY6zhzF4yybBA8bhhtoNP/zx8QkhHAkIROkK2ZVgfocCAPvfQ+vSrsIBO+L5cmg6mzFn4g84lsHscgXnszIlzUrzx/4Tam0uwuS9J1gddZ0I0QUt9SJzfsoBCTU0OgNMUtXKS5HvgXe7abexMtFH5eulOsAuFZkQ5LYJa/m4yHFInXzL/t3hjdTi2NmxUufvYzwIyffRTu5vS9vjscARD9lUQDHFQ/xgWe1i8EkRlrSfjlXt00+4//h2bcJKyTBT3IXwvKNsuY29V9/vU3HkvWKZ99zpSlmcZRuBa1BHbyPEvc0NlqIIoKidxqUvOR64MzudHhAjgWFP+IXojfhS3Gj9OJhBL7s\",\n"
+          + "                \"nonce\": \"14b16c03dc1b\"\n"
+          + "            },\n"
+          + "            \"expire_time\": \"2028-09-17T23:15:58+08:00\",\n"
+          + "            \"serial_no\": \"5DEA10EF55877E3CF6C33255C2E7DEFFF7E427EC\"\n"
           + "        }\n"
           + "    ]\n"
-          + "}\n";
+          + "}";
 
   public static final String DOWNLOAD_CERTIFICATE_SERIAL_NUMBER =
-      "19FBBF2A24A3F3C97F5925FA855A850D6E4624AF";
+      "5DEA10EF55877E3CF6C33255C2E7DEFFF7E427EC";
 
   static {
     try {
