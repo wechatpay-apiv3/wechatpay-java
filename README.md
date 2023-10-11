@@ -345,16 +345,16 @@ inputStream.close();
 
 ### 自动加解密
 
-如果是 SDK 已支持的接口，例如商家转账，SDK 将根据契约自动对敏感信息做加解密：
+如果 SDK 已支持的接口，例如商家转账，SDK 将根据契约自动对敏感信息做加解密：
 
 - 发起请求时，开发者设置原文。SDK 自动加密敏感信息，并设置 `Wechatpay-Serial` 请求头
 - 收到应答时，解密器自动解密敏感信息，开发者得到原文
 
 ### 手动加解密
 
-如果是 SDK 尚未支持的接口，你可以使用 [cipher](core/src/main/java/com/wechat/pay/java/core/cipher) 中的 `RSAPrivacyEncryptor` 和 `RSAPrivacyDecryptor` ，手动对敏感信息加解密。
+如果 SDK 尚未支持某个接口，你可以使用 [cipher](core/src/main/java/com/wechat/pay/java/core/cipher) 中的 `RSAPrivacyEncryptor` 和 `RSAPrivacyDecryptor` ，手动对敏感信息加解密。
 
-当你使用自动获取的微信支付平台证书时，可使用以下方法获取 `PrivacyEncryptor`，以及对应的证书序列号。
+当你使用自动获取的微信支付平台证书时，可以通过以下方法获取加密器 `PrivacyEncryptor`，以及对应的证书序列号。
 
 ```java
 PrivacyEncryptor encryptor = config.createEncryptor();
@@ -362,7 +362,7 @@ String wechatPayCertificateSerialNumber = encryptor.getWechatpaySerial();
 String ciphertext = encryptor.encryptToString(plaintext);
 ```
 
-当你使用本地的公钥或私钥，可使用以下方法直接构建 `PrivacyEncryptor` 和 `PrivacyDecryptor`。
+当你使用本地的公钥或私钥，可以通过以下方法直接构建加密器 `PrivacyEncryptor` 和解密器 `PrivacyDecryptor`。
 
 ```java
 // 微信支付平台证书中的公钥
