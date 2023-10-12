@@ -1,5 +1,5 @@
 [![JavaDoc](http://img.shields.io/badge/javadoc-reference-blue.svg)](https://www.javadoc.io/doc/com.github.wechatpay-apiv3/wechatpay-java/latest/index.html)
-![Maven Central](https://img.shields.io/maven-central/v/com.github.wechatpay-apiv3/wechatpay-java?versionPrefix=0.2.11)
+![Maven Central](https://img.shields.io/maven-central/v/com.github.wechatpay-apiv3/wechatpay-java?versionPrefix=0.2.12)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=wechatpay-apiv3_wechatpay-java&metric=security_rating)](https://sonarcloud.io/summary/overall?id=wechatpay-apiv3_wechatpay-java)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=wechatpay-apiv3_wechatpay-java&metric=sqale_rating)](https://sonarcloud.io/summary/overall?id=wechatpay-apiv3_wechatpay-java)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=wechatpay-apiv3_wechatpay-java&metric=coverage)](https://sonarcloud.io/summary/overall?id=wechatpay-apiv3_wechatpay-java)
@@ -36,7 +36,7 @@
 在你的 build.gradle 文件中加入如下的依赖
 
 ```groovy
-implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.11'
+implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.12'
 ```
 
 #### Maven
@@ -47,7 +47,7 @@ implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.11'
 <dependency>
   <groupId>com.github.wechatpay-apiv3</groupId>
   <artifactId>wechatpay-java</artifactId>
-  <version>0.2.11</version>
+  <version>0.2.12</version>
 </dependency>
 ```
 
@@ -345,14 +345,24 @@ inputStream.close();
 
 ### 自动加解密
 
-如果是 SDK 已支持的接口，例如商家转账，SDK 将根据契约自动对敏感信息做加解密：
+如果 SDK 已支持的接口，例如商家转账，SDK 将根据契约自动对敏感信息做加解密：
 
 - 发起请求时，开发者设置原文。SDK 自动加密敏感信息，并设置 `Wechatpay-Serial` 请求头
 - 收到应答时，解密器自动解密敏感信息，开发者得到原文
 
 ### 手动加解密
 
-如果是 SDK 尚未支持的接口，你可以使用 [cipher](core/src/main/java/com/wechat/pay/java/core/cipher) 中的 `RSAPrivacyEncryptor` 和 `RSAPrivacyDecryptor` ，手动对敏感信息加解密。
+如果 SDK 尚未支持某个接口，你可以使用 [cipher](core/src/main/java/com/wechat/pay/java/core/cipher) 中的 `RSAPrivacyEncryptor` 和 `RSAPrivacyDecryptor` ，手动对敏感信息加解密。
+
+当你使用自动获取的微信支付平台证书时，可以通过以下方法获取加密器 `PrivacyEncryptor`，以及对应的证书序列号。
+
+```java
+PrivacyEncryptor encryptor = config.createEncryptor();
+String wechatPayCertificateSerialNumber = encryptor.getWechatpaySerial();
+String ciphertext = encryptor.encryptToString(plaintext);
+```
+
+当你使用本地的公钥或私钥，可以通过以下方法直接构建加密器 `PrivacyEncryptor` 和解密器 `PrivacyDecryptor`。
 
 ```java
 // 微信支付平台证书中的公钥
@@ -457,17 +467,6 @@ JsapiService service = new JsapiService.Builder().httpclient(httpClient).build()
 - 微信支付应答使用**微信支付平台私钥**签名。微信支付应答返回微信支付平台证书序列号。
 
 综上所述，请求和应答的证书序列号是不一致的。
-
-### 如何获取微信支付平台证书的证书序列号？
-
-对请求中的敏感信息手动加密时，需要在请求的 HTTP 头部中传入加密使用证书的证书序列号。
-
-如果你是自动获取微信支付平台证书，可以通过以下方法获取证书序列号。
-
-```java
-PrivacyEncryptor encryptor = config.createEncryptor();
-String wechatPayCertificateSerialNumber = encryptor.getWechatpaySerial();
-```
 
 ### 证书和回调解密需要的 AesGcm 解密在哪里？
 
