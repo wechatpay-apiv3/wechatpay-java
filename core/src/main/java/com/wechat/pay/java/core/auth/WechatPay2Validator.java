@@ -58,6 +58,10 @@ public final class WechatPay2Validator implements Validator {
     logger.debug("SerialNumber for verifying signatures is[{}]", serialNumber);
     String signature = responseHeaders.getHeader(WECHAT_PAY_SIGNATURE);
     logger.debug("Signature for verifying signatures is[{}]", signature);
+    // 这里要根据header内容判断证书验签还是公钥验签，证书序列号为空则使用公钥验签(可能使用其它验证逻辑，待定)
+    if(serialNumber.equals("")){
+      return verifier.verify(message, signature);
+    }
     return verifier.verify(serialNumber, message, signature);
   }
 }

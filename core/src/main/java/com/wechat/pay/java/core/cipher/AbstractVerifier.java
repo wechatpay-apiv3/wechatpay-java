@@ -6,6 +6,7 @@ import com.wechat.pay.java.core.certificate.CertificateProvider;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.security.cert.X509Certificate;
@@ -17,6 +18,7 @@ public abstract class AbstractVerifier implements Verifier {
 
   protected static final Logger logger = LoggerFactory.getLogger(AbstractVerifier.class);
   protected final CertificateProvider certificateProvider;
+  protected final PublicKey publicKey;
 
   protected final String algorithmName;
 
@@ -29,6 +31,19 @@ public abstract class AbstractVerifier implements Verifier {
   protected AbstractVerifier(String algorithmName, CertificateProvider certificateProvider) {
     this.certificateProvider = requireNonNull(certificateProvider);
     this.algorithmName = requireNonNull(algorithmName);
+    this.publicKey = null;
+  }
+
+  /**
+   * AbstractVerifier 构造函数
+   *
+   * @param algorithmName 获取Signature对象时指定的算法，例如SHA256withRSA
+   * @param publicKey 验签使用的微信支付平台公钥，非空
+   */
+  protected AbstractVerifier(String algorithmName, PublicKey publicKey) {
+    this.publicKey = requireNonNull(publicKey);
+    this.algorithmName = requireNonNull(algorithmName);
+    this.certificateProvider = null;
   }
 
   protected boolean verify(X509Certificate certificate, String message, String signature) {
@@ -49,6 +64,7 @@ public abstract class AbstractVerifier implements Verifier {
 
   @Override
   public boolean verify(String serialNumber, String message, String signature) {
+    requireNonNull(certificateProvider);
     X509Certificate certificate = certificateProvider.getCertificate(serialNumber);
     if (certificate == null) {
       logger.error(
@@ -58,5 +74,23 @@ public abstract class AbstractVerifier implements Verifier {
       return false;
     }
     return verify(certificate, message, signature);
+  }
+
+  @Override
+  public boolean verify(String message, String signature) {
+    requireNonNull(publicKey);
+    try {
+      Signature sign = Signature.getInstance(algorithmName);
+      sign.initVerify(publicKey);
+      sign.update(message.getBytes(StandardCharsets.UTF_8));
+      return sign.verify(Base64.getDecoder().decode(signature));
+    } catch (SignatureException e) {
+      return false;
+    } catch (InvalidKeyException e) {
+      throw new IllegalArgumentException("verify uses an illegal certificate.", e);
+    } catch (NoSuchAlgorithmException e) {
+      throw new UnsupportedOperationException(
+          "The current Java environment does not support " + algorithmName, e);
+    }
   }
 }

@@ -80,13 +80,10 @@ public final class CertificateDownloader {
     HttpResponse<DownloadCertificateResponse> httpResponse =
         httpClient.execute(httpRequest, DownloadCertificateResponse.class);
 
-    Map<String, X509Certificate> downloaded = decryptCertificate(httpResponse);
-    validateCertificate(downloaded);
-    return downloaded;
-  }
-
-  private void validateCertificate(Map<String, X509Certificate> certificates) {
-    certificates.forEach((serialNo, cert) -> certificateHandler.validateCertPath(cert));
+    // 删除验证证书信任链逻辑（也就没有了证书有效期校验逻辑）
+    // Map<String, X509Certificate> downloaded = decryptCertificate(httpResponse);
+    // validateCertificate(downloaded);
+    return decryptCertificate(httpResponse);
   }
 
   /**

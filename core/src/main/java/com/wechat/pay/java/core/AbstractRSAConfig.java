@@ -14,11 +14,13 @@ import com.wechat.pay.java.core.cipher.RSAVerifier;
 import com.wechat.pay.java.core.cipher.Signer;
 import com.wechat.pay.java.core.util.PemUtil;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 
 /** RSAConfig抽象类 */
 public abstract class AbstractRSAConfig implements Config {
 
+  /** 使用微信支付平台证书验签 */
   protected AbstractRSAConfig(
       String merchantId,
       PrivateKey privateKey,
@@ -28,6 +30,20 @@ public abstract class AbstractRSAConfig implements Config {
     this.privateKey = privateKey;
     this.merchantSerialNumber = merchantSerialNumber;
     this.certificateProvider = certificateProvider;
+    this.publicKey = null;
+  }
+
+  /** 使用微信支付公钥验签 */
+  protected AbstractRSAConfig(
+      String merchantId,
+      PrivateKey privateKey,
+      String merchantSerialNumber,
+      PublicKey publicKey) {
+    this.merchantId = merchantId;
+    this.privateKey = privateKey;
+    this.merchantSerialNumber = merchantSerialNumber;
+    this.certificateProvider = null;
+    this.publicKey = publicKey;
   }
 
   /** 商户号 */
@@ -38,12 +54,17 @@ public abstract class AbstractRSAConfig implements Config {
   private final String merchantSerialNumber;
   /** 微信支付平台证书Provider */
   private final CertificateProvider certificateProvider;
+  /** 微信支付凭证公钥 */
+  private final PublicKey publicKey;
 
   @Override
   public PrivacyEncryptor createEncryptor() {
-    X509Certificate certificate = certificateProvider.getAvailableCertificate();
-    return new RSAPrivacyEncryptor(
-        certificate.getPublicKey(), PemUtil.getSerialNumber(certificate));
+    if(certificateProvider != null) {
+      X509Certificate certificate = certificateProvider.getAvailableCertificate();
+      return new RSAPrivacyEncryptor(
+          certificate.getPublicKey(), PemUtil.getSerialNumber(certificate));
+    }
+    return new RSAPrivacyEncryptor(publicKey, "");
   }
 
   @Override
@@ -58,6 +79,9 @@ public abstract class AbstractRSAConfig implements Config {
 
   @Override
   public Validator createValidator() {
+    if(publicKey != null) {
+      return new WechatPay2Validator(new RSAVerifier(publicKey));
+    }
     return new WechatPay2Validator(new RSAVerifier(certificateProvider));
   }
 
