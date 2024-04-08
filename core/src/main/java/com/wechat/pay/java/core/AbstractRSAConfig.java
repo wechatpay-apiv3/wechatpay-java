@@ -57,9 +57,9 @@ public abstract class AbstractRSAConfig implements Config {
   private final String merchantSerialNumber;
   /** 微信支付平台证书Provider */
   private final CertificateProvider certificateProvider;
-  /** 微信支付凭证公钥 */
+  /** 微信支付平台公钥 */
   private final PublicKey publicKey;
-  /** 微信支付凭证公钥Id */
+  /** 微信支付平台公钥Id */
   private final String publicKeyId;
 
   @Override

@@ -60,7 +60,7 @@ class RSAPublicKeyConfigTest implements ConfigTest {
             .publicKeyId(WECHAT_PAY_CERTIFICATE_SERIAL_NUMBER)
             .apiV3Key(API_V3_KEY),
 
-        // with http client builder
+        // with publickey
         new Builder()
             .merchantId("1123456")
             .privateKeyFromPath(MERCHANT_PRIVATE_KEY_PATH)

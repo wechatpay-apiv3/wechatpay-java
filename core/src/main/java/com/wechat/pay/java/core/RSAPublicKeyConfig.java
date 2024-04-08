@@ -13,7 +13,7 @@ import com.wechat.pay.java.core.util.PemUtil;
 import java.nio.charset.StandardCharsets;
 import java.security.PublicKey;
 
-/** 使用平台公钥的RSA配置类。 每次构造都要求传入平台公钥以及平台公钥id，如果是使用平台证书建议用RSAAutoCertificateConfig类 */
+/** 使用微信支付平台公钥的RSA配置类。 每次构造都要求传入平台公钥以及平台公钥id，如果使用平台证书建议用RSAAutoCertificateConfig类 */
 public final class RSAPublicKeyConfig extends AbstractRSAConfig implements NotificationConfig {
 
   private final PublicKey publicKey;
