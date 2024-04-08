@@ -8,8 +8,6 @@ import com.wechat.pay.java.core.cipher.AeadAesCipher;
 import com.wechat.pay.java.core.cipher.AeadCipher;
 import com.wechat.pay.java.core.cipher.RSAVerifier;
 import com.wechat.pay.java.core.cipher.Verifier;
-import com.wechat.pay.java.core.http.AbstractHttpClientBuilder;
-import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.notification.NotificationConfig;
 import com.wechat.pay.java.core.util.PemUtil;
 import java.nio.charset.StandardCharsets;
