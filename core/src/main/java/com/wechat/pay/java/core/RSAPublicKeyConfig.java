@@ -14,13 +14,13 @@ import java.nio.charset.StandardCharsets;
 import java.security.PublicKey;
 
 /** 使用平台公钥的RSA配置类。 每次构造都要求传入平台公钥以及平台公钥id，如果是使用平台证书建议用RSAAutoCertificateConfig类 */
-public final class RSAPublickeyConfig extends AbstractRSAConfig implements NotificationConfig {
+public final class RSAPublicKeyConfig extends AbstractRSAConfig implements NotificationConfig {
 
   private final PublicKey publicKey;
   private final AeadCipher aeadCipher;
   private final String publicKeyId;
 
-  private RSAPublickeyConfig(Builder builder) {
+  private RSAPublicKeyConfig(Builder builder) {
     super(
         builder.merchantId,
         builder.privateKey,
@@ -82,8 +82,18 @@ public final class RSAPublickeyConfig extends AbstractRSAConfig implements Notif
       return self();
     }
 
-    public Builder publicKeyFromPath(String privateKeyPath) {
-      this.publicKey = PemUtil.loadPublicKeyFromPath(privateKeyPath);
+    public Builder publicKey(String publicKey) {
+      this.publicKey = PemUtil.loadPublicKeyFromString(publicKey);
+      return self();
+    }
+
+    public Builder publicKey(PublicKey publicKey) {
+      this.publicKey = publicKey;
+      return self();
+    }
+
+    public Builder publicKeyFromPath(String publicKeyPath) {
+      this.publicKey = PemUtil.loadPublicKeyFromPath(publicKeyPath);
       return self();
     }
 
@@ -97,7 +107,7 @@ public final class RSAPublickeyConfig extends AbstractRSAConfig implements Notif
       return this;
     }
 
-    public RSAPublickeyConfig build() {
+    public RSAPublicKeyConfig build() {
       requireNonNull(merchantId);
       requireNonNull(publicKey);
       requireNonNull(publicKeyId);
@@ -105,7 +115,7 @@ public final class RSAPublickeyConfig extends AbstractRSAConfig implements Notif
       requireNonNull(apiV3Key);
       requireNonNull(merchantSerialNumber);
 
-      return new RSAPublickeyConfig(this);
+      return new RSAPublicKeyConfig(this);
     }
   }
 }
