@@ -188,6 +188,9 @@ class AutoCertificateServiceTest {
     public X509Certificate generateCertificate(String certificate) {
       return PemUtil.loadX509FromString(certificate);
     }
+
+    @Override
+    public void validateCertPath(X509Certificate certificate) {}
   }
 
   static class FakeAeadCiper implements AeadCipher {

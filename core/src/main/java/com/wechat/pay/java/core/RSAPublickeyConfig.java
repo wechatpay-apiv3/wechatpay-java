@@ -75,12 +75,9 @@ public final class RSAPublickeyConfig extends AbstractRSAConfig implements Notif
   }
 
   public static class Builder extends AbstractRSAConfigBuilder<Builder> {
-    protected HttpClient httpClient;
-
     protected byte[] apiV3Key;
     protected PublicKey publicKey;
     protected String publicKeyId;
-    protected AbstractHttpClientBuilder<?> httpClientBuilder;
 
     public Builder apiV3Key(String apiV3Key) {
       this.apiV3Key = apiV3Key.getBytes(StandardCharsets.UTF_8);
@@ -95,16 +92,6 @@ public final class RSAPublickeyConfig extends AbstractRSAConfig implements Notif
     public Builder publicKeyId(String publicKeyId) {
       this.publicKeyId = publicKeyId;
       return self();
-    }
-
-    public Builder httpClient(HttpClient httpClient) {
-      this.httpClient = httpClient;
-      return this;
-    }
-
-    public Builder httpClientBuilder(AbstractHttpClientBuilder<?> builder) {
-      httpClientBuilder = builder;
-      return this;
     }
 
     @Override
