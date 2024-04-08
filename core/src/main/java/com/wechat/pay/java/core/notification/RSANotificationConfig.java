@@ -61,6 +61,16 @@ public final class RSANotificationConfig extends AbstractNotificationConfig {
       return this;
     }
 
+    public Builder publicKey(String publicKey) {
+      this.publicKey = PemUtil.loadPublicKeyFromString(publicKey);
+      return this;
+    }
+
+    public Builder publicKey(PublicKey publicKey) {
+      this.publicKey = publicKey;
+      return this;
+    }
+
     public Builder publicFromPath(String publicKeyPath) {
       this.publicKey = PemUtil.loadPublicKeyFromPath(publicKeyPath);
       return this;
