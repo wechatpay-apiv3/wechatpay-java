@@ -2,6 +2,8 @@ package com.wechat.pay.java.core.cipher;
 
 import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_CERTIFICATE;
 import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_CERTIFICATE_SERIAL_NUMBER;
+import static com.wechat.pay.java.core.model.TestConfig.WECHAT_PAY_CERTIFICATE_SERIAL_NUMBER;
+import static com.wechat.pay.java.core.model.TestConfig.WECHAT_PAY_PUBLIC_KEY;
 
 import com.wechat.pay.java.core.certificate.InMemoryCertificateProvider;
 import java.security.cert.X509Certificate;
@@ -13,7 +15,8 @@ import org.junit.Test;
 
 public class RSAVerifierTest {
 
-  private static Verifier rsaVerifier;
+  private static Verifier certificateRsaVerifier;
+  private static Verifier publicKeyRsaVerifier;
   private static final String MESSAGE = "message";
   /** signature为使用RSASigner和测试商户证书私钥对MESSAGE签名得到的结果 */
   private static final SignatureResult SIGNATURE_RESULT =
@@ -28,13 +31,21 @@ public class RSAVerifierTest {
   public static void init() {
     List<X509Certificate> list = new Vector<>();
     list.add(MERCHANT_CERTIFICATE);
-    rsaVerifier = new RSAVerifier(new InMemoryCertificateProvider(list));
+    certificateRsaVerifier = new RSAVerifier(new InMemoryCertificateProvider(list));
+    publicKeyRsaVerifier = new RSAVerifier(WECHAT_PAY_PUBLIC_KEY, WECHAT_PAY_CERTIFICATE_SERIAL_NUMBER);
   }
 
   @Test
-  public void testVerify() {
+  public void testCertificateVerify() {
     Assert.assertTrue(
-        rsaVerifier.verify(
+        certificateRsaVerifier.verify(
             MERCHANT_CERTIFICATE_SERIAL_NUMBER, MESSAGE, SIGNATURE_RESULT.getSign()));
+  }
+
+  @Test
+  public void testPublicKeyVerify() {
+    Assert.assertFalse(
+        publicKeyRsaVerifier.verify(
+            WECHAT_PAY_CERTIFICATE_SERIAL_NUMBER, MESSAGE, SIGNATURE_RESULT.getSign()));
   }
 }

@@ -12,11 +12,13 @@ import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 /** PEM工具 */
@@ -72,13 +74,35 @@ public class PemUtil {
   }
 
   /**
+   * 从字符串中加载RSA公钥。
+   *
+   * @param keyString 公钥字符串
+   * @return RSA公钥
+   */
+  public static PublicKey loadPublicKeyFromString(String keyString) {
+    try {
+      keyString =
+          keyString
+              .replace("-----BEGIN PUBLIC KEY-----", "")
+              .replace("-----END PUBLIC KEY-----", "")
+              .replaceAll("\\s+", "");
+      return KeyFactory.getInstance("RSA")
+          .generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(keyString)));
+    } catch (NoSuchAlgorithmException e) {
+      throw new UnsupportedOperationException(e);
+    } catch (InvalidKeySpecException e) {
+      throw new IllegalArgumentException(e);
+    }
+  }
+
+  /**
    * 从文件路径加载RSA私钥
    *
    * @param keyPath 私钥路径
    * @return RSA私钥
    */
   public static PrivateKey loadPrivateKeyFromPath(String keyPath) {
-    return loadPrivateKeyFromString(readPrivateKeyStringFromPath(keyPath));
+    return loadPrivateKeyFromString(readKeyStringFromPath(keyPath));
   }
 
   /**
@@ -91,10 +115,20 @@ public class PemUtil {
    */
   public static PrivateKey loadPrivateKeyFromPath(
       String keyPath, String algorithm, String provider) {
-    return loadPrivateKeyFromString(readPrivateKeyStringFromPath(keyPath), algorithm, provider);
+    return loadPrivateKeyFromString(readKeyStringFromPath(keyPath), algorithm, provider);
   }
 
-  private static String readPrivateKeyStringFromPath(String keyPath) {
+  /**
+   * 从文件路径加载RSA公钥
+   *
+   * @param keyPath 公钥路径
+   * @return RSA公钥
+   */
+  public static PublicKey loadPublicKeyFromPath(String keyPath) {
+    return loadPublicKeyFromString(readKeyStringFromPath(keyPath));
+  }
+
+  private static String readKeyStringFromPath(String keyPath) {
     try (FileInputStream inputStream = new FileInputStream(keyPath)) {
       return IOUtil.toString(inputStream);
     } catch (IOException e) {

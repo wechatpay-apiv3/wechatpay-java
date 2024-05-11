@@ -6,7 +6,7 @@ public interface Verifier {
   /**
    * 验证签名
    *
-   * @param serialNumber 用于验证签名的证书序列号
+   * @param serialNumber 用于验证签名的证书序列号或者公钥id
    * @param message 签名信息
    * @param signature 待验证的签名
    * @return 是否验证通过

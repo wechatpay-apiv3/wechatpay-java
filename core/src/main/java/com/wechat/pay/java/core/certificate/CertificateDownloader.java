@@ -12,7 +12,6 @@ import com.wechat.pay.java.core.http.HttpMethod;
 import com.wechat.pay.java.core.http.HttpRequest;
 import com.wechat.pay.java.core.http.HttpResponse;
 import com.wechat.pay.java.core.http.MediaType;
-import com.wechat.pay.java.core.util.PemUtil;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
@@ -80,13 +79,7 @@ public final class CertificateDownloader {
     HttpResponse<DownloadCertificateResponse> httpResponse =
         httpClient.execute(httpRequest, DownloadCertificateResponse.class);
 
-    Map<String, X509Certificate> downloaded = decryptCertificate(httpResponse);
-    validateCertificate(downloaded);
-    return downloaded;
-  }
-
-  private void validateCertificate(Map<String, X509Certificate> certificates) {
-    certificates.forEach((serialNo, cert) -> certificateHandler.validateCertPath(cert));
+    return decryptCertificate(httpResponse);
   }
 
   /**
@@ -109,7 +102,7 @@ public final class CertificateDownloader {
               Base64.getDecoder().decode(encryptCertificate.getCiphertext()));
 
       certificate = certificateHandler.generateCertificate(decryptCertificate);
-      downloadCertMap.put(PemUtil.getSerialNumber(certificate), certificate);
+      downloadCertMap.put(data.getSerialNo(), certificate);
     }
     return downloadCertMap;
   }
