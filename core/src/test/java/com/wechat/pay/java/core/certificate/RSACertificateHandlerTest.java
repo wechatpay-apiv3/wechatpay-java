@@ -78,8 +78,8 @@ class RSACertificateHandlerTest {
     X509Certificate certificate = PemUtil.loadX509FromString(validCertificate);
 
     CertificateHandler handler = new RSACertificateHandler();
-    assertThrows(
-        ValidationException.class,
+    // 由于不再校验证书信任链，因此总是返回校验成功
+    assertDoesNotThrow(
         () -> {
           handler.validateCertPath(certificate);
         });
