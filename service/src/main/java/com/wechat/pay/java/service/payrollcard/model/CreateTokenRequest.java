@@ -22,27 +22,33 @@ public class CreateTokenRequest {
   /** 用户OpenID 说明：用户OpenID */
   @SerializedName("openid")
   private String openid;
+
   /**
    * 服务商AppID 说明：当输入服务商AppID时，会校验其与服务商商户号的绑定关系。 服务商AppID和与特约商户AppID至少输入一个，且必须要有拉起微工卡小程序时使用的AppID。
    */
   @SerializedName("appid")
   private String appid;
+
   /** 特约商户号 说明：特约商户号 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /**
    * 特约商户AppID 说明：当输入特约商户AppID时，会校验其与特约商户号的绑定关系。 服务商AppID和与特约商户AppID至少输入一个，且必须要有拉起微工卡小程序时使用的AppID。
    */
   @SerializedName("sub_appid")
   private String subAppid;
+
   /** 用户实名 说明：用户实名信息，按照APIV3标准加密该字段 */
   @Encryption
   @SerializedName("user_name")
   private String userName;
+
   /** 用户证件号 说明：用户证件号，按照APIV3标准加密该字段 */
   @Encryption
   @SerializedName("id_card_number")
   private String idCardNumber;
+
   /**
    * 用工类型
    * 说明：微工卡服务仅支持用于与商户有用工关系的用户，需明确用工类型；参考值：长期用工：LONG_TERM_EMPLOYMENT，短期用工：SHORT_TERM_EMPLOYMENT，合作关系：COOPERATION_EMPLOYMENT

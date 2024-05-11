@@ -20,18 +20,23 @@ public class FmcgAct {
   /** 活动ID 说明：活动ID */
   @SerializedName("activity_id")
   private String activityId;
+
   /** 品牌ID 说明：品牌ID */
   @SerializedName("brand_id")
   private String brandId;
+
   /** 活动创建方商户号 说明：活动创建方商户号 */
   @SerializedName("creator_merchant_id")
   private String creatorMerchantId;
+
   /** 活动信息 说明：活动信息 */
   @SerializedName("activity_info")
   private ActInfo activityInfo;
+
   /** 活动商品信息 说明：活动商品列表 */
   @SerializedName("goods_information")
   private GoodsInfo goodsInformation;
+
   /** 活动规则 说明：活动规则 */
   @SerializedName("rule_information")
   private ActRule ruleInformation;

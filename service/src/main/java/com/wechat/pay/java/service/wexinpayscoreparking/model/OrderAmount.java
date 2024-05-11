@@ -20,6 +20,7 @@ public class OrderAmount {
   /** 订单金额 说明：订单总金额，单位为分，只能为整数 */
   @SerializedName("total")
   private Long total;
+
   /** 货币类型 说明：符合ISO 4217标准的三位字母代码，目前只支持人民币：CNY */
   @SerializedName("currency")
   private String currency;

@@ -60,6 +60,7 @@ public class GiftActivityService {
     this.httpClient = requireNonNull(httpClient);
     this.hostName = hostName;
   }
+
   /** GiftActivityService构造器 */
   public static class Builder {
 
@@ -123,6 +124,7 @@ public class GiftActivityService {
         httpClient.execute(httpRequest, AddActivityMerchantResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 创建全场满额送活动
    *
@@ -154,6 +156,7 @@ public class GiftActivityService {
         httpClient.execute(httpRequest, CreateFullSendActResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 删除活动发券商户号
    *
@@ -191,6 +194,7 @@ public class GiftActivityService {
         httpClient.execute(httpRequest, DeleteActivityMerchantResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 获取活动详情接口
    *
@@ -226,6 +230,7 @@ public class GiftActivityService {
         httpClient.execute(httpRequest, GetActDetailResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 获取支付有礼活动列表
    *
@@ -274,6 +279,7 @@ public class GiftActivityService {
         httpClient.execute(httpRequest, ListActivitiesResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 获取活动发券商户号
    *
@@ -318,6 +324,7 @@ public class GiftActivityService {
         httpClient.execute(httpRequest, ListActMchResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 获取活动指定商品列表
    *
@@ -362,6 +369,7 @@ public class GiftActivityService {
         httpClient.execute(httpRequest, ListActSkuResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 终止活动
    *

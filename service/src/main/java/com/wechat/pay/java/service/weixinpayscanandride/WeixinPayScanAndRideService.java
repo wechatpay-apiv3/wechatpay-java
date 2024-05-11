@@ -48,6 +48,7 @@ public class WeixinPayScanAndRideService {
     this.httpClient = requireNonNull(httpClient);
     this.hostName = hostName;
   }
+
   /** WeixinPayScanAndRideService构造器 */
   public static class Builder {
 
@@ -105,6 +106,7 @@ public class WeixinPayScanAndRideService {
         httpClient.execute(httpRequest, TransactionsEntity.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询订单
    *
@@ -146,6 +148,7 @@ public class WeixinPayScanAndRideService {
         httpClient.execute(httpRequest, TransactionsEntity.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询用户服务可用信息
    *

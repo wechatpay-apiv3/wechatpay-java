@@ -21,15 +21,19 @@ public class ActRule {
   /** 购买单件商品，补贴给门店的金额 说明：购买单件商品，补贴给门店的金额（单位：分） */
   @SerializedName("store_subsidy")
   private Long storeSubsidy;
+
   /** 购买单件商品，补贴给服务商的佣金 说明：购买单件商品，补贴给服务商的佣金（单位：分） */
   @SerializedName("service_provider_subsidy")
   private Long serviceProviderSubsidy;
+
   /** 活动门店补贴商品数上限 说明：活动门店补贴商品数上限 */
   @SerializedName("store_subsidy_quota")
   private Integer storeSubsidyQuota;
+
   /** 单用户享受加价购优惠次数上限 说明：单用户享受加价购优惠次数上限 */
   @SerializedName("user_subsidy_quota")
   private Integer userSubsidyQuota;
+
   /** 活动区域列表 说明：活动区域列表 */
   @SerializedName("areas")
   private List<ActArea> areas;

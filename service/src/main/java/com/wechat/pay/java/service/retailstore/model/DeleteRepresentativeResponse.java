@@ -21,9 +21,11 @@ public class DeleteRepresentativeResponse {
   /** 零售小店活动ID 说明：零售小店活动ID */
   @SerializedName("activity_id")
   private String activityId;
+
   /** 删除失败业务代理信息列表 说明：删除失败业务代理信息列表 */
   @SerializedName("failed_representative_info_list")
   private List<RepresentativeInfo> failedRepresentativeInfoList;
+
   /** 删除时间 说明：删除时间 */
   @SerializedName("delete_time")
   private String deleteTime;

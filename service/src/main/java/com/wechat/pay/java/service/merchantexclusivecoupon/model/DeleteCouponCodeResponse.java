@@ -21,6 +21,7 @@ public class DeleteCouponCodeResponse {
   /** 批次号 说明：商家券批次号 */
   @SerializedName("stock_id")
   private String stockId;
+
   /** 删除时间 说明：商家券code实际被删除的时间 */
   @SerializedName("delete_time")
   private String deleteTime;

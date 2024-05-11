@@ -40,10 +40,13 @@ public class CashCouponsServiceExample {
 
   /** 商户号 */
   public static String merchantId = "190000****";
+
   /** 商户API私钥路径 */
   public static String privateKeyPath = "/Users/yourname/your/path/apiclient_key.pem";
+
   /** 商户证书序列号 */
   public static String merchantSerialNumber = "5157F09EFDC096DE15EBE81A47057A72********";
+
   /** 商户APIV3密钥 */
   public static String apiV3Key = "...";
 
@@ -64,94 +67,110 @@ public class CashCouponsServiceExample {
     service = new CashCouponsService.Builder().config(config).build();
     // ... 调用接口
   }
+
   /** 查询代金券消息通知地址 */
   public static Callback queryCallback() {
 
     QueryCallbackRequest request = new QueryCallbackRequest();
     return service.queryCallback(request);
   }
+
   /** 设置代金券消息通知地址 */
   public static SetCallbackResponse setCallback() {
     SetCallbackRequest request = new SetCallbackRequest();
     return service.setCallback(request);
   }
+
   /** 根据过滤条件查询用户的券 */
   public static CouponCollection listCouponsByFilter() {
 
     ListCouponsByFilterRequest request = new ListCouponsByFilterRequest();
     return service.listCouponsByFilter(request);
   }
+
   /** 查询代金券详情 */
   public static Coupon queryCoupon() {
 
     QueryCouponRequest request = new QueryCouponRequest();
     return service.queryCoupon(request);
   }
+
   /** 发放指定批次的代金券 */
   public static SendCouponResponse sendCoupon() {
 
     SendCouponRequest request = new SendCouponRequest();
     return service.sendCoupon(request);
   }
+
   /** 创建代金券批次 */
   public static CreateCouponStockResponse createCouponStock() {
     CreateCouponStockRequest request = new CreateCouponStockRequest();
     return service.createCouponStock(request);
   }
+
   /** 查询代金券可用商户 */
   public static AvailableMerchantCollection listAvailableMerchants() {
 
     ListAvailableMerchantsRequest request = new ListAvailableMerchantsRequest();
     return service.listAvailableMerchants(request);
   }
+
   /** 查询可核销商品编码 */
   public static AvailableSingleitemCollection listAvailableSingleitems() {
 
     ListAvailableSingleitemsRequest request = new ListAvailableSingleitemsRequest();
     return service.listAvailableSingleitems(request);
   }
+
   /** 条件查询批次列表 */
   public static StockCollection listStocks() {
 
     ListStocksRequest request = new ListStocksRequest();
     return service.listStocks(request);
   }
+
   /** 暂停批次 */
   public static PauseStockResponse pauseStock() {
 
     PauseStockRequest request = new PauseStockRequest();
     return service.pauseStock(request);
   }
+
   /** 查询批次详情 */
   public static Stock queryStock() {
 
     QueryStockRequest request = new QueryStockRequest();
     return service.queryStock(request);
   }
+
   /** 下载批次退款明细 */
   public static RefundFlowResponse refundFlow() {
 
     RefundFlowRequest request = new RefundFlowRequest();
     return service.refundFlow(request);
   }
+
   /** 重启批次 */
   public static RestartStockResponse restartStock() {
 
     RestartStockRequest request = new RestartStockRequest();
     return service.restartStock(request);
   }
+
   /** 激活开启批次 */
   public static StartStockResponse startStock() {
 
     StartStockRequest request = new StartStockRequest();
     return service.startStock(request);
   }
+
   /** 终止批次 */
   public static StopStockResponse stopStock() {
 
     StopStockRequest request = new StopStockRequest();
     return service.stopStock(request);
   }
+
   /** 下载批次核销明细 */
   public static UseFlowResponse useFlow() {
 

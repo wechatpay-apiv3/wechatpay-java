@@ -21,33 +21,43 @@ public class SubsidiesReturnEntity {
   /** 电商平台二级商户号 说明：补差的电商平台二级商户，填写微信支付分配的商户号 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 微信订单号 说明：微信支付订单号 */
   @SerializedName("transaction_id")
   private String transactionId;
+
   /** 微信补差回退单号 说明：微信补差回退单号，微信补差回退系统返回的唯一标识 */
   @SerializedName("subsidy_refund_id")
   private String subsidyRefundId;
+
   /** 微信退款单号 说明：微信退款单号，微信系统退款返回的唯一标识。因用户账户异常而无法退款时可不传，其他情况必传 */
   @SerializedName("refund_id")
   private String refundId;
+
   /** 商户补差回退单号 说明：商户系统内部的补差回退单号，在商户系统内部唯一，同一补差回退单号多次请求等同一次。只能是数字、大小写字母_-|*@ */
   @SerializedName("out_order_no")
   private String outOrderNo;
+
   /** 补差回退金额 说明：补差回退金额 */
   @SerializedName("amount")
   private Long amount;
+
   /** 补差回退描述 说明：补差回退描述 */
   @SerializedName("description")
   private String description;
+
   /** 补差回退结果 说明：补差回退结果 */
   @SerializedName("result")
   private ReturnStatus result;
+
   /** 补差回退完成时间 说明：补差回退完成时间，遵循RFC3339标准格式 */
   @SerializedName("success_time")
   private String successTime;
+
   /** 微信补差单号 说明：微信补差单号，微信系统返回的唯一标识 */
   @SerializedName("subsidy_id")
   private String subsidyId;
+
   /** 回退出资账户及金额 说明：回退出资账户及金额 */
   @SerializedName("from")
   private List<ReturnFrom> from;

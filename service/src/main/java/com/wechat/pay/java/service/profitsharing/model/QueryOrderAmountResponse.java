@@ -20,6 +20,7 @@ public class QueryOrderAmountResponse {
   /** 微信订单号 说明：微信支付订单号 */
   @SerializedName("transaction_id")
   private String transactionId;
+
   /** 订单剩余待分金额 说明：订单剩余待分金额，整数，单元为分 */
   @SerializedName("unsplit_amount")
   private Long unsplitAmount;

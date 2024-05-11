@@ -48,6 +48,7 @@ public class GoldPlanService {
     this.httpClient = requireNonNull(httpClient);
     this.hostName = hostName;
   }
+
   /** GoldPlanService构造器 */
   public static class Builder {
 
@@ -103,6 +104,7 @@ public class GoldPlanService {
             .build();
     httpClient.execute(httpRequest, null);
   }
+
   /**
    * 开通广告展示
    *
@@ -131,6 +133,7 @@ public class GoldPlanService {
             .build();
     httpClient.execute(httpRequest, null);
   }
+
   /**
    * 同业过滤标签管理
    *
@@ -159,6 +162,7 @@ public class GoldPlanService {
             .build();
     httpClient.execute(httpRequest, null);
   }
+
   /**
    * 商家小票管理
    *
@@ -191,6 +195,7 @@ public class GoldPlanService {
         httpClient.execute(httpRequest, ChangeCustomPageStatusResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 点金计划管理
    *

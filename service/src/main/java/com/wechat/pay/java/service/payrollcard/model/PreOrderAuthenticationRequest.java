@@ -20,26 +20,33 @@ public class PreOrderAuthenticationRequest {
   /** 用户OpenID 说明：用户OpenID */
   @SerializedName("openid")
   private String openid;
+
   /** 服务商AppID 说明：当输入服务商AppID时，会校验其与服务商商户号的绑定关系。服务商AppID和与特约商户AppID至少输入一个，且必须要有拉起微工卡小程序时使用的AppID。 */
   @SerializedName("appid")
   private String appid;
+
   /** 特约商户号 说明：特约商户号 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /**
    * 特约商户AppID 说明：当输入特约商户AppID时，会校验其与特约商户号的绑定关系。服务商AppID和与特约商户AppID至少输入一个，且必须要有拉起微工卡小程序时使用的AppID。
    */
   @SerializedName("sub_appid")
   private String subAppid;
+
   /** 商家核身单号 说明：商户系统内部的商家核身单号，要求此参数只能由数字、大小写字母组成，在服务商内部唯一 */
   @SerializedName("authenticate_number")
   private String authenticateNumber;
+
   /** 项目名称 说明：该劳务活动的项目名称 */
   @SerializedName("project_name")
   private String projectName;
+
   /** 用工单位名称 说明：该工人所属的用工企业 */
   @SerializedName("employer_name")
   private String employerName;
+
   /** 核身类型 说明：核身类型 */
   @SerializedName("authenticate_type")
   private AuthenticationType authenticateType;

@@ -24,6 +24,7 @@ public class QueryEncryptBillEntity {
   /** 下载信息总数 说明：下载信息总数 */
   @SerializedName("download_bill_count")
   private Long downloadBillCount;
+
   /** 下载信息明细 说明：下载信息明细 */
   @Encryption
   @SerializedName("download_bill_list")

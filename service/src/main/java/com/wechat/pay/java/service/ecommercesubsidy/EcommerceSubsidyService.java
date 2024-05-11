@@ -47,6 +47,7 @@ public class EcommerceSubsidyService {
     this.httpClient = requireNonNull(httpClient);
     this.hostName = hostName;
   }
+
   /** EcommerceSubsidyService构造器 */
   public static class Builder {
 
@@ -104,6 +105,7 @@ public class EcommerceSubsidyService {
         httpClient.execute(httpRequest, SubsidiesCancelEntity.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 请求补差
    *
@@ -134,6 +136,7 @@ public class EcommerceSubsidyService {
         httpClient.execute(httpRequest, SubsidiesCreateEntity.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 请求补差回退
    *

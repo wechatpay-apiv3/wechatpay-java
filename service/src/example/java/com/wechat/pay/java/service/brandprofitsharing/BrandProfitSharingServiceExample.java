@@ -26,10 +26,13 @@ public class BrandProfitSharingServiceExample {
 
   /** 商户号 */
   public static String merchantId = "190000****";
+
   /** 商户API私钥路径 */
   public static String privateKeyPath = "/Users/yourname/your/path/apiclient_key.pem";
+
   /** 商户证书序列号 */
   public static String merchantSerialNumber = "5157F09EFDC096DE15EBE81A47057A72********";
+
   /** 商户APIV3密钥 */
   public static String apiV3Key = "...";
 
@@ -51,49 +54,58 @@ public class BrandProfitSharingServiceExample {
     service = new BrandProfitSharingService.Builder().config(config).build();
     // ... 调用接口
   }
+
   /** 查询最大分账比例 */
   public static QueryBrandMerchantRatioResponse queryBrandMerchantRatio() {
 
     QueryBrandMerchantRatioRequest request = new QueryBrandMerchantRatioRequest();
     return service.queryBrandMerchantRatio(request);
   }
+
   /** 请求分账 */
   public static CreateOrderResponse createOrder() {
     CreateOrderRequest request = new CreateOrderRequest();
     return service.createOrder(request);
   }
+
   /** 完结分账 */
   public static FinishOrderResponse finishOrder() {
     FinishOrderRequest request = new FinishOrderRequest();
     return service.finishOrder(request);
   }
+
   /** 查询分账结果 */
   public static QueryOrderResponse queryOrder() {
 
     QueryOrderRequest request = new QueryOrderRequest();
     return service.queryOrder(request);
   }
+
   /** 查询订单剩余待分金额 */
   public static QueryOrderAmountResponse queryOrderAmount() {
 
     QueryOrderAmountRequest request = new QueryOrderAmountRequest();
     return service.queryOrderAmount(request);
   }
+
   /** 添加分账接收方 */
   public static AddReceiverResponse addReceiver() {
     AddReceiverRequest request = new AddReceiverRequest();
     return service.addReceiver(request);
   }
+
   /** 删除分账接收方 */
   public static DeleteReceiverResponse deleteReceiver() {
     DeleteReceiverRequest request = new DeleteReceiverRequest();
     return service.deleteReceiver(request);
   }
+
   /** 请求分账回退 */
   public static CreateReturnOrderResponse createReturnOrder() {
     CreateReturnOrderRequest request = new CreateReturnOrderRequest();
     return service.createReturnOrder(request);
   }
+
   /** 查询分账回退结果 */
   public static QueryReturnOrderResponse queryReturnOrder() {
 

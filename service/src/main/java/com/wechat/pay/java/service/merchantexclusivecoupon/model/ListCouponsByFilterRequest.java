@@ -26,6 +26,7 @@ public class ListCouponsByFilterRequest {
   @SerializedName("openid")
   @Expose(serialize = false)
   private String openid;
+
   /**
    * 公众账号ID 说明：支持传入与当前调用接口商户号有绑定关系的AppID。支持小程序AppID与公众号AppID。
    * 校验规则：传入的AppID得是与调用方商户号（即请求头里面的商户号）有绑定关系的AppID 或 传入的AppID得是归属商户号有绑定关系的AppID
@@ -33,30 +34,37 @@ public class ListCouponsByFilterRequest {
   @SerializedName("appid")
   @Expose(serialize = false)
   private String appid;
+
   /** 批次号 说明：批次号，是否指定批次号查询 */
   @SerializedName("stock_id")
   @Expose(serialize = false)
   private String stockId;
+
   /** 创建批次的商户号 说明：批次创建方商户号 校验规则：当调用方商户号（即请求头中的商户号）为创建批次方商户号时，该参数必传 */
   @SerializedName("creator_merchant")
   @Expose(serialize = false)
   private String creatorMerchant;
+
   /** 批次归属商户号 说明：批次归属商户号 校验规则：当调用方商户号（即请求头中的商户号）为批次归属商户号时，该参数必传 */
   @SerializedName("belong_merchant")
   @Expose(serialize = false)
   private String belongMerchant;
+
   /** 批次发放商户号 说明：批次发放商户号 校验规则：当调用方商户号（即请求头中的商户号）为批次发放商户号时，该参数必传；委托营销关系下，请填写委托发券的商户号 */
   @SerializedName("sender_merchant")
   @Expose(serialize = false)
   private String senderMerchant;
+
   /** 分页页码 说明：分页页码 */
   @SerializedName("offset")
   @Expose(serialize = false)
   private Integer offset;
+
   /** 分页大小 说明：分页大小 */
   @SerializedName("limit")
   @Expose(serialize = false)
   private Integer limit;
+
   /** 券状态 说明：商家券状态 */
   @SerializedName("coupon_state")
   @Expose(serialize = false)

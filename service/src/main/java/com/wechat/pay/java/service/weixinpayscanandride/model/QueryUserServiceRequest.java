@@ -22,14 +22,17 @@ public class QueryUserServiceRequest {
   @SerializedName("appid")
   @Expose(serialize = false)
   private String appid;
+
   /** 子公众账号ID 说明：子公众账号ID，服务商模式下选传 */
   @SerializedName("sub_appid")
   @Expose(serialize = false)
   private String subAppid;
+
   /** 子商户号 说明：微信支付分配的子商户号，服务商模式下必传 */
   @SerializedName("sub_mchid")
   @Expose(serialize = false)
   private String subMchid;
+
   /** 代扣签约ID 说明：签约成功后，微信返回代扣签约ID 查用户是否能继续使用乘车卡时必传 */
   @SerializedName("contract_id")
   @Expose(serialize = false)

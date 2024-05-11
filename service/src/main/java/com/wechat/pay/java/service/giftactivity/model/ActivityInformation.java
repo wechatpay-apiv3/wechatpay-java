@@ -21,30 +21,39 @@ public class ActivityInformation {
   /** 活动Id 说明：活动Id */
   @SerializedName("activity_id")
   private String activityId;
+
   /** 活动类型 说明：活动类型 */
   @SerializedName("activity_type")
   private ActType activityType;
+
   /** 活动基本信息 说明：创建活动时录入的基本信息 */
   @SerializedName("activity_base_info")
   private ActBaseInfo activityBaseInfo;
+
   /** 活动奖品发放规则 说明：奖品派送规则，分别对应满送、阶梯送、满A送B中的一种 */
   @SerializedName("award_send_rule")
   private AwardSendRule awardSendRule;
+
   /** 活动高级设置 说明：创建时传入的高级设置信息 */
   @SerializedName("advanced_setting")
   private ActAdvancedSetting advancedSetting;
+
   /** 活动状态 说明：活动当前状态枚举值 */
   @SerializedName("activity_status")
   private ActStatus activityStatus;
+
   /** 创建商户号 说明：创建商户号 */
   @SerializedName("creator_merchant_id")
   private String creatorMerchantId;
+
   /** 所属商户号 说明：所属商户号 */
   @SerializedName("belong_merchant_id")
   private String belongMerchantId;
+
   /** 活动创建时间 说明：活动创建时间 */
   @SerializedName("create_time")
   private String createTime;
+
   /** 活动更新时间 说明：活动更新时间 */
   @SerializedName("update_time")
   private String updateTime;

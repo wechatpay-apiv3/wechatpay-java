@@ -21,24 +21,30 @@ public class CouponCodeEntity {
   /** 商户上传code 说明：商户上传code */
   @SerializedName("code")
   private String code;
+
   /** 商户上传code分配状态 说明：商户上传code分配状态 */
   @SerializedName("code_status")
   private CouponCodeStatus codeStatus;
+
   /** 上传时间 说明：code上传成功的时间 */
   @SerializedName("upload_time")
   private String uploadTime;
+
   /** 被分配时间 说明：当code状态为被分配时，code被分配的时间 */
   @SerializedName("dispatched_time")
   private String dispatchedTime;
+
   /** 领券用户的OpenID 说明：领券用户的OpenID */
   @SerializedName("openid")
   private String openid;
+
   /**
    * 领券用户的UnionID
    * 说明：领券用户的UnionID，具体参见https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/union-id.html
    */
   @SerializedName("unionid")
   private String unionid;
+
   /** 用户券code 说明：券的唯一标识 */
   @SerializedName("coupon_code")
   private String couponCode;

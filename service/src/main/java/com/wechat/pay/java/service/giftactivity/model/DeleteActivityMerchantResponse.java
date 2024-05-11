@@ -21,6 +21,7 @@ public class DeleteActivityMerchantResponse {
   /** 活动Id 说明：活动Id */
   @SerializedName("activity_id")
   private String activityId;
+
   /** 删除时间 说明：成功删除发券商户号的时间 */
   @SerializedName("delete_time")
   private String deleteTime;

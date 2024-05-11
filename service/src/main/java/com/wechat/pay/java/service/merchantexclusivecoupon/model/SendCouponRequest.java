@@ -21,15 +21,19 @@ public class SendCouponRequest {
   /** 用户标识 说明：用户的唯一标识，必填 */
   @SerializedName("openid")
   private String openid;
+
   /** 公众账号ID 说明：发券方AppID */
   @SerializedName("appid")
   private String appid;
+
   /** 批次号 说明：批次号 */
   @SerializedName("stock_id")
   private String stockId;
+
   /** 发券凭证 说明：发券凭证，可包含英文字母，数字，｜，_，*，-等内容，不允许出现其他不合法符号，需在单个批次单个用户下确保唯一性 */
   @SerializedName("out_request_no")
   private String outRequestNo;
+
   /** 券code 说明：要求接口指定code发券的批次必传 */
   @SerializedName("coupon_code")
   private String couponCode;

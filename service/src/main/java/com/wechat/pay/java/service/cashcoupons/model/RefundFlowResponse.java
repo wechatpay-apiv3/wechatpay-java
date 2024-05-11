@@ -20,9 +20,11 @@ public class RefundFlowResponse {
   /** 下载链接 说明：流水文件下载链接，30s内有效 */
   @SerializedName("url")
   private String url;
+
   /** 安全校验码 说明：文件内容的哈希值，防止篡改 */
   @SerializedName("hash_value")
   private String hashValue;
+
   /** 哈希算法类型 说明：哈希算法类型，目前支持sha1 */
   @SerializedName("hash_type")
   private String hashType;

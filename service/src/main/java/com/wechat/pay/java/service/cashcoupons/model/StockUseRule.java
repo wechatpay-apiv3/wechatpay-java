@@ -21,27 +21,35 @@ public class StockUseRule {
   /** 发放总上限 说明：最大发券数 */
   @SerializedName("max_coupons")
   private Long maxCoupons;
+
   /** 总预算 说明：总消耗金额，单位分 */
   @SerializedName("max_amount")
   private Long maxAmount;
+
   /** 单天发放上限金额 说明：单天最高消耗金额，单位分 */
   @SerializedName("max_amount_by_day")
   private Long maxAmountByDay;
+
   /** 固定面额批次特定信息 说明：固定面额发券批次特定信息 */
   @SerializedName("fixed_normal_coupon")
   private FixedValueStockMsg fixedNormalCoupon;
+
   /** 单个用户可领个数 说明：单个用户可领个数 */
   @SerializedName("max_coupons_per_user")
   private Integer maxCouponsPerUser;
+
   /** 券类型 说明：NORMAL-满减券；CUT_TO-减至券 */
   @SerializedName("coupon_type")
   private String couponType;
+
   /** 订单优惠标记 说明：订单优惠标记 */
   @SerializedName("goods_tag")
   private List<String> goodsTag;
+
   /** 支付方式 说明：默认不限制，可设置以下各种组合方式 1、付款码支付 2、小程序支付 3、其他支付 4、付款码支付&小程序支付 5、付款码支付&其他支付 */
   @SerializedName("trade_type")
   private List<TradeType> tradeType;
+
   /** 是否可叠加其他优惠 说明：true-是；false-否 */
   @SerializedName("combine_use")
   private Boolean combineUse;

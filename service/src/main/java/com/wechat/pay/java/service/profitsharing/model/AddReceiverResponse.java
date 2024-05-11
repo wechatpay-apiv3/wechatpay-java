@@ -22,19 +22,24 @@ public class AddReceiverResponse {
   /** 子商户号 说明：参考请求参数 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 接收方类型 说明：参考请求参数 */
   @SerializedName("type")
   private ReceiverType type;
+
   /** 接收方账号 说明：参考请求参数 */
   @SerializedName("account")
   private String account;
+
   /** 分账接收方全称 说明：参考请求参数。使用APIv3敏感信息加密方式 */
   @Encryption
   @SerializedName("name")
   private String name;
+
   /** 与分账方的关系类型 说明：参考请求参数 */
   @SerializedName("relation_type")
   private ReceiverRelationType relationType;
+
   /** 自定义的分账关系 说明：参考请求参数 */
   @SerializedName("custom_relation")
   private String customRelation;

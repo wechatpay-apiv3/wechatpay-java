@@ -20,12 +20,15 @@ public class SubsidiesCancelEntity {
   /** 电商平台二级商户号 说明：补差的电商平台二级商户，填写微信支付分配的商户号 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 微信订单号 说明：微信支付订单号 */
   @SerializedName("transaction_id")
   private String transactionId;
+
   /** 取消补差结果 说明：取消补差结果 */
   @SerializedName("result")
   private CancelStatus result;
+
   /** 取消补差描述 说明：取消补差描述 */
   @SerializedName("description")
   private String description;

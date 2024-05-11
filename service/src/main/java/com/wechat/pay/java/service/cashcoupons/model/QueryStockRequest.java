@@ -22,6 +22,7 @@ public class QueryStockRequest {
   @SerializedName("stock_id")
   @Expose(serialize = false)
   private String stockId;
+
   /** 创建批次的商户号 说明：批次创建时的商户号 */
   @SerializedName("stock_creator_mchid")
   @Expose(serialize = false)

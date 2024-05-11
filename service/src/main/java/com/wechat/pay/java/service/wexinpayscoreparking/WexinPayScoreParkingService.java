@@ -50,6 +50,7 @@ public class WexinPayScoreParkingService {
     this.httpClient = requireNonNull(httpClient);
     this.hostName = hostName;
   }
+
   /** WexinPayScoreParkingService构造器 */
   public static class Builder {
 
@@ -106,6 +107,7 @@ public class WexinPayScoreParkingService {
     HttpResponse<Parking> httpResponse = httpClient.execute(httpRequest, Parking.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询车牌服务开通信息
    *
@@ -153,6 +155,7 @@ public class WexinPayScoreParkingService {
     HttpResponse<PlateService> httpResponse = httpClient.execute(httpRequest, PlateService.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 扣费受理
    *
@@ -182,6 +185,7 @@ public class WexinPayScoreParkingService {
     HttpResponse<Transaction> httpResponse = httpClient.execute(httpRequest, Transaction.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询订单
    *

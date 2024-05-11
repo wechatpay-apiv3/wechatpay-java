@@ -22,10 +22,12 @@ public class SplitBillRequest {
   @SerializedName("sub_mchid")
   @Expose(serialize = false)
   private String subMchid;
+
   /** 账单日期 说明：格式YYYY-MM-DD。仅支持三个月内的账单下载申请。 */
   @SerializedName("bill_date")
   @Expose(serialize = false)
   private String billDate;
+
   /** 压缩类型 说明：不填则以不压缩的方式返回数据流 */
   @SerializedName("tar_type")
   @Expose(serialize = false)

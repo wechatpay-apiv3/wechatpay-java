@@ -20,36 +20,47 @@ public class CreateCouponStockRequest {
   /** 批次名称 说明：批次名称 */
   @SerializedName("stock_name")
   private String stockName;
+
   /** 批次备注 说明：仅配置商户可见，用于自定义信息 */
   @SerializedName("comment")
   private String comment;
+
   /** 归属商户号 说明：批次归属商户号 */
   @SerializedName("belong_merchant")
   private String belongMerchant;
+
   /** 开始时间 说明：批次开始时间 */
   @SerializedName("available_begin_time")
   private String availableBeginTime;
+
   /** 结束时间 说明：批次结束时间 */
   @SerializedName("available_end_time")
   private String availableEndTime;
+
   /** 发放规则 说明：批次使用规则 */
   @SerializedName("stock_use_rule")
   private StockRule stockUseRule;
+
   /** 样式设置 说明：代金券详情页 */
   @SerializedName("pattern_info")
   private PatternInfo patternInfo;
+
   /** 核销规则 说明： */
   @SerializedName("coupon_use_rule")
   private CouponRule couponUseRule;
+
   /** 是否无资金流 说明：是否无资金流，true-是；false-否 */
   @SerializedName("no_cash")
   private Boolean noCash;
+
   /** 批次类型 说明：批次类型，NORMAL-固定面额满减券批次；DISCOUNT-折扣券批次；EXCHAHGE-换购券批次；RANDOM-千人千面券批次 */
   @SerializedName("stock_type")
   private String stockType;
+
   /** 商户单据号 说明：商户创建批次凭据号（格式：商户id+日期+流水号），商户侧需保持唯一性 */
   @SerializedName("out_request_no")
   private String outRequestNo;
+
   /** 扩展属性 说明：扩展属性字段，按json格式，暂时无需填写 */
   @SerializedName("ext_info")
   private String extInfo;

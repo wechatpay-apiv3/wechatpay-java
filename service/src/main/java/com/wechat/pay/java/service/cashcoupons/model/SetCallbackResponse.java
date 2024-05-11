@@ -20,6 +20,7 @@ public class SetCallbackResponse {
   /** 修改时间 说明：修改时间 */
   @SerializedName("update_time")
   private String updateTime;
+
   /** 通知地址 说明：通知地址 */
   @SerializedName("notify_url")
   private String notifyUrl;

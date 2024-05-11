@@ -25,9 +25,11 @@ public class SetCouponNotifyResponse {
    */
   @SerializedName("update_time")
   private String updateTime;
+
   /** 通知URL地址 说明：商户提供的用于接收商家券事件通知的URL地址，必须支持HTTPS。 */
   @SerializedName("notify_url")
   private String notifyUrl;
+
   /** 商户号 说明：商户号 */
   @SerializedName("mchid")
   private String mchid;

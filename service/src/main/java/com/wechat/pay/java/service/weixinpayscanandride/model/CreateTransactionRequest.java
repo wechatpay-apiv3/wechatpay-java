@@ -20,39 +20,51 @@ public class CreateTransactionRequest {
   /** 公众账号ID 说明：商户在微信申请公众号或移动应用成功后分配的账号ID，登录平台为mp.weixin.qq.com或open.weixin.qq.com */
   @SerializedName("appid")
   private String appid;
+
   /** 子公众账号ID 说明：子公众账号ID，服务商模式下选传，用于扣费信息的商户信息展示， */
   @SerializedName("sub_appid")
   private String subAppid;
+
   /** 子商户号 说明：微信支付分配的子商户号，服务商模式下必传 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 服务描述 说明：商户自定义字段，用于交易账单中对扣费服务的描述。该字段长度限制为字节长度限制 */
   @SerializedName("description")
   private String description;
+
   /** 附加数据 说明：附加数据，在查询API和支付通知中原样返回，可作为自定义参数使用，该字段长度限制为字节长度限制 */
   @SerializedName("attach")
   private String attach;
+
   /** 商户订单号 说明：商户系统内部订单号，只能是数字、大小写字母，且在同一个商户号下唯一。该字段长度限制为字节长度限制 */
   @SerializedName("out_trade_no")
   private String outTradeNo;
+
   /** 交易场景 说明：交易场景值，现在支持公交和地铁的场景值 */
   @SerializedName("trade_scene")
   private TradeScene tradeScene;
+
   /** 订单优惠标记 说明：代金券或立减优惠功能的参数，说明详见代金券或立减优惠 */
   @SerializedName("goods_tag")
   private String goodsTag;
+
   /** 代扣签约ID 说明：签约成功后，微信返回代扣签约ID 查用户是否能继续使用乘车卡时必传，此时，才会返回签约信息，如contract_state */
   @SerializedName("contract_id")
   private String contractId;
+
   /** 通知地址 说明：接受扣款结果异步回调通知的URL，注意回调URL只接受HTTPS */
   @SerializedName("notify_url")
   private String notifyUrl;
+
   /** 订单金额信息 说明：订单金额信息 */
   @SerializedName("amount")
   private OrderAmount amount;
+
   /** 公交场景信息 说明：请求受理扣费 tradescene为BUS时，传入该参数 */
   @SerializedName("bus_info")
   private BusSceneInfo busInfo;
+
   /** 地铁场景信息 说明：请求受理扣费 tradescene为METRO时，传入该参数 */
   @SerializedName("metro_info")
   private MetroSceneInfo metroInfo;

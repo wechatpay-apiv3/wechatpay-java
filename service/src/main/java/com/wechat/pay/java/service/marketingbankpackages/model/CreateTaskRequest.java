@@ -24,6 +24,7 @@ public class CreateTaskRequest {
    */
   @SerializedName("file")
   private FormFile file;
+
   /** 文件元信息 说明：快捷协议号包的文件元信息 */
   @SerializedName("meta")
   private FileMeta meta;

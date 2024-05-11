@@ -21,6 +21,7 @@ public class ModifyBudgetResponse {
   /** 批次当前最大发放个数 说明：批次最大发放个数 */
   @SerializedName("max_coupons")
   private Long maxCoupons;
+
   /** 当前单天发放上限个数 说明：当前单天发放上限个数 */
   @SerializedName("max_coupons_by_day")
   private Long maxCouponsByDay;

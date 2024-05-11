@@ -21,9 +21,11 @@ public class ModifyAvailableMerchantRequest {
   /** 创建批次的商户号 说明：批次创建方商户号 */
   @SerializedName("stock_creator_mchid")
   private String stockCreatorMchid;
+
   /** 增加可用商户列表 说明：增加可用商户列表 */
   @SerializedName("add_mchid_list")
   private List<String> addMchidList;
+
   /** 删除可用商户列表 说明：删除可用商户列表 */
   @SerializedName("delete_mchid_list")
   private List<String> deleteMchidList;

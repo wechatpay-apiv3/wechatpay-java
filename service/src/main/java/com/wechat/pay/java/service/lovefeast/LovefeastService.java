@@ -49,6 +49,7 @@ public class LovefeastService {
     this.httpClient = requireNonNull(httpClient);
     this.hostName = hostName;
   }
+
   /** LovefeastService构造器 */
   public static class Builder {
 
@@ -108,6 +109,7 @@ public class LovefeastService {
     HttpResponse<BrandEntity> httpResponse = httpClient.execute(httpRequest, BrandEntity.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询用户捐赠单详情
    *
@@ -144,6 +146,7 @@ public class LovefeastService {
     HttpResponse<OrdersEntity> httpResponse = httpClient.execute(httpRequest, OrdersEntity.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询用户捐赠单列表
    *

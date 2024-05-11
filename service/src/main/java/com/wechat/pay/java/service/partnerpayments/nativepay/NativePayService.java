@@ -49,6 +49,7 @@ public class NativePayService {
     this.httpClient = requireNonNull(httpClient);
     this.hostName = hostName;
   }
+
   /** NativePayService构造器 */
   public static class Builder {
 
@@ -66,6 +67,7 @@ public class NativePayService {
 
       return this;
     }
+
     /**
      * 设置微信支付域名，可选，默认为api.mch.weixin.qq.com
      *
@@ -76,6 +78,7 @@ public class NativePayService {
       this.hostName = hostName;
       return this;
     }
+
     /**
      * 设置自定义httpClient，若未调用config()，则必须调用该方法
      *
@@ -86,6 +89,7 @@ public class NativePayService {
       this.httpClient = httpClient;
       return this;
     }
+
     /**
      * 构造服务
      *
@@ -129,6 +133,7 @@ public class NativePayService {
             .build();
     httpClient.execute(httpRequest, null);
   }
+
   /**
    * Native支付预下单
    *
@@ -159,6 +164,7 @@ public class NativePayService {
         httpClient.execute(httpRequest, PrepayResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 微信支付订单号查询订单
    *
@@ -203,6 +209,7 @@ public class NativePayService {
     HttpResponse<Transaction> httpResponse = httpClient.execute(httpRequest, Transaction.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 商户订单号查询订单
    *

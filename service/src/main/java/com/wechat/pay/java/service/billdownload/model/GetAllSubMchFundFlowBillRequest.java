@@ -22,14 +22,17 @@ public class GetAllSubMchFundFlowBillRequest {
   @SerializedName("bill_date")
   @Expose(serialize = false)
   private String billDate;
+
   /** 资金账户类型 说明：资金账户类型，本接口只支持填ALL */
   @SerializedName("account_type")
   @Expose(serialize = false)
   private AccountType accountType;
+
   /** 压缩类型 说明：压缩类型，不填则以不压缩的方式返回数据流 */
   @SerializedName("tar_type")
   @Expose(serialize = false)
   private TarType tarType;
+
   /** 账单文件加密算法 说明：账单文件加密算法 */
   @SerializedName("algorithm")
   @Expose(serialize = false)

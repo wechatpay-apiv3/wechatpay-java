@@ -49,6 +49,7 @@ public class H5Service {
     this.httpClient = requireNonNull(httpClient);
     this.hostName = hostName;
   }
+
   /** H5Service构造器 */
   public static class Builder {
 
@@ -132,6 +133,7 @@ public class H5Service {
             .build();
     httpClient.execute(httpRequest, null);
   }
+
   /**
    * H5支付下单
    *
@@ -162,6 +164,7 @@ public class H5Service {
         httpClient.execute(httpRequest, PrepayResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 微信支付订单号查询订单
    *
@@ -206,6 +209,7 @@ public class H5Service {
     HttpResponse<Transaction> httpResponse = httpClient.execute(httpRequest, Transaction.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 商户订单号查询订单
    *

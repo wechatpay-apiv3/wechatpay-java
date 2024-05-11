@@ -21,12 +21,15 @@ public class ListActsByAreaResponse {
   /** 活动总数 说明：活动总数 */
   @SerializedName("total_count")
   private Integer totalCount;
+
   /** 活动集合 说明：活动集合 */
   @SerializedName("data")
   private List<FmcgAct> data;
+
   /** 分页页码 说明：非负整数，该次请求资源的起始位置，从0开始计数 */
   @SerializedName("offset")
   private Integer offset;
+
   /** 返回的活动数 说明：非0非负的整数 */
   @SerializedName("limit")
   private Integer limit;

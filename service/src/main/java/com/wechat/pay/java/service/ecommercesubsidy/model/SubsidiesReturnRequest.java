@@ -21,24 +21,31 @@ public class SubsidiesReturnRequest {
   /** 电商平台二级商户号 说明：补差的电商平台二级商户，填写微信支付分配的商户号 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 商户补差回退单号 说明：商户系统内部的补差回退单号，在商户系统内部唯一，同一补差回退单号多次请求等同一次。只能是数字、大小写字母_-|*@ */
   @SerializedName("out_order_no")
   private String outOrderNo;
+
   /** 微信订单号 说明：微信支付订单号 */
   @SerializedName("transaction_id")
   private String transactionId;
+
   /** 微信退款单号 说明：微信退款单号，微信系统退款返回的唯一标识。因用户账户异常而无法退款时可不传，其他情况必传 */
   @SerializedName("refund_id")
   private String refundId;
+
   /** 补差回退金额 说明：补差回退金额，单位为分，只能为整数，不能超过补差单的补差金额。如果指定了出资账户及金额，则必须为所有出资账户的金额之和 */
   @SerializedName("amount")
   private Long amount;
+
   /** 补差回退描述 说明：补差回退描述，查询的时候原样带回来 */
   @SerializedName("description")
   private String description;
+
   /** 微信补差单号 说明：微信补差单号，微信系统返回的唯一标识 */
   @SerializedName("subsidy_id")
   private String subsidyId;
+
   /**
    * 回退出资账户及金额 说明：回退需要从指定账户出资时，传递此参数指定出资金额（币种的最小单位，只能为整数）。
    * 当前仅支持从一个账户出资。使用场景需要满足以下条件：1、本次回退金额和已回退金额之和不超过该补差单的补差金额；2、本次回退的金额不超过指定的账户的实际可用资金
