@@ -32,7 +32,8 @@ public class RSAVerifierTest {
     List<X509Certificate> list = new Vector<>();
     list.add(MERCHANT_CERTIFICATE);
     certificateRsaVerifier = new RSAVerifier(new InMemoryCertificateProvider(list));
-    publicKeyRsaVerifier = new RSAVerifier(WECHAT_PAY_PUBLIC_KEY, WECHAT_PAY_CERTIFICATE_SERIAL_NUMBER);
+    publicKeyRsaVerifier =
+        new RSAVerifier(WECHAT_PAY_PUBLIC_KEY, WECHAT_PAY_CERTIFICATE_SERIAL_NUMBER);
   }
 
   @Test
