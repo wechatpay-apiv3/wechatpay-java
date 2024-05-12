@@ -6,6 +6,7 @@ import com.wechat.pay.java.core.certificate.model.Data;
 import com.wechat.pay.java.core.certificate.model.DownloadCertificateResponse;
 import com.wechat.pay.java.core.certificate.model.EncryptCertificate;
 import com.wechat.pay.java.core.cipher.AeadCipher;
+import com.wechat.pay.java.core.exception.ServiceException;
 import com.wechat.pay.java.core.http.Constant;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpMethod;
@@ -76,10 +77,17 @@ public final class CertificateDownloader {
             .addHeader(Constant.ACCEPT, " */*")
             .addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue())
             .build();
-    HttpResponse<DownloadCertificateResponse> httpResponse =
-        httpClient.execute(httpRequest, DownloadCertificateResponse.class);
-
-    return decryptCertificate(httpResponse);
+    try {
+      HttpResponse<DownloadCertificateResponse> httpResponse =
+          httpClient.execute(httpRequest, DownloadCertificateResponse.class);
+      return decryptCertificate(httpResponse);
+    } catch (ServiceException e) {
+      // 如果证书不存在，可能是切换为平台公钥，该处不报错
+      if (e.getErrorCode().equals("NOT_FOUND")) {
+        return new HashMap<>();
+      }
+      throw e;
+    }
   }
 
   /**

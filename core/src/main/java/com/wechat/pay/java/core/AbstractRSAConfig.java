@@ -60,8 +60,10 @@ public abstract class AbstractRSAConfig implements Config {
 
   /** 微信支付平台证书Provider */
   private final CertificateProvider certificateProvider;
+
   /** 微信支付平台公钥 */
   private final PublicKey publicKey;
+
   /** 微信支付平台公钥Id */
   private final String publicKeyId;
 
