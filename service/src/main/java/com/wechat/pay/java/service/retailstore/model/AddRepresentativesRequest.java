@@ -22,9 +22,11 @@ public class AddRepresentativesRequest {
   /** 业务代理信息列表 说明：业务代理信息列表 */
   @SerializedName("representative_info_list")
   private List<RepresentativeInfo> representativeInfoList = new ArrayList<RepresentativeInfo>();
+
   /** 请求业务单据号 说明：商户新增业务代理请求的唯一标识，商户需保证唯一。可包含英文字母，数字，\\|，\\_，\\*，\\-等内容，不允许出现其他不合法符号。 */
   @SerializedName("out_request_no")
   private String outRequestNo;
+
   /** 添加时间 说明：添加时间 */
   @SerializedName("add_time")
   private String addTime;

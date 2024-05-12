@@ -21,6 +21,7 @@ public class PaymentMethodInfo {
   /** 支付方式 说明：支付方式，可以指定银行卡或零钱 */
   @SerializedName("payment_method")
   private PaymentMethodCategory paymentMethod;
+
   /** 银行简称 说明：银行简称，指定支付方式为银行卡必填，详询附录 */
   @SerializedName("bank_abbreviation")
   private String bankAbbreviation;

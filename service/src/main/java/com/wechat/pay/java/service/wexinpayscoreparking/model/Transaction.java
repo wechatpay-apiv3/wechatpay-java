@@ -21,18 +21,23 @@ public class Transaction {
   /** 公众账号id 说明：appid是商户在微信申请公众号或移动应用成功后分配的帐号ID，登录平台为mp.weixin.qq.com或open.weixin.qq.com */
   @SerializedName("appid")
   private String appid;
+
   /** 子商户公众账号id 说明：子商户申请的公众号或移动应用appid，需要在服务商的商户平台为子商户绑定 */
   @SerializedName("sub_appid")
   private String subAppid;
+
   /** 商户号 说明：微信支付分配的商户号 */
   @SerializedName("sp_mchid")
   private String spMchid;
+
   /** 子商户号 说明：微信支付分配的子商户号 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 服务描述 说明：商户自定义字段，用于交易账单中对扣费服务的描述。 */
   @SerializedName("description")
   private String description;
+
   /**
    * 订单创建时间
    * 说明：订单成功创建时返回，遵循[rfc3339](https://datatracker.ietf.org/doc/html/rfc3339)标准格式，格式为yyyy-MM-DDTHH:mm:ss+TIMEZONE，yyyy-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC
@@ -40,18 +45,23 @@ public class Transaction {
    */
   @SerializedName("create_time")
   private String createTime;
+
   /** 商户订单号 说明：商户系统内部订单号，只能是数字、大小写字母_-*且在同一个商户号下唯一 */
   @SerializedName("out_trade_no")
   private String outTradeNo;
+
   /** 微信支付订单号 说明：微信支付订单号 */
   @SerializedName("transaction_id")
   private String transactionId;
+
   /** 交易状态 说明：SUCCESS—支付成功 ACCEPTED—已接收，等待扣款 PAY_FAIL–支付失败(其他原因，如银行返回失败) REFUND—转入退款 */
   @SerializedName("trade_state")
   private String tradeState;
+
   /** 交易状态描述 说明：对当前订单状态的描述和下一步操作的指引 */
   @SerializedName("trade_state_description")
   private String tradeStateDescription;
+
   /**
    * 支付完成时间
    * 说明：订单支付完成时间，遵循[rfc3339](https://datatracker.ietf.org/doc/html/rfc3339)标准格式，格式为yyyy-MM-DDTHH:mm:ss+TIMEZONE，yyyy-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC
@@ -59,27 +69,35 @@ public class Transaction {
    */
   @SerializedName("success_time")
   private String successTime;
+
   /** 付款银行 说明：银行类型，采用字符串类型的银行标识。BPA：该笔订单由微信进行垫付 */
   @SerializedName("bank_type")
   private String bankType;
+
   /** 用户是否已还款 说明：枚举值： Y：用户已还款 N：用户未还款 注意：使用此字段前需先确认bank_type字段值为BPA以及 trade_state字段值为SUCCESS。 */
   @SerializedName("user_repaid")
   private String userRepaid;
+
   /** 附加数据 说明：附加数据，在查询API和支付通知中原样返回，可作为自定义参数使用 */
   @SerializedName("attach")
   private String attach;
+
   /** 交易场景 说明：交易场景值，目前支持 ：PARKING：车场停车场景 */
   @SerializedName("trade_scene")
   private String tradeScene;
+
   /** 停车场景信息 说明：返回信息中的trade_scene为PARKING，返回该场景信息 */
   @SerializedName("parking_info")
   private ParkingTradeScene parkingInfo;
+
   /** 支付者信息 说明：支付者信息 */
   @SerializedName("payer")
   private Payer payer;
+
   /** 订单金额信息 说明：订单金额信息 */
   @SerializedName("amount")
   private QueryOrderAmount amount;
+
   /** 优惠信息 说明：优惠信息 */
   @SerializedName("promotion_detail")
   private List<PromotionDetail> promotionDetail;

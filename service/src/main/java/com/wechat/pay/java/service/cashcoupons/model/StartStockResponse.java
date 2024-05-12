@@ -23,6 +23,7 @@ public class StartStockResponse {
    */
   @SerializedName("start_time")
   private String startTime;
+
   /** 批次号 说明：批次号 */
   @SerializedName("stock_id")
   private String stockId;

@@ -20,18 +20,23 @@ public class RelationEntity {
   /** 用户OpenID 说明：用户OpenID */
   @SerializedName("openid")
   private String openid;
+
   /** 商户号 说明：商户号 */
   @SerializedName("mchid")
   private String mchid;
+
   /** 特约商户号 说明：特约商户号 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 授权状态 说明：授权状态：UNAUTHORIZED：未授权 AUTHORIZED：已授权 DEAUTHORIZED：已取消授权 */
   @SerializedName("authorize_state")
   private String authorizeState;
+
   /** 授权时间 说明：授权时间 */
   @SerializedName("authorize_time")
   private String authorizeTime;
+
   /**
    * 取消授权时间
    * 说明：取消授权时间，遵循RFC3339标准格式，格式为yyyy-MM-DDThh:mm:ss+TIMEZONE，yyyy-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC
@@ -39,9 +44,11 @@ public class RelationEntity {
    */
   @SerializedName("deauthorize_time")
   private String deauthorizeTime;
+
   /** 开通状态 说明：微工卡的开通状态：UNREGISTERED：未开通；REGISTERED：已开通；CLOSED：已关闭 */
   @SerializedName("register_state")
   private PayrollCardRegisterState registerState;
+
   /**
    * 开通时间
    * 说明：开通时间，未开通时不返回。遵循RFC3339标准格式，格式为yyyy-MM-DDThh:mm:ss+TIMEZONE，yyyy-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC
@@ -49,6 +56,7 @@ public class RelationEntity {
    */
   @SerializedName("register_time")
   private String registerTime;
+
   /**
    * 关闭时间
    * 说明：关闭时间，仅当开通状态是已关闭时返回。遵循RFC3339标准格式，格式为yyyy-MM-DDThh:mm:ss+TIMEZONE，yyyy-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC

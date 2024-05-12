@@ -21,9 +21,11 @@ public class PromotionDetail {
   /** 券ID 说明：券ID */
   @SerializedName("coupon_id")
   private String couponId;
+
   /** 优惠名称 说明：优惠名称 */
   @SerializedName("name")
   private String name;
+
   /** GLOBAL：全场代金券；SINGLE：单品优惠 */
   public enum ScopeEnum {
     @SerializedName("GLOBAL")
@@ -35,6 +37,7 @@ public class PromotionDetail {
 
   @SerializedName("scope")
   private ScopeEnum scope;
+
   /** CASH：充值；NOCASH：预充值。 */
   public enum TypeEnum {
     @SerializedName("CASH")
@@ -46,24 +49,31 @@ public class PromotionDetail {
 
   @SerializedName("type")
   private TypeEnum type;
+
   /** 优惠券面额 说明：优惠券面额 */
   @SerializedName("amount")
   private Integer amount;
+
   /** 活动ID 说明：活动ID，批次ID */
   @SerializedName("stock_id")
   private String stockId;
+
   /** 微信出资 说明：单位为分 */
   @SerializedName("wechatpay_contribute")
   private Integer wechatpayContribute;
+
   /** 商户出资 说明：单位为分 */
   @SerializedName("merchant_contribute")
   private Integer merchantContribute;
+
   /** 其他出资 说明：单位为分 */
   @SerializedName("other_contribute")
   private Integer otherContribute;
+
   /** 优惠币种 说明：CNY：人民币，境内商户号仅支持人民币。 */
   @SerializedName("currency")
   private String currency;
+
   /** 单品列表 说明： */
   @SerializedName("goods_detail")
   private List<PromotionGoodsDetail> goodsDetail;

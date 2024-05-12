@@ -67,6 +67,7 @@ public class RetailStoreService {
     this.httpClient = requireNonNull(httpClient);
     this.hostName = hostName;
   }
+
   /** RetailStoreService构造器 */
   public static class Builder {
 
@@ -130,6 +131,7 @@ public class RetailStoreService {
         httpClient.execute(httpRequest, ApplyActivityResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 按区域查询品牌加价购活动
    *
@@ -173,6 +175,7 @@ public class RetailStoreService {
         httpClient.execute(httpRequest, ListActsByAreaResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 锁定品牌加价购活动资格
    *
@@ -204,6 +207,7 @@ public class RetailStoreService {
         httpClient.execute(httpRequest, LockQualificationResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 解锁品牌加价购活动资格
    *
@@ -235,6 +239,7 @@ public class RetailStoreService {
         httpClient.execute(httpRequest, UnlockQualificationResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 添加零售小店活动业务代理
    *
@@ -271,6 +276,7 @@ public class RetailStoreService {
         httpClient.execute(httpRequest, AddRepresentativesResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 添加小店活动门店
    *
@@ -306,6 +312,7 @@ public class RetailStoreService {
         httpClient.execute(httpRequest, AddStoresResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 生成小店活动物料码
    *
@@ -340,6 +347,7 @@ public class RetailStoreService {
     HttpResponse<Materials> httpResponse = httpClient.execute(httpRequest, Materials.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 删除零售小店活动业务代理
    *
@@ -376,6 +384,7 @@ public class RetailStoreService {
         httpClient.execute(httpRequest, DeleteRepresentativeResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 删除小店活动门店
    *
@@ -411,6 +420,7 @@ public class RetailStoreService {
         httpClient.execute(httpRequest, DeleteStoresResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询小店活动门店详情
    *
@@ -448,6 +458,7 @@ public class RetailStoreService {
         httpClient.execute(httpRequest, RetailStoreInfo.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询零售小店活动业务代理
    *
@@ -492,6 +503,7 @@ public class RetailStoreService {
         httpClient.execute(httpRequest, ListRepresentativeResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询小店活动门店列表
    *

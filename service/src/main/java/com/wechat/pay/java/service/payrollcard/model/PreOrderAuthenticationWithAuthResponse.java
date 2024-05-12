@@ -20,18 +20,23 @@ public class PreOrderAuthenticationWithAuthResponse {
   /** 商家核身单号 说明：商户系统内部的商家核身单号，要求此参数只能由数字、大小写字母组成，在服务商内部唯一 */
   @SerializedName("authenticate_number")
   private String authenticateNumber;
+
   /** 微信用户OpenID 说明：微信用户OpenID */
   @SerializedName("openid")
   private String openid;
+
   /** 商户号 说明：商户号 */
   @SerializedName("mchid")
   private String mchid;
+
   /** 特约商户号 说明：特约商户号 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** token值 说明：token值 */
   @SerializedName("token")
   private String token;
+
   /** token有效时间 说明：token有效时间，单位秒 */
   @SerializedName("expires_in")
   private Integer expiresIn;

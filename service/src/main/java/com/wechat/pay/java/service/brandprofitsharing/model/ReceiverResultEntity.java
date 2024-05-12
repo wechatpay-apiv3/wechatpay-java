@@ -24,6 +24,7 @@ public class ReceiverResultEntity {
    */
   @SerializedName("type")
   private String type;
+
   /**
    * 接收方账号 说明：1. 分账接收方类型为MERCHANT_ID时，分账接收方账号为商户号（mch_id或者sub_mch_id） 2.
    * 分账接收方类型为PERSONAL_OPENID时，分账接收方账号为个人OpenID（由服务商的AppID转换得到） 3.
@@ -31,15 +32,19 @@ public class ReceiverResultEntity {
    */
   @SerializedName("account")
   private String account;
+
   /** 分账金额 说明：分账金额，单位为分，只能为整数 */
   @SerializedName("amount")
   private Long amount;
+
   /** 分账描述 说明：分账的原因描述，分账账单中需要体现 */
   @SerializedName("description")
   private String description;
+
   /** 分账结果 说明：枚举值： - PENDING：待分账 - SUCCESS：分账成功 - CLOSED：已关闭 */
   @SerializedName("result")
   private String result;
+
   /**
    * 分账完成时间 说明：分账完成时间，遵循RFC3339标准格式，格式为
    * yyyy-MM-DDTHH:mm:ss.sss+TIMEZONE，yyyy-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss.sss表示时分秒毫秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC
@@ -47,6 +52,7 @@ public class ReceiverResultEntity {
    */
   @SerializedName("finish_time")
   private String finishTime;
+
   /**
    * 分账失败原因 说明：分账失败原因。包含以下枚举值： 1. ACCOUNT_ABNORMAL : 分账接收账户异常 2. NO_RELATION : 分账关系已解除 3.
    * RECEIVER_HIGH_RISK : 高风险接收方 4. RECEIVER_REAL_NAME_NOT_VERIFIED : 接收方未实名 5. NO_AUTH : 分账权限已解除 6.
@@ -55,6 +61,7 @@ public class ReceiverResultEntity {
    */
   @SerializedName("fail_reason")
   private String failReason;
+
   /** 分账明细单号 说明：微信分账明细单号，每笔分账业务执行的明细单号，可与资金账单对账使用 */
   @SerializedName("detail_id")
   private String detailId;

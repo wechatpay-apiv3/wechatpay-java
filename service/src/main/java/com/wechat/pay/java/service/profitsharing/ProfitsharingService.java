@@ -70,6 +70,7 @@ public class ProfitsharingService {
     this.encryptor = requireNonNull(encryptor);
     this.decryptor = requireNonNull(decryptor);
   }
+
   /** ProfitsharingService构造器 */
   public static class Builder {
 
@@ -152,6 +153,7 @@ public class ProfitsharingService {
         httpClient.execute(httpRequest, SplitBillResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询最大分账比例API
    *
@@ -187,6 +189,7 @@ public class ProfitsharingService {
         httpClient.execute(httpRequest, QueryMerchantRatioResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 请求分账API
    *
@@ -218,6 +221,7 @@ public class ProfitsharingService {
     HttpResponse<OrdersEntity> httpResponse = httpClient.execute(httpRequest, OrdersEntity.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询分账结果API
    *
@@ -260,6 +264,7 @@ public class ProfitsharingService {
     HttpResponse<OrdersEntity> httpResponse = httpClient.execute(httpRequest, OrdersEntity.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 解冻剩余资金API
    *
@@ -289,6 +294,7 @@ public class ProfitsharingService {
     HttpResponse<OrdersEntity> httpResponse = httpClient.execute(httpRequest, OrdersEntity.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 添加分账接收方API
    *
@@ -321,6 +327,7 @@ public class ProfitsharingService {
         httpClient.execute(httpRequest, AddReceiverResponse.class);
     return httpResponse.getServiceResponse().cloneWithCipher(decryptor::decrypt);
   }
+
   /**
    * 删除分账接收方API
    *
@@ -351,6 +358,7 @@ public class ProfitsharingService {
         httpClient.execute(httpRequest, DeleteReceiverResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 请求分账回退API
    *
@@ -381,6 +389,7 @@ public class ProfitsharingService {
         httpClient.execute(httpRequest, ReturnOrdersEntity.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询分账回退结果API
    *
@@ -425,6 +434,7 @@ public class ProfitsharingService {
         httpClient.execute(httpRequest, ReturnOrdersEntity.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询剩余待分金额API
    *

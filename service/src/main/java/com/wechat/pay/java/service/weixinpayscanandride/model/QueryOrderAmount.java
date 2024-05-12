@@ -20,9 +20,11 @@ public class QueryOrderAmount {
   /** 订单金额 说明：订单总金额，单位为分，只能为整数，详见支付金额 */
   @SerializedName("total")
   private Long total;
+
   /** 用户实际支付金额 说明：用户实际支付金额，单位为分，只能为整数，详见支付金额 */
   @SerializedName("payer_total")
   private Long payerTotal;
+
   /** 货币类型 说明：CNY：人民币，境内商户号仅支持人民币。 */
   @SerializedName("currency")
   private String currency;

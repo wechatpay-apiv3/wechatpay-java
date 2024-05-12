@@ -40,6 +40,7 @@ public class AppServiceExtension {
     }
     this.appService = builder.build();
   }
+
   /**
    * APP 支付下单，并返回 APP 调起支付数据。推荐使用！
    *
@@ -73,6 +74,7 @@ public class AppServiceExtension {
     response.setSign(sign);
     return response;
   }
+
   /**
    * 微信支付订单号查询订单
    *
@@ -86,6 +88,7 @@ public class AppServiceExtension {
   public Transaction queryOrderById(QueryOrderByIdRequest request) {
     return appService.queryOrderById(request);
   }
+
   /**
    * 商户订单号查询订单
    *

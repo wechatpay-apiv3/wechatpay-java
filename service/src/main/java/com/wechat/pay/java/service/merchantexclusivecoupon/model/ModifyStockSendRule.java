@@ -21,6 +21,7 @@ public class ModifyStockSendRule {
   /** 是否开启自然人限领 说明：true-是；false-否，不填默认否 注：该字段暂不支持修改 */
   @SerializedName("natural_person_limit")
   private Boolean naturalPersonLimit;
+
   /** 可疑账号拦截 说明：true-是；false-否，不填默认否 */
   @SerializedName("prevent_api_abuse")
   private Boolean preventApiAbuse;

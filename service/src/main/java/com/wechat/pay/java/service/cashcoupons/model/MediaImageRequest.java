@@ -20,6 +20,7 @@ public class MediaImageRequest {
   /** 图片文件 说明：将媒体图片进行二进制转换，得到的媒体图片二进制内容，在请求body中上传此二进制内容。媒体图片只支持JPG、BMP、PNG格式，文件大小不能超过2M。 */
   @SerializedName("file")
   private FormFile file;
+
   /** 媒体文件元信息 说明： */
   @SerializedName("meta")
   private ImageMeta meta;

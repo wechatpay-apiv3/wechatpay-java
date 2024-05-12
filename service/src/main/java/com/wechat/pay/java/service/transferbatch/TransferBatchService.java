@@ -62,6 +62,7 @@ public class TransferBatchService {
     this.encryptor = requireNonNull(encryptor);
     this.decryptor = requireNonNull(decryptor);
   }
+
   /** TransferBatchService构造器 */
   public static class Builder {
 
@@ -151,6 +152,7 @@ public class TransferBatchService {
         httpClient.execute(httpRequest, TransferBatchEntity.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 通过商家批次单号查询批次单
    *
@@ -202,6 +204,7 @@ public class TransferBatchService {
         httpClient.execute(httpRequest, TransferBatchEntity.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 发起商家转账
    *
@@ -234,6 +237,7 @@ public class TransferBatchService {
         httpClient.execute(httpRequest, InitiateBatchTransferResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 通过微信明细单号查询明细单
    *
@@ -271,6 +275,7 @@ public class TransferBatchService {
         httpClient.execute(httpRequest, TransferDetailEntity.class);
     return httpResponse.getServiceResponse().cloneWithCipher(decryptor::decrypt);
   }
+
   /**
    * 通过商家明细单号查询明细单
    *

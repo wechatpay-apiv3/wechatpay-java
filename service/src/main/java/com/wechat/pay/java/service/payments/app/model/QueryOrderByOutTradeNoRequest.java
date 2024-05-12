@@ -22,6 +22,7 @@ public class QueryOrderByOutTradeNoRequest {
   @SerializedName("out_trade_no")
   @Expose(serialize = false)
   private String outTradeNo;
+
   /** mchid 说明：直连商户号 */
   @SerializedName("mchid")
   @Expose(serialize = false)

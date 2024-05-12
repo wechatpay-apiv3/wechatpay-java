@@ -24,36 +24,47 @@ public class Transaction {
   /** amount */
   @SerializedName("amount")
   private TransactionAmount amount;
+
   /** spAppid */
   @SerializedName("sp_appid")
   private String spAppid;
+
   /** subAppid */
   @SerializedName("sub_appid")
   private String subAppid;
+
   /** spMchid */
   @SerializedName("sp_mchid")
   private String spMchid;
+
   /** subMchid */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** attach */
   @SerializedName("attach")
   private String attach;
+
   /** bankType */
   @SerializedName("bank_type")
   private String bankType;
+
   /** outTradeNo */
   @SerializedName("out_trade_no")
   private String outTradeNo;
+
   /** payer */
   @SerializedName("payer")
   private TransactionPayer payer;
+
   /** promotionDetail */
   @SerializedName("promotion_detail")
   private List<PromotionDetail> promotionDetail;
+
   /** successTime */
   @SerializedName("success_time")
   private String successTime;
+
   /** tradeState */
   public enum TradeStateEnum {
     @SerializedName("SUCCESS")
@@ -83,9 +94,11 @@ public class Transaction {
 
   @SerializedName("trade_state")
   private TradeStateEnum tradeState;
+
   /** tradeStateDesc */
   @SerializedName("trade_state_desc")
   private String tradeStateDesc;
+
   /** tradeType */
   public enum TradeTypeEnum {
     @SerializedName("JSAPI")
@@ -109,6 +122,7 @@ public class Transaction {
 
   @SerializedName("trade_type")
   private TradeTypeEnum tradeType;
+
   /** transactionId */
   @SerializedName("transaction_id")
   private String transactionId;

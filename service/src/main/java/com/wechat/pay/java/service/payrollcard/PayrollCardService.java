@@ -60,6 +60,7 @@ public class PayrollCardService {
     this.hostName = hostName;
     this.encryptor = requireNonNull(encryptor);
   }
+
   /** PayrollCardService构造器 */
   public static class Builder {
 
@@ -136,6 +137,7 @@ public class PayrollCardService {
         httpClient.execute(httpRequest, AuthenticationEntity.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询核身记录
    *
@@ -193,6 +195,7 @@ public class PayrollCardService {
         httpClient.execute(httpRequest, ListAuthenticationsResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 微工卡核身预下单
    *
@@ -224,6 +227,7 @@ public class PayrollCardService {
         httpClient.execute(httpRequest, PreOrderAuthenticationResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 微工卡核身预下单（流程中完成授权）
    *
@@ -258,6 +262,7 @@ public class PayrollCardService {
         httpClient.execute(httpRequest, PreOrderAuthenticationWithAuthResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询微工卡授权关系
    *
@@ -303,6 +308,7 @@ public class PayrollCardService {
         httpClient.execute(httpRequest, RelationEntity.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 生成授权token
    *
@@ -334,6 +340,7 @@ public class PayrollCardService {
     HttpResponse<TokenEntity> httpResponse = httpClient.execute(httpRequest, TokenEntity.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 发起批量转账
    *

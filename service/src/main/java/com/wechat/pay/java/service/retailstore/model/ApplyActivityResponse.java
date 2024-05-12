@@ -21,9 +21,11 @@ public class ApplyActivityResponse {
   /** 返回结果文案 说明：返回结果文案 */
   @SerializedName("return_message")
   private String returnMessage;
+
   /** 失败的报名记录 说明：失败的报名记录 */
   @SerializedName("failed_apply_infos")
   private List<ActApplyInfo> failedApplyInfos;
+
   /** 成功的报名记录 说明：成功的报名记录 */
   @SerializedName("succeed_apply_infos")
   private List<ActApplyInfo> succeedApplyInfos;

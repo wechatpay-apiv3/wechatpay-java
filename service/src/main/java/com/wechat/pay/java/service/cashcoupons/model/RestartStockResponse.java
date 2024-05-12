@@ -20,6 +20,7 @@ public class RestartStockResponse {
   /** 生效时间 说明：生效时间 */
   @SerializedName("restart_time")
   private String restartTime;
+
   /** 批次号 说明：批次号 */
   @SerializedName("stock_id")
   private String stockId;

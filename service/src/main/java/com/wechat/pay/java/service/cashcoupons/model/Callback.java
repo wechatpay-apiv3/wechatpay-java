@@ -20,6 +20,7 @@ public class Callback {
   /** 通知地址 说明：通知地址 */
   @SerializedName("notify_url")
   private String notifyUrl;
+
   /** 商户号 说明：商户号 */
   @SerializedName("mchid")
   private String mchid;

@@ -21,18 +21,23 @@ public class RefundAmount {
   /** 退款金额 说明：退款金额，单位为分，只能为整数，不能超 过原订单支付金额 */
   @SerializedName("refund")
   private Long refund;
+
   /** 退款出资账户及金额 说明：退款出资的账户类型及金额信息 */
   @SerializedName("from")
   private List<FundsFromItem> from;
+
   /** 用户退款金额 说明：退款给用户的金额，不包含所有优惠券金额 */
   @SerializedName("payer_refund")
   private Long payerRefund;
+
   /** 优惠退款金额 说明：优惠券的退款金额，原支付单的优惠按比例退款 */
   @SerializedName("discount_refund")
   private Long discountRefund;
+
   /** 货币类型 说明：符合ISO4217标准的三位字母代码，目前只支持人民币：CNY */
   @SerializedName("currency")
   private String currency;
+
   /** 垫付金额 说明：电商平台垫付的金额 */
   @SerializedName("advance")
   private Long advance;

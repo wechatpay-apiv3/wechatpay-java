@@ -20,9 +20,11 @@ public class ModifyStockBudgetRequest {
   /** 创建批次的商户号 说明：批次创建方商户号 */
   @SerializedName("stock_creator_mchid")
   private String stockCreatorMchid;
+
   /** 目标预算金额 说明：预算修改目标额度，单位分 */
   @SerializedName("target_max_amount")
   private Long targetMaxAmount;
+
   /** 当前预算金额 说明：当前预算额度，单位分 */
   @SerializedName("current_max_amount")
   private Long currentMaxAmount;

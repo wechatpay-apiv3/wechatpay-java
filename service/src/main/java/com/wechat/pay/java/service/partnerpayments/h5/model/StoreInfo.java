@@ -20,12 +20,15 @@ public class StoreInfo {
   /** 门店编号 说明：商户侧门店编号 */
   @SerializedName("id")
   private String id;
+
   /** 门店名称 说明：商户侧门店名称 */
   @SerializedName("name")
   private String name;
+
   /** 地区编码 说明：地区编码，详细请见微信支付提供的文档 */
   @SerializedName("area_code")
   private String areaCode;
+
   /** 详细地址 说明：详细的商户门店地址 */
   @SerializedName("address")
   private String address;

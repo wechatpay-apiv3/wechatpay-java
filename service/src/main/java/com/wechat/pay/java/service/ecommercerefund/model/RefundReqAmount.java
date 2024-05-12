@@ -21,6 +21,7 @@ public class RefundReqAmount {
   /** 退款金额 说明：退款金额，币种的最小单位，只能为整数，不能超过原订单支付金额。 */
   @SerializedName("refund")
   private Long refund;
+
   /**
    * 退款出资账户及金额 说明：退款需要从指定账户出资时，传递此参数指定出资金额（币种的最小单位，只能为整数）。
    * 该功能优先级高于通过资金账户（funds_account）参数来指定可用余额出资退款功能，且二者不可同时使用。
@@ -29,9 +30,11 @@ public class RefundReqAmount {
    */
   @SerializedName("from")
   private List<FundsFromItem> from;
+
   /** 原订单金额 说明：原支付交易的订单总金额，币种的最小单位，只能为整数 */
   @SerializedName("total")
   private Long total;
+
   /** 退款币种 说明：符合ISO 4217标准的三位字母代码，目前只支持人民币：CNY */
   @SerializedName("currency")
   private String currency;

@@ -32,10 +32,13 @@ public class RetailStoreServiceExample {
 
   /** 商户号 */
   public static String merchantId = "190000****";
+
   /** 商户API私钥路径 */
   public static String privateKeyPath = "/Users/yourname/your/path/apiclient_key.pem";
+
   /** 商户证书序列号 */
   public static String merchantSerialNumber = "5157F09EFDC096DE15EBE81A47057A72********";
+
   /** 商户APIV3密钥 */
   public static String apiV3Key = "...";
 
@@ -56,70 +59,82 @@ public class RetailStoreServiceExample {
     service = new RetailStoreService.Builder().config(config).build();
     // ... 调用接口
   }
+
   /** 门店报名品牌加价购活动 */
   public static ApplyActivityResponse applyActivity() {
 
     ApplyActivityRequest request = new ApplyActivityRequest();
     return service.applyActivity(request);
   }
+
   /** 按区域查询品牌加价购活动 */
   public static ListActsByAreaResponse listActsByArea() {
 
     ListActsByAreaRequest request = new ListActsByAreaRequest();
     return service.listActsByArea(request);
   }
+
   /** 锁定品牌加价购活动资格 */
   public static LockQualificationResponse lockQualification() {
     LockQualificationRequest request = new LockQualificationRequest();
     return service.lockQualification(request);
   }
+
   /** 解锁品牌加价购活动资格 */
   public static UnlockQualificationResponse unlockQualification() {
     UnlockQualificationRequest request = new UnlockQualificationRequest();
     return service.unlockQualification(request);
   }
+
   /** 添加零售小店活动业务代理 */
   public static AddRepresentativesResponse addRepresentative() {
 
     AddRepresentativeRequest request = new AddRepresentativeRequest();
     return service.addRepresentative(request);
   }
+
   /** 添加小店活动门店 */
   public static AddStoresResponse addStores() {
 
     AddStoresRequest request = new AddStoresRequest();
     return service.addStores(request);
   }
+
   /** 生成小店活动物料码 */
   public static Materials createMaterials() {
 
     CreateMaterialsRequest request = new CreateMaterialsRequest();
     return service.createMaterials(request);
   }
+
   /** 删除零售小店活动业务代理 */
   public static DeleteRepresentativeResponse deleteRepresentative() {
 
     DeleteRepresentativeRequest request = new DeleteRepresentativeRequest();
     return service.deleteRepresentative(request);
   }
+
   /** 删除小店活动门店 */
   public static DeleteStoresResponse deleteStores() {
 
     DeleteStoresRequest request = new DeleteStoresRequest();
     return service.deleteStores(request);
   }
+
   /** 查询小店活动门店详情 */
   public static RetailStoreInfo getStore() {
 
     GetStoreRequest request = new GetStoreRequest();
     return service.getStore(request);
   }
+
   /** 查询零售小店活动业务代理 */
   public static ListRepresentativeResponse listRepresentative() {
 
     ListRepresentativeRequest request = new ListRepresentativeRequest();
     return service.listRepresentative(request);
   }
+
   /** 查询小店活动门店列表 */
   public static ListStoreResponse listStore() {
 

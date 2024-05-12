@@ -21,12 +21,15 @@ public class ListAuthenticationsResponse {
   /** 查询结果记录列表 说明：查询结果记录列表 */
   @SerializedName("data")
   private List<AuthenticationEntity> data;
+
   /** 总记录条数 说明：经过条件筛选，查询到的记录总数 */
   @SerializedName("total_count")
   private Long totalCount;
+
   /** 记录起始位置 说明：该次请求资源的起始位置，请求中包含偏移量时应答消息返回相同偏移量，否则返回默认值0 */
   @SerializedName("offset")
   private Long offset;
+
   /** 本次返回条数 说明：经过条件筛选，本次查询到的记录条数 */
   @SerializedName("limit")
   private Long limit;

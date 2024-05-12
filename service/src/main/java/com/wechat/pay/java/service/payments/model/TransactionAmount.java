@@ -15,12 +15,15 @@ public class TransactionAmount {
   /** currency */
   @SerializedName("currency")
   private String currency;
+
   /** payerCurrency */
   @SerializedName("payer_currency")
   private String payerCurrency;
+
   /** payerTotal */
   @SerializedName("payer_total")
   private Integer payerTotal;
+
   /** total */
   @SerializedName("total")
   private Integer total;

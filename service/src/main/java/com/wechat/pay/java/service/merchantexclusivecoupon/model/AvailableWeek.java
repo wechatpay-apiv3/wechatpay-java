@@ -22,6 +22,7 @@ public class AvailableWeek {
   /** 可用星期数 说明：0代表周日，1代表周一，以此类推 当填写available_day_time时，week_day必填 */
   @SerializedName("week_day")
   private List<Integer> weekDay;
+
   /** 当天可用时间段 说明：可以填写多个时间段，最多不超过2个 */
   @SerializedName("available_day_time")
   private List<AvailableCurrentDayTime> availableDayTime;

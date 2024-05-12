@@ -25,12 +25,14 @@ public class UploadCouponCodeRequest {
   @SerializedName("stock_id")
   @Expose(serialize = false)
   private String stockId;
+
   /**
    * 券code列表 说明：商户上传的券code列表；code允许包含的字符有 0-9 a-z A-Z 空格（仅含空格，不含制表符、换行符、换页符等） 中划线- 下划线_ 反斜线\\ 斜线/
    * 等号= 竖线|
    */
   @SerializedName("coupon_code_list")
   private List<String> couponCodeList = new ArrayList<String>();
+
   /** 请求业务单据号 说明：商户上传code的凭据号，商户侧需保持唯一性 */
   @SerializedName("upload_request_no")
   private String uploadRequestNo;

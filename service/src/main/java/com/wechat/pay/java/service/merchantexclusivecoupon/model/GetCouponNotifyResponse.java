@@ -21,6 +21,7 @@ public class GetCouponNotifyResponse {
   /** 商户号 说明：商户号 */
   @SerializedName("mchid")
   private String mchid;
+
   /** 通知URL地址 说明：商户提供的用于接收商家券事件通知的URL地址，必须支持HTTPS。 */
   @SerializedName("notify_url")
   private String notifyUrl;

@@ -22,12 +22,15 @@ public class CreateAbnormalRefundRequest {
   /** 二级商户号 说明：微信支付分配二级商户的商户号 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 商户退款单号 说明：商户系统内部的退款单号，商户系统内部唯一，只能是数字、大小写字母_-|*@ ，同一退款单号多次请求只退一笔。 */
   @SerializedName("out_refund_no")
   private String outRefundNo;
+
   /** 异常退款处理方式 说明：可选：退款至用户、退款至交易商户银行账户 */
   @SerializedName("type")
   private Type type;
+
   /**
    * 开户银行
    * 说明：银行类型，采用字符串类型的银行标识，值列表详见[银行类型](https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=4_2)。仅支持招行、交通银行、农行、建行、工商、中行、平安、浦发、中信、光大、民生、兴业、广发、邮储、宁波银行的借记卡。
@@ -35,6 +38,7 @@ public class CreateAbnormalRefundRequest {
    */
   @SerializedName("bank_type")
   private String bankType;
+
   /**
    * 收款银行卡号
    * 说明：用户的银行卡账号，该字段需进行加密处理，加密方法详见[敏感信息加密说明](https://wechatpay-api.gitbook.io/wechatpay-api-v3/qian-ming-zhi-nan-1/min-gan-xin-xi-jia-mi)。
@@ -43,6 +47,7 @@ public class CreateAbnormalRefundRequest {
   @Encryption
   @SerializedName("bank_account")
   private String bankAccount;
+
   /**
    * 收款用户姓名
    * 说明：收款用户姓名，该字段需进行加密处理，加密方法详见[敏感信息加密说明](https://wechatpay-api.gitbook.io/wechatpay-api-v3/qian-ming-zhi-nan-1/min-gan-xin-xi-jia-mi)。

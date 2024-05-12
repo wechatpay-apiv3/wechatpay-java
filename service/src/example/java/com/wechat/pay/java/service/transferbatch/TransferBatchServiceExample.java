@@ -16,10 +16,13 @@ public class TransferBatchServiceExample {
 
   /** 商户号 */
   public static String merchantId = "190000****";
+
   /** 商户API私钥路径 */
   public static String privateKeyPath = "/Users/yourname/your/path/apiclient_key.pem";
+
   /** 商户证书序列号 */
   public static String merchantSerialNumber = "5157F09EFDC096DE15EBE81A47057A72********";
+
   /** 商户APIV3密钥 */
   public static String apiV3Key = "...";
 
@@ -41,29 +44,34 @@ public class TransferBatchServiceExample {
     service = new TransferBatchService.Builder().config(config).build();
     // ... 调用接口
   }
+
   /** 通过微信批次单号查询批次单 */
   public static TransferBatchEntity getTransferBatchByNo() {
 
     GetTransferBatchByNoRequest request = new GetTransferBatchByNoRequest();
     return service.getTransferBatchByNo(request);
   }
+
   /** 通过商家批次单号查询批次单 */
   public static TransferBatchEntity getTransferBatchByOutNo() {
 
     GetTransferBatchByOutNoRequest request = new GetTransferBatchByOutNoRequest();
     return service.getTransferBatchByOutNo(request);
   }
+
   /** 发起商家转账 */
   public static InitiateBatchTransferResponse initiateBatchTransfer() {
     InitiateBatchTransferRequest request = new InitiateBatchTransferRequest();
     return service.initiateBatchTransfer(request);
   }
+
   /** 通过微信明细单号查询明细单 */
   public static TransferDetailEntity getTransferDetailByNo() {
 
     GetTransferDetailByNoRequest request = new GetTransferDetailByNoRequest();
     return service.getTransferDetailByNo(request);
   }
+
   /** 通过商家明细单号查询明细单 */
   public static TransferDetailEntity getTransferDetailByOutNo() {
 

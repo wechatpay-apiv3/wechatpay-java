@@ -21,9 +21,11 @@ public class LockQualificationResponse {
   /** 返回结果文案 说明：返回结果文案 */
   @SerializedName("return_message")
   private String returnMessage;
+
   /** 锁定成功的资格ID列表 说明：锁定成功的资格ID列表 */
   @SerializedName("succeed_qualification_ids")
   private List<String> succeedQualificationIds;
+
   /** 锁定失败的资格ID列表 说明：锁定失败的资格ID列表 */
   @SerializedName("failed_qualification_ids")
   private List<String> failedQualificationIds;

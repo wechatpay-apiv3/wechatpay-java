@@ -22,18 +22,23 @@ public class CreateOrderReceiver {
   /** 分账接收方类型 说明：分账接收方类型 枚举值： MERCHANT\\_ID：商户 PERSONAL\\_OPENID：个人 */
   @SerializedName("type")
   private String type;
+
   /** 分账接收方账号 说明：分账接收方账号： 类型是MERCHANT\\_ID时，是商户ID 类型是PERSONAL\\_OPENID时，是个人OpenID */
   @SerializedName("receiver_account")
   private String receiverAccount;
+
   /** 分账接收商户号 说明：接收方类型为MERCHANT_ID时，填入微信支付分配的商户号。 如果填写了字段receiver_account，则无需填写本字段 */
   @SerializedName("receiver_mchid")
   private String receiverMchid;
+
   /** 分账金额 说明：分账金额，单位为分，只能为整数，不能超过原订单支付金额及最大分账比例金额 */
   @SerializedName("amount")
   private Long amount;
+
   /** 分账描述 说明：分账的原因描述，分账账单中需要体现 */
   @SerializedName("description")
   private String description;
+
   /**
    * 分账个人接收方姓名 说明：可选项，在接收方类型为个人的时可选填，若有值，会检查与 receiver\\_name 是否实名匹配，不匹配会拒绝分账请求 1.
    * 分账接收方类型是PERSONAL\\_OPENID时，是个人姓名的密文（选传，传则校验）此字段的加密的方式详见：[敏感信息加解密](https://pay.weixin.qq.com/wiki/doc/apiv3_partner/wechatpay/wechatpay4_3.shtml)

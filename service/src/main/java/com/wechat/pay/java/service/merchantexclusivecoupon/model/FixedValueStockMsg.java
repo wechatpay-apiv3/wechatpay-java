@@ -21,6 +21,7 @@ public class FixedValueStockMsg {
   /** 优惠金额 说明：优惠金额 单位分。 特殊规则：取值范围 1 ≤ value ≤ 10000000 */
   @SerializedName("discount_amount")
   private Long discountAmount;
+
   /** 消费门槛 说明：消费门槛，单位：分。 特殊规则：取值范围 1 ≤ value ≤ 10000000 */
   @SerializedName("transaction_minimum")
   private Long transactionMinimum;

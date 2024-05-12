@@ -21,15 +21,19 @@ public class AvailableMerchantCollection {
   /** 可用商户总数量 说明：可用商户总数量 */
   @SerializedName("total_count")
   private Integer totalCount;
+
   /** 可用商户列表 说明：可用商户列表 */
   @SerializedName("data")
   private List<String> data;
+
   /** 分页页码 说明：分页页码 */
   @SerializedName("offset")
   private Integer offset;
+
   /** 分页大小 说明：分页大小 */
   @SerializedName("limit")
   private Integer limit;
+
   /** 批次号 说明：批次号 */
   @SerializedName("stock_id")
   private String stockId;

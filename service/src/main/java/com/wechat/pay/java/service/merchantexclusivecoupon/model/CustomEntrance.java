@@ -25,21 +25,25 @@ public class CustomEntrance {
    */
   @SerializedName("mini_programs_info")
   private MiniAppInfo miniProgramsInfo;
+
   /**
    * 商户公众号AppID 说明：可配置商户公众号，从券详情可跳转至公众号，用户自定义字段。 校验规则：传入的AppID得是与调用方商户号（即请求头里面的商户号）有绑定关系的AppID 或
    * 传入的AppID得是归属商户号有绑定关系的AppID
    */
   @SerializedName("appid")
   private String appid;
+
   /**
    * 更多优惠入口；营销馆创建地址：https://pay.weixin.qq.com/index.php/xphp/cfav_market/hall#/pages/list/list
    * 说明：填写微信支付营销馆的馆ID，用户自定义字段。[营销馆](https://pay.weixin.qq.com/index.php/xphp/cfav_market/hall#/pages/list/list)需在商户平台创建。
    */
   @SerializedName("hall_id")
   private String hallId;
+
   /** 可用门店ID 说明：填写代金券可用门店ID */
   @SerializedName("store_id")
   private String storeId;
+
   /** code展示模式 说明：code展示模式 */
   @SerializedName("code_display_mode")
   private CodeDisplayMode codeDisplayMode;

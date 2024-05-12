@@ -20,6 +20,7 @@ public class DeleteReceiverResponse {
   /** 接收方类型 说明：参考请求参数 */
   @SerializedName("type")
   private String type;
+
   /** 接收方账号 说明：参考请求参数 */
   @SerializedName("account")
   private String account;

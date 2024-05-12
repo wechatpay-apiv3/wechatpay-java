@@ -21,9 +21,11 @@ public class ModifyCouponUseRule {
   /** 核销方式 说明：核销方式 */
   @SerializedName("use_method")
   private CouponUseMethod useMethod;
+
   /** 小程序AppID 说明：核销方式为线上小程序核销才有效 */
   @SerializedName("mini_programs_appid")
   private String miniProgramsAppid;
+
   /** 小程序path 说明：核销方式为线上小程序核销才有效 */
   @SerializedName("mini_programs_path")
   private String miniProgramsPath;

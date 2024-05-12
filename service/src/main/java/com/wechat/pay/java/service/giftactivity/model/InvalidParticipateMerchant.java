@@ -21,6 +21,7 @@ public class InvalidParticipateMerchant {
   /** 商户Id 说明：商户Id */
   @SerializedName("mchid")
   private String mchid;
+
   /** 无效原因 说明：活动参与商户校验失败的原因 */
   @SerializedName("invalid_reason")
   private String invalidReason;

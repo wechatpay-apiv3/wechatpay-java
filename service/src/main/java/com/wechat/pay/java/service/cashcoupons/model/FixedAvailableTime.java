@@ -21,9 +21,11 @@ public class FixedAvailableTime {
   /** 可用星期数 说明：0-周日；1-周一；以此类推 */
   @SerializedName("available_week_day")
   private List<Integer> availableWeekDay;
+
   /** 当天开始时间 说明：当天开始时间，单位秒 */
   @SerializedName("begin_time")
   private Integer beginTime;
+
   /** 当天结束时间 说明：当天结束时间，单位秒，默认为23点59分59秒 */
   @SerializedName("end_time")
   private Integer endTime;

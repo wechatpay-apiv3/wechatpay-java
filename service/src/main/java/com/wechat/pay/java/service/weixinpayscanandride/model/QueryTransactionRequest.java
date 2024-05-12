@@ -22,6 +22,7 @@ public class QueryTransactionRequest {
   @SerializedName("out_trade_no")
   @Expose(serialize = false)
   private String outTradeNo;
+
   /** 子商户号 说明：微信支付分配的子商户号，服务商模式下必传 */
   @SerializedName("sub_mchid")
   @Expose(serialize = false)

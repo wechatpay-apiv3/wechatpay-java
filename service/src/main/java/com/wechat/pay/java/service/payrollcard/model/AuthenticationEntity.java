@@ -20,27 +20,35 @@ public class AuthenticationEntity {
   /** 服务商商户号 说明：服务商商户号 */
   @SerializedName("mchid")
   private String mchid;
+
   /** 特约商户商户号 说明：特约商户商户号 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 用户OpenID 说明：用户OpenID */
   @SerializedName("openid")
   private String openid;
+
   /** 核身渠道 说明：核身渠道，发起核身时的来源渠道，如通过小程序，硬件设备等 */
   @SerializedName("authenticate_scene")
   private AuthenticationScene authenticateScene;
+
   /** 核身渠道标识 说明：核身渠道标识，用于定位渠道具体来源，如果是扫码打卡渠道标识就是具体的小程序AppID，若是硬件设备，则是设备的序列号等 */
   @SerializedName("authenticate_source")
   private String authenticateSource;
+
   /** 项目名称 说明：项目名称 */
   @SerializedName("project_name")
   private String projectName;
+
   /** 用工企业 说明：该工人所属的用工企业，由商户核身下单时传入 */
   @SerializedName("employer_name")
   private String employerName;
+
   /** 核身状态 说明：核身状态 */
   @SerializedName("authenticate_state")
   private AuthenticationState authenticateState;
+
   /**
    * 核身时间
    * 说明：核身时间，遵循RFC3339标准格式，格式为yyyy-MM-DDThh:mm:ss+TIMEZONE，yyyy-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC
@@ -48,12 +56,15 @@ public class AuthenticationEntity {
    */
   @SerializedName("authenticate_time")
   private String authenticateTime;
+
   /** 商家核身单号 说明：商户系统内部的商家核身单号，要求此参数只能由数字、大小写字母组成，在服务商内部唯一 */
   @SerializedName("authenticate_number")
   private String authenticateNumber;
+
   /** 核身失败原因 说明：结果为核身失败时的原因描述，仅在失败记录返回 */
   @SerializedName("authenticate_failed_reason")
   private String authenticateFailedReason;
+
   /** 核身类型 说明：核身类型 */
   @SerializedName("authenticate_type")
   private AuthenticationType authenticateType;

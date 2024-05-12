@@ -20,9 +20,11 @@ public class SceneInfo {
   /** 用户终端IP 说明：用户终端IP */
   @SerializedName("payer_client_ip")
   private String payerClientIp;
+
   /** 商户端设备号 说明：商户端设备号 */
   @SerializedName("device_id")
   private String deviceId;
+
   /** storeInfo */
   @SerializedName("store_info")
   private StoreInfo storeInfo;

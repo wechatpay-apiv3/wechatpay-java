@@ -21,9 +21,11 @@ public class UploadCouponCodeFailReason {
   /** 上传失败的券code 说明：商户通过API上传的券code */
   @SerializedName("coupon_code")
   private String couponCode;
+
   /** 上传失败错误码 说明：对应券code上传失败的错误码 */
   @SerializedName("code")
   private String code;
+
   /** 上传失败错误信息 说明：上传失败的错误信息描述 */
   @SerializedName("message")
   private String message;

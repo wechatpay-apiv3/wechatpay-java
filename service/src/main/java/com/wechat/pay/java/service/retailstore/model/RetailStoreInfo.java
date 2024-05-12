@@ -20,6 +20,7 @@ public class RetailStoreInfo {
   /** 门店编码 说明：门店编码，可包含英文字母，数字，\\\\|，\\\\_，\\\\*，\\\\-等内容，不允许出现其他不合法符号。 */
   @SerializedName("store_code")
   private String storeCode;
+
   /** 门店名称 说明：门店名称 */
   @SerializedName("store_name")
   private String storeName;

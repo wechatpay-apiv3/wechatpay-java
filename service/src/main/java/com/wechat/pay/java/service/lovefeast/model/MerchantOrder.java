@@ -20,12 +20,15 @@ public class MerchantOrder {
   /** 商户订单号 说明：商户系统内部订单号，只能是数字、大小写字母_-*且在同一个商户号下唯一。 特殊规则：最小字符长度为6 */
   @SerializedName("out_trade_no")
   private String outTradeNo;
+
   /** 服务商户号 说明：直连商户的商户号或服务商的商户号，由微信支付生成并下发。 */
   @SerializedName("mchid")
   private String mchid;
+
   /** 子商户号 说明：子商户的商户号，由微信支付生成并下发。 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 门店编号 说明：一块捐用户所在门店的商家编号。 */
   @SerializedName("store_id")
   private String storeId;

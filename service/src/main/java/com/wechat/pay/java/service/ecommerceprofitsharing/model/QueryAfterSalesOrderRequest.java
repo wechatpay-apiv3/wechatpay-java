@@ -22,6 +22,7 @@ public class QueryAfterSalesOrderRequest {
   @SerializedName("sub_mchid")
   @Expose(serialize = false)
   private String subMchid;
+
   /** 微信订单号 说明：微信支付订单号 */
   @SerializedName("transaction_id")
   @Expose(serialize = false)

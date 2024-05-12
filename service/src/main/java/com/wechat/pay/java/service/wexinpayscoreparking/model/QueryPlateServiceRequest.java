@@ -22,18 +22,22 @@ public class QueryPlateServiceRequest {
   @SerializedName("appid")
   @Expose(serialize = false)
   private String appid;
+
   /** 子商户号 说明：微信支付分配的子商户号，服务商模式下必传 */
   @SerializedName("sub_mchid")
   @Expose(serialize = false)
   private String subMchid;
+
   /** 车牌号 说明：车牌号，仅包括省份+车牌，不包括特殊字符。 */
   @SerializedName("plate_number")
   @Expose(serialize = false)
   private String plateNumber;
+
   /** 用户标识 说明：用户在商户对应appid下的唯一标识 */
   @SerializedName("openid")
   @Expose(serialize = false)
   private String openid;
+
   /** 车牌颜色 说明：车牌颜色 */
   @SerializedName("plate_color")
   @Expose(serialize = false)

@@ -22,10 +22,12 @@ public class QueryOrderByOutTradeNoRequest {
   @SerializedName("out_trade_no")
   @Expose(serialize = false)
   private String outTradeNo;
+
   /** spMchid 说明：服务商户号 */
   @SerializedName("sp_mchid")
   @Expose(serialize = false)
   private String spMchid;
+
   /** subMchid 说明：子商户号 */
   @SerializedName("sub_mchid")
   @Expose(serialize = false)

@@ -20,9 +20,11 @@ public class TransferBatchEntity {
   /** 商家批次单号 说明：商户系统内部的商家批次单号，在商户系统内部唯一 */
   @SerializedName("out_batch_no")
   private String outBatchNo;
+
   /** 微信支付批次单号 说明：微信支付批次单号，微信商家转账系统返回的唯一标识 */
   @SerializedName("batch_id")
   private String batchId;
+
   /** 批次创建时间 说明：批次受理成功时返回，按照使用rfc3339所定义的格式，格式为yyyy-MM-DDThh:mm:ss+TIMEZONE */
   @SerializedName("create_time")
   private String createTime;

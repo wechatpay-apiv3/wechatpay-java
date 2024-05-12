@@ -46,6 +46,7 @@ public class MarketingBankPackagesService {
     this.httpClient = requireNonNull(httpClient);
     this.hostName = hostName;
   }
+
   /** MarketingBankPackagesService构造器 */
   public static class Builder {
 

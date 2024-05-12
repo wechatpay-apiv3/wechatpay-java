@@ -21,24 +21,31 @@ public class QueryReturnOrderResponse {
   /** 子商户号 说明：分账回退的接收商户，对应原分账出资的分账方商户，填写微信支付分配的商户号 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 微信分账单号 说明：原发起分账请求时，微信返回的微信分账单号，与商户分账单号一一对应。 */
   @SerializedName("order_id")
   private String orderId;
+
   /** 商户分账单号 说明：原发起分账请求时使用的商户后台系统内部的分账单号。 */
   @SerializedName("out_order_no")
   private String outOrderNo;
+
   /** 商户回退单号 说明：调用回退接口提供的商户系统内部的回退单号 */
   @SerializedName("out_return_no")
   private String outReturnNo;
+
   /** 微信回退单号 说明：微信分账回退单号，微信系统返回的唯一标识 */
   @SerializedName("return_no")
   private String returnNo;
+
   /** 回退商户号 说明：只能对原分账请求中成功分给商户接收方进行回退 */
   @SerializedName("return_mchid")
   private String returnMchid;
+
   /** 回退金额 说明：需要从分账接收方回退的金额，单位为分，只能为整数 */
   @SerializedName("amount")
   private Long amount;
+
   /**
    * 回退结果
    * 说明：如果请求返回为处理中，则商户可以通过调用回退结果查询接口获取请求的最终处理结果。如果查询到回退结果在处理中，请勿变更商户回退单号，使用相同的参数再次发起分账回退，否则会出现资金风险。在处理中状态的回退单如果5天没有成功，会因为超时被设置为已失败。
@@ -46,12 +53,14 @@ public class QueryReturnOrderResponse {
    */
   @SerializedName("result")
   private String result;
+
   /**
    * 失败原因 说明：失败原因。包含以下枚举值： 1. ACCOUNT_ABNORMAL : 原分账接收方账户异常 2. TIME_OUT_CLOSED : 超时关单 3.
    * PAYER_ACCOUNT_ABNORMAL : 原分账分出方账户异常 4. INVALID_REQUEST : 描述参数设置失败
    */
   @SerializedName("fail_reason")
   private String failReason;
+
   /**
    * 完成时间 说明：分账回退完成时间，遵循RFC3339标准格式，格式为
    * yyyy-MM-DDTHH:mm:ss.sss+TIMEZONE，yyyy-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss.sss表示时分秒毫秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC

@@ -22,12 +22,15 @@ public class ListActivitiesResponse {
   /** 结果集 说明：支付有礼活动列表 */
   @SerializedName("data")
   private List<ActivityInformation> data;
+
   /** 总数 说明：总数 */
   @SerializedName("total_count")
   private Long totalCount;
+
   /** 分页页码 说明：分页页码 */
   @SerializedName("offset")
   private Long offset;
+
   /** 分页大小 说明：分页大小 */
   @SerializedName("limit")
   private Long limit;
