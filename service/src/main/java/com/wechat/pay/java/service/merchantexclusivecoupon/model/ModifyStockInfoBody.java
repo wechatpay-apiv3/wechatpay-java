@@ -21,30 +21,39 @@ public class ModifyStockInfoBody {
   /** 自定义入口 说明：卡详情页面，可选择多种入口引导用户 */
   @SerializedName("custom_entrance")
   private ModifyCustomEntrance customEntrance;
+
   /** 批次名称 说明：批次名称，字数上限为21个，一个中文汉字/英文字母/数字均占用一个字数。 注：该字段暂不支持修改 */
   @SerializedName("stock_name")
   private String stockName;
+
   /** 批次备注 说明：仅配置商户可见，用于自定义信息。字数上限为20个，一个中文汉字/英文字母/数字均占用一个字数。 */
   @SerializedName("comment")
   private String comment;
+
   /** 适用商品范围 说明：用来描述批次在哪些商品可用，会显示在微信卡包中。字数上限为15个，一个中文汉字/英文字母/数字均占用一个字数。 */
   @SerializedName("goods_name")
   private String goodsName;
+
   /** 商户请求单号 说明：商户修改批次凭据号（格式：商户ID+日期+流水号），商户侧需保持唯一性。 */
   @SerializedName("out_request_no")
   private String outRequestNo;
+
   /** 样式信息 说明： */
   @SerializedName("display_pattern_info")
   private DisplayPatternInfo displayPatternInfo;
+
   /** 核销规则 说明：券核销相关规则 */
   @SerializedName("coupon_use_rule")
   private ModifyCouponUseRule couponUseRule;
+
   /** 发放规则 说明：券发放相关规则 */
   @SerializedName("stock_send_rule")
   private ModifyStockSendRule stockSendRule;
+
   /** 事件通知配置 说明：事件回调通知商户的配置 */
   @SerializedName("notify_config")
   private NotifyConfig notifyConfig;
+
   /** 是否允许营销补差 说明：该批次发放的券是否允许进行补差。只允许从false改为true，不支持从true改为false 注：该字段暂未开放 */
   @SerializedName("subsidy")
   private Boolean subsidy;

@@ -22,15 +22,19 @@ public class ListActSkuResponse {
   /** 结果集 说明：商品信息列表(sku信息列表) */
   @SerializedName("data")
   private List<SkuInfo> data;
+
   /** 总数量 */
   @SerializedName("total_count")
   private Long totalCount;
+
   /** 分页页码 说明：分页页码 */
   @SerializedName("offset")
   private Long offset;
+
   /** 分页大小 说明：分页大小 */
   @SerializedName("limit")
   private Long limit;
+
   /** 活动ID 说明：活动ID */
   @SerializedName("activity_id")
   private String activityId;

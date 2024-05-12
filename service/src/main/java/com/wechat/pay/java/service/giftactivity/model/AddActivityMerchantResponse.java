@@ -22,9 +22,11 @@ public class AddActivityMerchantResponse {
   /** 活动Id 说明：活动Id */
   @SerializedName("activity_id")
   private String activityId;
+
   /** 校验失败的发券商户号 说明：未通过规则校验的发券商户号列表 */
   @SerializedName("invalid_merchant_id_list")
   private List<InvalidParticipateMerchant> invalidMerchantIdList;
+
   /** 添加时间 说明：成功添加发券商户号的时间 */
   @SerializedName("add_time")
   private String addTime;

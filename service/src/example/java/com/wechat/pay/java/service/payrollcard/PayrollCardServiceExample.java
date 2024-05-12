@@ -22,10 +22,13 @@ public class PayrollCardServiceExample {
 
   /** 商户号 */
   public static String merchantId = "190000****";
+
   /** 商户API私钥路径 */
   public static String privateKeyPath = "/Users/yourname/your/path/apiclient_key.pem";
+
   /** 商户证书序列号 */
   public static String merchantSerialNumber = "5157F09EFDC096DE15EBE81A47057A72********";
+
   /** 商户APIV3密钥 */
   public static String apiV3Key = "...";
 
@@ -46,39 +49,46 @@ public class PayrollCardServiceExample {
     service = new PayrollCardService.Builder().config(config).build();
     // ... 调用接口
   }
+
   /** 获取核身结果 */
   public static AuthenticationEntity getAuthentication() {
 
     GetAuthenticationRequest request = new GetAuthenticationRequest();
     return service.getAuthentication(request);
   }
+
   /** 查询核身记录 */
   public static ListAuthenticationsResponse listAuthentications() {
 
     ListAuthenticationsRequest request = new ListAuthenticationsRequest();
     return service.listAuthentications(request);
   }
+
   /** 微工卡核身预下单 */
   public static PreOrderAuthenticationResponse preOrderAuthentication() {
     PreOrderAuthenticationRequest request = new PreOrderAuthenticationRequest();
     return service.preOrderAuthentication(request);
   }
+
   /** 微工卡核身预下单（流程中完成授权） */
   public static PreOrderAuthenticationWithAuthResponse preOrderAuthenticationWithAuth() {
     PreOrderAuthenticationWithAuthRequest request = new PreOrderAuthenticationWithAuthRequest();
     return service.preOrderAuthenticationWithAuth(request);
   }
+
   /** 查询微工卡授权关系 */
   public static RelationEntity getRelation() {
 
     GetRelationRequest request = new GetRelationRequest();
     return service.getRelation(request);
   }
+
   /** 生成授权token */
   public static TokenEntity createToken() {
     CreateTokenRequest request = new CreateTokenRequest();
     return service.createToken(request);
   }
+
   /** 发起批量转账 */
   public static TransferBatchEntity createTransferBatch() {
     CreateTransferBatchRequest request = new CreateTransferBatchRequest();

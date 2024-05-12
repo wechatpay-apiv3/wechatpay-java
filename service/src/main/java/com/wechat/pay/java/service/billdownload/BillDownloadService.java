@@ -54,6 +54,7 @@ public class BillDownloadService {
 
     this.decryptor = requireNonNull(decryptor);
   }
+
   /** BillDownloadService构造器 */
   public static class Builder {
 
@@ -131,6 +132,7 @@ public class BillDownloadService {
         httpClient.execute(httpRequest, QueryBillEntity.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 申请单个子商户资金账单API
    *
@@ -180,6 +182,7 @@ public class BillDownloadService {
         httpClient.execute(httpRequest, QueryEncryptBillEntity.class);
     return httpResponse.getServiceResponse().cloneWithCipher(decryptor::decrypt);
   }
+
   /**
    * 申请二级商户资金账单API
    *
@@ -225,6 +228,7 @@ public class BillDownloadService {
         httpClient.execute(httpRequest, QueryEncryptBillEntity.class);
     return httpResponse.getServiceResponse().cloneWithCipher(decryptor::decrypt);
   }
+
   /**
    * 申请交易账单API
    *

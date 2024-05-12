@@ -21,6 +21,7 @@ public class TerminateActResponse {
   /** 生效时间 说明：生效时间 */
   @SerializedName("terminate_time")
   private String terminateTime;
+
   /** 活动Id 说明：活动Id */
   @SerializedName("activity_id")
   private String activityId;

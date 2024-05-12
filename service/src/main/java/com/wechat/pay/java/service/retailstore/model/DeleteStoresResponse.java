@@ -25,6 +25,7 @@ public class DeleteStoresResponse {
    */
   @SerializedName("delete_time")
   private String deleteTime;
+
   /** 删除失败的小店活动门店列表 说明：删除失败的小店活动门店列表 */
   @SerializedName("failed_stores")
   private List<RetailStoreInfo> failedStores;

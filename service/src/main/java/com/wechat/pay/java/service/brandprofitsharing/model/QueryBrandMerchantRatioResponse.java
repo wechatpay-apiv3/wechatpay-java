@@ -21,6 +21,7 @@ public class QueryBrandMerchantRatioResponse {
   /** 品牌商户号 说明：分账出资的品牌商户号，填写微信支付分配的商户号 */
   @SerializedName("brand_mchid")
   private String brandMchid;
+
   /** 最大分账比例 说明：品牌商户允许父商户分账的最大比例，单位万分比，比如2000表示20% */
   @SerializedName("max_ratio")
   private Long maxRatio;

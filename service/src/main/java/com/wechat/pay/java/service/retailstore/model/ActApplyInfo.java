@@ -20,6 +20,7 @@ public class ActApplyInfo {
   /** 门店信息 说明：门店信息 */
   @SerializedName("store_info")
   private StoreInfo storeInfo;
+
   /** 商品原价 说明：品牌加价购活动商品的原价，该价格会在加价购小程序插件中展示（单位：分） */
   @SerializedName("goods_original_price")
   private Long goodsOriginalPrice;

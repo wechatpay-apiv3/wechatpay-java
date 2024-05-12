@@ -20,15 +20,19 @@ public class GoodsDetail {
   /** 商户侧商品编码 说明：由半角的大小写字母、数字、中划线、下划线中的一种或几种组成。 */
   @SerializedName("merchant_goods_id")
   private String merchantGoodsId;
+
   /** 微信侧商品编码 说明：微信支付定义的统一商品编号（没有可不传）。 */
   @SerializedName("wechatpay_goods_id")
   private String wechatpayGoodsId;
+
   /** 商品名称 说明：商品的实际名称。 */
   @SerializedName("goods_name")
   private String goodsName;
+
   /** 商品数量 说明：用户购买的数量。 */
   @SerializedName("quantity")
   private Integer quantity;
+
   /** 商品单价 说明：商品单价，单位为分。 */
   @SerializedName("unit_price")
   private Integer unitPrice;

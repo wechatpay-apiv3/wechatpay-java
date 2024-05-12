@@ -21,36 +21,46 @@ public class ActBaseInfo {
   /** 活动名称 说明：活动名称 */
   @SerializedName("activity_name")
   private String activityName;
+
   /** 活动副标题 说明：活动副标题 */
   @SerializedName("activity_second_title")
   private String activitySecondTitle;
+
   /** 商户logo 说明：商户logo，送出优惠券时展示 */
   @SerializedName("merchant_logo_url")
   private String merchantLogoUrl;
+
   /**
    * 背景颜色 说明：代金券的背景颜色，可设置10种颜色，颜色取值可参考[开发指引](../../../products/gift-activity/development.html) 3.2.1
    * background_color取值，默认为微信支付绿色， 颜色取值为颜色图中的颜色名称。
    */
   @SerializedName("background_color")
   private String backgroundColor;
+
   /** 活动开始时间 说明：活动开始时间，最长可以配置1年内的活动，活动有效期最长90天 */
   @SerializedName("begin_time")
   private String beginTime;
+
   /** 活动结束时间 说明：活动结束时间，最长可以配置1年内的活动，活动有效期最长90天 */
   @SerializedName("end_time")
   private String endTime;
+
   /** 可用时间段 说明：可自定义活动有效时间内可用的多个时间段以及天内时间点 */
   @SerializedName("available_periods")
   private AvailablePeriod availablePeriods;
+
   /** 商户请求单号 说明：商户创建批次凭据号（格式：商户id+日期+流水号），商户侧需保持唯一性，可包含英文字母，数字，｜，_，*，-等内容，不允许出现其他不合法符号 */
   @SerializedName("out_request_no")
   private String outRequestNo;
+
   /** 投放目的 说明：OFF_LINE_PAY：拉用户回店消费；JUMP_MINI_APP：引导用户前往小程序消费 */
   @SerializedName("delivery_purpose")
   private DeliveryPurposeCategory deliveryPurpose;
+
   /** 商家小程序appid 说明：投放目的为跳转小程序时必填 */
   @SerializedName("mini_programs_appid")
   private String miniProgramsAppid;
+
   /** 商家小程序path 说明：投放目的为跳转小程序必填 */
   @SerializedName("mini_programs_path")
   private String miniProgramsPath;

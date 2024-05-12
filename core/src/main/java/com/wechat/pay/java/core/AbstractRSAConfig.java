@@ -32,10 +32,13 @@ public abstract class AbstractRSAConfig implements Config {
 
   /** 商户号 */
   private final String merchantId;
+
   /** 商户私钥 */
   private final PrivateKey privateKey;
+
   /** 商户证书序列号 */
   private final String merchantSerialNumber;
+
   /** 微信支付平台证书Provider */
   private final CertificateProvider certificateProvider;
 

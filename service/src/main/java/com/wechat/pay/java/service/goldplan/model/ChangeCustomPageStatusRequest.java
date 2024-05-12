@@ -20,6 +20,7 @@ public class ChangeCustomPageStatusRequest {
   /** 特约商户号 说明：开通或关闭“商家自定义小票”的特约商户商户号，由微信支付生成并下发。 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 操作类型 说明：开通或关闭“商家自定义小票”的动作，枚举值： OPEN：表示开通 CLOSE：表示关闭 */
   @SerializedName("operation_type")
   private OperationType operationType;

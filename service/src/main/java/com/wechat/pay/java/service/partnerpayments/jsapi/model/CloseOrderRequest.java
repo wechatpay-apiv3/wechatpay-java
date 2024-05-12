@@ -22,9 +22,11 @@ public class CloseOrderRequest {
   @SerializedName("out_trade_no")
   @Expose(serialize = false)
   private String outTradeNo;
+
   /** 服务商户号 说明：服务商户号，由微信支付生成并下发 */
   @SerializedName("sp_mchid")
   private String spMchid;
+
   /** 子商户号 说明：子商户的商户号，由微信支付生成并下发 */
   @SerializedName("sub_mchid")
   private String subMchid;

@@ -22,14 +22,17 @@ public class ListByUserRequest {
   @SerializedName("openid")
   @Expose(serialize = false)
   private String openid;
+
   /** 品牌ID 说明：品牌的品牌ID，商家进驻微信支付品牌商家后获得的品牌ID */
   @SerializedName("brand_id")
   @Expose(serialize = false)
   private Long brandId;
+
   /** 最大记录条数 说明：返回的最大记录条数，默认值为10 */
   @SerializedName("limit")
   @Expose(serialize = false)
   private Integer limit;
+
   /** 起始位置 说明：查询起始位置，默认值为0 */
   @SerializedName("offset")
   @Expose(serialize = false)

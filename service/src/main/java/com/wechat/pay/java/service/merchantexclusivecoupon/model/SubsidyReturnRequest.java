@@ -21,30 +21,38 @@ public class SubsidyReturnRequest {
   /** 商家券批次号 说明：由微信支付生成，调用创建商家券API成功时返回的唯一批次ID 仅支持“满减券”和“折扣券”的批次，“换购券”批次不支持 */
   @SerializedName("stock_id")
   private String stockId;
+
   /**
    * 商家券code 说明：券的唯一标识。 在WECHATPAY\\_MODE的券code模式下，商家券code是由微信支付生成的唯一ID；
    * 在MERCHANT\\_UPLOAD、MERCHANT\\_API的券code模式下，商家券code是由商户上传或指定，在批次下保证唯一；
    */
   @SerializedName("coupon_code")
   private String couponCode;
+
   /** 微信支付订单号 说明：微信支付下单支付成功返回的订单号 */
   @SerializedName("transaction_id")
   private String transactionId;
+
   /** 微信支付退款单号 说明：微信支付退款单号 */
   @SerializedName("refund_id")
   private String refundId;
+
   /** 原营销补差扣款商户号 说明：原营销补差扣款商户号，即回退资金收款商户号 */
   @SerializedName("payer_merchant")
   private String payerMerchant;
+
   /** 原营销补差入账商户号 说明：原营销补差入账商户号，即回退资金扣款商户号 */
   @SerializedName("payee_merchant")
   private String payeeMerchant;
+
   /** 补差回退金额 说明：本次补差回退金额，单位为分。单个券Code回退总金额不能超过补差金额 */
   @SerializedName("amount")
   private Long amount;
+
   /** 补差回退描述 说明：回退备注描述，查询的时候原样带回 */
   @SerializedName("description")
   private String description;
+
   /** 业务请求唯一单号 说明：商户侧需保证唯一性，可包含英文字母，数字，｜，_，*，-等内容，不允许出现其他不合法符号 */
   @SerializedName("out_subsidy_return_no")
   private String outSubsidyReturnNo;

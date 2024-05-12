@@ -22,6 +22,7 @@ public class AvailablePeriod {
   /** 可用时间 说明：可用时间 */
   @SerializedName("available_time")
   private List<AvailableTime> availableTime;
+
   /** 每日可用时间 说明：每日可用时间 */
   @SerializedName("available_day_time")
   private List<AvailableDayTime> availableDayTime;

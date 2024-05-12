@@ -21,12 +21,15 @@ public class AssociateTradeInfoRequest {
   /** 批次号 说明：微信为每个商家券批次分配的唯一ID，对于商户自定义code的批次，关联请求必须填写批次号 */
   @SerializedName("stock_id")
   private String stockId;
+
   /** 券code 说明：券的唯一标识 */
   @SerializedName("coupon_code")
   private String couponCode;
+
   /** 关联的商户订单号 说明：微信支付下单时的商户订单号，欲与该商家券关联的微信支付 */
   @SerializedName("out_trade_no")
   private String outTradeNo;
+
   /** 请求业务单据号 说明：商户创建批次凭据号（格式：商户ID+日期+流水号），商户侧需保持唯一性，可包含英文字母，数字，｜，\\_，\\*，-等内容，不允许出现其他不合法符号。 */
   @SerializedName("out_request_no")
   private String outRequestNo;

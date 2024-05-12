@@ -22,10 +22,12 @@ public class ListActsByAreaRequest {
   @SerializedName("city_id")
   @Expose(serialize = false)
   private String cityId;
+
   /** 分页页码 说明：非负整数，该次请求资源的起始位置，从0开始计数 */
   @SerializedName("offset")
   @Expose(serialize = false)
   private Integer offset;
+
   /** 最大返回的活动数 说明：非0非负的整数 */
   @SerializedName("limit")
   @Expose(serialize = false)

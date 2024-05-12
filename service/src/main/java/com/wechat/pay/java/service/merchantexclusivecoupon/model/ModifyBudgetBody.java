@@ -24,23 +24,27 @@ public class ModifyBudgetBody {
    */
   @SerializedName("target_max_coupons")
   private Long targetMaxCoupons;
+
   /**
    * 当前批次最大发放个数 说明：当前批次最大发放个数，当传入target\\_max\\_coupons大于0时，current\\_max\\_coupons必传 注：当前批次即未修改的批次
    */
   @SerializedName("current_max_coupons")
   private Long currentMaxCoupons;
+
   /**
    * 目标单天发放上限个数 说明：单天发放上限个数，target\\_max\\_coupons与target\\_max\\_coupons\\_by\\_day只能修改一个
    * 注：目标批次即修改后的批次
    */
   @SerializedName("target_max_coupons_by_day")
   private Long targetMaxCouponsByDay;
+
   /**
    * 当前单天发放上限个数 说明：当前单天发放上限个数
    * ，当传入target\\_max\\_coupons\\_by\\_day大于0时，current\\_max\\_coupons\\_by\\_day必填 注：当前批次即未修改的批次
    */
   @SerializedName("current_max_coupons_by_day")
   private Long currentMaxCouponsByDay;
+
   /** 修改预算请求单据号 说明：修改预算请求单据号 */
   @SerializedName("modify_budget_request_no")
   private String modifyBudgetRequestNo;

@@ -22,15 +22,19 @@ public class OrdersListByUserResponse {
   /** 捐赠单详情 说明：捐赠单详情 */
   @SerializedName("data")
   private List<OrdersEntity> data = new ArrayList<OrdersEntity>();
+
   /** 该次请求返回的记录条数 说明：该次请求返回的记录条数 */
   @SerializedName("count")
   private Integer count;
+
   /** 最大记录条数 说明：返回的最大记录条数，默认值为10 */
   @SerializedName("limit")
   private Integer limit;
+
   /** 起始位置 说明：查询起始位置。 */
   @SerializedName("offset")
   private Integer offset;
+
   /** 全部记录数量 说明：全部记录数量 */
   @SerializedName("total_count")
   private Long totalCount;

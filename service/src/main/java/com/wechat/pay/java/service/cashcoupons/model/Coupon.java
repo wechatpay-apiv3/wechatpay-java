@@ -20,39 +20,51 @@ public class Coupon {
   /** 创建批次的商户号 说明：微信为创建方商户分配的商户号 */
   @SerializedName("stock_creator_mchid")
   private String stockCreatorMchid;
+
   /** 批次号 说明：批次id */
   @SerializedName("stock_id")
   private String stockId;
+
   /** 单品优惠特定信息 说明：单品优惠特定信息 */
   @SerializedName("cut_to_message")
   private CutTypeMsg cutToMessage;
+
   /** 代金券名称 说明：代金券名称 */
   @SerializedName("coupon_name")
   private String couponName;
+
   /** 代金券状态 说明：代金券状态：SENDED-可用，USED-已实扣，EXPIRED-已过期 */
   @SerializedName("status")
   private String status;
+
   /** 使用说明 说明：代金券描述说明字段 */
   @SerializedName("description")
   private String description;
+
   /** 领券时间 说明：领券时间 */
   @SerializedName("create_time")
   private String createTime;
+
   /** 券类型 说明：NORMAL-满减券；CUT_TO-减至券 */
   @SerializedName("coupon_type")
   private String couponType;
+
   /** 是否无资金流 说明：true-是；false-否 */
   @SerializedName("no_cash")
   private Boolean noCash;
+
   /** 可用开始时间 说明：可用开始时间 */
   @SerializedName("available_begin_time")
   private String availableBeginTime;
+
   /** 可用结束时间 说明：可用结束时间 */
   @SerializedName("available_end_time")
   private String availableEndTime;
+
   /** 是否单品优惠 说明：TRUE-是；FALSE-否 */
   @SerializedName("singleitem")
   private Boolean singleitem;
+
   /** 满减券信息 说明：普通满减券面额、门槛信息 */
   @SerializedName("normal_coupon_information")
   private FixedValueStockMsg normalCouponInformation;

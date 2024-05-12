@@ -26,6 +26,7 @@ public class FavorAvailableTime {
    */
   @SerializedName("available_begin_time")
   private String availableBeginTime;
+
   /**
    * 结束时间
    * 说明：批次结束时间，遵循[rfc3339](https://datatracker.ietf.org/doc/html/rfc3339)标准格式，格式为yyyy-MM-DDTHH:mm:ss+TIMEZONE，yyyy-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC
@@ -33,18 +34,22 @@ public class FavorAvailableTime {
    */
   @SerializedName("available_end_time")
   private String availableEndTime;
+
   /**
    * 生效后N天内有效
    * 说明：日期区间内，券生效后x天内有效。例如生效当天内有效填1，生效后2天内有效填2，以此类推……注意，用户在有效期开始前领取商家券，则从有效期第1天开始计算天数，用户在有效期内领取商家券，则从领取当天开始计算天数，无论用户何时领取商家券，商家券在活动有效期结束后均不可用。可配合wait_days_after_receive一同填写，也可单独填写。单独填写时，有效期内领券后立即生效，生效后x天内有效。
    */
   @SerializedName("available_day_after_receive")
   private Integer availableDayAfterReceive;
+
   /** 固定周期有效时间段 说明：可以设置多个星期下的多个可用时间段，比如每周二10点到18点 */
   @SerializedName("available_week")
   private AvailableWeek availableWeek;
+
   /** 无规律的有效时间段 说明：无规律的有效时间，多个无规律时间段 */
   @SerializedName("irregulary_avaliable_time")
   private List<IrregularAvailableTime> irregularyAvaliableTime;
+
   /**
    * 领取后N天开始生效
    * 说明：日期区间内，用户领券后需等待x天开始生效。例如领券后当天开始生效则无需填写，领券后第2天开始生效填1，以此类推……用户在有效期开始前领取商家券，则从有效期第1天开始计算天数，用户在有效期内领取商家券，则从领取当天开始计算天数。无论用户何时领取商家券，商家券在活动有效期结束后均不可用。需配合available_day_after_receive一同填写，不可单独填写。注：最大不能超过30天

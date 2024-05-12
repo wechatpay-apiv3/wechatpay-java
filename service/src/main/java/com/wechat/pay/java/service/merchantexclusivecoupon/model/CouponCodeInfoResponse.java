@@ -21,6 +21,7 @@ public class CouponCodeInfoResponse {
   /** 商户上传code信息 说明：商户上传code信息，含状态，上传时间等 */
   @SerializedName("code_information")
   private CouponCodeEntity codeInformation;
+
   /** 用户券信息 说明：用户券信息，仅当商户上传code的状态为DISPATCHED时返回券详情 */
   @SerializedName("coupon_information")
   private CouponEntity couponInformation;

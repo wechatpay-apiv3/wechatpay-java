@@ -24,9 +24,11 @@ public class Detail {
    */
   @SerializedName("cost_price")
   private Integer costPrice;
+
   /** 商品小票ID 说明：商家小票ID。 */
   @SerializedName("invoice_id")
   private String invoiceId;
+
   /** 单品列表 说明： */
   @SerializedName("goods_detail")
   private List<GoodsDetail> goodsDetail;

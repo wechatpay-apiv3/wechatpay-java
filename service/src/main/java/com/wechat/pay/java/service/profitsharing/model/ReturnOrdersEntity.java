@@ -20,39 +20,50 @@ public class ReturnOrdersEntity {
   /** 子商户号 说明：参考请求参数 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 微信分账单号 说明：微信分账单号，微信系统返回的唯一标识 */
   @SerializedName("order_id")
   private String orderId;
+
   /** 商户分账单号 说明：商户系统内部的分账单号，在商户系统内部唯一，同一分账单号多次请求等同一次 */
   @SerializedName("out_order_no")
   private String outOrderNo;
+
   /** 商户回退单号 说明：调用回退接口提供的商户系统内部的回退单号 */
   @SerializedName("out_return_no")
   private String outReturnNo;
+
   /** 微信回退单号 说明：微信分账回退单号，微信系统返回的唯一标识 */
   @SerializedName("return_id")
   private String returnId;
+
   /** 回退商户号 说明：只能对原分账请求中成功分给商户接收方进行回退 */
   @SerializedName("return_mchid")
   private String returnMchid;
+
   /** 回退金额 说明：需要从分账接收方回退的金额，单位为分，只能为整数 */
   @SerializedName("amount")
   private Long amount;
+
   /** 回退描述 说明：分账回退的原因描述 */
   @SerializedName("description")
   private String description;
+
   /**
    * 回退结果
    * 说明：如果请求返回为处理中，则商户可以通过调用回退结果查询接口获取请求的最终处理结果。如果查询到回退结果在处理中，请勿变更商户回退单号，使用相同的参数再次发起分账回退，否则会出现资金风险。在处理中状态的回退单如果5天没有成功，会因为超时被设置为已失败
    */
   @SerializedName("result")
   private ReturnOrderStatus result;
+
   /** 失败原因 说明：失败原因 */
   @SerializedName("fail_reason")
   private ReturnOrderFailReason failReason;
+
   /** 创建时间 说明：分账回退创建时间，遵循RFC3339标准格式 */
   @SerializedName("create_time")
   private String createTime;
+
   /** 完成时间 说明：分账回退完成时间，遵循RFC3339标准格式 */
   @SerializedName("finish_time")
   private String finishTime;

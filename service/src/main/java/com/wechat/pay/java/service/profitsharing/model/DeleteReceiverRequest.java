@@ -20,18 +20,22 @@ public class DeleteReceiverRequest {
   /** 子商户号 说明：微信支付分配的子商户号，即分账的出资商户号。（直连商户不需要，服务商需要） */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 公众账号ID 说明：微信分配的公众账号ID */
   @SerializedName("appid")
   private String appid;
+
   /** 子商户公众账号ID 说明：微信分配的子商户公众账号ID，分账接收方类型包含PERSONAL_SUB_OPENID时必填。（直连商户不需要，服务商需要） */
   @SerializedName("sub_appid")
   private String subAppid;
+
   /**
    * 接收方类型 说明：枚举值： MERCHANT_ID：商户ID PERSONAL_OPENID：个人openid（由父商户APPID转换得到）
    * PERSONAL_SUB_OPENID：个人sub_openid（由子商户APPID转换得到）
    */
   @SerializedName("type")
   private ReceiverType type;
+
   /**
    * 接收方账号 说明：类型是MERCHANT\\_ID时，是商户号 类型是PERSONAL\\_OPENID时，是个人openid
    * [openid获取方法](https://pay.weixin.qq.com/wiki/doc/apiv3_partner/open/pay/chapter3_3_1.shtml#part-13)

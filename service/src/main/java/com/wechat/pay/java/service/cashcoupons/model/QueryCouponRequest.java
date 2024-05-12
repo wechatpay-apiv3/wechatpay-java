@@ -22,6 +22,7 @@ public class QueryCouponRequest {
   @SerializedName("coupon_id")
   @Expose(serialize = false)
   private String couponId;
+
   /**
    * 公众账号ID
    * 说明：微信为发券方商户分配的公众账号ID，接口传入的所有appid应该为公众号的appid（在mp.weixin.qq.com申请的），不能为APP的appid（在open.weixin.qq.com申请的）。
@@ -29,6 +30,7 @@ public class QueryCouponRequest {
   @SerializedName("appid")
   @Expose(serialize = false)
   private String appid;
+
   /** 用户openid 说明：Openid信息，用户在appid下的唯一标识 */
   @SerializedName("openid")
   @Expose(serialize = false)

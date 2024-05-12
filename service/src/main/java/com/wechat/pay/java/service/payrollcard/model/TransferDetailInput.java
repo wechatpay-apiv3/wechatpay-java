@@ -22,15 +22,19 @@ public class TransferDetailInput {
   /** 商家明细单号 说明：商户系统内部区分转账批次单下不同转账明细单的唯一标识 */
   @SerializedName("out_detail_no")
   private String outDetailNo;
+
   /** 转账金额 说明：转账金额单位为“分” */
   @SerializedName("transfer_amount")
   private Long transferAmount;
+
   /** 转账备注 说明：单条转账备注（微信用户会收到该备注），UTF8编码，最多允许32个字符 */
   @SerializedName("transfer_remark")
   private String transferRemark;
+
   /** 收款用户OpenID 说明：收款用户OpenID。如果转账特约商户授权类型是INFORMATION_AUTHORIZATION_TYPE，对应的是特约商户公众号下的OpenID。 */
   @SerializedName("openid")
   private String openid;
+
   /**
    * 收款用户姓名 说明：收款用户姓名。采用标准RSA算法，公钥由微信侧提供 明细转账金额 >= 2,000时，该笔明细必须填写收款用户姓名
    * 同一批次转账明细中的姓名字段传入规则需保持一致，也即全部填写、或全部不填写 若商户传入收款用户姓名，微信支付会校验用户OpenID与姓名是否一致，并提供电子回单

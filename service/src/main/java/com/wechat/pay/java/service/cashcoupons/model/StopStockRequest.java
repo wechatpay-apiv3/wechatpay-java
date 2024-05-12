@@ -21,6 +21,7 @@ public class StopStockRequest {
   /** 创建批次的商户号 说明：批次创建方商户号 */
   @SerializedName("stock_creator_mchid")
   private String stockCreatorMchid;
+
   /** 批次号 说明：批次号 */
   @SerializedName("stock_id")
   @Expose(serialize = false)

@@ -21,25 +21,31 @@ public class SendCouponRequest {
   /** 批次id 说明：微信为每个批次分配的唯一id */
   @SerializedName("stock_id")
   private String stockId;
+
   /** 用户openid 说明：Openid信息，用户在appid下的唯一标识 */
   @SerializedName("openid")
   @Expose(serialize = false)
   private String openid;
+
   /** 商户单据号 说明：商户此次发放凭据号（格式：商户id+日期+流水号），商户侧需保持唯一性 */
   @SerializedName("out_request_no")
   private String outRequestNo;
+
   /**
    * 公众账号ID
    * 说明：微信为发券方商户分配的公众账号ID，接口传入的所有appid应该为公众号的appid（在mp.weixin.qq.com申请的），不能为APP的appid（在open.weixin.qq.com申请的）。
    */
   @SerializedName("appid")
   private String appid;
+
   /** 创建批次的商户号 说明：批次创建方商户号 */
   @SerializedName("stock_creator_mchid")
   private String stockCreatorMchid;
+
   /** 指定面额发券，面额 说明：指定面额发券场景，券面额，其他场景不需要填，单位分 */
   @SerializedName("coupon_value")
   private Long couponValue;
+
   /** 指定面额发券，券门槛 说明：指定面额发券批次门槛，其他场景不需要，单位分 */
   @SerializedName("coupon_minimum")
   private Long couponMinimum;

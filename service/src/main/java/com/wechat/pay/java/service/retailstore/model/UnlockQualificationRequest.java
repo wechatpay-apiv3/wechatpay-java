@@ -21,6 +21,7 @@ public class UnlockQualificationRequest {
   /** 订单信息 说明：订单信息 */
   @SerializedName("order_information")
   private OrderInfo orderInformation;
+
   /** 待锁定的加价购资格ID列表 说明：待锁定的加价购资格ID列表 */
   @SerializedName("qualification_ids")
   private List<String> qualificationIds;

@@ -21,7 +21,9 @@ public final class AeadSM4Cipher extends AbstractAeadCipher {
   private static final int TAG_LENGTH_BIT = 128;
   private static final String ALGORITHM = "SM4";
 
-  /** @param apiV3Key APIv3密钥 */
+  /**
+   * @param apiV3Key APIv3密钥
+   */
   public AeadSM4Cipher(byte[] apiV3Key) {
     super(ALGORITHM, TRANSFORMATION, TAG_LENGTH_BIT, covertSM4Key(apiV3Key));
   }

@@ -23,18 +23,22 @@ public class ListTaskRequest {
   @SerializedName("package_id")
   @Expose(serialize = false)
   private String packageId;
+
   /** 文件名 说明：任务上传的文件名 */
   @SerializedName("filename")
   @Expose(serialize = false)
   private String filename;
+
   /** 分页页码 说明：分页页码，页码从0开始 */
   @SerializedName("offset")
   @Expose(serialize = false)
   private Long offset;
+
   /** 分页大小 说明：分页大小，单次最多查询20条记录 */
   @SerializedName("limit")
   @Expose(serialize = false)
   private Long limit;
+
   /** 任务状态 说明：上传任务的状态：PROCESSING - 处理中，FINISHED - 已完成 */
   @SerializedName("status")
   @Expose(serialize = false)

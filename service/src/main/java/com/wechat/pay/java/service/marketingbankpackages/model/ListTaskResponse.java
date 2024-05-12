@@ -22,12 +22,15 @@ public class ListTaskResponse {
   /** 上传任务列表 说明：符合条件的上传任务列表 */
   @SerializedName("data")
   private List<Task> data;
+
   /** 总数量 说明：总数量 */
   @SerializedName("total_count")
   private Long totalCount;
+
   /** 分页页码 说明：分页页码，页码从0开始 */
   @SerializedName("offset")
   private Long offset;
+
   /** 分页大小 说明：分页大小 */
   @SerializedName("limit")
   private Long limit;

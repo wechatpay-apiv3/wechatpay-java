@@ -21,9 +21,11 @@ public class FormFile {
   /** 文件名 说明：由表单上传的文件部分的文件名 */
   @SerializedName("filename")
   private String filename;
+
   /** 文件类型 说明：表示上传文件的 Content-Type */
   @SerializedName("content_type")
   private String contentType;
+
   /** 文件内容 说明：一个二进制串表示上传文件的整体内容 */
   @SerializedName("content")
   private String content;

@@ -22,6 +22,7 @@ public class GetByUserRequest {
   @SerializedName("openid")
   @Expose(serialize = false)
   private String openid;
+
   /** 商户订单号 说明：商户系统内部订单号，只能是数字、大小写字母_-*且在同一个商户号下唯一 */
   @SerializedName("out_trade_no")
   @Expose(serialize = false)

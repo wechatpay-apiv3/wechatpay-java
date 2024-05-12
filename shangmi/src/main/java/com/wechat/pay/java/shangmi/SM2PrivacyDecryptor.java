@@ -11,7 +11,9 @@ public final class SM2PrivacyDecryptor extends AbstractPrivacyDecryptor {
     Security.addProvider(new KonaProvider());
   }
 
-  /** @param privateKey 商户API私钥 */
+  /**
+   * @param privateKey 商户API私钥
+   */
   public SM2PrivacyDecryptor(PrivateKey privateKey) {
     super("SM2", privateKey);
   }

@@ -20,15 +20,19 @@ public class AddReceiverRequest {
   /** 公众账号ID 说明：微信分配的公众账号ID */
   @SerializedName("appid")
   private String appid;
+
   /** 接收方类型 说明：接收方类型 枚举值： MERCHANT\\_ID：商户 PERSONAL\\_OPENID：个人 */
   @SerializedName("type")
   private String type;
+
   /** 接收方账号 说明：类型是MERCHANT_ID时，是商户号 类型是PERSONAL_OPENID时，是个人openid */
   @SerializedName("account")
   private String account;
+
   /** 接收方名称 说明：商户全称。仅接收方类型是MERCHANT_ID时，才需要填写此字段。 */
   @SerializedName("name")
   private String name;
+
   /**
    * 与分账方的关系类型 说明：子商户与接收方的关系。 本字段值为枚举： SUPPLIER：供应商 DISTRIBUTOR：分销商 SERVICE_PROVIDER：服务商 PLATFORM：平台
    * OTHERS：其他

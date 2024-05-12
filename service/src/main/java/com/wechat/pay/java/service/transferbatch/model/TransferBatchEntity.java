@@ -22,6 +22,7 @@ public class TransferBatchEntity {
   /** 转账批次单 说明：转账批次单基本信息 */
   @SerializedName("transfer_batch")
   private TransferBatchGet transferBatch;
+
   /** 转账明细单列表 说明：当批次状态为“FINISHED”（已完成），且成功查询到转账明细单时返回。包括微信明细单号、明细状态信息 */
   @SerializedName("transfer_detail_list")
   private List<TransferDetailCompact> transferDetailList;

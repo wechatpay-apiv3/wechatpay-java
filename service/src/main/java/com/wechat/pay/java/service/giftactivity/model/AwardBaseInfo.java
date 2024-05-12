@@ -21,9 +21,11 @@ public class AwardBaseInfo {
   /** 代金券批次Id 说明：代金券批次Id */
   @SerializedName("stock_id")
   private String stockId;
+
   /** 奖品原始图（大图） 说明：奖品大图，必填 */
   @SerializedName("original_image_url")
   private String originalImageUrl;
+
   /** 奖品缩略图（小图） 说明：奖品小图，当选多张券时必填 */
   @SerializedName("thumbnail_url")
   private String thumbnailUrl;
