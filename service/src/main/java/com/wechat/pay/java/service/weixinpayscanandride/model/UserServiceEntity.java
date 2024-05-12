@@ -20,9 +20,11 @@ public class UserServiceEntity {
   /** 代扣签约ID 说明：签约成功后，微信返回代扣签约ID */
   @SerializedName("contract_id")
   private String contractId;
+
   /** 用户服务可用状态 说明：用户服务可用状态，枚举值有： */
   @SerializedName("user_service_state")
   private UserServiceStateEnum userServiceState;
+
   /** 不可用状态描述 说明：blocked服务状态描述，返回用户状态为BLOCKED，会返回该字段，具体描述的枚举值如下： */
   @SerializedName("block_reason")
   private BlockReasonEnum blockReason;

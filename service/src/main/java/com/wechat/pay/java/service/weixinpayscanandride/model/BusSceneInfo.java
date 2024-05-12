@@ -20,9 +20,11 @@ public class BusSceneInfo {
   /** 乘车时间 说明：用户乘车时间（上车），按照使用rfc3339所定义的格式，格式为yyyy-MM-DDThh:mm:ss+TIMEZONE */
   @SerializedName("start_time")
   private String startTime;
+
   /** 乘车路线 说明：乘车路线 路线名称的展示规则：\\^[A-Za-z0-9]{1,10}路$ 如line_name符合上述的规则,扣款凭证将增加展示乘车路线的字段 */
   @SerializedName("line_name")
   private String lineName;
+
   /** 车牌号 说明：车牌号。仅包括省份+车牌，不包括特殊字符。 */
   @SerializedName("plate_number")
   private String plateNumber;

@@ -15,10 +15,13 @@ public class WexinPayScoreParkingServiceExample {
 
   /** 商户号 */
   public static String merchantId = "190000****";
+
   /** 商户API私钥路径 */
   public static String privateKeyPath = "/Users/yourname/your/path/apiclient_key.pem";
+
   /** 商户证书序列号 */
   public static String merchantSerialNumber = "5157F09EFDC096DE15EBE81A47057A72********";
+
   /** 商户APIV3密钥 */
   public static String apiV3Key = "...";
 
@@ -39,22 +42,26 @@ public class WexinPayScoreParkingServiceExample {
     service = new WexinPayScoreParkingService.Builder().config(config).build();
     // ... 调用接口
   }
+
   /** 创建停车入场 */
   public static Parking createParking() {
     CreateParkingRequest request = new CreateParkingRequest();
     return service.createParking(request);
   }
+
   /** 查询车牌服务开通信息 */
   public static PlateService queryPlateService() {
 
     QueryPlateServiceRequest request = new QueryPlateServiceRequest();
     return service.queryPlateService(request);
   }
+
   /** 扣费受理 */
   public static Transaction createTransaction() {
     CreateTransactionRequest request = new CreateTransactionRequest();
     return service.createTransaction(request);
   }
+
   /** 查询订单 */
   public static Transaction queryTransaction() {
 

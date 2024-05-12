@@ -23,6 +23,7 @@ public class PauseStockResponse {
    */
   @SerializedName("pause_time")
   private String pauseTime;
+
   /** 批次号 说明：批次号 */
   @SerializedName("stock_id")
   private String stockId;

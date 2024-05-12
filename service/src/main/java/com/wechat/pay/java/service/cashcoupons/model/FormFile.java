@@ -20,9 +20,11 @@ public class FormFile {
   /** filename */
   @SerializedName("filename")
   private String filename;
+
   /** contentType */
   @SerializedName("content_type")
   private String contentType;
+
   /** content */
   @SerializedName("content")
   private String content;

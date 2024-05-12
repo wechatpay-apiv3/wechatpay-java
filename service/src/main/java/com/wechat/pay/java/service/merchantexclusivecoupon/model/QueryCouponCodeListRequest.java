@@ -23,18 +23,22 @@ public class QueryCouponCodeListRequest {
   @SerializedName("stock_id")
   @Expose(serialize = false)
   private String stockId;
+
   /** 分页最大size 说明：分页查询的最大size */
   @SerializedName("limit")
   @Expose(serialize = false)
   private Long limit;
+
   /** 分页起始位置 说明：分页查询的起始位置 */
   @SerializedName("offset")
   @Expose(serialize = false)
   private Long offset;
+
   /** 公众账号ID 说明：公众账号ID */
   @SerializedName("appid")
   @Expose(serialize = false)
   private String appid;
+
   /** 券code状态 说明：券code状态，当不填写时为查询所有状态的code列表 */
   @SerializedName("status")
   @Expose(serialize = false)

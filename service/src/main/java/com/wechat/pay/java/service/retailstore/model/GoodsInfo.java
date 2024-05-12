@@ -20,9 +20,11 @@ public class GoodsInfo {
   /** 商品ID 说明：商品ID */
   @SerializedName("goods_id")
   private String goodsId;
+
   /** 商品名称 说明：商品名称 */
   @SerializedName("goods_name")
   private String goodsName;
+
   /** 商品图片URL 说明：商品图片URL */
   @SerializedName("goods_picture_url")
   private String goodsPictureUrl;

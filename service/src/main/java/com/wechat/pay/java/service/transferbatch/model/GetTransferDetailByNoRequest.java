@@ -23,6 +23,7 @@ public class GetTransferDetailByNoRequest {
   @SerializedName("batch_id")
   @Expose(serialize = false)
   private String batchId;
+
   /** 微信明细单号 说明：微信支付系统内部区分转账批次单下不同转账明细单的唯一标识 */
   @SerializedName("detail_id")
   @Expose(serialize = false)

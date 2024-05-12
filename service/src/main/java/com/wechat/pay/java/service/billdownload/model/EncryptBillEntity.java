@@ -22,19 +22,24 @@ public class EncryptBillEntity {
   /** 账单文件序号 说明：账单文件序号，商户将多个文件按账单文件序号的顺序合并为完整的资金账单文件，起始值为1 */
   @SerializedName("bill_sequence")
   private Long billSequence;
+
   /** 哈希类型 说明：哈希类型 */
   @SerializedName("hash_type")
   private HashType hashType;
+
   /** 哈希值 说明：原始账单（gzip需要解压缩）的摘要值，用于校验文件的完整性。GCM算法加密的账单解密成功表示校验完整性通过。 */
   @SerializedName("hash_value")
   private String hashValue;
+
   /** 下载地址 说明：供下一步请求账单文件的下载地址，该地址5min内有效。 */
   @SerializedName("download_url")
   private String downloadUrl;
+
   /** 加密密钥 说明：加密账单文件使用的加密密钥。密钥用商户证书的公钥进行加密，然后进行Base64编码 */
   @Encryption
   @SerializedName("encrypt_key")
   private String encryptKey;
+
   /** 随机字符串 说明：加密账单文件使用的随机字符串 */
   @SerializedName("nonce")
   private String nonce;

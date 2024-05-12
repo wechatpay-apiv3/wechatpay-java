@@ -21,9 +21,11 @@ public class AddRepresentativesResponse {
   /** 零售小店活动ID 说明：零售小店活动ID */
   @SerializedName("activity_id")
   private String activityId;
+
   /** 添加失败业务代理信息列表 说明：添加失败业务代理信息列表 */
   @SerializedName("failed_representative_info_list")
   private List<RepresentativeInfo> failedRepresentativeInfoList;
+
   /** 添加时间 说明：添加时间 */
   @SerializedName("add_time")
   private String addTime;

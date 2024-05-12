@@ -16,10 +16,13 @@ public class EcommerceRefundServiceExample {
 
   /** 商户号 */
   public static String merchantId = "190000****";
+
   /** 商户API私钥路径 */
   public static String privateKeyPath = "/Users/yourname/your/path/apiclient_key.pem";
+
   /** 商户证书序列号 */
   public static String merchantSerialNumber = "5157F09EFDC096DE15EBE81A47057A72********";
+
   /** 商户APIV3密钥 */
   public static String apiV3Key = "...";
 
@@ -40,29 +43,34 @@ public class EcommerceRefundServiceExample {
     service = new EcommerceRefundService.Builder().config(config).build();
     // ... 调用接口
   }
+
   /** 申请退款 */
   public static Refund4Create createRefund() {
     CreateRefundRequest request = new CreateRefundRequest();
     return service.createRefund(request);
   }
+
   /** 垫付退款回补 */
   public static ReturnAdvance createReturnAdvance() {
 
     CreateReturnAdvanceRequest request = new CreateReturnAdvanceRequest();
     return service.createReturnAdvance(request);
   }
+
   /** 查询单笔退款（按微信支付退款单号） */
   public static Refund queryRefund() {
 
     QueryRefundRequest request = new QueryRefundRequest();
     return service.queryRefund(request);
   }
+
   /** 查询单笔退款（按商户退款单号） */
   public static Refund queryRefundByOutRefundNo() {
 
     QueryRefundByOutRefundNoRequest request = new QueryRefundByOutRefundNoRequest();
     return service.queryRefundByOutRefundNo(request);
   }
+
   /** 查询垫付回补结果 */
   public static ReturnAdvance queryReturnAdvance() {
 

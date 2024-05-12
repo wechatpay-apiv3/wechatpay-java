@@ -20,15 +20,19 @@ public class PromotionGoodsDetail {
   /** 商品编码 说明：商品编码 */
   @SerializedName("goods_id")
   private String goodsId;
+
   /** 商品数量 说明：商品数量 */
   @SerializedName("quantity")
   private Integer quantity;
+
   /** 商品价格 说明：商品价格 */
   @SerializedName("unit_price")
   private Integer unitPrice;
+
   /** 商品优惠金额 说明：商品优惠金额 */
   @SerializedName("discount_amount")
   private Integer discountAmount;
+
   /** 商品备注 说明：商品备注 */
   @SerializedName("goods_remark")
   private String goodsRemark;

@@ -22,15 +22,19 @@ public class CouponCodeListResponse {
   /** 批次号 说明：商家券批次号 */
   @SerializedName("stock_id")
   private String stockId;
+
   /** 总数 说明：该批次已上传code总个数 */
   @SerializedName("total_count")
   private Long totalCount;
+
   /** 查询code结果列表 说明：查询code的结果列表 */
   @SerializedName("data")
   private List<CouponCodeEntity> data;
+
   /** 分页起始位置 说明：分页起始位置，与请求相同 */
   @SerializedName("offset")
   private Long offset;
+
   /** 返回数据的个数 说明：返回数据的实际个数 */
   @SerializedName("limit")
   private Long limit;

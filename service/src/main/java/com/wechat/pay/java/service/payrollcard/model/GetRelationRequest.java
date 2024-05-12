@@ -22,14 +22,17 @@ public class GetRelationRequest {
   @SerializedName("openid")
   @Expose(serialize = false)
   private String openid;
+
   /** 特约商户号 说明：特约商户号 */
   @SerializedName("sub_mchid")
   @Expose(serialize = false)
   private String subMchid;
+
   /** 服务商AppID 说明：当输入服务商AppID时会校验其与服务商商户号绑定关系。 服务商AppID和特约商户AppID至少输入一个。 */
   @SerializedName("appid")
   @Expose(serialize = false)
   private String appid;
+
   /** 特约商户AppID 说明：当输入特约商户AppID时会校验其与特约商户号关系。 特约商户AppID和服务商AppID至少输入一个。 */
   @SerializedName("sub_appid")
   @Expose(serialize = false)

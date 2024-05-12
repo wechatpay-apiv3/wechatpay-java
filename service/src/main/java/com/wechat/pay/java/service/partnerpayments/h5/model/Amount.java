@@ -20,6 +20,7 @@ public class Amount {
   /** 总金额 说明：订单总金额，单位为分 */
   @SerializedName("total")
   private Integer total;
+
   /** 货币类型 说明：CNY：人民币，境内商户号仅支持人民币。 */
   @SerializedName("currency")
   private String currency;

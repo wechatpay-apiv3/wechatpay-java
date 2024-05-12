@@ -21,6 +21,7 @@ public class AvailableDayTime {
   /** 每日可用开始时间 说明：每日可用开始时间(格式:110000,表示11:00:00) */
   @SerializedName("begin_day_time")
   private String beginDayTime;
+
   /** 每日可用结束时间 说明：每日可用结束时间 (格式:135959,表示13:59:59) */
   @SerializedName("end_day_time")
   private String endDayTime;

@@ -22,10 +22,12 @@ public class ListRepresentativeRequest {
   @SerializedName("activity_id")
   @Expose(serialize = false)
   private String activityId;
+
   /** 分页页码 说明：页码从0开始，默认第0页 */
   @SerializedName("offset")
   @Expose(serialize = false)
   private Long offset;
+
   /** 分页大小 说明：分页大小，默认查询10个业代 */
   @SerializedName("limit")
   @Expose(serialize = false)

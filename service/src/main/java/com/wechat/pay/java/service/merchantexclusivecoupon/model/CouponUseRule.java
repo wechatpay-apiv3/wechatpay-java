@@ -21,21 +21,27 @@ public class CouponUseRule {
   /** 券可核销时间 说明：日期区间内可以使用优惠 */
   @SerializedName("coupon_available_time")
   private FavorAvailableTime couponAvailableTime;
+
   /** 固定面额满减券使用规则 说明：固定面额满减，折扣券，换购券使用规则三选一，stock_type为NORMAL时必填。 */
   @SerializedName("fixed_normal_coupon")
   private FixedValueStockMsg fixedNormalCoupon;
+
   /** 折扣券使用规则 说明：固定面额满减，折扣券，换购券使用规则三选一，stock_type为DISCOUNT时必填。 */
   @SerializedName("discount_coupon")
   private DiscountMsg discountCoupon;
+
   /** 换购券使用规则 说明：固定面额满减，折扣券，换购券使用规则三选一，stock_type为EXCHANGE时必填。 */
   @SerializedName("exchange_coupon")
   private ExchangeMsg exchangeCoupon;
+
   /** 核销方式 说明：核销方式 */
   @SerializedName("use_method")
   private CouponUseMethod useMethod;
+
   /** 小程序AppID 说明：核销方式为线上小程序核销才有效 */
   @SerializedName("mini_programs_appid")
   private String miniProgramsAppid;
+
   /** 小程序path 说明：核销方式为线上小程序核销才有效 */
   @SerializedName("mini_programs_path")
   private String miniProgramsPath;

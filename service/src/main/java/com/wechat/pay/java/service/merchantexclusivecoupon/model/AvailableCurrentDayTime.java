@@ -21,6 +21,7 @@ public class AvailableCurrentDayTime {
   /** 当天可用开始时间 说明：当天可用开始时间 单位秒 1代表当天0点0分1秒 */
   @SerializedName("begin_time")
   private Long beginTime;
+
   /** 当天可用结束时间 说明：当天可用结束时间 单位秒 86399代表当天23点59分59秒 */
   @SerializedName("end_time")
   private Long endTime;

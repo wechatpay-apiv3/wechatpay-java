@@ -20,6 +20,7 @@ public class ActInfo {
   /** 活动名称 说明：活动名称 */
   @SerializedName("activity_name")
   private String activityName;
+
   /**
    * 活动报名开始时间
    * 说明：遵循rfc3339标准格式，格式为YYYY-MM-DDTHH:mm:ss+TIMEZONE，YYYY-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC
@@ -27,6 +28,7 @@ public class ActInfo {
    */
   @SerializedName("apply_start_time")
   private String applyStartTime;
+
   /**
    * 活动报名结束时间
    * 说明：遵循rfc3339标准格式，格式为YYYY-MM-DDTHH:mm:ss+TIMEZONE，YYYY-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC
@@ -34,6 +36,7 @@ public class ActInfo {
    */
   @SerializedName("apply_end_time")
   private String applyEndTime;
+
   /**
    * 活动开始时间
    * 说明：遵循rfc3339标准格式，格式为YYYY-MM-DDTHH:mm:ss+TIMEZONE，YYYY-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC
@@ -41,6 +44,7 @@ public class ActInfo {
    */
   @SerializedName("activity_start_time")
   private String activityStartTime;
+
   /**
    * 活动结束时间
    * 说明：遵循rfc3339标准格式，格式为YYYY-MM-DDTHH:mm:ss+TIMEZONE，YYYY-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC
@@ -48,6 +52,7 @@ public class ActInfo {
    */
   @SerializedName("activity_end_time")
   private String activityEndTime;
+
   /** 活动描述 说明：活动描述 */
   @SerializedName("activity_description")
   private String activityDescription;

@@ -21,18 +21,23 @@ public class OrdersEntity {
   /** 子商户号 说明：微信支付分配的子商户号，即分账的出资商户号。（直连商户不需要，服务商需要） */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 微信订单号 说明：微信支付订单号 */
   @SerializedName("transaction_id")
   private String transactionId;
+
   /** 商户分账单号 说明：商户系统内部的分账单号，在商户系统内部唯一，同一分账单号多次请求等同一次。只能是数字、大小写字母\\_\\-\\|\\*@ */
   @SerializedName("out_order_no")
   private String outOrderNo;
+
   /** 微信分账单号 说明：微信分账单号，微信系统返回的唯一标识 */
   @SerializedName("order_id")
   private String orderId;
+
   /** 分账单状态 说明：分账单状态（每个接收方的分账结果请查看receivers中的result字段） */
   @SerializedName("state")
   private OrderStatus state;
+
   /** 分账接收方列表 说明：分账接收方列表 */
   @SerializedName("receivers")
   private List<OrderReceiverDetail> receivers;

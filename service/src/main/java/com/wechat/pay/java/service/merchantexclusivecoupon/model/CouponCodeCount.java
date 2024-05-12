@@ -21,6 +21,7 @@ public class CouponCodeCount {
   /** 该批次总共已上传的code总数 说明：该批次总共已上传的code总数 */
   @SerializedName("total_count")
   private Long totalCount;
+
   /** 该批次当前可用的code数 说明：该批次当前可用的code数 */
   @SerializedName("available_count")
   private Long availableCount;

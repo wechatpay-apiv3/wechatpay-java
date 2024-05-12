@@ -20,27 +20,35 @@ public class ReturnAdvance {
   /** 微信退款单号 说明：必须是垫付退款的微信退款单 */
   @SerializedName("refund_id")
   private String refundId;
+
   /** 微信回补单号 说明：微信支付生成的垫付回补操作单号 */
   @SerializedName("advance_return_id")
   private String advanceReturnId;
+
   /** 垫付回补金额 说明：退款单对应的垫付退款的金额 */
   @SerializedName("return_amount")
   private Long returnAmount;
+
   /** 出款方商户号 说明：微信支付分配给出款方的商户号 */
   @SerializedName("payer_mchid")
   private String payerMchid;
+
   /** 出款方账户 说明：BASIC 基本账户 OPERATION 运营账户 */
   @SerializedName("payer_account")
   private String payerAccount;
+
   /** 入账方商户号 说明：微信支付分配给入账方的商户号 */
   @SerializedName("payee_mchid")
   private String payeeMchid;
+
   /** 入账方账户 说明：BASIC 基本账户 OPERATION 运营账户 */
   @SerializedName("payee_account")
   private String payeeAccount;
+
   /** 垫付回补结果 说明：SUCCESS 回补成功 FAILED 回补失败，出款方账户余额不足时发生 PROCESSING 处理中 */
   @SerializedName("result")
   private String result;
+
   /**
    * 垫付回补完成时间
    * 说明：垫付回补完成的时间，遵循rfc3339标准格式，格式为YYYY-MM-DDTHH:mm:ss+TIMEZONE，YYYY-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC

@@ -24,10 +24,13 @@ public class GiftActivityServiceExample {
 
   /** 商户号 */
   public static String merchantId = "190000****";
+
   /** 商户API私钥路径 */
   public static String privateKeyPath = "/Users/yourname/your/path/apiclient_key.pem";
+
   /** 商户证书序列号 */
   public static String merchantSerialNumber = "5157F09EFDC096DE15EBE81A47057A72********";
+
   /** 商户APIV3密钥 */
   public static String apiV3Key = "...";
 
@@ -48,47 +51,55 @@ public class GiftActivityServiceExample {
     service = new GiftActivityService.Builder().config(config).build();
     // ... 调用接口
   }
+
   /** 新增活动发券商户号 */
   public static AddActivityMerchantResponse addActivityMerchant() {
 
     AddActivityMerchantRequest request = new AddActivityMerchantRequest();
     return service.addActivityMerchant(request);
   }
+
   /** 创建全场满额送活动 */
   public static CreateFullSendActResponse createFullSendAct() {
     CreateFullSendActRequest request = new CreateFullSendActRequest();
     return service.createFullSendAct(request);
   }
+
   /** 删除活动发券商户号 */
   public static DeleteActivityMerchantResponse deleteActivityMerchant() {
 
     DeleteActivityMerchantRequest request = new DeleteActivityMerchantRequest();
     return service.deleteActivityMerchant(request);
   }
+
   /** 获取活动详情接口 */
   public static GetActDetailResponse getActDetail() {
 
     GetActDetailRequest request = new GetActDetailRequest();
     return service.getActDetail(request);
   }
+
   /** 获取支付有礼活动列表 */
   public static ListActivitiesResponse listActivities() {
 
     ListActivitiesRequest request = new ListActivitiesRequest();
     return service.listActivities(request);
   }
+
   /** 获取活动发券商户号 */
   public static ListActMchResponse listActivityMerchant() {
 
     ListActivityMerchantRequest request = new ListActivityMerchantRequest();
     return service.listActivityMerchant(request);
   }
+
   /** 获取活动指定商品列表 */
   public static ListActSkuResponse listActivitySku() {
 
     ListActivitySkuRequest request = new ListActivitySkuRequest();
     return service.listActivitySku(request);
   }
+
   /** 终止活动 */
   public static TerminateActResponse terminateActivity() {
 

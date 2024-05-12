@@ -20,30 +20,38 @@ public class OrderReceiverDetail {
   /** 分账金额 说明：分账金额，单位为分，只能为整数，不能超过原订单支付金额及最大分账比例金额 */
   @SerializedName("amount")
   private Long amount;
+
   /** 分账描述 说明：分账的原因描述，分账账单中需要体现 */
   @SerializedName("description")
   private String description;
+
   /** 接收方类型 说明：接收方类型 */
   @SerializedName("type")
   private ReceiverType type;
+
   /**
    * 接收方账号 说明：1、类型是MERCHANT_ID时，是商户号 2、类型是PERSONAL_OPENID时，是个人openid
    * 3、类型是PERSONAL_SUB_OPENID时，是个人sub_openid
    */
   @SerializedName("account")
   private String account;
+
   /** 分账结果 说明：分账结果 */
   @SerializedName("result")
   private DetailStatus result;
+
   /** 分账失败原因 说明：分账失败原因，状态为CLOSED时返回 */
   @SerializedName("fail_reason")
   private DetailFailReason failReason;
+
   /** 分账创建时间 说明：分账创建时间，遵循RFC3339标准格式 */
   @SerializedName("create_time")
   private String createTime;
+
   /** 分账完成时间 说明：分账完成时间，遵循RFC3339标准格式 */
   @SerializedName("finish_time")
   private String finishTime;
+
   /** 分账明细单号 说明：微信分账明细单号，每笔分账业务执行的明细单号，可与资金账单对账使用 */
   @SerializedName("detail_id")
   private String detailId;

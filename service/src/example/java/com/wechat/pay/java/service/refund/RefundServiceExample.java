@@ -14,10 +14,13 @@ public class RefundServiceExample {
 
   /** 商户号 */
   public static String merchantId = "190000****";
+
   /** 商户API私钥路径 */
   public static String privateKeyPath = "/Users/yourname/your/path/apiclient_key.pem";
+
   /** 商户证书序列号 */
   public static String merchantSerialNumber = "5157F09EFDC096DE15EBE81A47057A72********";
+
   /** 商户APIV3密钥 */
   public static String apiV3Key = "...";
 
@@ -47,6 +50,7 @@ public class RefundServiceExample {
       // 调用e.getMessage()获取信息打印日志或上报监控，更多方法见MalformedMessageException定义
     }
   }
+
   /** 退款申请 */
   public static Refund create() {
     CreateRequest request = new CreateRequest();
@@ -54,6 +58,7 @@ public class RefundServiceExample {
     // 调用接口
     return service.create(request);
   }
+
   /** 查询单笔退款（通过商户退款单号） */
   public static Refund queryByOutRefundNo() {
 

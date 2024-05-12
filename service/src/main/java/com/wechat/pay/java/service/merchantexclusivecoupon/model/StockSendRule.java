@@ -21,32 +21,40 @@ public class StockSendRule {
   /** 批次总预算 说明：总预算金额，单位分 注：该字段暂未开放 */
   @SerializedName("max_amount")
   private Long maxAmount;
+
   /** 批次最大发放个数 说明：批次最大可发放个数限制 特殊规则：取值范围 1 ≤ value ≤ 1000000000 */
   @SerializedName("max_coupons")
   private Long maxCoupons;
+
   /** 用户最大可领个数 说明：用户可领个数，每个用户最多100张券。 */
   @SerializedName("max_coupons_per_user")
   private Integer maxCouponsPerUser;
+
   /** 单天发放上限金额 说明：单天发放上限金额 注：该字段暂未开放 */
   @SerializedName("max_amount_by_day")
   private Long maxAmountByDay;
+
   /**
    * 单天发放上限个数 说明：单天发放上限个数（stock\\_type为DISCOUNT或EXCHANGE时可传入此字段控制单天发放上限）。 特殊规则：取值范围 1 ≤ value ≤
    * 1000000000
    */
   @SerializedName("max_coupons_by_day")
   private Long maxCouponsByDay;
+
   /**
    * 是否开启自然人限领 说明：不填默认否，枚举值： true：是 false：否 注：自然人防刷即同证件号下的所有账户合并计算的限领次数（限领次数指的是参数字段“用户最大领取个数”填写的值）
    */
   @SerializedName("natural_person_limit")
   private Boolean naturalPersonLimit;
+
   /** 可疑账号拦截 说明：true-是；false-否，不填默认否 */
   @SerializedName("prevent_api_abuse")
   private Boolean preventApiAbuse;
+
   /** 是否允许转赠，暂不开放 说明：不填默认否，枚举值： true：是 false：否 该字段暂未开放 */
   @SerializedName("transferable")
   private Boolean transferable;
+
   /** 是否允许分享链接，暂不开放 说明：不填默认否，枚举值： true：是 false：否 该字段暂未开放 */
   @SerializedName("shareable")
   private Boolean shareable;

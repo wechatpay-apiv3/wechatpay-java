@@ -21,9 +21,11 @@ public class ModifyAvailableSingleitemRequest {
   /** 创建批次的商户号 说明：批次创建方商户号 */
   @SerializedName("stock_creator_mchid")
   private String stockCreatorMchid;
+
   /** 增加商品编码列表 说明：增加单品编码列表 */
   @SerializedName("add_goods_id_list")
   private List<String> addGoodsIdList;
+
   /** 删除商品编码列表 说明：删除单品编码列表 */
   @SerializedName("delete_goods_id_list")
   private List<String> deleteGoodsIdList;

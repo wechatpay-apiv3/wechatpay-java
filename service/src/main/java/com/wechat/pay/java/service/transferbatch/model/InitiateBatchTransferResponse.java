@@ -21,12 +21,15 @@ public class InitiateBatchTransferResponse {
   /** 商家批次单号 说明：商户系统内部的商家批次单号，在商户系统内部唯一 */
   @SerializedName("out_batch_no")
   private String outBatchNo;
+
   /** 微信批次单号 说明：微信批次单号，微信商家转账系统返回的唯一标识 */
   @SerializedName("batch_id")
   private String batchId;
+
   /** 批次创建时间 说明：批次受理成功时返回，按照使用rfc3339所定义的格式，格式为YYYY-MM-DDThh:mm:ss+TIMEZONE */
   @SerializedName("create_time")
   private String createTime;
+
   /**
    * 批次状态
    * 说明：ACCEPTED:已受理。批次已受理成功，若发起批量转账的30分钟后，转账批次单仍处于该状态，可能原因是商户账户余额不足等。商户可查询账户资金流水，若该笔转账批次单的扣款已经发生，则表示批次已经进入转账中，请再次查单确认

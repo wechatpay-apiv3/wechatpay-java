@@ -20,18 +20,23 @@ public class PatternInfo {
   /** 使用说明 说明：用于说明详细的活动规则，会展示在代金券详情页 */
   @SerializedName("description")
   private String description;
+
   /** 商户logo 说明：商户logo */
   @SerializedName("merchant_logo")
   private String merchantLogo;
+
   /** 商户名称 说明：商户名称 */
   @SerializedName("merchant_name")
   private String merchantName;
+
   /** 背景颜色 说明：背景颜色 */
   @SerializedName("background_color")
   private BackgroundColor backgroundColor;
+
   /** 券详情图片 说明：券详情图片 */
   @SerializedName("coupon_image")
   private String couponImage;
+
   /**
    * 卡包跳转目标 说明：枚举值：PAYMENT_CODE：跳转至微信支付付款码，点击“立即使用”跳转至微信支付付款码
    * MINI_PROGRAM：跳转至小程序，点击“立即使用”跳转至配置的商家小程序（需要指定小程序appid和path） DEFAULT_PAGE：跳转至默认页， 点击“立即使用”跳转至默认页面
@@ -39,9 +44,11 @@ public class PatternInfo {
    */
   @SerializedName("jump_target")
   private JumpTarget jumpTarget;
+
   /** 小程序appid 说明：跳转的小程序appid，跳转至小程序时必填。跳转的小程序appid需至少和一个可核销商户有绑定关系。 */
   @SerializedName("mini_program_appid")
   private String miniProgramAppid;
+
   /** 小程序path 说明：跳转的小程序path，跳转至小程序时必填。 */
   @SerializedName("mini_program_path")
   private String miniProgramPath;

@@ -20,9 +20,11 @@ public class DeleteReceiverResponse {
   /** 子商户号 说明：参考请求参数 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 接收方类型 说明：参考请求参数 */
   @SerializedName("type")
   private ReceiverType type;
+
   /** 接收方账号 说明：参考请求参数 */
   @SerializedName("account")
   private String account;

@@ -20,12 +20,15 @@ public class ParkingTradeScene {
   /** 入场id 说明：微信支付分停车服务为商户分配的入场id，商户通过入场通知接口获取入场id */
   @SerializedName("parking_id")
   private String parkingId;
+
   /** 车牌号 说明：车牌号，仅包括省份+车牌，不包括特殊字符。 */
   @SerializedName("plate_number")
   private String plateNumber;
+
   /** 车牌颜色 说明：车牌颜色 */
   @SerializedName("plate_color")
   private PlateColor plateColor;
+
   /**
    * 入场时间
    * 说明：用户入场时间，遵循[rfc3339](https://datatracker.ietf.org/doc/html/rfc3339)标准格式，格式为yyyy-MM-DDTHH:mm:ss+TIMEZONE，yyyy-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC
@@ -33,6 +36,7 @@ public class ParkingTradeScene {
    */
   @SerializedName("start_time")
   private String startTime;
+
   /**
    * 出场时间
    * 说明：用户出场时间，遵循[rfc3339](https://datatracker.ietf.org/doc/html/rfc3339)标准格式，格式为yyyy-MM-DDTHH:mm:ss+TIMEZONE，yyyy-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC
@@ -40,12 +44,15 @@ public class ParkingTradeScene {
    */
   @SerializedName("end_time")
   private String endTime;
+
   /** 停车场名称 说明：所在停车位车场的名称 */
   @SerializedName("parking_name")
   private String parkingName;
+
   /** 计费时长 说明：计费的时间长，单位为秒 */
   @SerializedName("charging_duration")
   private Integer chargingDuration;
+
   /** 停车场设备id 说明：停车场设备id */
   @SerializedName("device_id")
   private String deviceId;

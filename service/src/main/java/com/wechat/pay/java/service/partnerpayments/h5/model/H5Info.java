@@ -20,15 +20,19 @@ public class H5Info {
   /** 场景类型 说明：场景类型 */
   @SerializedName("type")
   private String type;
+
   /** 应用名称 说明：应用名称 */
   @SerializedName("app_name")
   private String appName;
+
   /** 网站URL 说明：网站URL */
   @SerializedName("app_url")
   private String appUrl;
+
   /** iOS平台BundleID 说明：iOS平台BundleID */
   @SerializedName("bundle_id")
   private String bundleId;
+
   /** Android平台PackageName 说明：Android平台PackageName */
   @SerializedName("package_name")
   private String packageName;

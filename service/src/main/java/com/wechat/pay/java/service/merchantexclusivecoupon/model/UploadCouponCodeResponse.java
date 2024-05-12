@@ -22,15 +22,19 @@ public class UploadCouponCodeResponse {
   /** 批次号 说明：商家券批次号 */
   @SerializedName("stock_id")
   private String stockId;
+
   /** 去重后上传code总数 说明：本次上传操作，去重后实际上传的code数目 */
   @SerializedName("total_count")
   private Long totalCount;
+
   /** 上传成功code个数 说明：本次上传操作上传成功个数 */
   @SerializedName("success_count")
   private Long successCount;
+
   /** 上传成功的code列表 说明：本次新增上传成功的code信息。 特殊规则：单个券code长度为【1，32】，条目个数限制为【1，200】。 */
   @SerializedName("success_codes")
   private List<String> successCodes;
+
   /**
    * 上传成功时间
    * 说明：上传操作完成时间，遵循[rfc3339](https://datatracker.ietf.org/doc/html/rfc3339)标准格式，格式为yyyy-MM-DDTHH:mm:ss+TIMEZONE，yyyy-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC
@@ -38,15 +42,19 @@ public class UploadCouponCodeResponse {
    */
   @SerializedName("success_time")
   private String successTime;
+
   /** 上传失败code个数 说明：本次上传操作上传失败的code数 */
   @SerializedName("fail_count")
   private Long failCount;
+
   /** 上传失败的code及原因 说明：本次导入失败的code信息，请参照错误信息，修改后重试 */
   @SerializedName("fail_codes")
   private List<UploadCouponCodeFailReason> failCodes;
+
   /** 已存在的code列表 说明：历史已存在的code列表，本次不会重复导入。 特殊规则：单个券code长度为【1，32】，条目个数限制为【1，200】。 */
   @SerializedName("exist_codes")
   private List<String> existCodes;
+
   /**
    * 本次请求中重复的code列表 说明：本次重复导入的code会被自动过滤，仅保留一个做导入，如满足要求则成功；如不满足要求，则失败；请参照报错提示修改重试。
    * 特殊规则：单个券code长度为【1，32】，条目个数限制为【1，200】。

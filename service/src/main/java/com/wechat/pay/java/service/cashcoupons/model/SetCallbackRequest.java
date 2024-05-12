@@ -20,9 +20,11 @@ public class SetCallbackRequest {
   /** 商户号 说明：微信支付商户号 */
   @SerializedName("mchid")
   private String mchid;
+
   /** 通知url地址 说明：支付通知商户url地址 */
   @SerializedName("notify_url")
   private String notifyUrl;
+
   /** 回调开关 说明：true-开启推送；false-停止推送 */
   @SerializedName("switch")
   private Boolean _switch;

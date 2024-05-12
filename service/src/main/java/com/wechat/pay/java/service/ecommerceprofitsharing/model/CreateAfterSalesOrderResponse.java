@@ -20,9 +20,11 @@ public class CreateAfterSalesOrderResponse {
   /** 子商户号 说明：分账出资的商户 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 微信订单号 说明：微信支付订单号 */
   @SerializedName("transaction_id")
   private String transactionId;
+
   /** 分账金额 说明：分账金额，单位为分，只能为整数，不能超过原订单支付金额及最大分账比例金额 */
   @SerializedName("amount")
   private Long amount;

@@ -20,30 +20,39 @@ public class OrdersEntity {
   /** 捐赠订单号 说明：捐赠订单号 */
   @SerializedName("welfare_trade_id")
   private String welfareTradeId;
+
   /** 应用ID 说明：直连商户或服务商申请的公众号或移动应用AppID */
   @SerializedName("appid")
   private String appid;
+
   /** 子商户应用ID 说明：子商户申请的公众号或移动应用AppID */
   @SerializedName("sub_appid")
   private String subAppid;
+
   /** 品牌ID 说明：品牌的品牌ID，商家进驻微信支付品牌商家后获得的品牌ID */
   @SerializedName("brand_id")
   private Long brandId;
+
   /** 捐赠来源 说明：捐赠来源 枚举值 MINIPROGRAM_PAY：一起捐小程序 ENTRUST_PAY：一块捐插件 */
   @SerializedName("donate_source")
   private String donateSource;
+
   /** 商户订单 说明：商户订单，仅在一块捐来源回调中出现 */
   @SerializedName("merchant_order")
   private MerchantOrder merchantOrder;
+
   /** 捐赠机构名称 说明：捐赠公益机构名称。 */
   @SerializedName("institution_name")
   private String institutionName;
+
   /** 捐赠项目编号 说明：本次捐赠项目编号。 */
   @SerializedName("business_id")
   private String businessId;
+
   /** 捐赠活动名称 说明：本次捐赠活动名称。 */
   @SerializedName("business_name")
   private String businessName;
+
   /**
    * 支付完成时间
    * 说明：支付完成时间，遵循rfc3339标准格式，格式为yyyy-MM-DDTHH:mm:ss+TIMEZONE，yyyy-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC
@@ -51,12 +60,15 @@ public class OrdersEntity {
    */
   @SerializedName("success_time")
   private String successTime;
+
   /** 支付者 说明：支付者信息 */
   @SerializedName("payer")
   private Payer payer;
+
   /** 订单金额 说明：订单金额信息 */
   @SerializedName("amount")
   private Amount amount;
+
   /** 设备编号 说明：设备编号，通过物料码进入爱心餐一起捐小程序捐赠时携带的设备编号参数 */
   @SerializedName("device_id")
   private String deviceId;

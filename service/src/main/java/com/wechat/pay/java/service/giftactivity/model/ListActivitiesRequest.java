@@ -23,18 +23,22 @@ public class ListActivitiesRequest {
   @SerializedName("offset")
   @Expose(serialize = false)
   private Long offset;
+
   /** 分页大小 说明：分页大小 */
   @SerializedName("limit")
   @Expose(serialize = false)
   private Long limit;
+
   /** 活动名称 说明：活动名称，支持模糊搜索 */
   @SerializedName("activity_name")
   @Expose(serialize = false)
   private String activityName;
+
   /** 活动状态 说明：活动状态 */
   @SerializedName("activity_status")
   @Expose(serialize = false)
   private ActStatus activityStatus;
+
   /** 奖品类型 说明：奖品类型，暂时只支持商家券 */
   @SerializedName("award_type")
   @Expose(serialize = false)

@@ -20,21 +20,27 @@ public class CreateReturnOrderRequest {
   /** 子商户号 说明：分账回退的接收商户，对应原分账出资的分账方商户，填写微信支付分配的商户号。（直连商户不需要，服务商需要） */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 微信分账单号 说明：微信分账单号，微信系统返回的唯一标识。微信分账单号和商户分账单号二选一填写 */
   @SerializedName("order_id")
   private String orderId;
+
   /** 商户分账单号 说明：商户系统内部的分账单号，在商户系统内部唯一，同一分账单号多次请求等同一次。微信分账单号和商户分账单号二选一填写 取值范围：[0-9a-zA-Z_*@-] */
   @SerializedName("out_order_no")
   private String outOrderNo;
+
   /** 商户回退单号 说明：此回退单号是商户在自己后台生成的一个新的回退单号，在商户后台唯一 */
   @SerializedName("out_return_no")
   private String outReturnNo;
+
   /** 回退商户号 说明：分账回退的出资商户，只能对原分账请求中成功分给商户接收方进行回退 */
   @SerializedName("return_mchid")
   private String returnMchid;
+
   /** 回退金额 说明：需要从分账接收方回退的金额，单位为分，只能为整数，不能超过原始分账单分出给该接收方的金额 */
   @SerializedName("amount")
   private Long amount;
+
   /** 回退描述 说明：分账回退的原因描述 */
   @SerializedName("description")
   private String description;

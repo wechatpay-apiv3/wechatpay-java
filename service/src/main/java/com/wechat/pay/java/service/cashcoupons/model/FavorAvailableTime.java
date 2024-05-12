@@ -20,9 +20,11 @@ public class FavorAvailableTime {
   /** 固定时间段可用 说明：固定时间段可用 */
   @SerializedName("fix_available_time")
   private FixedAvailableTime fixAvailableTime;
+
   /** 领取第二天生效 说明：true-是；false-否 */
   @SerializedName("second_day_available")
   private Boolean secondDayAvailable;
+
   /** 领取后有效时间 说明：领取后有效时间，单位分钟 */
   @SerializedName("available_time_after_receive")
   private Integer availableTimeAfterReceive;

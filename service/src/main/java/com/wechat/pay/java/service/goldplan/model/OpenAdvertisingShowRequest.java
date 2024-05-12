@@ -21,6 +21,7 @@ public class OpenAdvertisingShowRequest {
   /** 特约商户号 说明：需要开通广告展示的特约商户号，由微信支付生成并下发。 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 同业过滤标签值 说明：特约商户同业过滤的同业过滤标签值。如已设置同业过滤标签，再次请求传入，视为新增，将覆盖原有同业标签配置 */
   @SerializedName("advertising_industry_filters")
   private List<IndustryType> advertisingIndustryFilters;

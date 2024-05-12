@@ -22,6 +22,7 @@ public class QueryRefundByOutRefundNoRequest {
   @SerializedName("out_refund_no")
   @Expose(serialize = false)
   private String outRefundNo;
+
   /** 二级商户号 说明：微信支付分配给二级商户的商户号 */
   @SerializedName("sub_mchid")
   @Expose(serialize = false)

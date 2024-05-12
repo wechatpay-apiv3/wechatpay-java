@@ -22,6 +22,7 @@ public class GetAuthenticationRequest {
   @SerializedName("sub_mchid")
   @Expose(serialize = false)
   private String subMchid;
+
   /** 商家核身单号 说明：商户系统内部的商家核身单号，要求此参数只能由数字、大小写字母组成，在服务商内部唯一 */
   @SerializedName("authenticate_number")
   @Expose(serialize = false)

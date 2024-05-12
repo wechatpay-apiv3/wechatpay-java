@@ -66,6 +66,7 @@ public class BrandProfitSharingService {
     this.hostName = hostName;
     this.encryptor = requireNonNull(encryptor);
   }
+
   /** BrandProfitSharingService构造器 */
   public static class Builder {
 
@@ -136,6 +137,7 @@ public class BrandProfitSharingService {
         httpClient.execute(httpRequest, QueryBrandMerchantRatioResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 请求分账
    *
@@ -168,6 +170,7 @@ public class BrandProfitSharingService {
         httpClient.execute(httpRequest, CreateOrderResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 完结分账
    *
@@ -198,6 +201,7 @@ public class BrandProfitSharingService {
         httpClient.execute(httpRequest, FinishOrderResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询分账结果
    *
@@ -240,6 +244,7 @@ public class BrandProfitSharingService {
         httpClient.execute(httpRequest, QueryOrderResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询订单剩余待分金额
    *
@@ -276,6 +281,7 @@ public class BrandProfitSharingService {
         httpClient.execute(httpRequest, QueryOrderAmountResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 添加分账接收方
    *
@@ -306,6 +312,7 @@ public class BrandProfitSharingService {
         httpClient.execute(httpRequest, AddReceiverResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 删除分账接收方
    *
@@ -336,6 +343,7 @@ public class BrandProfitSharingService {
         httpClient.execute(httpRequest, DeleteReceiverResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 请求分账回退
    *
@@ -366,6 +374,7 @@ public class BrandProfitSharingService {
         httpClient.execute(httpRequest, CreateReturnOrderResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询分账回退结果
    *

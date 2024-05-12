@@ -20,6 +20,7 @@ public class Payer {
   /** 用户标识 说明：用户在服务商AppID下的唯一标识。 */
   @SerializedName("sp_openid")
   private String spOpenid;
+
   /** 用户子标识 说明：用户在子商户AppID下的唯一标识。 */
   @SerializedName("sub_openid")
   private String subOpenid;

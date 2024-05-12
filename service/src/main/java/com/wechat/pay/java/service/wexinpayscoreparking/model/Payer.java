@@ -20,6 +20,7 @@ public class Payer {
   /** 用户在appid下的标识 说明：用户在appid下的唯一标识 */
   @SerializedName("openid")
   private String openid;
+
   /** 用户在sub_appid下的标识 说明：用户在sub_appid下的标识，商户扣费时传入了sub_appid，则会返回该用户在sub_appid下的标识 */
   @SerializedName("sub_openid")
   private String subOpenid;

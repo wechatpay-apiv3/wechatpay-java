@@ -21,12 +21,15 @@ public class CouponCollection {
   /** 结果集 说明：结果集 */
   @SerializedName("data")
   private List<Coupon> data;
+
   /** 查询结果总数 说明：查询结果总数 */
   @SerializedName("total_count")
   private Integer totalCount;
+
   /** 分页大小 说明：分页大小 */
   @SerializedName("limit")
   private Integer limit;
+
   /** 分页页码 说明：分页页码 */
   @SerializedName("offset")
   private Integer offset;

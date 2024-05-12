@@ -21,15 +21,19 @@ public class AvailableSingleitemCollection {
   /** 可用单品编码总数 说明：可用单品编码总数 */
   @SerializedName("total_count")
   private Integer totalCount;
+
   /** 可用单品编码 说明：可用单品编码 */
   @SerializedName("data")
   private List<String> data;
+
   /** 分页页码 说明：分页页码 */
   @SerializedName("offset")
   private Integer offset;
+
   /** 分页大小 说明：分页大小 */
   @SerializedName("limit")
   private Integer limit;
+
   /** 批次号 说明：批次号 */
   @SerializedName("stock_id")
   private String stockId;

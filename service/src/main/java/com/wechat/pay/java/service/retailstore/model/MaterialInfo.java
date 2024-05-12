@@ -20,6 +20,7 @@ public class MaterialInfo {
   /** 物料码ID 说明：物料码ID */
   @SerializedName("material_id")
   private String materialId;
+
   /** 物料码链接 说明：物料码链接, 用于生成活动物料二维码 */
   @SerializedName("material_url")
   private String materialUrl;

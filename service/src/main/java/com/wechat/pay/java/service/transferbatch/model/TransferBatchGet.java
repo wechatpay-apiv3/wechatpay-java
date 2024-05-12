@@ -21,15 +21,19 @@ public class TransferBatchGet {
   /** 商户号 说明：微信支付分配的商户号 */
   @SerializedName("mchid")
   private String mchid;
+
   /** 商家批次单号 说明：商户系统内部的商家批次单号，在商户系统内部唯一 */
   @SerializedName("out_batch_no")
   private String outBatchNo;
+
   /** 微信批次单号 说明：微信批次单号，微信商家转账系统返回的唯一标识 */
   @SerializedName("batch_id")
   private String batchId;
+
   /** 商户appid 说明：申请商户号的appid或商户号绑定的appid（企业号corpid即为此appid） */
   @SerializedName("appid")
   private String appid;
+
   /**
    * 批次状态 说明：WAIT_PAY: 待付款确认。需要付款出资商户在商家助手小程序或服务商助手小程序进行付款确认
    * ACCEPTED:已受理。批次已受理成功，若发起批量转账的30分钟后，转账批次单仍处于该状态，可能原因是商户账户余额不足等。商户可查询账户资金流水，若该笔转账批次单的扣款已经发生，则表示批次已经进入转账中，请再次查单确认
@@ -37,42 +41,55 @@ public class TransferBatchGet {
    */
   @SerializedName("batch_status")
   private String batchStatus;
+
   /** 批次类型 说明：API:API方式发起 WEB:页面方式发起 */
   @SerializedName("batch_type")
   private String batchType;
+
   /** 批次名称 说明：该笔批量转账的名称 */
   @SerializedName("batch_name")
   private String batchName;
+
   /** 批次备注 说明：转账说明，UTF8编码，最多允许32个字符 */
   @SerializedName("batch_remark")
   private String batchRemark;
+
   /** 批次关闭原因 说明：如果批次单状态为“CLOSED”（已关闭），则有关闭原因 */
   @SerializedName("close_reason")
   private CloseReasonType closeReason;
+
   /** 转账总金额 说明：转账金额单位为“分” */
   @SerializedName("total_amount")
   private Long totalAmount;
+
   /** 转账总笔数 说明：一个转账批次单最多发起三千笔转账 */
   @SerializedName("total_num")
   private Integer totalNum;
+
   /** 批次创建时间 说明：批次受理成功时返回，按照使用rfc3339所定义的格式，格式为YYYY-MM-DDThh:mm:ss+TIMEZONE */
   @SerializedName("create_time")
   private String createTime;
+
   /** 批次更新时间 说明：批次最近一次状态变更的时间，按照使用rfc3339所定义的格式，格式为YYYY-MM-DDThh:mm:ss+TIMEZONE */
   @SerializedName("update_time")
   private String updateTime;
+
   /** 转账成功金额 说明：转账成功的金额，单位为“分”。当批次状态为“PROCESSING”（转账中）时，转账成功金额随时可能变化 */
   @SerializedName("success_amount")
   private Long successAmount;
+
   /** 转账成功笔数 说明：转账成功的笔数。当批次状态为“PROCESSING”（转账中）时，转账成功笔数随时可能变化 */
   @SerializedName("success_num")
   private Integer successNum;
+
   /** 转账失败金额 说明：转账失败的金额，单位为“分” */
   @SerializedName("fail_amount")
   private Long failAmount;
+
   /** 转账失败笔数 说明：转账失败的笔数 */
   @SerializedName("fail_num")
   private Integer failNum;
+
   /** 转账场景ID 说明：指定的转账场景ID */
   @SerializedName("transfer_scene_id")
   private String transferSceneId;

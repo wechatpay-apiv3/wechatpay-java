@@ -21,12 +21,15 @@ public class ActParticipateMchInfo {
   /** 商户Id 说明：商户Id */
   @SerializedName("mchid")
   private String mchid;
+
   /** 商户名称 说明：商户名称 */
   @SerializedName("merchant_name")
   private String merchantName;
+
   /** 创建时间 说明：创建时间 */
   @SerializedName("create_time")
   private String createTime;
+
   /** 更新时间 说明：更新时间 */
   @SerializedName("update_time")
   private String updateTime;

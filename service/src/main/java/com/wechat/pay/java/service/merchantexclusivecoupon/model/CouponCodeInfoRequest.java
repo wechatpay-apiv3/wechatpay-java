@@ -23,10 +23,12 @@ public class CouponCodeInfoRequest {
   @SerializedName("stock_id")
   @Expose(serialize = false)
   private String stockId;
+
   /** 商户上传code 说明：商户上传code */
   @SerializedName("coupon_code")
   @Expose(serialize = false)
   private String couponCode;
+
   /** 公众账号ID 说明：公众账号ID */
   @SerializedName("appid")
   @Expose(serialize = false)

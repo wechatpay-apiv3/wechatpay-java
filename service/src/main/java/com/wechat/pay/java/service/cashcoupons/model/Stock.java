@@ -20,51 +20,67 @@ public class Stock {
   /** 批次号 说明：批次id */
   @SerializedName("stock_id")
   private String stockId;
+
   /** 批次创建方商户号 说明：微信为创建方商户分配的商户号 */
   @SerializedName("stock_creator_mchid")
   private String stockCreatorMchid;
+
   /** 批次名称 说明：批次名称 */
   @SerializedName("stock_name")
   private String stockName;
+
   /** 批次状态 说明：批次状态： unactivated-未激活；audit-审核中；running-运行中；stoped-已停止；paused-暂停发放 */
   @SerializedName("status")
   private String status;
+
   /** 创建时间 说明：批次创建时间 */
   @SerializedName("create_time")
   private String createTime;
+
   /** 使用说明 说明：批次描述信息 */
   @SerializedName("description")
   private String description;
+
   /** 满减券批次使用规则 说明：普通发券批次特定信息 */
   @SerializedName("stock_use_rule")
   private StockUseRule stockUseRule;
+
   /** 可用开始时间 说明：可用开始时间 */
   @SerializedName("available_begin_time")
   private String availableBeginTime;
+
   /** 可用结束时间 说明：可用结束时间 */
   @SerializedName("available_end_time")
   private String availableEndTime;
+
   /** 已发券数量 说明：已发券数量 */
   @SerializedName("distributed_coupons")
   private Integer distributedCoupons;
+
   /** 是否无资金流 说明：是否无资金流，ture-是；false-否 */
   @SerializedName("no_cash")
   private Boolean noCash;
+
   /** 激活批次的时间 说明：批次激活开启时间 */
   @SerializedName("start_time")
   private String startTime;
+
   /** 终止批次的时间 说明：批次永久停止时间 */
   @SerializedName("stop_time")
   private String stopTime;
+
   /** 减至批次特定信息 说明：单品优惠特定信息 */
   @SerializedName("cut_to_message")
   private CutTypeMsg cutToMessage;
+
   /** 是否单品优惠 说明：true-是；false-否 */
   @SerializedName("singleitem")
   private Boolean singleitem;
+
   /** 批次类型 说明：NORMAL-代金券批次；DISCOUNT_CUT-立减与折扣；OTHER-其他 */
   @SerializedName("stock_type")
   private String stockType;
+
   /** 卡包ID 说明：微信卡包ID */
   @SerializedName("card_id")
   private String cardId;

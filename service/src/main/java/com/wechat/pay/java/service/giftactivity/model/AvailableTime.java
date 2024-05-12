@@ -21,6 +21,7 @@ public class AvailableTime {
   /** 可用开始时间 说明：可用开始时间 */
   @SerializedName("begin_time")
   private String beginTime;
+
   /** 可用结束时间 说明：可用结束时间 */
   @SerializedName("end_time")
   private String endTime;

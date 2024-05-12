@@ -20,24 +20,31 @@ public class SubsidiesCreateEntity {
   /** 电商平台二级商户号 说明：补差的电商平台二级商户，填写微信支付分配的商户号 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 微信订单号 说明：微信支付订单号 */
   @SerializedName("transaction_id")
   private String transactionId;
+
   /** 微信补差单号 说明：微信补差单号，微信系统返回的唯一标识 */
   @SerializedName("subsidy_id")
   private String subsidyId;
+
   /** 补差描述 说明：补差描述 */
   @SerializedName("description")
   private String description;
+
   /** 补差金额 说明：补差金额 */
   @SerializedName("amount")
   private Long amount;
+
   /** 补差单结果 说明：补差单结果 */
   @SerializedName("result")
   private CreateStatus result;
+
   /** 补差完成时间 说明：补差完成时间，遵循RFC3339标准格式 */
   @SerializedName("success_time")
   private String successTime;
+
   /** 商户补差单号 说明：商户系统内部的补差单号，在商户系统内部唯一，同一补差单号多次请求等同一次。只能是数字、大小写字母_-|*@ */
   @SerializedName("out_subsidy_no")
   private String outSubsidyNo;

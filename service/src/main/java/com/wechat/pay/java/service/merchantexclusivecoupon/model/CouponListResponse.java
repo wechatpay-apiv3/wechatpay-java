@@ -22,12 +22,15 @@ public class CouponListResponse {
   /** 结果集 */
   @SerializedName("data")
   private List<CouponEntity> data;
+
   /** 总数量 说明：总数量 */
   @SerializedName("total_count")
   private Integer totalCount;
+
   /** 分页大小 说明：分页大小 */
   @SerializedName("limit")
   private Integer limit;
+
   /** 分页页码 说明：分页页码 */
   @SerializedName("offset")
   private Integer offset;

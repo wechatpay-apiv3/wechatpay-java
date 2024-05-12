@@ -20,30 +20,39 @@ public class PromotionDetail {
   /** 券ID 说明：券或者立减优惠id */
   @SerializedName("coupon_id")
   private String couponId;
+
   /** 优惠名称 说明：优惠名称 */
   @SerializedName("name")
   private String name;
+
   /** 优惠范围 说明：GLOBAL-全场代金券， SINGLE-单品优惠 */
   @SerializedName("scope")
   private String scope;
+
   /** 优惠类型 说明：枚举值： CASH：充值型代金券 NOCASH：免充值型代金券 */
   @SerializedName("type")
   private String type;
+
   /** 活动ID 说明：在微信商户后台配置的批次ID */
   @SerializedName("stock_id")
   private String stockId;
+
   /** 优惠券面额 说明：用户享受优惠的金额 */
   @SerializedName("amount")
   private Long amount;
+
   /** 微信出资 说明：特指由微信支付商户平台创建的优惠，出资金额等于本项优惠总金额，单位为分 */
   @SerializedName("wechatpay_contribute")
   private Long wechatpayContribute;
+
   /** 商户出资 说明：特指商户自己创建的优惠，出资金额等于本项优惠总金额，单位为分 */
   @SerializedName("merchant_contribute")
   private Long merchantContribute;
+
   /** 其他出资 说明：其他出资方出资金额，单位为分 */
   @SerializedName("other_contribute")
   private Long otherContribute;
+
   /** 优惠币种 说明：CNY：人民币，境内商户号仅支持人民币。 */
   @SerializedName("currency")
   private String currency;

@@ -23,6 +23,7 @@ public class PayReceiptListRequest {
   @SerializedName("stock_id")
   @Expose(serialize = false)
   private String stockId;
+
   /**
    * 商家券code 说明：券的唯一标识。 在WECHATPAY\\_MODE的券code模式下，商家券code是由微信支付生成的唯一ID；
    * 在MERCHANT\\_UPLOAD、MERCHANT\\_API的券code模式下，商家券code是由商户上传或指定，在批次下保证唯一；
@@ -30,6 +31,7 @@ public class PayReceiptListRequest {
   @SerializedName("coupon_code")
   @Expose(serialize = false)
   private String couponCode;
+
   /** 补差付款请求单号 说明：商户调用补差付款API时填写的“业务请求唯一单号” */
   @SerializedName("out_subsidy_no")
   @Expose(serialize = false)

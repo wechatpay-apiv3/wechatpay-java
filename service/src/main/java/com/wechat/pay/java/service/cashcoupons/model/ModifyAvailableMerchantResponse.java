@@ -20,6 +20,7 @@ public class ModifyAvailableMerchantResponse {
   /** 生效时间 说明：生效时间 */
   @SerializedName("effect_time")
   private String effectTime;
+
   /** 批次号 说明：批次号 */
   @SerializedName("stock_id")
   private String stockId;

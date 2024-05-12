@@ -20,15 +20,19 @@ public class OrderInfo {
   /** 支付订单的微信用户OpenID 说明：支付订单的微信用户OpenID */
   @SerializedName("payer_openid")
   private String payerOpenid;
+
   /** 商户订单号 说明：商户订单号 */
   @SerializedName("out_trade_no")
   private String outTradeNo;
+
   /** 订单总金额 说明：订单总金额（单位：分） */
   @SerializedName("total_fee")
   private Long totalFee;
+
   /** 门店ID 说明：门店ID */
   @SerializedName("store_id")
   private String storeId;
+
   /** 门店商户号 说明：门店商户号 */
   @SerializedName("store_merchant_id")
   private String storeMerchantId;

@@ -20,6 +20,7 @@ public class CutTypeMsg {
   /** 可用优惠的商品最高单价 说明：可用优惠的商品最高单价，单位分 */
   @SerializedName("single_price_max")
   private Long singlePriceMax;
+
   /** 减至后的优惠单价 说明：减至后的优惠单价 */
   @SerializedName("cut_to_price")
   private Long cutToPrice;

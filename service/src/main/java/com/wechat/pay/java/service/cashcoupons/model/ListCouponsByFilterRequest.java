@@ -22,6 +22,7 @@ public class ListCouponsByFilterRequest {
   @SerializedName("openid")
   @Expose(serialize = false)
   private String openid;
+
   /**
    * 公众账号ID
    * 说明：微信为发券方商户分配的公众账号ID，接口传入的所有appid应该为公众号的appid（在mp.weixin.qq.com申请的），不能为APP的appid（在open.weixin.qq.com申请的）。
@@ -29,30 +30,37 @@ public class ListCouponsByFilterRequest {
   @SerializedName("appid")
   @Expose(serialize = false)
   private String appid;
+
   /** 批次号 说明：批次号，是否指定批次号查询，填写available_mchid，该字段不生效 */
   @SerializedName("stock_id")
   @Expose(serialize = false)
   private String stockId;
+
   /** 券状态 说明：代金券状态：SENDED-可用，USED-已实扣，填写available_mchid，该字段不生效 */
   @SerializedName("status")
   @Expose(serialize = false)
   private String status;
+
   /** 创建批次的商户号 说明：批次创建方商户号。创建批次的商户号，批次发放商户号，可用商户号三个参数，任意选填一个。 */
   @SerializedName("creator_mchid")
   @Expose(serialize = false)
   private String creatorMchid;
+
   /** 批次发放商户号 说明：批次发放商户号。创建批次的商户号，批次发放商户号，可用商户号三个参数，任意选填一个。 */
   @SerializedName("sender_mchid")
   @Expose(serialize = false)
   private String senderMchid;
+
   /** 可用商户号 说明：可用商户号。 创建批次的商户号，批次发放商户号，可用商户号三个参数，任意选填一个。 */
   @SerializedName("available_mchid")
   @Expose(serialize = false)
   private String availableMchid;
+
   /** 分页页码 说明：分页页码，默认0，填写available_mchid，该字段不生效 */
   @SerializedName("offset")
   @Expose(serialize = false)
   private Integer offset;
+
   /** 分页大小 说明：分页大小，默认20，填写available_mchid，该字段不生效 */
   @SerializedName("limit")
   @Expose(serialize = false)

@@ -75,6 +75,7 @@ public class CashCouponsService {
     this.httpClient = requireNonNull(httpClient);
     this.hostName = hostName;
   }
+
   /** CashCouponsService构造器 */
   public static class Builder {
 
@@ -137,6 +138,7 @@ public class CashCouponsService {
     HttpResponse<Callback> httpResponse = httpClient.execute(httpRequest, Callback.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 设置代金券消息通知地址
    *
@@ -167,6 +169,7 @@ public class CashCouponsService {
         httpClient.execute(httpRequest, SetCallbackResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 根据过滤条件查询用户的券
    *
@@ -227,6 +230,7 @@ public class CashCouponsService {
         httpClient.execute(httpRequest, CouponCollection.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询代金券详情
    *
@@ -269,6 +273,7 @@ public class CashCouponsService {
     HttpResponse<Coupon> httpResponse = httpClient.execute(httpRequest, Coupon.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 发放指定批次的代金券
    *
@@ -303,6 +308,7 @@ public class CashCouponsService {
         httpClient.execute(httpRequest, SendCouponResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 创建代金券批次
    *
@@ -333,6 +339,7 @@ public class CashCouponsService {
         httpClient.execute(httpRequest, CreateCouponStockResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询代金券可用商户
    *
@@ -379,6 +386,7 @@ public class CashCouponsService {
         httpClient.execute(httpRequest, AvailableMerchantCollection.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询可核销商品编码
    *
@@ -425,6 +433,7 @@ public class CashCouponsService {
         httpClient.execute(httpRequest, AvailableSingleitemCollection.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 条件查询批次列表
    *
@@ -476,6 +485,7 @@ public class CashCouponsService {
         httpClient.execute(httpRequest, StockCollection.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 暂停批次
    *
@@ -510,6 +520,7 @@ public class CashCouponsService {
         httpClient.execute(httpRequest, PauseStockResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询批次详情
    *
@@ -548,6 +559,7 @@ public class CashCouponsService {
     HttpResponse<Stock> httpResponse = httpClient.execute(httpRequest, Stock.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 下载批次退款明细
    *
@@ -582,6 +594,7 @@ public class CashCouponsService {
         httpClient.execute(httpRequest, RefundFlowResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 重启批次
    *
@@ -617,6 +630,7 @@ public class CashCouponsService {
         httpClient.execute(httpRequest, RestartStockResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 激活开启批次
    *
@@ -651,6 +665,7 @@ public class CashCouponsService {
         httpClient.execute(httpRequest, StartStockResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 终止批次
    *
@@ -685,6 +700,7 @@ public class CashCouponsService {
         httpClient.execute(httpRequest, StopStockResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 下载批次核销明细
    *

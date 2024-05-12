@@ -20,18 +20,23 @@ public class OrderReceiverDetail {
   /** 分账接收商户号 说明：仅分账接收方类型为MERCHANT_ID时，填写微信支付分配的商户号 */
   @SerializedName("receiver_mchid")
   private String receiverMchid;
+
   /** 分账金额 说明：分账金额，单位为分，只能为整数，不能超过原订单支付金额及最大分账比例金额 */
   @SerializedName("amount")
   private Long amount;
+
   /** 分账描述 说明：分账的原因描述，分账账单中需要体现 */
   @SerializedName("description")
   private String description;
+
   /** 分账结果 说明：枚举值： 1. PENDING：待分账 2. SUCCESS：分账成功 3. CLOSED：已关闭 */
   @SerializedName("result")
   private String result;
+
   /** 分账完成时间 说明：分账完成时间，遵循RFC3339标准格式 */
   @SerializedName("finish_time")
   private String finishTime;
+
   /**
    * 分账失败原因 说明：分账失败原因。包含以下枚举值： 1. ACCOUNT\\_ABNORMAL : 分账接收账户异常 2. NO\\_RELATION : 分账关系已解除 3.
    * RECEIVER\\_HIGH\\_RISK : 高风险接收方 4. RECEIVER\\_REAL\\_NAME\\_NOT\\_VERIFIED : 接收方未实名 5.
@@ -40,18 +45,21 @@ public class OrderReceiverDetail {
    */
   @SerializedName("fail_reason")
   private String failReason;
+
   /**
    * 接收方类型 说明：接收方类型 枚举值： MERCHANT\\_ID：商户号（mch\\_id或者sub\\_mch\\_id）
    * PERSONAL\\_OPENID：个人OpenID（由服务商的APPID转换得到） PERSONAL\\_SUB\\_OPENID：个人SubOpenID（由品牌主的APPID转换得到）
    */
   @SerializedName("type")
   private String type;
+
   /**
    * 接收方账号 说明：接收方账号。 枚举值： 类型是MERCHANT\\_ID时，是商户号（mch\\_id或者sub\\_mch\\_id）
    * 类型是PERSONAL\\_OPENID时，是个人openid，[openid获取方法](https://pay.weixin.qq.com/wiki/doc/apiv3_partner/open/pay/chapter3_3_1.shtml#part-13)
    */
   @SerializedName("receiver_account")
   private String receiverAccount;
+
   /** 分账明细单号 说明：微信分账明细单号，每笔分账业务执行的明细单号，可与资金账单对账使用 */
   @SerializedName("detail_id")
   private String detailId;

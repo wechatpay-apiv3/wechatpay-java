@@ -53,10 +53,13 @@ public class MerchantExclusiveCouponServiceExample {
 
   /** 商户号 */
   public static String merchantId = "190000****";
+
   /** 商户API私钥路径 */
   public static String privateKeyPath = "/Users/yourname/your/path/apiclient_key.pem";
+
   /** 商户证书序列号 */
   public static String merchantSerialNumber = "5157F09EFDC096DE15EBE81A47057A72********";
+
   /** 商户APIV3密钥 */
   public static String apiV3Key = "...";
 
@@ -77,135 +80,159 @@ public class MerchantExclusiveCouponServiceExample {
     service = new MerchantExclusiveCouponService.Builder().config(config).build();
     // ... 调用接口
   }
+
   /** 查询预存code详情 */
   public static CouponCodeInfoResponse couponCodeInfo() {
 
     CouponCodeInfoRequest request = new CouponCodeInfoRequest();
     return service.couponCodeInfo(request);
   }
+
   /** 创建商家券 */
   public static CreateBusiFavorStockResponse createBusifavorStock() {
     CreateBusiFavorStockRequest request = new CreateBusiFavorStockRequest();
     return service.createBusifavorStock(request);
   }
+
   /** 删除预存code */
   public static DeleteCouponCodeResponse deleteCouponCode() {
 
     DeleteCouponCodeRequest request = new DeleteCouponCodeRequest();
     return service.deleteCouponCode(request);
   }
+
   /** 修改批次预算 */
   public static ModifyBudgetResponse modifyBudget() {
 
     ModifyBudgetRequest request = new ModifyBudgetRequest();
     return service.modifyBudget(request);
   }
+
   /** 修改商家券基本信息 */
   public static void modifyStockInfo() {
 
     ModifyStockInfoRequest request = new ModifyStockInfoRequest();
     service.modifyStockInfo(request);
   }
+
   /** 查询预存code列表 */
   public static CouponCodeListResponse queryCouponCodeList() {
 
     QueryCouponCodeListRequest request = new QueryCouponCodeListRequest();
     return service.queryCouponCodeList(request);
   }
+
   /** 查询商家券批次详情 */
   public static StockGetResponse queryStock() {
 
     QueryStockRequest request = new QueryStockRequest();
     return service.queryStock(request);
   }
+
   /** 上传预存code */
   public static UploadCouponCodeResponse uploadCouponCode() {
 
     UploadCouponCodeRequest request = new UploadCouponCodeRequest();
     return service.uploadCouponCode(request);
   }
+
   /** 获取商家券事件通知地址 */
   public static GetCouponNotifyResponse getCouponNotify() {
 
     GetCouponNotifyRequest request = new GetCouponNotifyRequest();
     return service.getCouponNotify(request);
   }
+
   /** 设置商家券事件通知地址 */
   public static SetCouponNotifyResponse setCouponNotify() {
     SetCouponNotifyRequest request = new SetCouponNotifyRequest();
     return service.setCouponNotify(request);
   }
+
   /** 关联订单信息 */
   public static AssociateTradeInfoResponse associateTradeInfo() {
     AssociateTradeInfoRequest request = new AssociateTradeInfoRequest();
     return service.associateTradeInfo(request);
   }
+
   /** 使券失效 */
   public static DeactivateCouponResponse deactivateCoupon() {
     DeactivateCouponRequest request = new DeactivateCouponRequest();
     return service.deactivateCoupon(request);
   }
+
   /** 取消关联订单信息 */
   public static DisassociateTradeInfoResponse disassociateTradeInfo() {
     DisassociateTradeInfoRequest request = new DisassociateTradeInfoRequest();
     return service.disassociateTradeInfo(request);
   }
+
   /** 根据过滤条件查询用户的券 */
   public static CouponListResponse listCouponsByFilter() {
 
     ListCouponsByFilterRequest request = new ListCouponsByFilterRequest();
     return service.listCouponsByFilter(request);
   }
+
   /** 查询用户券详情 */
   public static CouponEntity queryCoupon() {
 
     QueryCouponRequest request = new QueryCouponRequest();
     return service.queryCoupon(request);
   }
+
   /** 申请退券 */
   public static ReturnCouponResponse returnCoupon() {
     ReturnCouponRequest request = new ReturnCouponRequest();
     return service.returnCoupon(request);
   }
+
   /** 向用户发券 */
   public static SendCouponResponse sendCoupon() {
     SendCouponRequest request = new SendCouponRequest();
     return service.sendCoupon(request);
   }
+
   /** 发放政府消费卡 */
   public static CouponSendGovCardResponse sendGovCard() {
 
     SendGovCardRequest request = new SendGovCardRequest();
     return service.sendGovCard(request);
   }
+
   /** 核销用户的券 */
   public static UseCouponResponse useCoupon() {
     UseCouponRequest request = new UseCouponRequest();
     return service.useCoupon(request);
   }
+
   /** 查询商家券营销补差付款单详情 */
   public static SubsidyPayReceipt payReceiptInfo() {
 
     PayReceiptInfoRequest request = new PayReceiptInfoRequest();
     return service.payReceiptInfo(request);
   }
+
   /** 查询商家券营销补差付款单列表 */
   public static SubsidyPayReceiptListResponse payReceiptList() {
 
     PayReceiptListRequest request = new PayReceiptListRequest();
     return service.payReceiptList(request);
   }
+
   /** 查询商家券营销补差回退单详情 */
   public static SubsidyReturnReceipt returnReceiptInfo() {
 
     ReturnReceiptInfoRequest request = new ReturnReceiptInfoRequest();
     return service.returnReceiptInfo(request);
   }
+
   /** 商家券营销补差付款 */
   public static SubsidyPayReceipt subsidyPay() {
     SubsidyPayRequest request = new SubsidyPayRequest();
     return service.subsidyPay(request);
   }
+
   /** 商家券营销补差回退 */
   public static SubsidyReturnReceipt subsidyReturn() {
     SubsidyReturnRequest request = new SubsidyReturnRequest();

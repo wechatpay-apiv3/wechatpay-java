@@ -20,18 +20,23 @@ public class StockRule {
   /** 发放总上限 说明：最大发券数 */
   @SerializedName("max_coupons")
   private Long maxCoupons;
+
   /** 总预算 说明：总消耗金额，单位分 */
   @SerializedName("max_amount")
   private Long maxAmount;
+
   /** 单天发放上限金额 说明：单天最高消耗金额，单位分 */
   @SerializedName("max_amount_by_day")
   private Long maxAmountByDay;
+
   /** 单个用户可领个数 说明：单个用户可领个数 */
   @SerializedName("max_coupons_per_user")
   private Integer maxCouponsPerUser;
+
   /** 是否开启自然人限制 说明：true-是；false-否，默认否 */
   @SerializedName("natural_person_limit")
   private Boolean naturalPersonLimit;
+
   /** api发券防刷 说明：true-是；false-否，默认否 */
   @SerializedName("prevent_api_abuse")
   private Boolean preventApiAbuse;

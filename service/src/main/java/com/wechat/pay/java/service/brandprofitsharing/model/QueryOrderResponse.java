@@ -23,26 +23,33 @@ public class QueryOrderResponse {
   /** 子商户号 说明：订单收款方商户号，可以是品牌主商户号，也可以是门店商户号，填写微信支付分配的商户号。 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 微信订单号 说明：微信支付订单号 */
   @SerializedName("transaction_id")
   private String transactionId;
+
   /**
    * 商户分账单号 说明：商户系统内部的分账单号，在商户系统内部唯一（单次分账、多次分账、完结分账应使用不同的商户分账单号），同一分账单号多次请求等同一次，只能是数字、大小写字母_-|*@。
    */
   @SerializedName("out_order_no")
   private String outOrderNo;
+
   /** 微信分账单号 说明：微信分账单号，微信系统返回的唯一标识 */
   @SerializedName("order_id")
   private String orderId;
+
   /** 分账单状态 说明：分账单状态（每个接收方的分账结果请查看receivers中的result字段），枚举值： - PROCESSING：处理中 - FINISHED：分账完成 */
   @SerializedName("status")
   private String status;
+
   /** 分账接收方列表 说明：分账接收方列表 */
   @SerializedName("receivers")
   private List<ReceiverResultEntity> receivers = new ArrayList<ReceiverResultEntity>();
+
   /** 分账完结金额 说明：分账完结的分账金额，单位为分， 仅当查询分账完结的执行结果时，存在本字段 */
   @SerializedName("finish_amount")
   private Long finishAmount;
+
   /** 分账完结描述 说明：分账完结的原因描述，仅当查询分账完结的执行结果时，存在本字段 */
   @SerializedName("finish_description")
   private String finishDescription;

@@ -23,46 +23,59 @@ public class TransferDetailEntity {
   /** 商户号 说明：微信支付分配的商户号 */
   @SerializedName("mchid")
   private String mchid;
+
   /** 商家批次单号 说明：商户系统内部的商家批次单号，在商户系统内部唯一 */
   @SerializedName("out_batch_no")
   private String outBatchNo;
+
   /** 微信批次单号 说明：微信批次单号，微信商家转账系统返回的唯一标识 */
   @SerializedName("batch_id")
   private String batchId;
+
   /** 商户appid 说明：申请商户号的appid或商户号绑定的appid（企业号corpid即为此appid） */
   @SerializedName("appid")
   private String appid;
+
   /** 商家明细单号 说明：商户系统内部区分转账批次单下不同转账明细单的唯一标识 */
   @SerializedName("out_detail_no")
   private String outDetailNo;
+
   /** 微信明细单号 说明：微信支付系统内部区分转账批次单下不同转账明细单的唯一标识 */
   @SerializedName("detail_id")
   private String detailId;
+
   /**
    * 明细状态 说明：INIT: 初始态。 系统转账校验中 WAIT_PAY: 待确认。待商户确认, 符合免密条件时, 系统会自动扭转为转账中
    * PROCESSING:转账中。正在处理中，转账结果尚未明确 SUCCESS:转账成功 FAIL:转账失败。需要确认失败原因后，再决定是否重新发起对该笔明细单的转账（并非整个转账批次单）
    */
   @SerializedName("detail_status")
   private String detailStatus;
+
   /** 转账金额 说明：转账金额单位为“分” */
   @SerializedName("transfer_amount")
   private Long transferAmount;
+
   /** 转账备注 说明：单条转账备注（微信用户会收到该备注），UTF8编码，最多允许32个字符 */
   @SerializedName("transfer_remark")
   private String transferRemark;
+
   /** 明细失败原因 说明：如果转账失败则有失败原因 */
   @SerializedName("fail_reason")
   private FailReasonType failReason;
+
   /** 收款用户openid 说明：商户appid下，某用户的openid */
   @SerializedName("openid")
   private String openid;
+
   /** 收款用户姓名 说明：收款方姓名。采用标准RSA算法，公钥由微信侧提供 商户转账时传入了收款用户姓名、查询时会返回收款用户姓名 */
   @Encryption
   @SerializedName("user_name")
   private String userName;
+
   /** 转账发起时间 说明：转账发起的时间，按照使用rfc3339所定义的格式，格式为YYYY-MM-DDThh:mm:ss+TIMEZONE */
   @SerializedName("initiate_time")
   private String initiateTime;
+
   /** 明细更新时间 说明：明细最后一次状态变更的时间，按照使用rfc3339所定义的格式，格式为YYYY-MM-DDThh:mm:ss+TIMEZONE */
   @SerializedName("update_time")
   private String updateTime;

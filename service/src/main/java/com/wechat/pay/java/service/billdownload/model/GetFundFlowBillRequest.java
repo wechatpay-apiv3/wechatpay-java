@@ -22,10 +22,12 @@ public class GetFundFlowBillRequest {
   @SerializedName("bill_date")
   @Expose(serialize = false)
   private String billDate;
+
   /** 资金账户类型 说明：资金账户类型，不填默认是BASIC */
   @SerializedName("account_type")
   @Expose(serialize = false)
   private AccountType accountType;
+
   /** 压缩格式 说明：压缩格式，不填则以不压缩的方式返回数据流 */
   @SerializedName("tar_type")
   @Expose(serialize = false)

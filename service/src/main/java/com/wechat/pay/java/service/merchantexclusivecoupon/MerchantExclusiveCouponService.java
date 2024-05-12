@@ -89,6 +89,7 @@ public class MerchantExclusiveCouponService {
     this.httpClient = requireNonNull(httpClient);
     this.hostName = hostName;
   }
+
   /** MerchantExclusiveCouponService构造器 */
   public static class Builder {
 
@@ -159,6 +160,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, CouponCodeInfoResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 创建商家券
    *
@@ -189,6 +191,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, CreateBusiFavorStockResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 删除预存code
    *
@@ -232,6 +235,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, DeleteCouponCodeResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 修改批次预算
    *
@@ -267,6 +271,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, ModifyBudgetResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 修改商家券基本信息
    *
@@ -298,6 +303,7 @@ public class MerchantExclusiveCouponService {
             .build();
     httpClient.execute(httpRequest, null);
   }
+
   /**
    * 查询预存code列表
    *
@@ -347,6 +353,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, CouponCodeListResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询商家券批次详情
    *
@@ -380,6 +387,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, StockGetResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 上传预存code
    *
@@ -415,6 +423,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, UploadCouponCodeResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 获取商家券事件通知地址
    *
@@ -451,6 +460,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, GetCouponNotifyResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 设置商家券事件通知地址
    *
@@ -481,6 +491,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, SetCouponNotifyResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 关联订单信息
    *
@@ -511,6 +522,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, AssociateTradeInfoResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 使券失效
    *
@@ -541,6 +553,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, DeactivateCouponResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 取消关联订单信息
    *
@@ -572,6 +585,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, DisassociateTradeInfoResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 根据过滤条件查询用户的券
    *
@@ -633,6 +647,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, CouponListResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询用户券详情
    *
@@ -671,6 +686,7 @@ public class MerchantExclusiveCouponService {
     HttpResponse<CouponEntity> httpResponse = httpClient.execute(httpRequest, CouponEntity.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 申请退券
    *
@@ -701,6 +717,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, ReturnCouponResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 向用户发券
    *
@@ -731,6 +748,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, SendCouponResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 发放政府消费卡
    *
@@ -766,6 +784,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, CouponSendGovCardResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 核销用户的券
    *
@@ -796,6 +815,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, UseCouponResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询商家券营销补差付款单详情
    *
@@ -832,6 +852,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, SubsidyPayReceipt.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询商家券营销补差付款单列表
    *
@@ -875,6 +896,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, SubsidyPayReceiptListResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询商家券营销补差回退单详情
    *
@@ -912,6 +934,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, SubsidyReturnReceipt.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 商家券营销补差付款
    *
@@ -943,6 +966,7 @@ public class MerchantExclusiveCouponService {
         httpClient.execute(httpRequest, SubsidyPayReceipt.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 商家券营销补差回退
    *

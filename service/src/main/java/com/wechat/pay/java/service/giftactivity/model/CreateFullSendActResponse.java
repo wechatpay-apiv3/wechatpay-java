@@ -21,6 +21,7 @@ public class CreateFullSendActResponse {
   /** 活动id 说明：活动id */
   @SerializedName("activity_id")
   private String activityId;
+
   /** 创建时间 说明：创建时间 */
   @SerializedName("create_time")
   private String createTime;

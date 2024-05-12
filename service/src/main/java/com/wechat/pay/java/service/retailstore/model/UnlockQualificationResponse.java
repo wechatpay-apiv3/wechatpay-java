@@ -21,9 +21,11 @@ public class UnlockQualificationResponse {
   /** 返回结果文案 说明：返回结果文案 */
   @SerializedName("return_message")
   private String returnMessage;
+
   /** 解锁成功的资格ID列表 说明：解锁成功的资格列表 */
   @SerializedName("succeed_qualification_ids")
   private List<String> succeedQualificationIds;
+
   /** 解锁失败的资格ID列表 说明：解锁失败的资格ID列表 */
   @SerializedName("failed_qualification_ids")
   private List<String> failedQualificationIds;

@@ -23,10 +23,12 @@ public class DeleteCouponCodeRequest {
   @SerializedName("stock_id")
   @Expose(serialize = false)
   private String stockId;
+
   /** 券code 说明：上传的自定义code */
   @SerializedName("coupon_code")
   @Expose(serialize = false)
   private String couponCode;
+
   /** 请求业务单据号 说明：商户删除code的凭据号，商户侧需保持唯一性 */
   @SerializedName("delete_request_no")
   @Expose(serialize = false)

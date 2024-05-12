@@ -24,12 +24,15 @@ public class MiniAppInfo {
    */
   @SerializedName("mini_programs_appid")
   private String miniProgramsAppid;
+
   /** 商家小程序path 说明：商家小程序path */
   @SerializedName("mini_programs_path")
   private String miniProgramsPath;
+
   /** 入口文案 说明：入口文案，字数上限为5个，一个中文汉字/英文字母/数字均占用一个字数。 */
   @SerializedName("entrance_words")
   private String entranceWords;
+
   /** 引导文案 说明：小程序入口引导文案，用户自定义字段。字数上限为6个，一个中文汉字/英文字母/数字均占用一个字数。 */
   @SerializedName("guiding_words")
   private String guidingWords;

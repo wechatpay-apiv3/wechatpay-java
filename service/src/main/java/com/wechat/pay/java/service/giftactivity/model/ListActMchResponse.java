@@ -22,15 +22,19 @@ public class ListActMchResponse {
   /** 结果集 说明：商户信息列表 */
   @SerializedName("data")
   private List<ActParticipateMchInfo> data;
+
   /** 总数 说明：商户数量 */
   @SerializedName("total_count")
   private Long totalCount;
+
   /** 分页页码 说明：分页页码 */
   @SerializedName("offset")
   private Long offset;
+
   /** 分页大小 说明：分页大小 */
   @SerializedName("limit")
   private Long limit;
+
   /** 活动Id 说明：活动Id */
   @SerializedName("activity_id")
   private String activityId;

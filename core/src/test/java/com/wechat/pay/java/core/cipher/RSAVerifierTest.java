@@ -18,6 +18,7 @@ public class RSAVerifierTest {
   private static Verifier certificateRsaVerifier;
   private static Verifier publicKeyRsaVerifier;
   private static final String MESSAGE = "message";
+
   /** signature为使用RSASigner和测试商户证书私钥对MESSAGE签名得到的结果 */
   private static final SignatureResult SIGNATURE_RESULT =
       new SignatureResult(

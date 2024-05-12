@@ -20,9 +20,11 @@ public class StoreInfo {
   /** 门店ID 说明：门店ID */
   @SerializedName("store_id")
   private String storeId;
+
   /** 门店补贴入账商户号 说明：门店指定的品牌补贴收款商户号 */
   @SerializedName("accounting_merchant_id")
   private String accountingMerchantId;
+
   /** 门店商户号 说明：报名门店的商户号，即门店收款商户号 */
   @SerializedName("merchant_id")
   private String merchantId;

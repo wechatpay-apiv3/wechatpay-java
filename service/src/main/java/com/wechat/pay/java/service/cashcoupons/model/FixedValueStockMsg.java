@@ -20,6 +20,7 @@ public class FixedValueStockMsg {
   /** 面额 说明：面额，单位分 */
   @SerializedName("coupon_amount")
   private Long couponAmount;
+
   /** 门槛 说明：使用券金额门槛，单位分 */
   @SerializedName("transaction_minimum")
   private Long transactionMinimum;

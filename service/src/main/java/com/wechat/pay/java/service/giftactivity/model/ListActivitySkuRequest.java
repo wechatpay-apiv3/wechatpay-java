@@ -23,10 +23,12 @@ public class ListActivitySkuRequest {
   @SerializedName("activity_id")
   @Expose(serialize = false)
   private String activityId;
+
   /** 分页页码 说明：分页页码 */
   @SerializedName("offset")
   @Expose(serialize = false)
   private Long offset;
+
   /** 分页大小 说明：分页大小 */
   @SerializedName("limit")
   @Expose(serialize = false)

@@ -13,10 +13,13 @@ public class QuickStart {
 
   /** 商户号 */
   public static String merchantId = "";
+
   /** 商户API私钥路径 */
   public static String privateKeyPath = "";
+
   /** 商户证书序列号 */
   public static String merchantSerialNumber = "";
+
   /** 商户APIV3密钥 */
   public static String apiV3Key = "";
 

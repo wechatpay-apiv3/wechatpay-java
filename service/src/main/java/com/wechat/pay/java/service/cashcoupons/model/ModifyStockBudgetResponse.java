@@ -20,6 +20,7 @@ public class ModifyStockBudgetResponse {
   /** 总预算 说明：批次预算额度，单位分 */
   @SerializedName("max_amount")
   private Long maxAmount;
+
   /** 批次号 说明：批次号 */
   @SerializedName("stock_id")
   private String stockId;

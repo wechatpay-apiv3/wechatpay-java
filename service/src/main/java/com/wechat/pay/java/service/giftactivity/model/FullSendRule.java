@@ -23,18 +23,23 @@ public class FullSendRule {
   /** 消费金额门槛 说明：消费金额门槛 单位分 */
   @SerializedName("transaction_amount_minimum")
   private Long transactionAmountMinimum;
+
   /** 发放内容 说明：发放内容，可选单张券或礼包，选礼包时奖品限定3-5个 */
   @SerializedName("send_content")
   private SendContentCategory sendContent;
+
   /** 奖品类型 说明：奖品类型，暂时只支持商家券 */
   @SerializedName("award_type")
   private AwardType awardType;
+
   /** 奖品基本信息列表 说明：奖品基本信息列表 */
   @SerializedName("award_list")
   private List<AwardBaseInfo> awardList = new ArrayList<AwardBaseInfo>();
+
   /** 发券商户号选项 说明：发券商户号选取规则，支持选择在用券商户或手动输入商户号两种，选择手动时，发券商户号必填（商家券只支持手动输入） */
   @SerializedName("merchant_option")
   private SendMerchantOption merchantOption;
+
   /** 发券商户号 说明：发券商户号，列表 */
   @SerializedName("merchant_id_list")
   private List<String> merchantIdList;

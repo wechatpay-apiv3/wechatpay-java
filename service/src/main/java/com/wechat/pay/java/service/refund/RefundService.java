@@ -46,11 +46,13 @@ public class RefundService {
     this.httpClient = requireNonNull(httpClient);
     this.hostName = hostName;
   }
+
   /** RefundService构造器 */
   public static class Builder {
 
     private HttpClient httpClient;
     private HostName hostName;
+
     /**
      * 设置请求配置，以该配置构造默认的httpClient，若未调用httpClient()方法，则必须调用该方法
      *
@@ -61,6 +63,7 @@ public class RefundService {
       this.httpClient = new DefaultHttpClientBuilder().config(config).build();
       return this;
     }
+
     /**
      * 设置微信支付域名，可选，默认为api.mch.weixin.qq.com
      *
@@ -71,6 +74,7 @@ public class RefundService {
       this.hostName = hostName;
       return this;
     }
+
     /**
      * 设置自定义httpClient，若未调用config()，则必须调用该方法
      *
@@ -81,6 +85,7 @@ public class RefundService {
       this.httpClient = httpClient;
       return this;
     }
+
     /**
      * 构造服务
      *
@@ -120,6 +125,7 @@ public class RefundService {
     HttpResponse<Refund> httpResponse = httpClient.execute(httpRequest, Refund.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询单笔退款（通过商户退款单号）
    *

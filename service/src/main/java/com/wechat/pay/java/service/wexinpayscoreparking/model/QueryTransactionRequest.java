@@ -22,6 +22,7 @@ public class QueryTransactionRequest {
   @SerializedName("sub_mchid")
   @Expose(serialize = false)
   private String subMchid;
+
   /** 商户订单号 说明：商户系统内部订单号，只能是数字、大小写字母，且在同一个商户号下唯一 */
   @SerializedName("out_trade_no")
   @Expose(serialize = false)

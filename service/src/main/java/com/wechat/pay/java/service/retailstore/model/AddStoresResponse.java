@@ -25,6 +25,7 @@ public class AddStoresResponse {
    */
   @SerializedName("add_time")
   private String addTime;
+
   /** 添加失败的小店活动门店列表 说明：添加失败的小店活动门店列表 */
   @SerializedName("failed_stores")
   private List<RetailStoreInfo> failedStores;

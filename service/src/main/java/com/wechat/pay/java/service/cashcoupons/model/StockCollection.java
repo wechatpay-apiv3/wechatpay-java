@@ -21,12 +21,15 @@ public class StockCollection {
   /** 批次总数 说明：命中查询条件总数量 */
   @SerializedName("total_count")
   private Long totalCount;
+
   /** 批次详情 说明：批次详情 */
   @SerializedName("data")
   private List<Stock> data;
+
   /** 分页大小 说明：分页大小，最大10 */
   @SerializedName("limit")
   private Integer limit;
+
   /** 分页页码 说明：页码从0开始，默认第0页 */
   @SerializedName("offset")
   private Integer offset;

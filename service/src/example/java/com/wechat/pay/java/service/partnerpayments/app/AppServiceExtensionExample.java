@@ -15,10 +15,13 @@ import com.wechat.pay.java.service.partnerpayments.app.model.Transaction;
 public class AppServiceExtensionExample {
   /** 商户号 */
   public static String merchantId = "190000****";
+
   /** 商户API私钥路径 */
   public static String privateKeyPath = "/Users/yourname/your/path/apiclient_key.pem";
+
   /** 商户证书序列号 */
   public static String merchantSerialNumber = "5157F09EFDC096DE15EBE81A47057A72********";
+
   /** 商户APIV3密钥 */
   public static String apiV3Key = "...";
 
@@ -48,6 +51,7 @@ public class AppServiceExtensionExample {
       // 调用e.getMessage()获取信息打印日志或上报监控，更多方法见MalformedMessageException定义
     }
   }
+
   /** 关闭订单 */
   public static void closeOrder() {
 
@@ -56,6 +60,7 @@ public class AppServiceExtensionExample {
     // 调用接口
     service.closeOrder(request);
   }
+
   /** APP支付下单，并返回APP调起支付数据 */
   public static PrepayWithRequestPaymentResponse prepayWithRequestPayment() {
     // 微信开放平台审核通过的移动应用appid
@@ -65,6 +70,7 @@ public class AppServiceExtensionExample {
     // 调用接口
     return service.prepayWithRequestPayment(request, requestPaymentAppid);
   }
+
   /** 微信支付订单号查询订单 */
   public static Transaction queryOrderById() {
 
@@ -73,6 +79,7 @@ public class AppServiceExtensionExample {
     // 调用接口
     return service.queryOrderById(request);
   }
+
   /** 商户订单号查询订单 */
   public static Transaction queryOrderByOutTradeNo() {
 

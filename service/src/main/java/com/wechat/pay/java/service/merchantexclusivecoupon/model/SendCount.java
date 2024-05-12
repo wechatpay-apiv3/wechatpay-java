@@ -21,12 +21,15 @@ public class SendCount {
   /** 已发放券张数 说明：批次已发放的券数量，满减、折扣、换购类型会返回该字段 */
   @SerializedName("total_send_num")
   private Long totalSendNum;
+
   /** 已发放券金额 说明：批次已发放的预算金额，满减券类型会返回该字段 */
   @SerializedName("total_send_amount")
   private Long totalSendAmount;
+
   /** 单天已发放券张数 说明：批次当天已发放的券数量，设置了单天发放上限的满减、折扣、换购类型返回该字段 */
   @SerializedName("today_send_num")
   private Long todaySendNum;
+
   /** 单天已发放券金额 说明：批次当天已发放的预算金额，设置了当天发放上限的满减券类型返回该字段 */
   @SerializedName("today_send_amount")
   private Long todaySendAmount;

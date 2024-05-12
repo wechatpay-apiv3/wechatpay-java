@@ -20,6 +20,7 @@ public class ImageMeta {
   /** 文件名称 说明：商户上传的媒体图片的名称，商户自定义，必须以JPG、BMP、PNG为后缀。 */
   @SerializedName("filename")
   private String filename;
+
   /** 文件摘要 说明：图片文件的文件摘要，即对图片文件的二进制内容进行sha256计算得到的值。 */
   @SerializedName("sha256")
   private String sha256;

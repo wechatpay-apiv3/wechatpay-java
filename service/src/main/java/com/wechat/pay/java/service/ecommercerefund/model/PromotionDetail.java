@@ -20,15 +20,19 @@ public class PromotionDetail {
   /** 券ID 说明：券或者立减优惠id */
   @SerializedName("promotion_id")
   private String promotionId;
+
   /** 优惠范围 说明：GLOBAL- 全场代金券 SINGLE- 单品优惠 */
   @SerializedName("scope")
   private String scope;
+
   /** 优惠类型 说明：COUPON- 代金券，需要走结算资金的充值型代金券 DISCOUNT- 优惠券，不走结算资金的免充值型优惠券 */
   @SerializedName("type")
   private String type;
+
   /** 优惠券面额 说明：用户享受优惠的金额（优惠券面额=微信出资金额+商家出资金额+其他出资方金额 ） */
   @SerializedName("amount")
   private Long amount;
+
   /** 优惠退款金额 说明：代金券退款金额<=退款金额，退款金额-代金券或立减优惠退款金额为现金，说明详见代金券或立减优惠 */
   @SerializedName("refund_amount")
   private Long refundAmount;

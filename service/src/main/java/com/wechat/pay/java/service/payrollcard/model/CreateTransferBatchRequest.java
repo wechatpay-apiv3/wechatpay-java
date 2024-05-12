@@ -24,6 +24,7 @@ public class CreateTransferBatchRequest {
   /** 特约商户号 说明：特约商户号 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /**
    * 特约商户AppID
    * 说明：微信分配的特约商户公众账号ID，特约商户授权类型为INFORMATION_AUTHORIZATION_TYPE和INFORMATION_AND_FUND_AUTHORIZATION_TYPE时
@@ -31,43 +32,54 @@ public class CreateTransferBatchRequest {
    */
   @SerializedName("sub_appid")
   private String subAppid;
+
   /** 特约商户授权类型 说明：特约商户授权类型 */
   @SerializedName("authorization_type")
   private AuthType authorizationType;
+
   /** 商家批次单号 说明：商户系统内部的商家批次单号，在商户系统内部唯一 */
   @SerializedName("out_batch_no")
   private String outBatchNo;
+
   /** 批次名称 说明：该笔批量转账的名称 */
   @SerializedName("batch_name")
   private String batchName;
+
   /** 批次备注 说明：转账说明，UTF8编码，最多允许32个字符 */
   @SerializedName("batch_remark")
   private String batchRemark;
+
   /** 转账总金额 说明：转账金额单位为“分”。转账总金额必须与批次内所有明细转账金额之和保持一致，否则无法发起转账操作 */
   @SerializedName("total_amount")
   private Long totalAmount;
+
   /** 转账总笔数 说明：一个转账批次单最多发起三千笔转账。转账总笔数必须与批次内所有明细之和保持一致，否则无法发起转账操作 */
   @SerializedName("total_num")
   private Integer totalNum;
+
   /** 转账明细列表 说明：发起批量转账的明细列表，最多三千笔 */
   @Encryption
   @SerializedName("transfer_detail_list")
   private List<TransferDetailInput> transferDetailList = new ArrayList<TransferDetailInput>();
+
   /** 服务商的AppID 说明：微信分配的服务商商户公众账号ID，特约商户授权类型为FUND_AUTHORIZATION_TYPE时 需要填写 */
   @SerializedName("sp_appid")
   private String spAppid;
+
   /**
    * 用工类型
    * 说明：微工卡服务仅支持用于与商户有用工关系的用户，需明确用工类型；参考值：长期用工：LONG_TERM_EMPLOYMENT，短期用工：SHORT_TERM_EMPLOYMENT，合作关系：COOPERATION_EMPLOYMENT
    */
   @SerializedName("employment_type")
   private EmploymentType employmentType;
+
   /**
    * 用工场景
    * 说明：用工场景；参考值：LOGISTICS：物流；MANUFACTURING：制造业；HOTEL：酒店；CATERING：餐饮业；EVENT：活动促销；RETAIL：零售；OTHERS：其他
    */
   @SerializedName("employment_scene")
   private EmploymentScene employmentScene;
+
   /** 业务来源 说明：传入业务ID后必填，区分不同任务来源于哪个业务系统 */
   @SerializedName("business_type")
   private BusinessType businessType;

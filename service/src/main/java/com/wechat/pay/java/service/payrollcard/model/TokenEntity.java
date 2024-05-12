@@ -20,15 +20,19 @@ public class TokenEntity {
   /** 微信用户OpenID 说明：微信用户OpenID */
   @SerializedName("openid")
   private String openid;
+
   /** 商户号 说明：商户号 */
   @SerializedName("mchid")
   private String mchid;
+
   /** 特约商户号 说明：特约商户号 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** token值 说明：token值 */
   @SerializedName("token")
   private String token;
+
   /** token有效时间 说明：token有效时间，单位秒 */
   @SerializedName("expires_in")
   private Integer expiresIn;

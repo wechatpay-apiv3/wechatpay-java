@@ -22,6 +22,7 @@ public class QueryOrderByIdRequest {
   @SerializedName("transaction_id")
   @Expose(serialize = false)
   private String transactionId;
+
   /** mchid 说明：直连商户号 */
   @SerializedName("mchid")
   @Expose(serialize = false)

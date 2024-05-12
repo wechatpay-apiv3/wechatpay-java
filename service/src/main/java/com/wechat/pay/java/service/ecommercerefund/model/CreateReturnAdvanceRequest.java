@@ -22,6 +22,7 @@ public class CreateReturnAdvanceRequest {
   @SerializedName("refund_id")
   @Expose(serialize = false)
   private String refundId;
+
   /** 二级商户号 说明：微信支付分配给二级商户的商户号 */
   @SerializedName("sub_mchid")
   private String subMchid;

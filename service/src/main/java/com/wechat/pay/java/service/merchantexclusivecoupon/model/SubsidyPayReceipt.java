@@ -21,36 +21,46 @@ public class SubsidyPayReceipt {
   /** 补差付款单号 说明：补差付款唯一单号，由微信支付生成，仅在补差付款成功后有返回 */
   @SerializedName("subsidy_receipt_id")
   private String subsidyReceiptId;
+
   /** 商家券批次号 说明：由微信支付生成，调用创建商家券API成功时返回的唯一批次ID */
   @SerializedName("stock_id")
   private String stockId;
+
   /** 商家券code 说明：券的唯一标识 */
   @SerializedName("coupon_code")
   private String couponCode;
+
   /** 微信支付订单号 说明：微信支付下单支付成功返回的订单号 */
   @SerializedName("transaction_id")
   private String transactionId;
+
   /** 营销补差扣款商户号 说明：营销补差扣款商户号 */
   @SerializedName("payer_merchant")
   private String payerMerchant;
+
   /** 营销补差入账商户号 说明：营销补差入账商户号 */
   @SerializedName("payee_merchant")
   private String payeeMerchant;
+
   /**
    * 补差付款金额 说明：单位为分，单笔订单补差金额不得超过券的优惠金额，最高补差金额为5000元 > 券的优惠金额定义： 满减券：满减金额即为优惠金额 折扣券：优惠金额 = 微信支付订单金额 ÷
    * 折扣比例 × (1 - 折扣比例) 换购券：不支持
    */
   @SerializedName("amount")
   private Long amount;
+
   /** 补差付款描述 说明：付款备注描述，查询的时候原样带回 */
   @SerializedName("description")
   private String description;
+
   /** 补差付款单据状态 说明：补差付款单据状态 */
   @SerializedName("status")
   private SubsidyPayReceiptStatus status;
+
   /** 补差付款失败原因 说明：仅在补差付款失败时，返回告知对应失败的原因 */
   @SerializedName("fail_reason")
   private SubsidyPayReceiptFailReason failReason;
+
   /**
    * 补差付款完成时间
    * 说明：仅在补差付款成功时，返回完成时间。遵循[rfc3339](https://datatracker.ietf.org/doc/html/rfc3339)标准格式，格式为yyyy-MM-DDTHH:mm:ss+TIMEZONE，yyyy-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC
@@ -58,9 +68,11 @@ public class SubsidyPayReceipt {
    */
   @SerializedName("success_time")
   private String successTime;
+
   /** 业务请求唯一单号 说明：商户侧需保证唯一性。可包含英文字母，数字，｜，_，*，-等内容，不允许出现其他不合法符号 */
   @SerializedName("out_subsidy_no")
   private String outSubsidyNo;
+
   /**
    * 补差付款发起时间
    * 说明：补差付款单据创建时间。遵循rfc3339标准格式，格式为yyyy-MM-DDTHH:mm:ss+TIMEZONE，yyyy-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC

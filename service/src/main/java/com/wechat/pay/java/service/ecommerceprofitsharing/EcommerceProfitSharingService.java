@@ -67,6 +67,7 @@ public class EcommerceProfitSharingService {
     this.hostName = hostName;
     this.encryptor = requireNonNull(encryptor);
   }
+
   /** EcommerceProfitSharingService构造器 */
   public static class Builder {
 
@@ -132,6 +133,7 @@ public class EcommerceProfitSharingService {
         httpClient.execute(httpRequest, CreateAfterSalesOrderResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 请求分账
    *
@@ -164,6 +166,7 @@ public class EcommerceProfitSharingService {
         httpClient.execute(httpRequest, CreateOrderResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 完结分账
    *
@@ -194,6 +197,7 @@ public class EcommerceProfitSharingService {
         httpClient.execute(httpRequest, FinishOrderResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询售后服务分账结果
    *
@@ -234,6 +238,7 @@ public class EcommerceProfitSharingService {
         httpClient.execute(httpRequest, QueryAfterSalesOrderResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询分账结果
    *
@@ -276,6 +281,7 @@ public class EcommerceProfitSharingService {
         httpClient.execute(httpRequest, QueryOrderResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询订单剩余待分金额
    *
@@ -312,6 +318,7 @@ public class EcommerceProfitSharingService {
         httpClient.execute(httpRequest, QueryOrderAmountResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 添加分账接收方
    *
@@ -342,6 +349,7 @@ public class EcommerceProfitSharingService {
         httpClient.execute(httpRequest, AddReceiverResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 删除分账接收方
    *
@@ -373,6 +381,7 @@ public class EcommerceProfitSharingService {
         httpClient.execute(httpRequest, DeleteReceiverResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 请求分账回退
    *
@@ -403,6 +412,7 @@ public class EcommerceProfitSharingService {
         httpClient.execute(httpRequest, CreateReturnOrderResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询分账回退结果
    *

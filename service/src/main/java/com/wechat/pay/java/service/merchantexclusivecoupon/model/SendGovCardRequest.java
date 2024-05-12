@@ -23,15 +23,19 @@ public class SendGovCardRequest {
   @SerializedName("card_id")
   @Expose(serialize = false)
   private String cardId;
+
   /** 消费卡card_id创建方AppID 说明：消费卡cardi\\_d创建方的AppID，需与API调用方商户号有绑定关系，入参中的用户OpenID也需用此AppID生成 */
   @SerializedName("appid")
   private String appid;
+
   /** 用户OpenID 说明：待发券用户的OpenID，需为消费卡创建方AppID生成的OpenID */
   @SerializedName("openid")
   private String openid;
+
   /** 商户单据号 说明：商户此次发放凭据号。推荐使用大小写字母和数字，不同添加请求发放凭据号不同，商户侧需保证同一发券请求的out_request_no+send_time唯一性 */
   @SerializedName("out_request_no")
   private String outRequestNo;
+
   /**
    * 请求发卡时间
    * 说明：单次请求发卡时间，消费卡在商户系统的实际发放时间，为东八区标准时间（UTC+8）。商户需保证同一次请求的out_request_no+send_time唯一。由于系统限制，暂不支持传入早于当前时间24小时以上的时间进行发券请求。

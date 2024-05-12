@@ -20,12 +20,15 @@ public class Payer {
   /** 用户标识 说明：用户在AppID下的唯一标识。在【一块捐】场景下按照商家下单时AppID生成；在【一起捐】场景下按照商户登记AppID生成。 */
   @SerializedName("openid")
   private String openid;
+
   /** 用户子标识 说明：用户在子AppID下的唯一标识。在【一块捐】场景下按照商家下单时子AppID生成；在【一起捐】场景下按照商户登记子AppID生成。 */
   @SerializedName("sub_openid")
   private String subOpenid;
+
   /** 用户头像 说明：用户在爱心餐小程序授权头像的URL */
   @SerializedName("avatar")
   private String avatar;
+
   /** 用户昵称 说明：用户在爱心餐小程序授权昵称 */
   @SerializedName("nickname")
   private String nickname;

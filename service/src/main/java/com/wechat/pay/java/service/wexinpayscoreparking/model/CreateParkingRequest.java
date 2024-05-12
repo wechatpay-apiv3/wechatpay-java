@@ -20,18 +20,23 @@ public class CreateParkingRequest {
   /** 子商户号 说明：微信支付分配的子商户号，服务商模式下必传 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 商户入场id 说明：商户侧入场标识id，在同一个商户号下唯一 */
   @SerializedName("out_parking_no")
   private String outParkingNo;
+
   /** 车牌号 说明：车牌号，仅包括省份+车牌，不包括特殊字符。 */
   @SerializedName("plate_number")
   private String plateNumber;
+
   /** 车牌颜色 说明：车牌颜色 */
   @SerializedName("plate_color")
   private PlateColor plateColor;
+
   /** 回调通知url 说明：接受入场状态变更回调通知的url，注意回调url只接受https */
   @SerializedName("notify_url")
   private String notifyUrl;
+
   /**
    * 入场时间
    * 说明：入场时间，遵循[rfc3339](https://datatracker.ietf.org/doc/html/rfc3339)标准格式，格式为yyyy-MM-DDTHH:mm:ss+TIMEZONE，yyyy-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC
@@ -39,9 +44,11 @@ public class CreateParkingRequest {
    */
   @SerializedName("start_time")
   private String startTime;
+
   /** 停车场名称 说明：所在停车位车场的名称 */
   @SerializedName("parking_name")
   private String parkingName;
+
   /** 免费时长 说明：停车场的免费停车时长，单位为秒 */
   @SerializedName("free_duration")
   private Integer freeDuration;

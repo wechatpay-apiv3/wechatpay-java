@@ -22,14 +22,17 @@ public class GetTradeBillRequest {
   @SerializedName("bill_date")
   @Expose(serialize = false)
   private String billDate;
+
   /** 子商户号 说明：若商户是直连商户： * 无需填写该字段 若商户是服务商： * 不填则默认返回服务商下的交易或退款数据 * 如需下载某个子商户下的交易或退款数据，则该字段必填 */
   @SerializedName("sub_mchid")
   @Expose(serialize = false)
   private String subMchid;
+
   /** 账单类型 说明：账单类型，不填则默认是ALL */
   @SerializedName("bill_type")
   @Expose(serialize = false)
   private BillType billType;
+
   /** 压缩类型 说明：压缩类型，不填则以不压缩的方式返回数据流 */
   @SerializedName("tar_type")
   @Expose(serialize = false)

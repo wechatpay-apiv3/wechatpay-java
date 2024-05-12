@@ -20,18 +20,23 @@ public class CreateAfterSalesOrderRequest {
   /** 子商户号 说明：分账出资的商户，填写微信支付分配的商户号 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 微信订单号 说明：微信支付订单号 */
   @SerializedName("transaction_id")
   private String transactionId;
+
   /** 分账金额 说明：分账金额，单位为分，只能为整数，不能超过原订单支付金额及最大分账比例金额 */
   @SerializedName("amount")
   private Long amount;
+
   /** 类型 说明：枚举值：1、SERVICE_FEE_INCOME：服务费收入分账 */
   @SerializedName("type")
   private String type;
+
   /** 场景 说明：枚举值： 1、REFUND_TICKET：退票 2、CHANGE_TICKET：改签 3、RETURN_GOODS：退货 */
   @SerializedName("scene")
   private String scene;
+
   /** 微信退款单号 说明：该笔微信订单对应的微信退款单号。退票收入分账、改签退款收入分账、退货收入分账时必填。 */
   @SerializedName("refund_id")
   private String refundId;

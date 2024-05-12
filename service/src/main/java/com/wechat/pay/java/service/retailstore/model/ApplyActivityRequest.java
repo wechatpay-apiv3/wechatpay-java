@@ -23,9 +23,11 @@ public class ApplyActivityRequest {
   @SerializedName("activity_id")
   @Expose(serialize = false)
   private String activityId;
+
   /** 调用报名活动API的商户的商户号 说明：调用报名活动API的商户的商户号 */
   @SerializedName("caller_merchant_id")
   private String callerMerchantId;
+
   /** 门店报名信息 说明：门店报名信息 */
   @SerializedName("apply_infos")
   private List<ActApplyInfo> applyInfos;

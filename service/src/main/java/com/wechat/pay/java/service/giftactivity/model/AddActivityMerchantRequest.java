@@ -25,9 +25,11 @@ public class AddActivityMerchantRequest {
   @SerializedName("activity_id")
   @Expose(serialize = false)
   private String activityId;
+
   /** 添加的发券商户号 说明：新增到活动中的发券商户号列表 */
   @SerializedName("merchant_id_list")
   private List<String> merchantIdList = new ArrayList<String>();
+
   /** 请求业务单据号 说明：商户添加发券商户号的凭据号，商户侧需保持唯一性 */
   @SerializedName("add_request_no")
   private String addRequestNo;

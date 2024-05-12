@@ -22,14 +22,17 @@ public class ListAvailableSingleitemsRequest {
   @SerializedName("offset")
   @Expose(serialize = false)
   private Integer offset;
+
   /** 分页大小 说明：分页大小，最大100 */
   @SerializedName("limit")
   @Expose(serialize = false)
   private Integer limit;
+
   /** 创建批次的商户号 说明：批次创建方商户号 */
   @SerializedName("stock_creator_mchid")
   @Expose(serialize = false)
   private String stockCreatorMchid;
+
   /** 批次号 说明：批次号 */
   @SerializedName("stock_id")
   @Expose(serialize = false)

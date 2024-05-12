@@ -22,10 +22,12 @@ public class QueryReturnOrderRequest {
   @SerializedName("sub_mchid")
   @Expose(serialize = false)
   private String subMchid;
+
   /** 商户回退单号 说明：调用回退接口提供的商户系统内部的回退单号 */
   @SerializedName("out_return_no")
   @Expose(serialize = false)
   private String outReturnNo;
+
   /** 商户分账单号 说明：原发起分账请求时使用的商户系统内部的分账单号 */
   @SerializedName("out_order_no")
   @Expose(serialize = false)

@@ -20,6 +20,7 @@ public class CreateCouponStockResponse {
   /** 批次号 说明：批次号 */
   @SerializedName("stock_id")
   private String stockId;
+
   /** 创建时间 说明：创建时间 */
   @SerializedName("create_time")
   private String createTime;

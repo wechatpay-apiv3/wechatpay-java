@@ -20,6 +20,7 @@ public class TransactionPayer {
   /** spOpenid */
   @SerializedName("sp_openid")
   private String spOpenid;
+
   /** subOpenid */
   @SerializedName("sub_openid")
   private String subOpenid;

@@ -21,6 +21,7 @@ public class DiscountMsg {
   /** 折扣比例 说明：折扣百分比，88为88折 */
   @SerializedName("discount_percent")
   private Integer discountPercent;
+
   /** 消费门槛 说明：消费门槛，单位：分。 特殊规则：取值范围 1 ≤ value ≤ 10000000 */
   @SerializedName("transaction_minimum")
   private Long transactionMinimum;

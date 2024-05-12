@@ -51,6 +51,7 @@ public class EcommerceRefundService {
     this.httpClient = requireNonNull(httpClient);
     this.hostName = hostName;
   }
+
   /** EcommerceRefundService构造器 */
   public static class Builder {
 
@@ -107,6 +108,7 @@ public class EcommerceRefundService {
     HttpResponse<Refund4Create> httpResponse = httpClient.execute(httpRequest, Refund4Create.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 垫付退款回补
    *
@@ -142,6 +144,7 @@ public class EcommerceRefundService {
     HttpResponse<ReturnAdvance> httpResponse = httpClient.execute(httpRequest, ReturnAdvance.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询单笔退款（按微信支付退款单号）
    *
@@ -181,6 +184,7 @@ public class EcommerceRefundService {
     HttpResponse<Refund> httpResponse = httpClient.execute(httpRequest, Refund.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询单笔退款（按商户退款单号）
    *
@@ -221,6 +225,7 @@ public class EcommerceRefundService {
     HttpResponse<Refund> httpResponse = httpClient.execute(httpRequest, Refund.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 查询垫付回补结果
    *

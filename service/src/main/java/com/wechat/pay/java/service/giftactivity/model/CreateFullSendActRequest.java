@@ -21,9 +21,11 @@ public class CreateFullSendActRequest {
   /** 活动基本信息 说明：用于创建活动的基本信息 */
   @SerializedName("activity_base_info")
   private ActBaseInfo activityBaseInfo;
+
   /** 活动奖品发放规则 说明：满送活动规则 */
   @SerializedName("award_send_rule")
   private FullSendRule awardSendRule;
+
   /** 活动高级设置 说明：其他高级配置项 */
   @SerializedName("advanced_setting")
   private ActAdvancedSetting advancedSetting;

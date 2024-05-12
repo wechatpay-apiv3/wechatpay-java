@@ -26,6 +26,7 @@ public class UploadCouponCodeBody {
    */
   @SerializedName("coupon_code_list")
   private List<String> couponCodeList = new ArrayList<String>();
+
   /** 请求业务单据号 说明：商户上传code的凭据号，商户侧需保持唯一性 */
   @SerializedName("upload_request_no")
   private String uploadRequestNo;

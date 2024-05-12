@@ -21,12 +21,15 @@ public class ListRepresentativeResponse {
   /** 小店活动业代总数 说明：小店活动业代总数 */
   @SerializedName("total_count")
   private Long totalCount;
+
   /** 小店活动业代集合 说明：小店活动业代集合 */
   @SerializedName("data")
   private List<RepresentativeInfo> data;
+
   /** 分页页码 说明：页码从0开始，默认第0页 */
   @SerializedName("offset")
   private Long offset;
+
   /** 分页大小 说明：分页大小 */
   @SerializedName("limit")
   private Long limit;

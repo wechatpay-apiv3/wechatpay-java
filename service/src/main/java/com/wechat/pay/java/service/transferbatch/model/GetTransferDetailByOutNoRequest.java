@@ -23,6 +23,7 @@ public class GetTransferDetailByOutNoRequest {
   @SerializedName("out_detail_no")
   @Expose(serialize = false)
   private String outDetailNo;
+
   /** 商家批次单号 说明：商户系统内部的商家批次单号，在商户系统内部唯一 */
   @SerializedName("out_batch_no")
   @Expose(serialize = false)

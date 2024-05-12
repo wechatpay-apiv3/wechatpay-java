@@ -20,6 +20,7 @@ public class FundsFromItem {
   /** 出资账户类型 说明：下面枚举值多选一。 枚举值： AVAILABLE : 可用余额 UNAVAILABLE : 不可用余额 */
   @SerializedName("account")
   private String account;
+
   /** 出资金额 说明：对应账户出资金额 */
   @SerializedName("amount")
   private Long amount;

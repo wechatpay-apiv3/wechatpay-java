@@ -25,6 +25,7 @@ public class IrregularAvailableTime {
    */
   @SerializedName("begin_time")
   private String beginTime;
+
   /**
    * 结束时间
    * 说明：结束时间，遵循[rfc3339](https://datatracker.ietf.org/doc/html/rfc3339)标准格式，格式为yyyy-MM-DDTHH:mm:ss+TIMEZONE，yyyy-MM-DD表示年月日，T出现在字符串中，表示time元素的开头，HH:mm:ss表示时分秒，TIMEZONE表示时区（+08:00表示东八区时间，领先UTC

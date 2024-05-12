@@ -22,22 +22,27 @@ public class ListStocksRequest {
   @SerializedName("offset")
   @Expose(serialize = false)
   private Integer offset;
+
   /** 分页大小 说明：分页大小，最大10 */
   @SerializedName("limit")
   @Expose(serialize = false)
   private Integer limit;
+
   /** 创建批次的商户号 说明：批次创建方商户号 */
   @SerializedName("stock_creator_mchid")
   @Expose(serialize = false)
   private String stockCreatorMchid;
+
   /** 起始时间 说明：起始创建时间 */
   @SerializedName("create_start_time")
   @Expose(serialize = false)
   private String createStartTime;
+
   /** 终止时间 说明：终止创建时间 */
   @SerializedName("create_end_time")
   @Expose(serialize = false)
   private String createEndTime;
+
   /** 批次状态 说明：批次状态： unactivated-未激活；audit-审核中；running-运行中；stoped-已停止；paused-暂停发放 */
   @SerializedName("status")
   @Expose(serialize = false)

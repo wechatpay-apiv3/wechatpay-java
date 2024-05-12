@@ -21,6 +21,7 @@ public class ExchangeMsg {
   /** 单品换购价 说明：单品换购价，单位：分。 特殊规则：取值范围 0 ≤ value ≤ 10000000 */
   @SerializedName("exchange_price")
   private Long exchangePrice;
+
   /** 消费门槛 说明：消费门槛，单位：分。 特殊规则：取值范围 1 ≤ value ≤ 10000000 */
   @SerializedName("transaction_minimum")
   private Long transactionMinimum;

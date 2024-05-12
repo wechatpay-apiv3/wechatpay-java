@@ -86,6 +86,7 @@ public class AppServiceExtension {
   public Transaction queryOrderById(QueryOrderByIdRequest request) {
     return appService.queryOrderById(request);
   }
+
   /**
    * 商户订单号查询订单
    *
@@ -99,6 +100,7 @@ public class AppServiceExtension {
   public Transaction queryOrderByOutTradeNo(QueryOrderByOutTradeNoRequest request) {
     return appService.queryOrderByOutTradeNo(request);
   }
+
   /**
    * 关闭订单
    *

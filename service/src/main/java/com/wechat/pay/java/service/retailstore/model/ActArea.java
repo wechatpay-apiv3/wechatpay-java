@@ -20,9 +20,11 @@ public class ActArea {
   /** 省名称 说明：省名称 */
   @SerializedName("province")
   private String province;
+
   /** 市名称 说明：市名称 */
   @SerializedName("city")
   private String city;
+
   /** 区名称 说明：区名称 */
   @SerializedName("district")
   private String district;

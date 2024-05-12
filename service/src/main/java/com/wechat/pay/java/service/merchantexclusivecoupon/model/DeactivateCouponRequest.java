@@ -21,12 +21,15 @@ public class DeactivateCouponRequest {
   /** 券code 说明：券的唯一标识 */
   @SerializedName("coupon_code")
   private String couponCode;
+
   /** 批次号 说明：券的所属批次号 */
   @SerializedName("stock_id")
   private String stockId;
+
   /** 失效请求单据号 说明：每次失效请求的唯一标识，商户需保证唯一 */
   @SerializedName("deactivate_request_no")
   private String deactivateRequestNo;
+
   /** 失效原因 说明：商户失效券的原因 */
   @SerializedName("deactivate_reason")
   private String deactivateReason;

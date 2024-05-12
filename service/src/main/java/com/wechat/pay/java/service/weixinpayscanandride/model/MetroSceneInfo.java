@@ -20,12 +20,15 @@ public class MetroSceneInfo {
   /** 乘车时间 说明：用户乘车时间（上车），按照使用rfc3339所定义的格式，格式为yyyy-MM-DDThh:mm:ss+TIMEZONE */
   @SerializedName("start_time")
   private String startTime;
+
   /** 下车时间 说明：用户下车时间，按照使用rfc3339所定义的格式，格式为yyyy-MM-DDThh:mm:ss+TIMEZONE */
   @SerializedName("end_time")
   private String endTime;
+
   /** 起始站 说明：乘车起始站，该值催缴时会向微信用户进行展示 */
   @SerializedName("start_station")
   private String startStation;
+
   /** 终点站 说明：乘车终点站，该值催缴时会向微信用户进行展示 */
   @SerializedName("end_station")
   private String endStation;

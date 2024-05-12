@@ -21,15 +21,19 @@ public class FinishOrderRequest {
   /** 子商户号 说明：订单收款方商户号，填写微信支付分配的商户号 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 微信订单号 说明：微信支付订单号 */
   @SerializedName("transaction_id")
   private String transactionId;
+
   /** 商户分账单号 说明：商户系统内部的分账单号，在商户系统内部唯一（单次分账、多次分账、完结分账应使用不同的商户分账单号），同一分账单号多次请求等同一次。只能是数字、大小写字母_-|*@ */
   @SerializedName("out_order_no")
   private String outOrderNo;
+
   /** 分账描述 说明：分账的原因描述，分账账单中需要体现 */
   @SerializedName("description")
   private String description;
+
   /** 分账结果回调url 说明：异步接收微信支付分账结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数 */
   @SerializedName("notify_url")
   private String notifyUrl;

@@ -21,9 +21,11 @@ public class FileMeta {
   /** 文件名 说明：快捷协议号包文件名。可包含英文字母，数字，_，.，-等内容，不允许出现其他不合法符号。同一个号码包的多个上传任务的文件名不可重复，要保证唯一 */
   @SerializedName("filename")
   private String filename;
+
   /** 文件摘要 说明：快捷交易协议号文件的文件摘要，即快捷交易协议号文件的二进制内容进行sha256计算得到的值 */
   @SerializedName("sha256")
   private String sha256;
+
   /**
    * 银行类型
    * 说明：银行类型，用于标识协议号所属的银行以及卡类型(信用卡或借记卡)。采用字符串类型的银行标识，值列表详见[银行类型](https://pay.weixin.qq.com/wiki/doc/apiv3_partner/terms_definition/chapter1_1_3.shtml#part-7)

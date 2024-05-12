@@ -20,9 +20,11 @@ public class DeleteReceiverRequest {
   /** 公众账号ID 说明：微信分配的公众账号ID */
   @SerializedName("appid")
   private String appid;
+
   /** 接收方类型 说明：接收方类型 枚举值： MERCHANT\\_ID：商户 PERSONAL\\_OPENID：个人 */
   @SerializedName("type")
   private String type;
+
   /** 接收方账号 说明：类型是MERCHANT_ID时，是商户号 类型是PERSONAL_OPENID时，是个人openid */
   @SerializedName("account")
   private String account;

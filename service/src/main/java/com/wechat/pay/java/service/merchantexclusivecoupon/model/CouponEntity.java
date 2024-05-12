@@ -21,77 +21,101 @@ public class CouponEntity {
   /** 批次归属商户号 说明：代金券的所属商户号 */
   @SerializedName("belong_merchant")
   private String belongMerchant;
+
   /** 商家券批次名称 说明：批次名称，字数上限为21个，一个中文汉字/英文字母/数字均占用一个字数。 */
   @SerializedName("stock_name")
   private String stockName;
+
   /** 批次备注 说明：仅配置商户可见，用于自定义信息。字数上限为20个，一个中文汉字/英文字母/数字均占用一个字数。 */
   @SerializedName("comment")
   private String comment;
+
   /** 适用商品范围 说明：适用商品范围，字数上限为15个，一个中文汉字/英文字母/数字均占用一个字数。 */
   @SerializedName("goods_name")
   private String goodsName;
+
   /** 批次类型 说明：批次类型 */
   @SerializedName("stock_type")
   private BusiFavorStockType stockType;
+
   /** 是否允许转赠 说明：不填默认否，枚举值： true：是 false：否 该字段暂未开放 */
   @SerializedName("transferable")
   private Boolean transferable;
+
   /** 是否允许分享领券链接 说明：不填默认否，枚举值： true：是 false：否 该字段暂未开放 */
   @SerializedName("shareable")
   private Boolean shareable;
+
   /** 券状态 说明：商家券状态 */
   @SerializedName("coupon_state")
   private CouponStatus couponState;
+
   /** 样式信息 说明： */
   @SerializedName("display_pattern_info")
   private DisplayPatternInfo displayPatternInfo;
+
   /** 券核销规则 说明： */
   @SerializedName("coupon_use_rule")
   private CouponUseRule couponUseRule;
+
   /** 自定义入口 说明： */
   @SerializedName("custom_entrance")
   private CustomEntrance customEntrance;
+
   /** 券code 说明：券的唯一标识 */
   @SerializedName("coupon_code")
   private String couponCode;
+
   /** 批次号 说明：批次号 */
   @SerializedName("stock_id")
   private String stockId;
+
   /**
    * 券可使用开始时间 说明：用户领取到的这张券实际可使用的开始时间：如批次设置的领取后可用，则开始时间即为券的领取时间； 如批次设置的领取后第X天可用，则为领取时间后第X天00:00:00
    */
   @SerializedName("available_start_time")
   private String availableStartTime;
+
   /** 券过期时间 说明：用户领取到这张券的过期时间 */
   @SerializedName("expire_time")
   private String expireTime;
+
   /** 券领取时间 说明：用户领取到这张券的时间 */
   @SerializedName("receive_time")
   private String receiveTime;
+
   /** 发券请求单号 说明：发券时传入的唯一凭证 */
   @SerializedName("send_request_no")
   private String sendRequestNo;
+
   /** 核销请求单号 说明：核销时传入的唯一凭证（如券已被核销，将返回此字段） */
   @SerializedName("use_request_no")
   private String useRequestNo;
+
   /** 券核销时间 说明：券被核销的时间（如券已被核销，将返回此字段） */
   @SerializedName("use_time")
   private String useTime;
+
   /** 关联的商户订单号 说明：若商家券操作过关联商户订单信息，则该字段返回商家券已关联的商户订单号。 */
   @SerializedName("associate_out_trade_no")
   private String associateOutTradeNo;
+
   /** 回退请求单号 说明：回退时传入的唯一凭证（如券发生了退回，将返回此字段） */
   @SerializedName("return_request_no")
   private String returnRequestNo;
+
   /** 券回退时间 说明：券被回退的时间（如券发生了退回，将返回此字段） */
   @SerializedName("return_time")
   private String returnTime;
+
   /** 失效请求单号 说明：失效时传入的唯一凭证（如果一张券已失效，将返回此字段） */
   @SerializedName("deactivate_request_no")
   private String deactivateRequestNo;
+
   /** 券失效时间 说明：券被失效的时间（如果一张券已失效，将返回此字段） */
   @SerializedName("deactivate_time")
   private String deactivateTime;
+
   /** 失效原因 说明：失效一张券的原因（如果一张券已失效，可能返回此字段） */
   @SerializedName("deactivate_reason")
   private String deactivateReason;

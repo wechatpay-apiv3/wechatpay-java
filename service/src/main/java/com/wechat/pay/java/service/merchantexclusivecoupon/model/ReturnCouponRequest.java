@@ -21,9 +21,11 @@ public class ReturnCouponRequest {
   /** 券code 说明：券的唯一标识 */
   @SerializedName("coupon_code")
   private String couponCode;
+
   /** 批次号 说明：券的所属批次号 */
   @SerializedName("stock_id")
   private String stockId;
+
   /** 退券请求单据号 说明：每次退券请求的唯一标识，商户需保证唯一 */
   @SerializedName("return_request_no")
   private String returnRequestNo;

@@ -77,6 +77,7 @@ public class JsapiServiceExtension {
     response.setPaySign(sign);
     return response;
   }
+
   /**
    * 微信支付订单号查询订单
    *
@@ -90,6 +91,7 @@ public class JsapiServiceExtension {
   public Transaction queryOrderById(QueryOrderByIdRequest request) {
     return jsapiService.queryOrderById(request);
   }
+
   /**
    * 商户订单号查询订单
    *
@@ -103,6 +105,7 @@ public class JsapiServiceExtension {
   public Transaction queryOrderByOutTradeNo(QueryOrderByOutTradeNoRequest request) {
     return jsapiService.queryOrderByOutTradeNo(request);
   }
+
   /**
    * 关闭订单
    *

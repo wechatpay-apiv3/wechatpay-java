@@ -14,10 +14,13 @@ public class BillDownloadServiceExample {
 
   /** 商户号 */
   public static String merchantId = "190000****";
+
   /** 商户API私钥路径 */
   public static String privateKeyPath = "/Users/yourname/your/path/apiclient_key.pem";
+
   /** 商户证书序列号 */
   public static String merchantSerialNumber = "5157F09EFDC096DE15EBE81A47057A72********";
+
   /** 商户APIV3密钥 */
   public static String apiV3Key = "...";
 
@@ -38,24 +41,28 @@ public class BillDownloadServiceExample {
     service = new BillDownloadService.Builder().config(config).build();
     // ... 调用接口
   }
+
   /** 申请资金账单API */
   public static QueryBillEntity getFundFlowBill() {
 
     GetFundFlowBillRequest request = new GetFundFlowBillRequest();
     return service.getFundFlowBill(request);
   }
+
   /** 申请单个子商户资金账单API */
   public static QueryEncryptBillEntity getSingleSubMchFundFlowBill() {
 
     GetSingleSubMchFundFlowBillRequest request = new GetSingleSubMchFundFlowBillRequest();
     return service.getSingleSubMchFundFlowBill(request);
   }
+
   /** 申请二级商户资金账单API */
   public static QueryEncryptBillEntity getAllSubMchFundFlowBill() {
 
     GetAllSubMchFundFlowBillRequest request = new GetAllSubMchFundFlowBillRequest();
     return service.getAllSubMchFundFlowBill(request);
   }
+
   /** 申请交易账单API */
   public static QueryBillEntity getTradeBill() {
 

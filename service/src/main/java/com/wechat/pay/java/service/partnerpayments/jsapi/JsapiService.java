@@ -49,11 +49,13 @@ public class JsapiService {
     this.httpClient = requireNonNull(httpClient);
     this.hostName = hostName;
   }
+
   /** JsapiService构造器 */
   public static class Builder {
 
     private HttpClient httpClient;
     private HostName hostName;
+
     /**
      * 设置请求配置，以该配置构造默认的httpClient，若未调用httpClient()方法，则必须调用该方法
      *
@@ -65,6 +67,7 @@ public class JsapiService {
 
       return this;
     }
+
     /**
      * 设置微信支付域名，可选，默认为api.mch.weixin.qq.com
      *
@@ -75,6 +78,7 @@ public class JsapiService {
       this.hostName = hostName;
       return this;
     }
+
     /**
      * 设置自定义httpClient，若未调用config()，则必须调用该方法
      *
@@ -85,6 +89,7 @@ public class JsapiService {
       this.httpClient = httpClient;
       return this;
     }
+
     /**
      * 构造服务
      *
@@ -128,6 +133,7 @@ public class JsapiService {
             .build();
     httpClient.execute(httpRequest, null);
   }
+
   /**
    * JSAPI支付下单
    *
@@ -158,6 +164,7 @@ public class JsapiService {
         httpClient.execute(httpRequest, PrepayResponse.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 微信支付订单号查询订单
    *
@@ -202,6 +209,7 @@ public class JsapiService {
     HttpResponse<Transaction> httpResponse = httpClient.execute(httpRequest, Transaction.class);
     return httpResponse.getServiceResponse();
   }
+
   /**
    * 商户订单号查询订单
    *

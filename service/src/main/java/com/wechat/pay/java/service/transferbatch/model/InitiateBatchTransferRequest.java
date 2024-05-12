@@ -25,25 +25,32 @@ public class InitiateBatchTransferRequest {
   /** 商户appid 说明：申请商户号的appid或商户号绑定的appid（企业号corpid即为此appid） */
   @SerializedName("appid")
   private String appid;
+
   /** 商家批次单号 说明：商户系统内部的商家批次单号，要求此参数只能由数字、大小写字母组成，在商户系统内部唯一 */
   @SerializedName("out_batch_no")
   private String outBatchNo;
+
   /** 批次名称 说明：该笔批量转账的名称 */
   @SerializedName("batch_name")
   private String batchName;
+
   /** 批次备注 说明：转账说明，UTF8编码，最多允许32个字符 */
   @SerializedName("batch_remark")
   private String batchRemark;
+
   /** 转账总金额 说明：转账金额单位为“分”。转账总金额必须与批次内所有明细转账金额之和保持一致，否则无法发起转账操作 */
   @SerializedName("total_amount")
   private Long totalAmount;
+
   /** 转账总笔数 说明：一个转账批次单最多发起一千笔转账。转账总笔数必须与批次内所有明细之和保持一致，否则无法发起转账操作 */
   @SerializedName("total_num")
   private Integer totalNum;
+
   /** 转账明细列表 说明：发起批量转账的明细列表，最多一千笔 */
   @Encryption
   @SerializedName("transfer_detail_list")
   private List<TransferDetailInput> transferDetailList = new ArrayList<TransferDetailInput>();
+
   /** 转账场景ID 说明：该批次转账使用的转账场景，如不填写则使用商家的默认场景，如无默认场景可为空，可前往“商家转账到零钱-前往功能”中申请。 如：1001-现金营销 */
   @SerializedName("transfer_scene_id")
   private String transferSceneId;

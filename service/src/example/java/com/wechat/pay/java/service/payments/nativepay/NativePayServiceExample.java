@@ -17,10 +17,13 @@ public class NativePayServiceExample {
 
   /** 商户号 */
   public static String merchantId = "190000****";
+
   /** 商户API私钥路径 */
   public static String privateKeyPath = "/Users/yourname/your/path/apiclient_key.pem";
+
   /** 商户证书序列号 */
   public static String merchantSerialNumber = "5157F09EFDC096DE15EBE81A47057A72********";
+
   /** 商户APIV3密钥 */
   public static String apiV3Key = "...";
 
@@ -50,6 +53,7 @@ public class NativePayServiceExample {
       // 调用e.getMessage()获取信息打印日志或上报监控，更多方法见MalformedMessageException定义
     }
   }
+
   /** 关闭订单 */
   public static void closeOrder() {
 
@@ -58,6 +62,7 @@ public class NativePayServiceExample {
     // 调用接口
     service.closeOrder(request);
   }
+
   /** Native支付预下单 */
   public static PrepayResponse prepay() {
     PrepayRequest request = new PrepayRequest();
@@ -65,6 +70,7 @@ public class NativePayServiceExample {
     // 调用接口
     return service.prepay(request);
   }
+
   /** 微信支付订单号查询订单 */
   public static Transaction queryOrderById() {
 
@@ -73,6 +79,7 @@ public class NativePayServiceExample {
     // 调用接口
     return service.queryOrderById(request);
   }
+
   /** 商户订单号查询订单 */
   public static Transaction queryOrderByOutTradeNo() {
 

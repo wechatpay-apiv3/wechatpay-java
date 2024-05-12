@@ -21,30 +21,39 @@ public class CouponRule {
   /** 券生效时间 说明：需要指定领取后延时生效可选填 */
   @SerializedName("coupon_available_time")
   private FavorAvailableTime couponAvailableTime;
+
   /** 固定面额满减券使用规则 说明：stock_type为NORMAL时必填 */
   @SerializedName("fixed_normal_coupon")
   private FixedValueStockMsg fixedNormalCoupon;
+
   /** 订单优惠标记 说明：订单优惠标记 */
   @SerializedName("goods_tag")
   private List<String> goodsTag;
+
   /** 指定支付模式 说明：支付方式 */
   @SerializedName("trade_type")
   private List<TradeType> tradeType;
+
   /** 是否可叠加其他优惠 说明：true-是；false-否 */
   @SerializedName("combine_use")
   private Boolean combineUse;
+
   /** 可核销商品编码 说明：可核销商品编码 */
   @SerializedName("available_items")
   private List<String> availableItems;
+
   /** 不参与优惠商品编码 说明：不参与优惠商品编码 */
   @SerializedName("unavailable_items")
   private List<String> unavailableItems;
+
   /** 可核销商户号 说明：可核销商户号 */
   @SerializedName("available_merchants")
   private List<String> availableMerchants;
+
   /** 指定卡信息 说明：当批次指定支付方式为某张银行卡时才生效，可选的 */
   @SerializedName("limit_card")
   private CardLimitation limitCard;
+
   /**
    * 指定支付方式 说明：限定该批次的指定支付方式，如零钱、指定银行卡等，需填入支付方式编码， 条目个数限制为[1，1] 。当前支持的支付方式，及其编码枚举值，请参考该文档：
    * https://docs.qq.com/sheet/DWGpMbWx3b1JCbldy?c=E3A0A0

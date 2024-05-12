@@ -20,6 +20,7 @@ public class QueryMerchantRatioResponse {
   /** 子商户号 说明：参考请求参数 */
   @SerializedName("sub_mchid")
   private String subMchid;
+
   /** 最大分账比例 说明：子商户允许父商户分账的最大比例，单位万分比，比如2000表示20% */
   @SerializedName("max_ratio")
   private Long maxRatio;

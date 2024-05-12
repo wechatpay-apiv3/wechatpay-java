@@ -23,6 +23,7 @@ public class DeleteActivityMerchantBody {
   /** 删除的发券商户号 说明：从活动已有的发券商户号中移除的商户号列表 */
   @SerializedName("merchant_id_list")
   private List<String> merchantIdList = new ArrayList<String>();
+
   /** 请求业务单据号 说明：商户添加发券商户号的凭据号，商户侧需保持唯一性 */
   @SerializedName("delete_request_no")
   private String deleteRequestNo;

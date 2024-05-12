@@ -23,10 +23,12 @@ public class QueryOrderRequest {
   @SerializedName("sub_mchid")
   @Expose(serialize = false)
   private String subMchid;
+
   /** 微信订单号 说明：微信支付订单号 */
   @SerializedName("transaction_id")
   @Expose(serialize = false)
   private String transactionId;
+
   /** 商户分账单号 说明：商户系统内部的分账单号，在商户系统内部唯一（分账、完结分账应使用不同的商户分账单号），同一分账单号多次请求等同一次 */
   @SerializedName("out_order_no")
   @Expose(serialize = false)

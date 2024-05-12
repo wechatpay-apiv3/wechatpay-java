@@ -22,18 +22,22 @@ public class GetSingleSubMchFundFlowBillRequest {
   @SerializedName("sub_mchid")
   @Expose(serialize = false)
   private String subMchid;
+
   /** 账单日期 说明：账单日期，格式yyyy-MM-DD，仅支持三个月内的账单下载申请。 */
   @SerializedName("bill_date")
   @Expose(serialize = false)
   private String billDate;
+
   /** 资金账户类型 说明：资金账户类型 */
   @SerializedName("account_type")
   @Expose(serialize = false)
   private AccountType accountType;
+
   /** 账单文件加密算法 说明：账单文件加密算法 */
   @SerializedName("algorithm")
   @Expose(serialize = false)
   private Algorithm algorithm;
+
   /** 压缩格式 说明：压缩格式，不填则以不压缩的方式返回数据流 */
   @SerializedName("tar_type")
   @Expose(serialize = false)

@@ -20,27 +20,35 @@ public class Parking {
   /** 停车入场id 说明：车主服务为商户分配的入场id */
   @SerializedName("id")
   private String id;
+
   /** 商户入场id 说明：商户侧入场标识id，在同一个商户号下唯一 */
   @SerializedName("out_parking_no")
   private String outParkingNo;
+
   /** 车牌号 说明：车牌号，仅包括省份+车牌，不包括特殊字符。 */
   @SerializedName("plate_number")
   private String plateNumber;
+
   /** 车牌颜色 说明：车牌颜色 */
   @SerializedName("plate_color")
   private PlateColor plateColor;
+
   /** 入场时间 说明：入场时间，按照使用rfc3339所定义的格式，格式为YYYY-MM-DDThh:mm:ss+TIMEZONE */
   @SerializedName("start_time")
   private String startTime;
+
   /** 停车场名称 说明：所在停车位车场的名称 */
   @SerializedName("parking_name")
   private String parkingName;
+
   /** 免费时长 说明：停车场的免费停车时长，单位为秒 */
   @SerializedName("free_duration")
   private Integer freeDuration;
+
   /** 停车入场状态 说明：本次入场车牌的服务状态， NORMAL:正常状态，可以使用微信支付分停车服务， BLOCKED 不可用状态，暂时不可以使用微信支付分停车服务 */
   @SerializedName("state")
   private String state;
+
   /**
    * 不可用状态描述 说明：block服务状态描述，返回车牌状态为BLOCKED，会返回该字段，描述具体BLOCKED的原因， PAUSE：已暂停微信支付分停车服务；
    * OVERDUE：已授权签约但欠费，不能提供服务, OUT_SERVICE : 车牌未开通微信支付分停车服务， EVALUATION_FAILED

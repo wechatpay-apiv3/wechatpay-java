@@ -20,6 +20,7 @@ public class CreateMaterialsBody {
   /** 请求业务单据 说明：商户添加业务代理信息凭据号，商户侧需保持唯一性。可包含英文字母，数字，\\\\|，\\\\_，\\\\*，\\\\-等内容，不允许出现其他不合法符号。 */
   @SerializedName("out_request_no")
   private String outRequestNo;
+
   /** 生成物料码数量 说明：生成物料码数量 */
   @SerializedName("material_num")
   private Long materialNum;

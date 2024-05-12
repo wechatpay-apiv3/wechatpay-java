@@ -20,6 +20,7 @@ public class BrandEntity {
   /** 捐赠数量 说明：用户在该品牌下捐赠的总次数 */
   @SerializedName("donate_count")
   private Long donateCount;
+
   /** 供餐数量 说明：仅供参品牌返回，该品牌为环卫工人供餐总量 */
   @SerializedName("consume_count")
   private Long consumeCount;
