@@ -112,7 +112,6 @@ public final class RSAPublicKeyConfig extends AbstractRSAConfig implements Notif
       requireNonNull(publicKey);
       requireNonNull(publicKeyId);
       requireNonNull(privateKey);
-      requireNonNull(apiV3Key);
       requireNonNull(merchantSerialNumber);
 
       return new RSAPublicKeyConfig(this);
