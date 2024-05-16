@@ -60,6 +60,7 @@ class RSAPublicKeyNotificationConfigTest implements NotificationConfigTest {
     return new Builder()
         .publicKey(WECHAT_PAY_PUBLIC_KEY)
         .publicKeyId(WECHAT_PAY_CERTIFICATE_SERIAL_NUMBER)
+        .apiV3Key(API_V3_KEY)
         .build();
   }
 }
