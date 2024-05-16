@@ -15,4 +15,8 @@ public final class RSAVerifier extends AbstractVerifier {
   public RSAVerifier(PublicKey publicKey, String publicKeyId) {
     super(SHA256WITHRSA, publicKey, publicKeyId);
   }
+
+  public RSAVerifier(PublicKey publicKey, String publicKeyId, CertificateProvider provider) {
+    super(SHA256WITHRSA, publicKey, publicKeyId, provider);
+  }
 }
