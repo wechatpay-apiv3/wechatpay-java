@@ -7,7 +7,6 @@ import com.wechat.pay.java.core.certificate.model.DownloadCertificateResponse;
 import com.wechat.pay.java.core.certificate.model.EncryptCertificate;
 import com.wechat.pay.java.core.cipher.AeadCipher;
 import com.wechat.pay.java.core.exception.ServiceException;
-import com.wechat.pay.java.core.exception.WechatPayException;
 import com.wechat.pay.java.core.http.Constant;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpMethod;
