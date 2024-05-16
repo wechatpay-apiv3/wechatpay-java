@@ -34,7 +34,7 @@ public final class RSAPublicKeyNotificationConfig extends AbstractNotificationCo
       return this;
     }
 
-    public Builder publicFromPath(String publicKeyPath) {
+    public Builder publicKeyFromPath(String publicKeyPath) {
       this.publicKey = PemUtil.loadPublicKeyFromPath(publicKeyPath);
       return this;
     }
