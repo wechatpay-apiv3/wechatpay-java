@@ -55,6 +55,10 @@ public class InitiateBatchTransferRequest {
   @SerializedName("transfer_scene_id")
   private String transferSceneId;
 
+  /** 通知地址 说明：异步接收微信支付结果通知的回调地址，通知url必须为公网可访问的url，必须为https，不能携带参数。 */
+  @SerializedName("notify_url")
+  private String notifyUrl;
+
   public String getAppid() {
     return appid;
   }
@@ -119,6 +123,14 @@ public class InitiateBatchTransferRequest {
     this.transferSceneId = transferSceneId;
   }
 
+  public String getNotifyUrl() {
+    return notifyUrl;
+  }
+
+  public void setNotifyUrl(String notifyUrl) {
+    this.notifyUrl = notifyUrl;
+  }
+
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
@@ -131,6 +143,7 @@ public class InitiateBatchTransferRequest {
     sb.append("    totalNum: ").append(toIndentedString(totalNum)).append("\n");
     sb.append("    transferDetailList: ").append(toIndentedString(transferDetailList)).append("\n");
     sb.append("    transferSceneId: ").append(toIndentedString(transferSceneId)).append("\n");
+    sb.append("    notifyUrl: ").append(toIndentedString(notifyUrl)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -153,6 +166,7 @@ public class InitiateBatchTransferRequest {
       }
     }
     copy.transferSceneId = transferSceneId;
+    copy.notifyUrl = notifyUrl;
     return copy;
   }
 }
