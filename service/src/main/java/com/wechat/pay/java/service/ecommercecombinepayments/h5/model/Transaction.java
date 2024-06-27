@@ -1,8 +1,8 @@
 // Copyright 2021 Tencent Inc. All rights reserved.
 //
-// H5支付
+// APP支付
 //
-// H5支付API
+// APP支付API
 //
 // API version: 1.2.3
 
@@ -12,9 +12,7 @@
 package com.wechat.pay.java.service.ecommercecombinepayments.h5.model;
 
 import com.google.gson.annotations.SerializedName;
-import com.wechat.pay.java.service.ecommercecombinepayments.model.PromotionDetail;
-import com.wechat.pay.java.service.ecommercecombinepayments.model.TransactionAmount;
-import com.wechat.pay.java.service.ecommercecombinepayments.model.TransactionPayer;
+import com.wechat.pay.java.service.ecommercecombinepayments.model.SubOrderDetail;
 
 import java.util.List;
 
@@ -22,251 +20,89 @@ import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
 
 /** */
 public class Transaction {
-  /** amount */
-  @SerializedName("amount")
-  private TransactionAmount amount;
 
-  /** spAppid */
-  @SerializedName("sp_appid")
-  private String spAppid;
+  /** 合单商户appid 说明：合单发起方的appid */
+  @SerializedName("combine_appid")
+  private String combineAppid;
 
-  /** subAppid */
-  @SerializedName("sub_appid")
-  private String subAppid;
+  /** 合单商户号 说明：合单发起方商户号，服务商和电商模式下，传服务商商户号。*/
+  @SerializedName("combine_mchid")
+  private String combineMchid;
 
-  /** spMchid */
-  @SerializedName("sp_mchid")
-  private String spMchid;
+  /** combineOutTradeNo 说明：合单商户订单号 */
+  @SerializedName("combine_out_trade_no")
+  private String combineOutTradeNo;
 
-  /** subMchid */
-  @SerializedName("sub_mchid")
-  private String subMchid;
+  /** sceneInfo */
+  @SerializedName("scene_info")
+  private SceneInfo sceneInfo;
 
-  /** attach */
-  @SerializedName("attach")
-  private String attach;
+  /** sceneInfo */
+  @SerializedName("sub_orders")
+  private List<SubOrderDetail> subOrders;
 
-  /** bankType */
-  @SerializedName("bank_type")
-  private String bankType;
+  /** 支付者信息 */
+  @SerializedName("combine_payer_info")
+  private CombinePayerInfo combinePayerInfo;
 
-  /** outTradeNo */
-  @SerializedName("out_trade_no")
-  private String outTradeNo;
-
-  /** payer */
-  @SerializedName("payer")
-  private TransactionPayer payer;
-
-  /** promotionDetail */
-  @SerializedName("promotion_detail")
-  private List<PromotionDetail> promotionDetail;
-
-  /** successTime */
-  @SerializedName("success_time")
-  private String successTime;
-
-  /** tradeState */
-  public enum TradeStateEnum {
-    @SerializedName("SUCCESS")
-    SUCCESS,
-
-    @SerializedName("REFUND")
-    REFUND,
-
-    @SerializedName("NOTPAY")
-    NOTPAY,
-
-    @SerializedName("CLOSED")
-    CLOSED,
-
-    @SerializedName("REVOKED")
-    REVOKED,
-
-    @SerializedName("USERPAYING")
-    USERPAYING,
-
-    @SerializedName("PAYERROR")
-    PAYERROR,
-
-    @SerializedName("ACCEPT")
-    ACCEPT
+  public String getCombineAppid() {
+    return combineAppid;
   }
 
-  @SerializedName("trade_state")
-  private TradeStateEnum tradeState;
-
-  /** tradeStateDesc */
-  @SerializedName("trade_state_desc")
-  private String tradeStateDesc;
-
-  /** tradeType */
-  public enum TradeTypeEnum {
-    @SerializedName("JSAPI")
-    JSAPI,
-
-    @SerializedName("NATIVE")
-    NATIVE,
-
-    @SerializedName("APP")
-    APP,
-
-    @SerializedName("MICROPAY")
-    MICROPAY,
-
-    @SerializedName("MWEB")
-    MWEB,
-
-    @SerializedName("FACEPAY")
-    FACEPAY
+  public void setCombineAppid(String combineAppid) {
+    this.combineAppid = combineAppid;
   }
 
-  @SerializedName("trade_type")
-  private TradeTypeEnum tradeType;
-
-  /** transactionId */
-  @SerializedName("transaction_id")
-  private String transactionId;
-
-  public TransactionAmount getAmount() {
-    return amount;
+  public String getCombineMchid() {
+    return combineMchid;
   }
 
-  public void setAmount(TransactionAmount amount) {
-    this.amount = amount;
+  public void setCombineMchid(String combineMchid) {
+    this.combineMchid = combineMchid;
   }
 
-  public String getSpAppid() {
-    return spAppid;
+  public String getCombineOutTradeNo() {
+    return combineOutTradeNo;
   }
 
-  public void setSpAppid(String spAppid) {
-    this.spAppid = spAppid;
+  public void setCombineOutTradeNo(String combineOutTradeNo) {
+    this.combineOutTradeNo = combineOutTradeNo;
   }
 
-  public String getSubAppid() {
-    return subAppid;
+  public SceneInfo getSceneInfo() {
+    return sceneInfo;
   }
 
-  public void setSubAppid(String subAppid) {
-    this.subAppid = subAppid;
+  public void setSceneInfo(SceneInfo sceneInfo) {
+    this.sceneInfo = sceneInfo;
   }
 
-  public String getSpMchid() {
-    return spMchid;
+  public List<SubOrderDetail> getSubOrders() {
+    return subOrders;
   }
 
-  public void setSpMchid(String spMchid) {
-    this.spMchid = spMchid;
+  public void setSubOrders(List<SubOrderDetail> subOrders) {
+    this.subOrders = subOrders;
   }
 
-  public String getSubMchid() {
-    return subMchid;
+  public CombinePayerInfo getCombinePayerInfo() {
+    return combinePayerInfo;
   }
 
-  public void setSubMchid(String subMchid) {
-    this.subMchid = subMchid;
-  }
-
-  public String getAttach() {
-    return attach;
-  }
-
-  public void setAttach(String attach) {
-    this.attach = attach;
-  }
-
-  public String getBankType() {
-    return bankType;
-  }
-
-  public void setBankType(String bankType) {
-    this.bankType = bankType;
-  }
-
-  public String getOutTradeNo() {
-    return outTradeNo;
-  }
-
-  public void setOutTradeNo(String outTradeNo) {
-    this.outTradeNo = outTradeNo;
-  }
-
-  public TransactionPayer getPayer() {
-    return payer;
-  }
-
-  public void setPayer(TransactionPayer payer) {
-    this.payer = payer;
-  }
-
-  public List<PromotionDetail> getPromotionDetail() {
-    return promotionDetail;
-  }
-
-  public void setPromotionDetail(List<PromotionDetail> promotionDetail) {
-    this.promotionDetail = promotionDetail;
-  }
-
-  public String getSuccessTime() {
-    return successTime;
-  }
-
-  public void setSuccessTime(String successTime) {
-    this.successTime = successTime;
-  }
-
-  public TradeStateEnum getTradeState() {
-    return tradeState;
-  }
-
-  public void setTradeState(TradeStateEnum tradeState) {
-    this.tradeState = tradeState;
-  }
-
-  public String getTradeStateDesc() {
-    return tradeStateDesc;
-  }
-
-  public void setTradeStateDesc(String tradeStateDesc) {
-    this.tradeStateDesc = tradeStateDesc;
-  }
-
-  public TradeTypeEnum getTradeType() {
-    return tradeType;
-  }
-
-  public void setTradeType(TradeTypeEnum tradeType) {
-    this.tradeType = tradeType;
-  }
-
-  public String getTransactionId() {
-    return transactionId;
-  }
-
-  public void setTransactionId(String transactionId) {
-    this.transactionId = transactionId;
+  public void setCombinePayerInfo(CombinePayerInfo combinePayerInfo) {
+    this.combinePayerInfo = combinePayerInfo;
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Transaction {\n");
-    sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
-    sb.append("    spAppid: ").append(toIndentedString(spAppid)).append("\n");
-    sb.append("    subAppid: ").append(toIndentedString(subAppid)).append("\n");
-    sb.append("    spMchid: ").append(toIndentedString(spMchid)).append("\n");
-    sb.append("    subMchid: ").append(toIndentedString(subMchid)).append("\n");
-    sb.append("    attach: ").append(toIndentedString(attach)).append("\n");
-    sb.append("    bankType: ").append(toIndentedString(bankType)).append("\n");
-    sb.append("    outTradeNo: ").append(toIndentedString(outTradeNo)).append("\n");
-    sb.append("    payer: ").append(toIndentedString(payer)).append("\n");
-    sb.append("    promotionDetail: ").append(toIndentedString(promotionDetail)).append("\n");
-    sb.append("    successTime: ").append(toIndentedString(successTime)).append("\n");
-    sb.append("    tradeState: ").append(toIndentedString(tradeState)).append("\n");
-    sb.append("    tradeStateDesc: ").append(toIndentedString(tradeStateDesc)).append("\n");
-    sb.append("    tradeType: ").append(toIndentedString(tradeType)).append("\n");
-    sb.append("    transactionId: ").append(toIndentedString(transactionId)).append("\n");
+    sb.append("    combineAppid: ").append(toIndentedString(combineAppid)).append("\n");
+    sb.append("    combineMchid: ").append(toIndentedString(combineMchid)).append("\n");
+    sb.append("    combineOutTradeNo: ").append(toIndentedString(combineOutTradeNo)).append("\n");
+    sb.append("    sceneInfo: ").append(toIndentedString(sceneInfo)).append("\n");
+    sb.append("    subOrders: ").append(toIndentedString(subOrders)).append("\n");
+    sb.append("    combinePayerInfo: ").append(toIndentedString(combinePayerInfo)).append("\n");
     sb.append("}");
     return sb.toString();
   }
