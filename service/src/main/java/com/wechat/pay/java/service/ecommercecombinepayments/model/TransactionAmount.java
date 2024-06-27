@@ -34,6 +34,38 @@ public class TransactionAmount {
   @SerializedName("payer_currency")
   private String payerCurrency;
 
+  public Integer getTotalAmount() {
+    return totalAmount;
+  }
+
+  public void setTotalAmount(Integer totalAmount) {
+    this.totalAmount = totalAmount;
+  }
+
+  public String getCurrency() {
+    return currency;
+  }
+
+  public void setCurrency(String currency) {
+    this.currency = currency;
+  }
+
+  public Integer getPayerAmount() {
+    return payerAmount;
+  }
+
+  public void setPayerAmount(Integer payerAmount) {
+    this.payerAmount = payerAmount;
+  }
+
+  public String getPayerCurrency() {
+    return payerCurrency;
+  }
+
+  public void setPayerCurrency(String payerCurrency) {
+    this.payerCurrency = payerCurrency;
+  }
+
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
