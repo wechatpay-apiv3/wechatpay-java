@@ -17,62 +17,31 @@ import static com.wechat.pay.java.core.util.StringUtil.toIndentedString;
 
 /** TransactionAmount */
 public class TransactionAmount {
-  /** currency */
+
+  /** 标价金额 */
+  @SerializedName("total_amount")
+  private Integer totalAmount;
+
+  /** 标价币种 */
   @SerializedName("currency")
   private String currency;
 
-  /** payerCurrency */
+  /** 现金支付金额 */
+  @SerializedName("payer_amount")
+  private Integer payerAmount;
+
+  /** 现金支付币种 */
   @SerializedName("payer_currency")
   private String payerCurrency;
-
-  /** payerTotal */
-  @SerializedName("payer_total")
-  private Integer payerTotal;
-
-  /** total */
-  @SerializedName("total")
-  private Integer total;
-
-  public String getCurrency() {
-    return currency;
-  }
-
-  public void setCurrency(String currency) {
-    this.currency = currency;
-  }
-
-  public String getPayerCurrency() {
-    return payerCurrency;
-  }
-
-  public void setPayerCurrency(String payerCurrency) {
-    this.payerCurrency = payerCurrency;
-  }
-
-  public Integer getPayerTotal() {
-    return payerTotal;
-  }
-
-  public void setPayerTotal(Integer payerTotal) {
-    this.payerTotal = payerTotal;
-  }
-
-  public Integer getTotal() {
-    return total;
-  }
-
-  public void setTotal(Integer total) {
-    this.total = total;
-  }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class TransactionAmount {\n");
+    sb.append("    totalAmount: ").append(toIndentedString(totalAmount)).append("\n");
     sb.append("    currency: ").append(toIndentedString(currency)).append("\n");
+    sb.append("    payerAmount: ").append(toIndentedString(payerAmount)).append("\n");
     sb.append("    payerCurrency: ").append(toIndentedString(payerCurrency)).append("\n");
-    sb.append("    payerTotal: ").append(toIndentedString(payerTotal)).append("\n");
-    sb.append("    total: ").append(toIndentedString(total)).append("\n");
     sb.append("}");
     return sb.toString();
   }
