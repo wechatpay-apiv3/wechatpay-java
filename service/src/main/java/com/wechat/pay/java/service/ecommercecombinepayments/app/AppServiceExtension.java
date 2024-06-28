@@ -71,33 +71,6 @@ public class AppServiceExtension {
     return response;
   }
 
-  /**
-   * 商户订单号查询订单
-   *
-   * @param request 请求参数
-   * @return Transaction
-   * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
-   * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
-   * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
-   */
-  public Transaction queryOrderByCombineOutTradeNo(QueryOrderByCombineOutTradeNoRequest request) {
-    return appService.queryOrderByCombineOutTradeNo(request);
-  }
-
-  /**
-   * 关闭订单
-   *
-   * @param request 请求参数
-   * @throws HttpException 发送HTTP请求失败。例如构建请求参数失败、发送请求失败、I/O错误等。包含请求信息。
-   * @throws ValidationException 发送HTTP请求成功，验证微信支付返回签名失败。
-   * @throws ServiceException 发送HTTP请求成功，服务返回异常。例如返回状态码小于200或大于等于300。
-   * @throws MalformedMessageException 服务返回成功，content-type不为application/json、解析返回体失败。
-   */
-  public void closeOrder(CloseOrderRequest request) {
-    appService.closeOrder(request);
-  }
-
   public static class Builder {
     private Config config;
 

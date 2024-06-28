@@ -38,24 +38,6 @@ public class AppServiceExample {
     // 初始化服务
     service = new AppService.Builder().config(config).build();
     // ... 调用接口
-    try {
-      closeOrder();
-    } catch (HttpException e) { // 发送HTTP请求失败
-      // 调用e.getHttpRequest()获取请求打印日志或上报监控，更多方法见HttpException定义
-    } catch (ServiceException e) { // 服务返回状态小于200或大于等于300，例如500
-      // 调用e.getResponseBody()获取返回体打印日志或上报监控，更多方法见ServiceException定义
-    } catch (MalformedMessageException e) { // 服务返回成功，返回体类型不合法，或者解析返回体失败
-      // 调用e.getMessage()获取信息打印日志或上报监控，更多方法见MalformedMessageException定义
-    }
-  }
-
-  /** 关闭订单 */
-  public static void closeOrder() {
-
-    CloseOrderRequest request = new CloseOrderRequest();
-    // 调用request.setXxx(val)设置所需参数，具体参数可见Request定义
-    // 调用接口
-    service.closeOrder(request);
   }
 
   /** APP支付下单 */
@@ -66,12 +48,4 @@ public class AppServiceExample {
     return service.prepay(request);
   }
 
-  /** 商户订单号查询订单 */
-  public static Transaction queryOrderByCombineOutTradeNo() {
-
-    QueryOrderByCombineOutTradeNoRequest request = new QueryOrderByCombineOutTradeNoRequest();
-    // 调用request.setXxx(val)设置所需参数，具体参数可见Request定义
-    // 调用接口
-    return service.queryOrderByCombineOutTradeNo(request);
-  }
 }

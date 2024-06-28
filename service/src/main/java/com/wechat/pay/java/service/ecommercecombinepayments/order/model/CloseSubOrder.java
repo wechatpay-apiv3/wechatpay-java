@@ -1,4 +1,4 @@
-package com.wechat.pay.java.service.ecommercecombinepayments.jsapi.model;
+package com.wechat.pay.java.service.ecommercecombinepayments.order.model;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -47,15 +47,6 @@ public class AppServiceExtensionExample {
     }
   }
 
-  /** 关闭订单 */
-  public static void closeOrder() {
-
-    CloseOrderRequest request = new CloseOrderRequest();
-    // 调用request.setXxx(val)设置所需参数，具体参数可见Request定义
-    // 调用接口
-    service.closeOrder(request);
-  }
-
   /** APP支付下单，并返回APP调起支付数据 */
   public static PrepayWithRequestPaymentResponse prepayWithRequestPayment() {
     // 微信开放平台审核通过的移动应用appid
@@ -66,12 +57,4 @@ public class AppServiceExtensionExample {
     return service.prepayWithRequestPayment(request, requestPaymentAppid);
   }
 
-  /** 商户订单号查询订单 */
-  public static Transaction queryOrderByCombineOutTradeNo() {
-
-    QueryOrderByCombineOutTradeNoRequest request = new QueryOrderByCombineOutTradeNoRequest();
-    // 调用request.setXxx(val)设置所需参数，具体参数可见Request定义
-    // 调用接口
-    return service.queryOrderByCombineOutTradeNo(request);
-  }
 }

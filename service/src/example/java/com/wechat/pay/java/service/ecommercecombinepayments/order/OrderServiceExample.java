@@ -1,13 +1,16 @@
-package com.wechat.pay.java.service.ecommercecombinepayments.jsapi;
+package com.wechat.pay.java.service.ecommercecombinepayments.order;
 
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.RSAAutoCertificateConfig;
 import com.wechat.pay.java.core.exception.HttpException;
 import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.exception.ServiceException;
-import com.wechat.pay.java.service.ecommercecombinepayments.jsapi.model.*;
+import com.wechat.pay.java.service.ecommercecombinepayments.order.model.CloseOrderRequest;
+import com.wechat.pay.java.service.ecommercecombinepayments.order.model.QueryOrderByCombineOutTradeNoRequest;
+import com.wechat.pay.java.service.ecommercecombinepayments.order.model.Transaction;
 
-public class JsapiServiceExtensionExample {
+/** OrderService使用示例 */
+public class OrderServiceExample {
 
   /** 商户号 */
   public static String merchantId = "190000****";
@@ -21,7 +24,7 @@ public class JsapiServiceExtensionExample {
   /** 商户APIV3密钥 */
   public static String apiV3Key = "...";
 
-  public static com.wechat.pay.java.service.ecommercecombinepayments.jsapi.JsapiServiceExtension service;
+  public static OrderService service;
 
   public static void main(String[] args) {
     // 初始化商户配置
@@ -33,15 +36,12 @@ public class JsapiServiceExtensionExample {
             .merchantSerialNumber(merchantSerialNumber)
             .apiV3Key(apiV3Key)
             .build();
+
     // 初始化服务
-    service =
-        new JsapiServiceExtension.Builder()
-            .config(config)
-            .signType("RSA") // 不填则默认为RSA
-            .build();
+    service = new OrderService.Builder().config(config).build();
+    // ... 调用接口
     try {
-      PrepayWithRequestPaymentResponse response = prepayWithRequestPayment();
-      System.out.println(response);
+      closeOrder();
     } catch (HttpException e) { // 发送HTTP请求失败
       // 调用e.getHttpRequest()获取请求打印日志或上报监控，更多方法见HttpException定义
     } catch (ServiceException e) { // 服务返回状态小于200或大于等于300，例如500
@@ -51,14 +51,21 @@ public class JsapiServiceExtensionExample {
     }
   }
 
-  /** JSAPI支付下单，并返回JSAPI调起支付数据 */
-  public static PrepayWithRequestPaymentResponse prepayWithRequestPayment() {
-    // 商户申请的公众号对应的appid，由微信支付生成，可在公众号后台查看
-    String requestPaymentAppid = "test-request-payment-appid";
-    PrepayRequest request = new PrepayRequest();
+  /** 关闭订单 */
+  public static void closeOrder() {
+
+    CloseOrderRequest request = new CloseOrderRequest();
     // 调用request.setXxx(val)设置所需参数，具体参数可见Request定义
     // 调用接口
-    return service.prepayWithRequestPayment(request, requestPaymentAppid);
+    service.closeOrder(request);
   }
 
+  /** 商户订单号查询订单 */
+  public static Transaction queryOrderByCombineOutTradeNo() {
+
+    QueryOrderByCombineOutTradeNoRequest request = new QueryOrderByCombineOutTradeNoRequest();
+    // 调用request.setXxx(val)设置所需参数，具体参数可见Request定义
+    // 调用接口
+    return service.queryOrderByCombineOutTradeNo(request);
+  }
 }
