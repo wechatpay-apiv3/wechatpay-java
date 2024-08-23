@@ -233,6 +233,23 @@ Config config =
         .build();
 ```
 
+## 使用本地平台公钥
+
+如果你的商户可使用微信支付的公钥验证应答和回调的签名，可使用微信支付公钥和公钥ID初始化。
+
+```java
+// 可以根据实际情况使用publicKeyFromPath或publicKey加载公钥
+Config config =
+    new RSAPublicKeyConfig.Builder()
+        .merchantId(merchantId)
+        .privateKeyFromPath(privateKeyPath)
+        .publicKeyFromPath(publicKeyPath)
+        .publicKeyId(publicKeyId)
+        .merchantSerialNumber(merchantSerialNumber)
+        .apiV3Key(apiV3Key)
+        .build();
+```
+
 ## 回调通知
 
 首先，你需要在你的服务器上创建一个公开的 HTTP 端点，接受来自微信支付的回调通知。

@@ -15,7 +15,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/** 签名类型为RSA的通知配置参数 */
+/**
+ * 通知回调配置类
+ *
+ * @deprecated 请使用 RSAAutoCertificateConfig，开发者应尽快迁移，我们将在未来某个时间移除这段废弃的代码。
+ */
 public final class RSANotificationConfig extends AbstractNotificationConfig {
 
   private RSANotificationConfig(CertificateProvider certificateProvider, AeadCipher aeadCipher) {
