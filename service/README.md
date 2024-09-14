@@ -31,3 +31,7 @@
 | billdownload | 账单下载 |✔️|✔️|
 | ecommercesubsidy | 电商收付通补差 | |✔️|
 | ecommercerefund  | 电商收付通退款 | |✔️|
+| ecommercecombinepayments/app | 电商收付通 APP 支付    |  | ✔️ |
+| ecommercecombinepayments/jsapi | 电商收付通 JSAPI 支付  |  | ✔️ |
+| ecommercecombinepayments/nativepay | 电商收付通 Native 支付 |  | ✔️ |
+| ecommercecombinepayments/h5 | 电商收付通 H5 支付     |  | ✔️ |
