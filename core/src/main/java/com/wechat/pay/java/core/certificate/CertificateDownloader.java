@@ -6,13 +6,13 @@ import com.wechat.pay.java.core.certificate.model.Data;
 import com.wechat.pay.java.core.certificate.model.DownloadCertificateResponse;
 import com.wechat.pay.java.core.certificate.model.EncryptCertificate;
 import com.wechat.pay.java.core.cipher.AeadCipher;
+import com.wechat.pay.java.core.exception.ServiceException;
 import com.wechat.pay.java.core.http.Constant;
 import com.wechat.pay.java.core.http.HttpClient;
 import com.wechat.pay.java.core.http.HttpMethod;
 import com.wechat.pay.java.core.http.HttpRequest;
 import com.wechat.pay.java.core.http.HttpResponse;
 import com.wechat.pay.java.core.http.MediaType;
-import com.wechat.pay.java.core.util.PemUtil;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
@@ -77,16 +77,17 @@ public final class CertificateDownloader {
             .addHeader(Constant.ACCEPT, " */*")
             .addHeader(Constant.CONTENT_TYPE, MediaType.APPLICATION_JSON.getValue())
             .build();
-    HttpResponse<DownloadCertificateResponse> httpResponse =
-        httpClient.execute(httpRequest, DownloadCertificateResponse.class);
-
-    Map<String, X509Certificate> downloaded = decryptCertificate(httpResponse);
-    validateCertificate(downloaded);
-    return downloaded;
-  }
-
-  private void validateCertificate(Map<String, X509Certificate> certificates) {
-    certificates.forEach((serialNo, cert) -> certificateHandler.validateCertPath(cert));
+    try {
+      HttpResponse<DownloadCertificateResponse> httpResponse =
+          httpClient.execute(httpRequest, DownloadCertificateResponse.class);
+      return decryptCertificate(httpResponse);
+    } catch (ServiceException e) {
+      // 如果证书不存在，可能是切换为平台公钥，该处不报错
+      if (e.getErrorCode().equals("NOT_FOUND")) {
+        return new HashMap<>();
+      }
+      throw e;
+    }
   }
 
   /**
@@ -109,7 +110,7 @@ public final class CertificateDownloader {
               Base64.getDecoder().decode(encryptCertificate.getCiphertext()));
 
       certificate = certificateHandler.generateCertificate(decryptCertificate);
-      downloadCertMap.put(PemUtil.getSerialNumber(certificate), certificate);
+      downloadCertMap.put(data.getSerialNo(), certificate);
     }
     return downloadCertMap;
   }

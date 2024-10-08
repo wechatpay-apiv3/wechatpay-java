@@ -1,5 +1,5 @@
 [![JavaDoc](http://img.shields.io/badge/javadoc-reference-blue.svg)](https://www.javadoc.io/doc/com.github.wechatpay-apiv3/wechatpay-java/latest/index.html)
-![Maven Central](https://img.shields.io/maven-central/v/com.github.wechatpay-apiv3/wechatpay-java?versionPrefix=0.2.12)
+![Maven Central](https://img.shields.io/maven-central/v/com.github.wechatpay-apiv3/wechatpay-java?versionPrefix=0.2.14)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=wechatpay-apiv3_wechatpay-java&metric=security_rating)](https://sonarcloud.io/summary/overall?id=wechatpay-apiv3_wechatpay-java)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=wechatpay-apiv3_wechatpay-java&metric=sqale_rating)](https://sonarcloud.io/summary/overall?id=wechatpay-apiv3_wechatpay-java)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=wechatpay-apiv3_wechatpay-java&metric=coverage)](https://sonarcloud.io/summary/overall?id=wechatpay-apiv3_wechatpay-java)
@@ -36,7 +36,7 @@
 在你的 build.gradle 文件中加入如下的依赖
 
 ```groovy
-implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.12'
+implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.14'
 ```
 
 #### Maven
@@ -47,7 +47,7 @@ implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.12'
 <dependency>
   <groupId>com.github.wechatpay-apiv3</groupId>
   <artifactId>wechatpay-java</artifactId>
-  <version>0.2.12</version>
+  <version>0.2.14</version>
 </dependency>
 ```
 
@@ -230,6 +230,23 @@ Config config =
         .privateKeyFromPath(privateKeyPath)
         .merchantSerialNumber(merchantSerialNumber)
         .wechatPayCertificatesFromPath(wechatPayCertificatePath)
+        .build();
+```
+
+## 使用本地平台公钥
+
+如果你的商户可使用微信支付的公钥验证应答和回调的签名，可使用微信支付公钥和公钥ID初始化。
+
+```java
+// 可以根据实际情况使用publicKeyFromPath或publicKey加载公钥
+Config config =
+    new RSAPublicKeyConfig.Builder()
+        .merchantId(merchantId)
+        .privateKeyFromPath(privateKeyPath)
+        .publicKeyFromPath(publicKeyPath)
+        .publicKeyId(publicKeyId)
+        .merchantSerialNumber(merchantSerialNumber)
+        .apiV3Key(apiV3Key)
         .build();
 ```
 
