@@ -3,6 +3,7 @@ package com.wechat.pay.java.core.cipher;
 import static java.util.Objects.requireNonNull;
 
 import com.wechat.pay.java.core.certificate.CertificateProvider;
+import com.wechat.pay.java.core.util.PemUtil;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -134,6 +135,6 @@ public abstract class AbstractVerifier implements Verifier {
     }
 
     requireNonNull(certificateProvider);
-    return certificateProvider.getAvailableCertificate().getSerialNumber().toString();
+    return PemUtil.getSerialNumber(certificateProvider.getAvailableCertificate());
   }
 }
