@@ -113,6 +113,11 @@ public class RSAAutoCertificateProvider implements CertificateProvider {
           public boolean validate(HttpHeaders responseHeaders, String body) {
             return true;
           }
+
+          @Override
+          public <T> String getSerialNumber() {
+            return "";
+          }
         };
 
     public RSAAutoCertificateProvider build() {

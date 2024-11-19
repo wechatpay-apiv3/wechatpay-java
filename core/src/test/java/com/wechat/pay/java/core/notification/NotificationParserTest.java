@@ -73,12 +73,20 @@ public class NotificationParserTest {
           }
         };
     Verifier fakeVerifier =
-        (serialNumber, message, signature) -> {
-          Assert.assertEquals(WECHAT_PAY_CERTIFICATE_SERIAL_NUMBER, serialNumber);
-          String verifyMessage = TIMESTAMP + "\n" + verifyNonce + "\n" + notificationJson + "\n";
-          Assert.assertEquals(verifyMessage, message);
-          Assert.assertEquals(SIGNATURE, signature);
-          return true;
+        new Verifier() {
+          @Override
+          public boolean verify(String serialNumber, String message, String signature) {
+            Assert.assertEquals(WECHAT_PAY_CERTIFICATE_SERIAL_NUMBER, serialNumber);
+            String verifyMessage = TIMESTAMP + "\n" + verifyNonce + "\n" + notificationJson + "\n";
+            Assert.assertEquals(verifyMessage, message);
+            Assert.assertEquals(SIGNATURE, signature);
+            return true;
+          }
+
+          @Override
+          public String getSerialNumber() {
+            return "";
+          }
         };
 
     Map<String, Verifier> verifiers = new HashMap<>();
@@ -177,7 +185,17 @@ public class NotificationParserTest {
 
               @Override
               public Verifier createVerifier() {
-                return (serialNumber, message, signature) -> false;
+                return new Verifier() {
+                  @Override
+                  public boolean verify(String serialNumber, String message, String signature) {
+                    return false;
+                  }
+
+                  @Override
+                  public String getSerialNumber() {
+                    return "";
+                  }
+                };
               }
 
               @Override
@@ -205,7 +223,18 @@ public class NotificationParserTest {
             return DECRYPT_OBJECT_STRING;
           }
         };
-    Verifier fakeVerifier = (serialNumber, message, signature) -> true;
+    Verifier fakeVerifier =
+        new Verifier() {
+          @Override
+          public boolean verify(String serialNumber, String message, String signature) {
+            return true;
+          }
+
+          @Override
+          public String getSerialNumber() {
+            return "";
+          }
+        };
     Map<String, Verifier> verifiers = new HashMap<>();
     Map<String, AeadCipher> ciphers = new HashMap<>();
     verifiers.put(SIGN_TYPE, fakeVerifier);
@@ -242,7 +271,19 @@ public class NotificationParserTest {
             return DECRYPT_OBJECT_STRING;
           }
         };
-    Verifier fakeVerifier = (serialNumber, message, signature) -> false;
+    Verifier fakeVerifier =
+        new Verifier() {
+          @Override
+          public boolean verify(String serialNumber, String message, String signature) {
+            return false;
+          }
+
+          @Override
+          public String getSerialNumber() {
+            return "";
+          }
+        };
+    ;
     Map<String, Verifier> verifiers = new HashMap<>();
     Map<String, AeadCipher> ciphers = new HashMap<>();
     verifiers.put(SIGN_TYPE, fakeVerifier);

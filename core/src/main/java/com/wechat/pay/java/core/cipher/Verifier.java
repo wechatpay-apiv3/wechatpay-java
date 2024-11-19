@@ -12,4 +12,6 @@ public interface Verifier {
    * @return 是否验证通过
    */
   boolean verify(String serialNumber, String message, String signature);
+
+  String getSerialNumber();
 }

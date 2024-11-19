@@ -5,6 +5,7 @@ import static com.wechat.pay.java.core.http.Constant.OS;
 import static com.wechat.pay.java.core.http.Constant.USER_AGENT;
 import static com.wechat.pay.java.core.http.Constant.USER_AGENT_FORMAT;
 import static com.wechat.pay.java.core.http.Constant.VERSION;
+import static com.wechat.pay.java.core.http.Constant.WECHAT_PAY_SERIAL;
 import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_ID;
 import static com.wechat.pay.java.core.model.TestConfig.RESOURCES_DIR;
 import static java.net.HttpURLConnection.HTTP_OK;
@@ -100,6 +101,11 @@ public class OkHttpClientAdapterTest {
             Assert.assertEquals(RESPONSE_JSON, body);
             return true;
           }
+
+          @Override
+          public <T> String getSerialNumber() {
+            return "";
+          }
         };
     String userAgent =
         String.format(
@@ -119,7 +125,7 @@ public class OkHttpClientAdapterTest {
 
                   Assert.assertEquals(executeSendGetMethod, HttpMethod.GET.name());
                   Assert.assertEquals(URL, chain.request().url().url().toString());
-                  Assert.assertEquals(3, executeSendGetHeaders.size());
+                  Assert.assertEquals(4, executeSendGetHeaders.size());
                   Assert.assertEquals(
                       REQUEST_HEADER_VALUE, executeSendGetHeaders.get(REQUEST_HEADER_KEY));
                   Assert.assertEquals(userAgent, executeSendGetHeaders.get(USER_AGENT));
@@ -161,7 +167,7 @@ public class OkHttpClientAdapterTest {
     HttpResponse<TestServiceResponse> executeSendGetResponse =
         executeSendGetHttpClient.execute(executeSendGetHttpRequest, TestServiceResponse.class);
 
-    Assert.assertEquals(3, executeSendGetResponse.getRequest().getHeaders().getHeaders().size());
+    Assert.assertEquals(4, executeSendGetResponse.getRequest().getHeaders().getHeaders().size());
     Assert.assertEquals(
         REQUEST_HEADER_VALUE,
         executeSendGetResponse.getRequest().getHeaders().getHeader(REQUEST_HEADER_KEY));
@@ -212,6 +218,11 @@ public class OkHttpClientAdapterTest {
             Assert.assertEquals(RESPONSE_JSON, body);
             return true;
           }
+
+          @Override
+          public <T> String getSerialNumber() {
+            return "";
+          }
         };
     String userAgent =
         String.format(
@@ -236,7 +247,7 @@ public class OkHttpClientAdapterTest {
 
                   Assert.assertEquals(executeSendPostWithJsonMethod, HttpMethod.POST.name());
                   Assert.assertEquals(URL, chain.request().url().url().toString());
-                  Assert.assertEquals(3, executeSendPostWithJsonHeaders.size());
+                  Assert.assertEquals(4, executeSendPostWithJsonHeaders.size());
                   Assert.assertEquals(userAgent, executeSendPostWithJsonHeaders.get(USER_AGENT));
                   Assert.assertEquals(
                       executeSendPostCredential.getAuthorization(
@@ -283,7 +294,7 @@ public class OkHttpClientAdapterTest {
     HttpResponse<TestServiceResponse> executeSendPostResponse =
         executeSendPostHttpClient.execute(executeSendPostHttpRequest, TestServiceResponse.class);
 
-    Assert.assertEquals(3, executeSendPostResponse.getRequest().getHeaders().getHeaders().size());
+    Assert.assertEquals(4, executeSendPostResponse.getRequest().getHeaders().getHeaders().size());
     Assert.assertEquals(
         REQUEST_HEADER_VALUE,
         executeSendPostResponse.getRequest().getHeaders().getHeader(REQUEST_HEADER_KEY));
@@ -353,6 +364,11 @@ public class OkHttpClientAdapterTest {
             Assert.assertEquals(RESPONSE_JSON, body);
             return true;
           }
+
+          @Override
+          public <T> String getSerialNumber() {
+            return "fake-serial-number";
+          }
         };
     String userAgent =
         String.format(
@@ -377,7 +393,9 @@ public class OkHttpClientAdapterTest {
                       multiPartBody.contentLength(), okHttpRequestBody.contentLength());
                   Assert.assertEquals(executeSendPostWithFileMethod, HttpMethod.POST.name());
                   Assert.assertEquals(URL, chain.request().url().url().toString());
-                  Assert.assertEquals(3, executeSendPostWithFileHeaders.size());
+                  Assert.assertEquals(4, executeSendPostWithFileHeaders.size());
+                  Assert.assertEquals(
+                      "fake-serial-number", executeSendPostWithFileHeaders.get(WECHAT_PAY_SERIAL));
                   Assert.assertEquals(
                       REQUEST_HEADER_VALUE, executeSendPostWithFileHeaders.get(REQUEST_HEADER_KEY));
                   Assert.assertEquals(userAgent, executeSendPostWithFileHeaders.get(USER_AGENT));
@@ -413,7 +431,7 @@ public class OkHttpClientAdapterTest {
             requestHeaders, URL, requestBody, TestServiceResponse.class);
 
     Assert.assertEquals(
-        3, executeSendPostWithFileResponse.getRequest().getHeaders().getHeaders().size());
+        4, executeSendPostWithFileResponse.getRequest().getHeaders().getHeaders().size());
     Assert.assertEquals(
         REQUEST_HEADER_VALUE,
         executeSendPostWithFileResponse.getRequest().getHeaders().getHeader(REQUEST_HEADER_KEY));
@@ -471,6 +489,11 @@ public class OkHttpClientAdapterTest {
             Assert.assertEquals(RESPONSE_JSON, body);
             return true;
           }
+
+          @Override
+          public <T> String getSerialNumber() {
+            return "";
+          }
         };
     String userAgent =
         String.format(
@@ -497,7 +520,7 @@ public class OkHttpClientAdapterTest {
 
                   Assert.assertEquals(executeSendPutMethod, HttpMethod.PUT.name());
                   Assert.assertEquals(URL, chain.request().url().url().toString());
-                  Assert.assertEquals(3, executeSendPutHeaders.size());
+                  Assert.assertEquals(4, executeSendPutHeaders.size());
                   Assert.assertEquals(userAgent, executeSendPutHeaders.get(USER_AGENT));
                   Assert.assertEquals(
                       executeSendPutCredential.getAuthorization(
@@ -542,7 +565,7 @@ public class OkHttpClientAdapterTest {
     HttpResponse<TestServiceResponse> executeSendPutResponse =
         executeSendPutHttpClient.execute(httpRequest, TestServiceResponse.class);
 
-    Assert.assertEquals(3, executeSendPutResponse.getRequest().getHeaders().getHeaders().size());
+    Assert.assertEquals(4, executeSendPutResponse.getRequest().getHeaders().getHeaders().size());
     Assert.assertEquals(
         REQUEST_HEADER_VALUE,
         executeSendPutResponse.getRequest().getHeaders().getHeader(REQUEST_HEADER_KEY));
@@ -594,6 +617,11 @@ public class OkHttpClientAdapterTest {
             Assert.assertEquals(RESPONSE_JSON, body);
             return true;
           }
+
+          @Override
+          public <T> String getSerialNumber() {
+            return "";
+          }
         };
     String userAgent =
         String.format(
@@ -619,7 +647,7 @@ public class OkHttpClientAdapterTest {
 
                   Assert.assertEquals(executeSendPatchMethod, HttpMethod.PATCH.name());
                   Assert.assertEquals(URL, chain.request().url().url().toString());
-                  Assert.assertEquals(3, executeSendPatchHeaders.size());
+                  Assert.assertEquals(4, executeSendPatchHeaders.size());
                   Assert.assertEquals(
                       REQUEST_HEADER_VALUE, executeSendPatchHeaders.get(REQUEST_HEADER_KEY));
                   Assert.assertEquals(userAgent, executeSendPatchHeaders.get(USER_AGENT));
@@ -666,7 +694,7 @@ public class OkHttpClientAdapterTest {
     HttpResponse<TestServiceResponse> executeSendPatchResponse =
         executeSendPatchHttpClient.execute(httpRequest, TestServiceResponse.class);
 
-    Assert.assertEquals(3, executeSendPatchResponse.getRequest().getHeaders().getHeaders().size());
+    Assert.assertEquals(4, executeSendPatchResponse.getRequest().getHeaders().getHeaders().size());
     Assert.assertEquals(
         REQUEST_HEADER_VALUE,
         executeSendPatchResponse.getRequest().getHeaders().getHeader(REQUEST_HEADER_KEY));
@@ -719,6 +747,11 @@ public class OkHttpClientAdapterTest {
             Assert.assertEquals(RESPONSE_JSON, body);
             return true;
           }
+
+          @Override
+          public <T> String getSerialNumber() {
+            return "";
+          }
         };
     String userAgent =
         String.format(
@@ -739,7 +772,7 @@ public class OkHttpClientAdapterTest {
 
                   Assert.assertEquals(HttpMethod.DELETE.name(), executeSendDeleteMethod);
                   Assert.assertEquals(URL, chain.request().url().url().toString());
-                  Assert.assertEquals(3, executeSendDeleteHeaders.size());
+                  Assert.assertEquals(4, executeSendDeleteHeaders.size());
                   Assert.assertEquals(
                       REQUEST_HEADER_VALUE, executeSendDeleteHeaders.get(REQUEST_HEADER_KEY));
                   Assert.assertEquals(userAgent, executeSendDeleteHeaders.get(USER_AGENT));
@@ -783,7 +816,7 @@ public class OkHttpClientAdapterTest {
     HttpResponse<TestServiceResponse> executeSendDeleteResponse =
         executeSendDeleteHttpClient.execute(httpRequest, TestServiceResponse.class);
 
-    Assert.assertEquals(3, executeSendDeleteResponse.getRequest().getHeaders().getHeaders().size());
+    Assert.assertEquals(4, executeSendDeleteResponse.getRequest().getHeaders().getHeaders().size());
     Assert.assertEquals(
         REQUEST_HEADER_VALUE,
         executeSendDeleteResponse.getRequest().getHeaders().getHeader(REQUEST_HEADER_KEY));
@@ -835,6 +868,11 @@ public class OkHttpClientAdapterTest {
             Assert.assertEquals(RESPONSE_JSON, body);
             return true;
           }
+
+          @Override
+          public <T> String getSerialNumber() {
+            return "";
+          }
         };
     String userAgent =
         String.format(
@@ -855,7 +893,7 @@ public class OkHttpClientAdapterTest {
 
                   Assert.assertEquals(getMethod, HttpMethod.GET.name());
                   Assert.assertEquals(URL, chain.request().url().url().toString());
-                  Assert.assertEquals(3, getHeaders.size());
+                  Assert.assertEquals(4, getHeaders.size());
                   Assert.assertEquals(REQUEST_HEADER_VALUE, getHeaders.get(REQUEST_HEADER_KEY));
                   Assert.assertEquals(userAgent, getHeaders.get(USER_AGENT));
                   Assert.assertEquals(
@@ -888,7 +926,7 @@ public class OkHttpClientAdapterTest {
     HttpResponse<TestServiceResponse> getResponse =
         getHttpClient.get(requestHeaders, URL, TestServiceResponse.class);
     Assert.assertNotNull(getResponse.getRequest().getHeaders());
-    Assert.assertEquals(3, getResponse.getRequest().getHeaders().getHeaders().size());
+    Assert.assertEquals(4, getResponse.getRequest().getHeaders().getHeaders().size());
     Assert.assertEquals(userAgent, getResponse.getRequest().getHeaders().getHeader(USER_AGENT));
     Assert.assertEquals(
         FAKE_AUTHORIZATION, getResponse.getRequest().getHeaders().getHeader(AUTHORIZATION));
@@ -937,6 +975,11 @@ public class OkHttpClientAdapterTest {
             Assert.assertEquals(RESPONSE_JSON, body);
             return true;
           }
+
+          @Override
+          public <T> String getSerialNumber() {
+            return "";
+          }
         };
     String userAgent =
         String.format(
@@ -962,7 +1005,7 @@ public class OkHttpClientAdapterTest {
 
                   Assert.assertEquals(postMethod, HttpMethod.POST.name());
                   Assert.assertEquals(URL, chain.request().url().url().toString());
-                  Assert.assertEquals(3, postHeaders.size());
+                  Assert.assertEquals(4, postHeaders.size());
                   Assert.assertEquals(REQUEST_HEADER_VALUE, postHeaders.get(REQUEST_HEADER_KEY));
                   Assert.assertEquals(userAgent, postHeaders.get(USER_AGENT));
                   Assert.assertEquals(
@@ -997,7 +1040,7 @@ public class OkHttpClientAdapterTest {
     HttpResponse<TestServiceResponse> postResponse =
         postHttpClient.post(requestHeaders, URL, JSON_REQUEST_BODY, TestServiceResponse.class);
 
-    Assert.assertEquals(3, postResponse.getRequest().getHeaders().getHeaders().size());
+    Assert.assertEquals(4, postResponse.getRequest().getHeaders().getHeaders().size());
     Assert.assertEquals(
         REQUEST_HEADER_VALUE, postResponse.getRequest().getHeaders().getHeader(REQUEST_HEADER_KEY));
     Assert.assertEquals(userAgent, postResponse.getRequest().getHeaders().getHeader(USER_AGENT));
@@ -1048,6 +1091,11 @@ public class OkHttpClientAdapterTest {
             Assert.assertEquals(RESPONSE_JSON, body);
             return true;
           }
+
+          @Override
+          public <T> String getSerialNumber() {
+            return "";
+          }
         };
     String userAgent =
         String.format(
@@ -1073,7 +1121,7 @@ public class OkHttpClientAdapterTest {
 
                   Assert.assertEquals(method, HttpMethod.PATCH.name());
                   Assert.assertEquals(URL, chain.request().url().url().toString());
-                  Assert.assertEquals(3, headers.size());
+                  Assert.assertEquals(4, headers.size());
                   Assert.assertEquals(REQUEST_HEADER_VALUE, headers.get(REQUEST_HEADER_KEY));
                   Assert.assertEquals(userAgent, headers.get(USER_AGENT));
                   Assert.assertEquals(
@@ -1109,7 +1157,7 @@ public class OkHttpClientAdapterTest {
     HttpResponse<TestServiceResponse> patchResponse =
         patchHttpClient.patch(requestHeaders, URL, JSON_REQUEST_BODY, TestServiceResponse.class);
 
-    Assert.assertEquals(3, patchResponse.getRequest().getHeaders().getHeaders().size());
+    Assert.assertEquals(4, patchResponse.getRequest().getHeaders().getHeaders().size());
     Assert.assertEquals(
         REQUEST_HEADER_VALUE,
         patchResponse.getRequest().getHeaders().getHeader(REQUEST_HEADER_KEY));
@@ -1161,6 +1209,11 @@ public class OkHttpClientAdapterTest {
             Assert.assertEquals(RESPONSE_JSON, body);
             return true;
           }
+
+          @Override
+          public <T> String getSerialNumber() {
+            return "";
+          }
         };
     String userAgent =
         String.format(
@@ -1186,7 +1239,7 @@ public class OkHttpClientAdapterTest {
 
                   Assert.assertEquals(putMethod, HttpMethod.PUT.name());
                   Assert.assertEquals(URL, chain.request().url().url().toString());
-                  Assert.assertEquals(3, putHeaders.size());
+                  Assert.assertEquals(4, putHeaders.size());
                   Assert.assertEquals(REQUEST_HEADER_VALUE, putHeaders.get(REQUEST_HEADER_KEY));
                   Assert.assertEquals(userAgent, putHeaders.get(USER_AGENT));
                   Assert.assertEquals(
@@ -1221,7 +1274,7 @@ public class OkHttpClientAdapterTest {
     HttpResponse<TestServiceResponse> putResponse =
         putHttpClient.put(requestHeaders, URL, JSON_REQUEST_BODY, TestServiceResponse.class);
 
-    Assert.assertEquals(3, putResponse.getRequest().getHeaders().getHeaders().size());
+    Assert.assertEquals(4, putResponse.getRequest().getHeaders().getHeaders().size());
     Assert.assertEquals(
         REQUEST_HEADER_VALUE, putResponse.getRequest().getHeaders().getHeader(REQUEST_HEADER_KEY));
     Assert.assertEquals(userAgent, putResponse.getRequest().getHeaders().getHeader(USER_AGENT));
@@ -1272,6 +1325,11 @@ public class OkHttpClientAdapterTest {
             Assert.assertEquals(RESPONSE_JSON, body);
             return true;
           }
+
+          @Override
+          public <T> String getSerialNumber() {
+            return "";
+          }
         };
     String userAgent =
         String.format(
@@ -1292,7 +1350,7 @@ public class OkHttpClientAdapterTest {
 
                   Assert.assertEquals(deleteMethod, HttpMethod.DELETE.name());
                   Assert.assertEquals(URL, chain.request().url().url().toString());
-                  Assert.assertEquals(3, deleteHeaders.size());
+                  Assert.assertEquals(4, deleteHeaders.size());
                   Assert.assertEquals(REQUEST_HEADER_VALUE, deleteHeaders.get(REQUEST_HEADER_KEY));
                   Assert.assertEquals(userAgent, deleteHeaders.get(USER_AGENT));
                   Assert.assertEquals(
@@ -1325,7 +1383,7 @@ public class OkHttpClientAdapterTest {
     HttpResponse<TestServiceResponse> deleteResponse =
         deleteHttpClient.delete(requestHeaders, URL, TestServiceResponse.class);
 
-    Assert.assertEquals(3, deleteResponse.getRequest().getHeaders().getHeaders().size());
+    Assert.assertEquals(4, deleteResponse.getRequest().getHeaders().getHeaders().size());
     Assert.assertEquals(
         REQUEST_HEADER_VALUE,
         deleteResponse.getRequest().getHeaders().getHeader(REQUEST_HEADER_KEY));
@@ -1367,6 +1425,11 @@ public class OkHttpClientAdapterTest {
           @Override
           public <T> boolean validate(HttpHeaders responseHeaders, String body) {
             return true;
+          }
+
+          @Override
+          public <T> String getSerialNumber() {
+            return "";
           }
         };
     try (Buffer buffer = new Buffer()) {
