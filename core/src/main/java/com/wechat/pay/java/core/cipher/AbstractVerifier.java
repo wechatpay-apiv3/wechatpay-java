@@ -126,4 +126,14 @@ public abstract class AbstractVerifier implements Verifier {
     }
     return verify(certificate, message, signature);
   }
+
+  @Override
+  public String getSerialNumber() {
+    if (publicKey != null) {
+      return publicKeyId;
+    }
+
+    requireNonNull(certificateProvider);
+    return certificateProvider.getAvailableCertificate().getSerialNumber().toString();
+  }
 }

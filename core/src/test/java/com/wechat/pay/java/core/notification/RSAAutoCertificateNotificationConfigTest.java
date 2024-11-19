@@ -34,6 +34,11 @@ class RSAAutoCertificateNotificationConfigTest {
           public <T> boolean validate(HttpHeaders responseHeaders, String body) {
             return true;
           }
+
+          @Override
+          public <T> String getSerialNumber() {
+            return "";
+          }
         };
     OkHttpClient okHttpClient =
         new OkHttpClient.Builder()

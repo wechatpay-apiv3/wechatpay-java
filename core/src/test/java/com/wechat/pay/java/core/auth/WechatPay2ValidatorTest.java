@@ -32,9 +32,17 @@ public class WechatPay2ValidatorTest {
     String buildMessage = timestamp + "\n" + NONCE + "\n" + BODY + "\n";
 
     Verifier fakeVerifier =
-        (serialNumber, message, signature) -> {
-          Assert.assertEquals(buildMessage, message);
-          return true;
+        new Verifier() {
+          @Override
+          public boolean verify(String serialNumber, String message, String signature) {
+            Assert.assertEquals(buildMessage, message);
+            return true;
+          }
+
+          @Override
+          public String getSerialNumber() {
+            return "";
+          }
         };
 
     validator = new WechatPay2Validator(fakeVerifier);

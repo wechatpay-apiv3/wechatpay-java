@@ -39,12 +39,22 @@ public class RSAAutoCertificateProviderTest implements CertificateProviderTest {
     public boolean validate(HttpHeaders responseHeaders, String body) {
       return true;
     }
+
+    @Override
+    public <T> String getSerialNumber() {
+      return "";
+    }
   }
 
   static class FalseValidator implements Validator {
     @Override
     public boolean validate(HttpHeaders responseHeaders, String body) {
       return false;
+    }
+
+    @Override
+    public <T> String getSerialNumber() {
+      return "";
     }
   }
 

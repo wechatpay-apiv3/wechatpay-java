@@ -229,6 +229,11 @@ class AutoCertificateServiceTest {
     public <T> boolean validate(HttpHeaders responseHeaders, String body) {
       return true;
     }
+
+    @Override
+    public <T> String getSerialNumber() {
+      return "";
+    }
   }
 
   @Test

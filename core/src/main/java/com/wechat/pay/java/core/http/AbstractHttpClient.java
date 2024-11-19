@@ -7,6 +7,7 @@ import static com.wechat.pay.java.core.http.Constant.REQUEST_ID;
 import static com.wechat.pay.java.core.http.Constant.USER_AGENT;
 import static com.wechat.pay.java.core.http.Constant.USER_AGENT_FORMAT;
 import static com.wechat.pay.java.core.http.Constant.VERSION;
+import static com.wechat.pay.java.core.http.Constant.WECHAT_PAY_SERIAL;
 import static java.net.HttpURLConnection.HTTP_MULT_CHOICE;
 import static java.net.HttpURLConnection.HTTP_OK;
 import static java.util.Objects.requireNonNull;
@@ -39,6 +40,7 @@ public abstract class AbstractHttpClient implements HttpClient {
             .headers(httpRequest.getHeaders())
             .addHeader(AUTHORIZATION, getAuthorization(httpRequest))
             .addHeader(USER_AGENT, getUserAgent())
+            .addHeader(WECHAT_PAY_SERIAL, getWechatPaySerial())
             .body(httpRequest.getBody())
             .build();
     OriginalResponse originalResponse = innerExecute(innerRequest);
@@ -57,6 +59,7 @@ public abstract class AbstractHttpClient implements HttpClient {
             .addHeader(AUTHORIZATION, getAuthorization(originRequest))
             .addHeader(ACCEPT, "*/*")
             .addHeader(USER_AGENT, getUserAgent())
+            .addHeader(WECHAT_PAY_SERIAL, getWechatPaySerial())
             .build();
     return innerDownload(httpRequest);
   }
@@ -128,6 +131,10 @@ public abstract class AbstractHttpClient implements HttpClient {
         credential.getClass().getSimpleName(),
         validator.getClass().getSimpleName(),
         getHttpClientInfo());
+  }
+
+  private String getWechatPaySerial() {
+    return this.validator.getSerialNumber();
   }
 
   /**

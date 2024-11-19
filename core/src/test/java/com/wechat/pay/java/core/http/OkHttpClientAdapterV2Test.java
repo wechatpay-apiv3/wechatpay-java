@@ -31,6 +31,11 @@ public class OkHttpClientAdapterV2Test implements HttpClientTest {
           public <T> boolean validate(HttpHeaders responseHeaders, String body) {
             return true;
           }
+
+          @Override
+          public <T> String getSerialNumber() {
+            return "";
+          }
         };
 
     return new DefaultHttpClientBuilder().credential(credential).validator(validator).build();
@@ -61,6 +66,11 @@ public class OkHttpClientAdapterV2Test implements HttpClientTest {
           @Override
           public <T> boolean validate(HttpHeaders responseHeaders, String body) {
             return false;
+          }
+
+          @Override
+          public <T> String getSerialNumber() {
+            return "";
           }
         };
 

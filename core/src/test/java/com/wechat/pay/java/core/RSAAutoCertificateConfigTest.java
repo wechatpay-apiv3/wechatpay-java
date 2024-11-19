@@ -42,6 +42,11 @@ class RSAAutoCertificateConfigTest implements ConfigTest {
           public <T> boolean validate(HttpHeaders responseHeaders, String body) {
             return true;
           }
+
+          @Override
+          public <T> String getSerialNumber() {
+            return "";
+          }
         };
     okHttpClient =
         new OkHttpClient.Builder()

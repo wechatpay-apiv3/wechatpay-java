@@ -14,4 +14,6 @@ public interface Validator {
    * @return 返回是否合法
    */
   <T> boolean validate(HttpHeaders responseHeaders, String body);
+
+  <T> String getSerialNumber();
 }

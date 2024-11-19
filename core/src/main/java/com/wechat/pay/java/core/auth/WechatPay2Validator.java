@@ -60,4 +60,9 @@ public final class WechatPay2Validator implements Validator {
     logger.debug("Signature for verifying signatures is[{}]", signature);
     return verifier.verify(serialNumber, message, signature);
   }
+
+  @Override
+  public <T> String getSerialNumber() {
+    return this.verifier.getSerialNumber();
+  }
 }
