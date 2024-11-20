@@ -150,8 +150,7 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
   @Override
   protected InputStream innerDownload(HttpRequest httpRequest) {
     Request okHttpRequest = buildOkHttpRequest(httpRequest);
-    try {
-      Response okHttpResponse = okHttpClient.newCall(okHttpRequest).execute();
+    try (Response okHttpResponse = okHttpClient.newCall(okHttpRequest).execute()) {
       if (isInvalidHttpCode(okHttpResponse.code())) {
         throw new ServiceException(httpRequest, okHttpResponse.code(), "");
       }
