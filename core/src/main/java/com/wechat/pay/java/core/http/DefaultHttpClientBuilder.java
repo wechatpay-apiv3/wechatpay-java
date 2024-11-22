@@ -1,14 +1,22 @@
 package com.wechat.pay.java.core.http;
 
+import java.net.Proxy;
 import static java.util.Objects.requireNonNull;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.http.HttpHost;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
+import com.wechat.pay.java.core.http.apache.ApacheHttpClientAdapter;
 import com.wechat.pay.java.core.http.okhttp.OkHttpClientAdapter;
 import com.wechat.pay.java.core.http.okhttp.OkHttpMultiDomainInterceptor;
-import java.net.Proxy;
-import java.util.concurrent.TimeUnit;
+
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 
@@ -30,6 +38,8 @@ public class DefaultHttpClientBuilder
               new ConnectionPool(MAX_IDLE_CONNECTIONS, KEEP_ALIVE_SECONDS, TimeUnit.SECONDS))
           .build();
   private okhttp3.OkHttpClient customizeOkHttpClient;
+  private CloseableHttpClient customizeApacheHttpClient;
+  private boolean useApacheHttpClient = false; //
   private int readTimeoutMs = -1;
   private int writeTimeoutMs = -1;
   private int connectTimeoutMs = -1;
@@ -38,6 +48,34 @@ public class DefaultHttpClientBuilder
   private Boolean retryOnConnectionFailure = null;
   private static final OkHttpMultiDomainInterceptor multiDomainInterceptor =
       new OkHttpMultiDomainInterceptor();
+
+  private CloseableHttpClient initDefaultApacheHttpClient() {
+    PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
+    connectionManager.setMaxTotal(MAX_IDLE_CONNECTIONS);
+    connectionManager.setDefaultMaxPerRoute(MAX_IDLE_CONNECTIONS);
+
+    RequestConfig.Builder requestConfigBuilder = RequestConfig.custom();
+  
+    if (connectTimeoutMs >= 0) {
+      requestConfigBuilder.setConnectTimeout(connectTimeoutMs);
+    }
+    if (readTimeoutMs >= 0) {
+      requestConfigBuilder.setSocketTimeout(readTimeoutMs);
+    }
+    if (proxy != null) {
+      requestConfigBuilder.setProxy(new HttpHost(proxy.address().toString()));
+    }
+
+    return HttpClientBuilder.create()
+            .setConnectionManager(connectionManager)
+            .setDefaultRequestConfig(requestConfigBuilder.build())
+            .build();
+  }
+
+  public DefaultHttpClientBuilder useApacheHttpClient() {
+    this.useApacheHttpClient = true;
+    return this;
+}
 
   /**
    * 复制工厂，复制一个当前对象
@@ -50,6 +88,7 @@ public class DefaultHttpClientBuilder
     result.credential = this.credential;
     result.validator = this.validator;
     result.customizeOkHttpClient = this.customizeOkHttpClient;
+    result.customizeApacheHttpClient = this.customizeApacheHttpClient;
     result.readTimeoutMs = this.readTimeoutMs;
     result.writeTimeoutMs = this.writeTimeoutMs;
     result.connectTimeoutMs = this.connectTimeoutMs;
@@ -122,6 +161,19 @@ public class DefaultHttpClientBuilder
    */
   public DefaultHttpClientBuilder okHttpClient(okhttp3.OkHttpClient okHttpClient) {
     this.customizeOkHttpClient = okHttpClient;
+    this.useApacheHttpClient = false;
+    return this;
+  }
+
+    /**
+   * 设置 appacheHttpClient 若设置该参数，会覆盖client中的原有配置
+   *
+   * @param apacheHttpClient 用户自定义的apacheHttpClient
+   * @return defaultHttpClientBuilder
+   */
+  public DefaultHttpClientBuilder apacheHttpClient(CloseableHttpClient apacheHttpClient) {
+    this.customizeApacheHttpClient = apacheHttpClient;
+    this.useApacheHttpClient = true;
     return this;
   }
 
@@ -154,15 +206,7 @@ public class DefaultHttpClientBuilder
     return this;
   }
 
-  /**
-   * 构建默认HttpClient
-   *
-   * @return httpClient
-   */
-  @Override
-  public AbstractHttpClient build() {
-    requireNonNull(credential);
-    requireNonNull(validator);
+  private AbstractHttpClient buildOkHttpClient() {
     okhttp3.OkHttpClient.Builder okHttpClientBuilder =
         (customizeOkHttpClient == null ? defaultOkHttpClient : customizeOkHttpClient).newBuilder();
     if (connectTimeoutMs >= 0) {
@@ -184,5 +228,28 @@ public class DefaultHttpClientBuilder
       okHttpClientBuilder.retryOnConnectionFailure(false);
     }
     return new OkHttpClientAdapter(credential, validator, okHttpClientBuilder.build());
+  }
+
+  private AbstractHttpClient buildApacheHttpClient() {
+    CloseableHttpClient httpclient = customizeApacheHttpClient == null ? initDefaultApacheHttpClient() : customizeApacheHttpClient;
+    // 每次都会创建一个 httpclient 实例，和 okhttp 不同
+    // You can customize a shared OkH(ttpClient instance with newBuilder(). This builds a client that shares the same connection po)ol, thread pools, and configuration.
+    return new ApacheHttpClientAdapter(credential, validator, httpclient);
+  }
+
+  /**
+   * 构建默认HttpClient
+   *
+   * @return httpClient
+   */
+  @Override
+  public AbstractHttpClient build() {
+    requireNonNull(credential);
+    requireNonNull(validator);
+
+    if (useApacheHttpClient) {
+      return buildApacheHttpClient();
+    }
+    return buildOkHttpClient();
   }
 }
