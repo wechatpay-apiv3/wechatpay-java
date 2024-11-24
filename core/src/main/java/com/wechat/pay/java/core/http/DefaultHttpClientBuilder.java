@@ -16,6 +16,8 @@ import com.wechat.pay.java.core.auth.Validator;
 import com.wechat.pay.java.core.http.apache.ApacheHttpClientAdapter;
 import com.wechat.pay.java.core.http.okhttp.OkHttpClientAdapter;
 import com.wechat.pay.java.core.http.okhttp.OkHttpMultiDomainInterceptor;
+import com.wechat.pay.java.core.http.apache.ApacheHttpMultiDomainRetryHandler;
+import com.wechat.pay.java.core.http.apache.ApacheHttpMultiDomainRequestInterceptor;
 
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
@@ -46,8 +48,14 @@ public class DefaultHttpClientBuilder
   private Proxy proxy;
   private boolean retryMultiDomain = false;
   private Boolean retryOnConnectionFailure = null;
-  private static final OkHttpMultiDomainInterceptor multiDomainInterceptor =
+  private static final OkHttpMultiDomainInterceptor okHttpMultiDomainInterceptor =
       new OkHttpMultiDomainInterceptor();
+
+  private static final ApacheHttpMultiDomainRetryHandler apacheHttpMultiDomainRetryHandler =
+      new ApacheHttpMultiDomainRetryHandler();
+
+  private static final ApacheHttpMultiDomainRequestInterceptor apacheHttpMultiDomainInterceptor = 
+      new ApacheHttpMultiDomainRequestInterceptor();
 
   private CloseableHttpClient initDefaultApacheHttpClient() {
     PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
@@ -55,7 +63,7 @@ public class DefaultHttpClientBuilder
     connectionManager.setDefaultMaxPerRoute(MAX_IDLE_CONNECTIONS);
 
     RequestConfig.Builder requestConfigBuilder = RequestConfig.custom();
-  
+
     if (connectTimeoutMs >= 0) {
       requestConfigBuilder.setConnectTimeout(connectTimeoutMs);
     }
@@ -66,10 +74,14 @@ public class DefaultHttpClientBuilder
       requestConfigBuilder.setProxy(new HttpHost(proxy.address().toString()));
     }
 
-    return HttpClientBuilder.create()
+    HttpClientBuilder builder =  HttpClientBuilder.create()
             .setConnectionManager(connectionManager)
-            .setDefaultRequestConfig(requestConfigBuilder.build())
-            .build();
+            .setDefaultRequestConfig(requestConfigBuilder.build());
+    if (retryMultiDomain) {
+      builder.addInterceptorFirst(apacheHttpMultiDomainInterceptor);
+      builder.setRetryHandler(apacheHttpMultiDomainRetryHandler);
+    }
+    return builder.build();
   }
 
   public DefaultHttpClientBuilder useApacheHttpClient() {
@@ -222,7 +234,7 @@ public class DefaultHttpClientBuilder
       okHttpClientBuilder.proxy(proxy);
     }
     if (retryMultiDomain) {
-      okHttpClientBuilder.addInterceptor(multiDomainInterceptor);
+      okHttpClientBuilder.addInterceptor(okHttpMultiDomainInterceptor);
     }
     if (retryOnConnectionFailure != null && !retryOnConnectionFailure) {
       okHttpClientBuilder.retryOnConnectionFailure(false);
