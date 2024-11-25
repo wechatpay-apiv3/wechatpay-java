@@ -78,7 +78,7 @@ public class ApacheHttpClientBuilder
   }
 
   /**
-   * 设置 appacheHttpClient 若设置该client，则忽略其他参数
+   * 设置自定义的 appacheHttpClient
    *
    * @param apacheHttpClient 用户自定义的apacheHttpClient
    * @return defaultHttpClientBuilder
