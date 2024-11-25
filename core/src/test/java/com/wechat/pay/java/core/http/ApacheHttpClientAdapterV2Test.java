@@ -38,7 +38,7 @@ public class ApacheHttpClientAdapterV2Test implements HttpClientTest {
           }
         };
 
-    return new DefaultHttpClientBuilder().credential(credential).validator(validator).useApacheHttpClient().build();
+    return new ApacheHttpClientBuilder().credential(credential).validator(validator).build();
   }
 
   @Override
@@ -74,6 +74,6 @@ public class ApacheHttpClientAdapterV2Test implements HttpClientTest {
           }
         };
 
-    return new DefaultHttpClientBuilder().credential(credential).validator(validator).useApacheHttpClient().build();
+    return new ApacheHttpClientBuilder().credential(credential).validator(validator).build();
   }
 }

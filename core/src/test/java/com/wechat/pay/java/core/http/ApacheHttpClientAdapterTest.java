@@ -28,7 +28,6 @@ import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
 import static com.wechat.pay.java.core.http.Constant.AUTHORIZATION;
 import static com.wechat.pay.java.core.http.Constant.OS;
-import static com.wechat.pay.java.core.http.Constant.USER_AGENT;
 import static com.wechat.pay.java.core.http.Constant.USER_AGENT_FORMAT;
 import static com.wechat.pay.java.core.http.Constant.VERSION;
 import com.wechat.pay.java.core.http.okhttp.OkHttpClientAdapter;
@@ -36,7 +35,6 @@ import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_ID;
 import static com.wechat.pay.java.core.model.TestConfig.RESOURCES_DIR;
 import com.wechat.pay.java.core.model.TestServiceResponse;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.InputStream;
@@ -163,9 +161,8 @@ public class ApacheHttpClientAdapterTest {
     };
     CloseableHttpClient httpclient =
           HttpClients.custom().addInterceptorFirst(requestInterceptor).addInterceptorFirst(responseInterceptor).build();
-   
     HttpClient executeSendGetHttpClient =
-        new DefaultHttpClientBuilder()
+        new ApacheHttpClientBuilder()
             .credential(executeSendGetCredential)
             .validator(executeSendGetRequestValidator)
             .apacheHttpClient(httpclient)
@@ -253,7 +250,7 @@ public class ApacheHttpClientAdapterTest {
 
                 Assert.assertTrue(request instanceof HttpEntityEnclosingRequest);
                 HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) request;
-                HttpEntity reqEntity = entityRequest.getEntity();  
+                HttpEntity reqEntity = entityRequest.getEntity();
                 HttpEntity entity = new StringEntity(
                     JSON_REQUEST_BODY.getBody(),
                     ContentType.create(JSON_REQUEST_BODY.getContentType()));
@@ -276,7 +273,6 @@ public class ApacheHttpClientAdapterTest {
             public void process(org.apache.http.HttpResponse response, HttpContext context) throws HttpException, IOException {
                 Header header = new BasicHeader(RESPONSE_HEADER_KEY, RESPONSE_HEADER_VALUE);
                 response.setHeaders(new Header[]{header});
-    
                 ProtocolVersion protocolVersion = new ProtocolVersion("HTTP", 1, 1);
                 int statusCode = HttpStatus.SC_OK;
                 String reasonPhrase = "OK";
@@ -290,7 +286,7 @@ public class ApacheHttpClientAdapterTest {
             addInterceptorFirst(interceptor).
             addInterceptorLast(responseInterceptor).build();
 
-        HttpClient executeSendPostHttpClient = new DefaultHttpClientBuilder()
+        HttpClient executeSendPostHttpClient = new ApacheHttpClientBuilder()
             .credential(executeSendPostCredential)
             .validator(executeSendPostValidator)
             .apacheHttpClient(httpClient)
@@ -305,7 +301,7 @@ public class ApacheHttpClientAdapterTest {
                 .body(JSON_REQUEST_BODY)
                 .build();
 
-        
+
         HttpResponse<TestServiceResponse> executeSendPostResponse =
         executeSendPostHttpClient.execute(executeSendPostHttpRequest, TestServiceResponse.class);
         Assert.assertEquals(4, executeSendPostResponse.getRequest().getHeaders().getHeaders().size());
@@ -335,12 +331,12 @@ public class ApacheHttpClientAdapterTest {
             .fileName(imageName)
             .file(IOUtil.toByteArray(inputStream))
             .build();
-    
+
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         builder.setMode(HttpMultipartMode.RFC6532);
         builder.addTextBody("meta", "meta");
         builder.addBinaryBody("file", requestBody.getFile(), ContentType.create(requestBody.getContentType()), imageName);
-        HttpEntity multipartEntity = builder.build();        
+        HttpEntity multipartEntity = builder.build();
         Credential executeSendPostWithFileCredential =
             new Credential() {
                 @Override
@@ -406,7 +402,7 @@ public class ApacheHttpClientAdapterTest {
 
                 Assert.assertTrue(request instanceof HttpEntityEnclosingRequest);
                 HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) request;
-                HttpEntity reqEntity = entityRequest.getEntity();  
+                HttpEntity reqEntity = entityRequest.getEntity();
                 // apache multipart entity content length 每次创建不一样，不做校验
                 // Assert.assertEquals(multipartEntity.getContentLength(), reqEntity.getContentLength());
             }
@@ -427,7 +423,7 @@ public class ApacheHttpClientAdapterTest {
                 System.out.println("process response: " + response);
                 Header header = new BasicHeader(RESPONSE_HEADER_KEY, RESPONSE_HEADER_VALUE);
                 response.setHeaders(new Header[]{header});
-    
+
                 ProtocolVersion protocolVersion = new ProtocolVersion("HTTP", 1, 1);
                 int statusCode = HttpStatus.SC_OK;
                 String reasonPhrase = "OK";
@@ -441,7 +437,7 @@ public class ApacheHttpClientAdapterTest {
             addInterceptorFirst(interceptor).
             addInterceptorLast(responseInterceptor).build();
 
-        HttpClient executeSendPostWithFileHttpClient = new DefaultHttpClientBuilder()
+        HttpClient executeSendPostWithFileHttpClient = new ApacheHttpClientBuilder()
             .credential(executeSendPostWithFileCredential)
             .validator(executeSendPostWithFileValidator)
             .apacheHttpClient(httpClient)
@@ -459,8 +455,8 @@ public class ApacheHttpClientAdapterTest {
         HttpResponse<TestServiceResponse> executeSendPostWithFileResponse =
             executeSendPostWithFileHttpClient.post(
             requestHeaders, URL, requestBody, TestServiceResponse.class);
-        
-    
+
+
         Assert.assertEquals(
             4, executeSendPostWithFileResponse.getRequest().getHeaders().getHeaders().size());
         Assert.assertEquals(
@@ -516,7 +512,7 @@ public class ApacheHttpClientAdapterTest {
                     Assert.assertEquals(RESPONSE_JSON, body);
                     return true;
                 }
-                
+
                 @Override
                 public <T> String getSerialNumber() {
                     return "";
@@ -549,7 +545,7 @@ public class ApacheHttpClientAdapterTest {
 
                 Assert.assertTrue(request instanceof HttpEntityEnclosingRequest);
                 HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) request;
-                HttpEntity reqEntity = entityRequest.getEntity();  
+                HttpEntity reqEntity = entityRequest.getEntity();
                 HttpEntity entity = new StringEntity(
                     JSON_REQUEST_BODY.getBody(),
                     ContentType.create(JSON_REQUEST_BODY.getContentType()));
@@ -571,7 +567,7 @@ public class ApacheHttpClientAdapterTest {
             public void process(org.apache.http.HttpResponse response, HttpContext context) throws HttpException, IOException {
                 Header header = new BasicHeader(RESPONSE_HEADER_KEY, RESPONSE_HEADER_VALUE);
                 response.setHeaders(new Header[]{header});
-    
+
                 ProtocolVersion protocolVersion = new ProtocolVersion("HTTP", 1, 1);
                 int statusCode = HttpStatus.SC_OK;
                 String reasonPhrase = "OK";
@@ -585,7 +581,7 @@ public class ApacheHttpClientAdapterTest {
             addInterceptorFirst(interceptor).
             addInterceptorLast(responseInterceptor).build();
 
-        HttpClient executeSendPutHttpClient = new DefaultHttpClientBuilder()
+        HttpClient executeSendPutHttpClient = new ApacheHttpClientBuilder()
             .credential(executeSendPutCredential)
             .validator(executeSendPutValidator)
             .apacheHttpClient(httpClient)
@@ -602,8 +598,8 @@ public class ApacheHttpClientAdapterTest {
 
         HttpResponse<TestServiceResponse> executeSendPutResponse =
             executeSendPutHttpClient.execute(httpRequest, TestServiceResponse.class);
-        
-    
+
+
         Assert.assertEquals(
             4, executeSendPutResponse.getRequest().getHeaders().getHeaders().size());
         Assert.assertEquals(
@@ -623,7 +619,7 @@ public class ApacheHttpClientAdapterTest {
         Assert.assertEquals(
             RESPONSE_JSON, ((JsonResponseBody) executeSendPutResponse.getBody()).getBody());
         Assert.assertEquals(RESPONSE_JSON_VALUE, executeSendPutResponse.getServiceResponse().getRequestId());
-    }    
+    }
 
     @Test
     public void testExecuteSendPatchRequest() throws IOException {
@@ -692,7 +688,7 @@ public class ApacheHttpClientAdapterTest {
 
                 Assert.assertTrue(request instanceof HttpEntityEnclosingRequest);
                 HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) request;
-                HttpEntity reqEntity = entityRequest.getEntity();  
+                HttpEntity reqEntity = entityRequest.getEntity();
                 HttpEntity entity = new StringEntity(
                     JSON_REQUEST_BODY.getBody(),
                     ContentType.create(JSON_REQUEST_BODY.getContentType()));
@@ -714,7 +710,7 @@ public class ApacheHttpClientAdapterTest {
             public void process(org.apache.http.HttpResponse response, HttpContext context) throws HttpException, IOException {
                 Header header = new BasicHeader(RESPONSE_HEADER_KEY, RESPONSE_HEADER_VALUE);
                 response.setHeaders(new Header[]{header});
-    
+
                 ProtocolVersion protocolVersion = new ProtocolVersion("HTTP", 1, 1);
                 int statusCode = HttpStatus.SC_OK;
                 String reasonPhrase = "OK";
@@ -728,7 +724,7 @@ public class ApacheHttpClientAdapterTest {
             addInterceptorFirst(interceptor).
             addInterceptorLast(responseInterceptor).build();
 
-        HttpClient executeSendPutHttpClient = new DefaultHttpClientBuilder()
+        HttpClient executeSendPutHttpClient = new ApacheHttpClientBuilder()
             .credential(executeSendPatchCredential)
             .validator(executeSendPatchValidator)
             .apacheHttpClient(httpClient)
@@ -745,8 +741,8 @@ public class ApacheHttpClientAdapterTest {
 
         HttpResponse<TestServiceResponse> executeSendPutResponse =
             executeSendPutHttpClient.execute(httpRequest, TestServiceResponse.class);
-        
-    
+
+
         Assert.assertEquals(
             4, executeSendPutResponse.getRequest().getHeaders().getHeaders().size());
         Assert.assertEquals(
@@ -766,7 +762,7 @@ public class ApacheHttpClientAdapterTest {
         Assert.assertEquals(
             RESPONSE_JSON, ((JsonResponseBody) executeSendPutResponse.getBody()).getBody());
         Assert.assertEquals(RESPONSE_JSON_VALUE, executeSendPutResponse.getServiceResponse().getRequestId());
-    }    
+    }
 
     @Test
     public void testExecuteSendDeleteRequest() throws IOException {
@@ -848,7 +844,7 @@ public class ApacheHttpClientAdapterTest {
             public void process(org.apache.http.HttpResponse response, HttpContext context) throws HttpException, IOException {
                 Header header = new BasicHeader(RESPONSE_HEADER_KEY, RESPONSE_HEADER_VALUE);
                 response.setHeaders(new Header[]{header});
-    
+
                 ProtocolVersion protocolVersion = new ProtocolVersion("HTTP", 1, 1);
                 int statusCode = HttpStatus.SC_OK;
                 String reasonPhrase = "OK";
@@ -862,7 +858,7 @@ public class ApacheHttpClientAdapterTest {
             addInterceptorFirst(interceptor).
             addInterceptorLast(responseInterceptor).build();
 
-        HttpClient executeSendPutHttpClient = new DefaultHttpClientBuilder()
+        HttpClient executeSendPutHttpClient = new ApacheHttpClientBuilder()
             .credential(executeSendDeleteCredential)
             .validator(executeSendDeleteValidator)
             .apacheHttpClient(httpClient)
@@ -879,8 +875,8 @@ public class ApacheHttpClientAdapterTest {
 
         HttpResponse<TestServiceResponse> executeSendPutResponse =
             executeSendPutHttpClient.execute(httpRequest, TestServiceResponse.class);
-        
-    
+
+
         Assert.assertEquals(
             4, executeSendPutResponse.getRequest().getHeaders().getHeaders().size());
         Assert.assertEquals(
@@ -900,9 +896,9 @@ public class ApacheHttpClientAdapterTest {
         Assert.assertEquals(
             RESPONSE_JSON, ((JsonResponseBody) executeSendPutResponse.getBody()).getBody());
         Assert.assertEquals(RESPONSE_JSON_VALUE, executeSendPutResponse.getServiceResponse().getRequestId());
-    }   
-    
-    
+    }
+
+
     @Test
     public void testGet() {
         Credential getCredential =
@@ -993,9 +989,9 @@ public class ApacheHttpClientAdapterTest {
         };
         CloseableHttpClient httpclient =
             HttpClients.custom().addInterceptorFirst(requestInterceptor).addInterceptorFirst(responseInterceptor).build();
-    
+
         HttpClient getHttpClient =
-            new DefaultHttpClientBuilder()
+            new ApacheHttpClientBuilder()
                 .credential(getCredential)
                 .validator(getHttpValidator)
                 .apacheHttpClient(httpclient)
@@ -1075,7 +1071,7 @@ public class ApacheHttpClientAdapterTest {
 
                 Assert.assertTrue(request instanceof HttpEntityEnclosingRequest);
                 HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) request;
-                HttpEntity reqEntity = entityRequest.getEntity();  
+                HttpEntity reqEntity = entityRequest.getEntity();
                 HttpEntity entity = new StringEntity(
                     JSON_REQUEST_BODY.getBody(),
                     ContentType.create(JSON_REQUEST_BODY.getContentType()));
@@ -1098,7 +1094,7 @@ public class ApacheHttpClientAdapterTest {
             public void process(org.apache.http.HttpResponse response, HttpContext context) throws HttpException, IOException {
                 Header header = new BasicHeader(RESPONSE_HEADER_KEY, RESPONSE_HEADER_VALUE);
                 response.setHeaders(new Header[]{header});
-    
+
                 ProtocolVersion protocolVersion = new ProtocolVersion("HTTP", 1, 1);
                 int statusCode = HttpStatus.SC_OK;
                 String reasonPhrase = "OK";
@@ -1112,7 +1108,7 @@ public class ApacheHttpClientAdapterTest {
             addInterceptorFirst(interceptor).
             addInterceptorLast(responseInterceptor).build();
 
-        HttpClient postHttpClient = new DefaultHttpClientBuilder()
+        HttpClient postHttpClient = new ApacheHttpClientBuilder()
             .credential(postCredential)
             .validator(postValidator)
             .apacheHttpClient(httpClient)
@@ -1202,7 +1198,7 @@ public class ApacheHttpClientAdapterTest {
 
                 Assert.assertTrue(request instanceof HttpEntityEnclosingRequest);
                 HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) request;
-                HttpEntity reqEntity = entityRequest.getEntity();  
+                HttpEntity reqEntity = entityRequest.getEntity();
                 HttpEntity entity = new StringEntity(
                     JSON_REQUEST_BODY.getBody(),
                     ContentType.create(JSON_REQUEST_BODY.getContentType()));
@@ -1224,7 +1220,7 @@ public class ApacheHttpClientAdapterTest {
             public void process(org.apache.http.HttpResponse response, HttpContext context) throws HttpException, IOException {
                 Header header = new BasicHeader(RESPONSE_HEADER_KEY, RESPONSE_HEADER_VALUE);
                 response.setHeaders(new Header[]{header});
-    
+
                 ProtocolVersion protocolVersion = new ProtocolVersion("HTTP", 1, 1);
                 int statusCode = HttpStatus.SC_OK;
                 String reasonPhrase = "OK";
@@ -1238,7 +1234,7 @@ public class ApacheHttpClientAdapterTest {
             addInterceptorFirst(interceptor).
             addInterceptorLast(responseInterceptor).build();
 
-        HttpClient patchHttpClient = new DefaultHttpClientBuilder()
+        HttpClient patchHttpClient = new ApacheHttpClientBuilder()
             .credential(patchCredential)
             .validator(patchValidator)
             .apacheHttpClient(httpClient)
@@ -1246,8 +1242,8 @@ public class ApacheHttpClientAdapterTest {
 
         HttpResponse<TestServiceResponse> executeSendPutResponse =
             patchHttpClient.patch(requestHeaders, URL, JSON_REQUEST_BODY, TestServiceResponse.class);
-        
-    
+
+
         Assert.assertEquals(
             4, executeSendPutResponse.getRequest().getHeaders().getHeaders().size());
         Assert.assertEquals(
@@ -1267,7 +1263,7 @@ public class ApacheHttpClientAdapterTest {
         Assert.assertEquals(
             RESPONSE_JSON, ((JsonResponseBody) executeSendPutResponse.getBody()).getBody());
         Assert.assertEquals(RESPONSE_JSON_VALUE, executeSendPutResponse.getServiceResponse().getRequestId());
-    }    
+    }
 
 
     @Test
@@ -1336,7 +1332,7 @@ public class ApacheHttpClientAdapterTest {
 
                 Assert.assertTrue(request instanceof HttpEntityEnclosingRequest);
                 HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) request;
-                HttpEntity reqEntity = entityRequest.getEntity();  
+                HttpEntity reqEntity = entityRequest.getEntity();
                 HttpEntity entity = new StringEntity(
                     JSON_REQUEST_BODY.getBody(),
                     ContentType.create(JSON_REQUEST_BODY.getContentType()));
@@ -1358,7 +1354,7 @@ public class ApacheHttpClientAdapterTest {
             public void process(org.apache.http.HttpResponse response, HttpContext context) throws HttpException, IOException {
                 Header header = new BasicHeader(RESPONSE_HEADER_KEY, RESPONSE_HEADER_VALUE);
                 response.setHeaders(new Header[]{header});
-    
+
                 ProtocolVersion protocolVersion = new ProtocolVersion("HTTP", 1, 1);
                 int statusCode = HttpStatus.SC_OK;
                 String reasonPhrase = "OK";
@@ -1372,7 +1368,7 @@ public class ApacheHttpClientAdapterTest {
             addInterceptorFirst(interceptor).
             addInterceptorLast(responseInterceptor).build();
 
-        HttpClient putHttpClient = new DefaultHttpClientBuilder()
+        HttpClient putHttpClient = new ApacheHttpClientBuilder()
             .credential(putCredential)
             .validator(putValidator)
             .apacheHttpClient(httpClient)
@@ -1380,8 +1376,8 @@ public class ApacheHttpClientAdapterTest {
 
         HttpResponse<TestServiceResponse> executeSendPutResponse =
             putHttpClient.put(requestHeaders, URL, JSON_REQUEST_BODY, TestServiceResponse.class);
-        
-    
+
+
         Assert.assertEquals(
             4, executeSendPutResponse.getRequest().getHeaders().getHeaders().size());
         Assert.assertEquals(
@@ -1401,7 +1397,7 @@ public class ApacheHttpClientAdapterTest {
         Assert.assertEquals(
             RESPONSE_JSON, ((JsonResponseBody) executeSendPutResponse.getBody()).getBody());
         Assert.assertEquals(RESPONSE_JSON_VALUE, executeSendPutResponse.getServiceResponse().getRequestId());
-    }    
+    }
 
 
     @Test
@@ -1484,7 +1480,7 @@ public class ApacheHttpClientAdapterTest {
             public void process(org.apache.http.HttpResponse response, HttpContext context) throws HttpException, IOException {
                 Header header = new BasicHeader(RESPONSE_HEADER_KEY, RESPONSE_HEADER_VALUE);
                 response.setHeaders(new Header[]{header});
-    
+
                 ProtocolVersion protocolVersion = new ProtocolVersion("HTTP", 1, 1);
                 int statusCode = HttpStatus.SC_OK;
                 String reasonPhrase = "OK";
@@ -1498,7 +1494,7 @@ public class ApacheHttpClientAdapterTest {
             addInterceptorFirst(interceptor).
             addInterceptorLast(responseInterceptor).build();
 
-        HttpClient executeSendPutHttpClient = new DefaultHttpClientBuilder()
+        HttpClient executeSendPutHttpClient = new ApacheHttpClientBuilder()
             .credential(executeSendDeleteCredential)
             .validator(executeSendDeleteValidator)
             .apacheHttpClient(httpClient)
@@ -1515,8 +1511,8 @@ public class ApacheHttpClientAdapterTest {
 
         HttpResponse<TestServiceResponse> executeSendPutResponse =
             executeSendPutHttpClient.execute(httpRequest, TestServiceResponse.class);
-        
-    
+
+
         Assert.assertEquals(
             4, executeSendPutResponse.getRequest().getHeaders().getHeaders().size());
         Assert.assertEquals(
@@ -1536,6 +1532,6 @@ public class ApacheHttpClientAdapterTest {
         Assert.assertEquals(
             RESPONSE_JSON, ((JsonResponseBody) executeSendPutResponse.getBody()).getBody());
         Assert.assertEquals(RESPONSE_JSON_VALUE, executeSendPutResponse.getServiceResponse().getRequestId());
-    }   
-    
+    }
+
 }
