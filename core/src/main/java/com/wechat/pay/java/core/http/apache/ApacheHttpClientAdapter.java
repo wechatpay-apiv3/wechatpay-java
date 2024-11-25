@@ -44,7 +44,8 @@ public class ApacheHttpClientAdapter extends AbstractHttpClient {
 
   private final CloseableHttpClient apacheHttpClient;
 
-  public ApacheHttpClientAdapter(Credential credential, Validator validator, CloseableHttpClient client) {
+  public ApacheHttpClientAdapter(Credential credential, Validator validator,
+      CloseableHttpClient client) {
     super(credential, validator);
     this.apacheHttpClient = requireNonNull(client);
   }
@@ -57,14 +58,16 @@ public class ApacheHttpClientAdapter extends AbstractHttpClient {
   @Override
   public OriginalResponse innerExecute(HttpRequest wechatPayRequest) {
     try {
-      CloseableHttpResponse apacheHttpResponse = apacheHttpClient.execute(buildApacheHttpRequest(wechatPayRequest));
+      CloseableHttpResponse apacheHttpResponse = apacheHttpClient.execute(
+          buildApacheHttpRequest(wechatPayRequest));
       return assembleOriginalResponse(wechatPayRequest, apacheHttpResponse);
     } catch (IOException e) {
       throw new HttpException(wechatPayRequest, e);
     }
   }
 
-  private org.apache.http.client.methods.HttpUriRequest buildApacheHttpRequest(HttpRequest wechatPayRequest) {
+  private org.apache.http.client.methods.HttpUriRequest buildApacheHttpRequest(
+      HttpRequest wechatPayRequest) {
     String url = wechatPayRequest.getUrl().toString();
     org.apache.http.client.methods.HttpUriRequest apacheHttpRequest;
 
@@ -88,14 +91,16 @@ public class ApacheHttpClientAdapter extends AbstractHttpClient {
       apacheHttpRequest = new HttpDelete(url);
       break;
     default:
-      throw new IllegalArgumentException("Unsupported HTTP method: " + wechatPayRequest.getHttpMethod().name());
+      throw new IllegalArgumentException(
+          "Unsupported HTTP method: " + wechatPayRequest.getHttpMethod().name());
     }
     Map<String, String> headers = wechatPayRequest.getHeaders().getHeaders();
     headers.forEach(apacheHttpRequest::addHeader);
     return apacheHttpRequest;
   }
 
-  private HttpEntity buildApacheHttpEntity(com.wechat.pay.java.core.http.RequestBody wechatPayRequestBody) {
+  private HttpEntity buildApacheHttpEntity(
+      com.wechat.pay.java.core.http.RequestBody wechatPayRequestBody) {
     // 处理空请求体的情况
     if (wechatPayRequestBody == null) {
       return new StringEntity("", "");
@@ -111,17 +116,20 @@ public class ApacheHttpClientAdapter extends AbstractHttpClient {
       MultipartEntityBuilder entityBuilder = MultipartEntityBuilder.create();
       entityBuilder.setMode(HttpMultipartMode.RFC6532);
       entityBuilder.addTextBody(META_NAME, fileRequestBody.getMeta(), APPLICATION_JSON);
-      entityBuilder.addBinaryBody(FILE_NAME, fileRequestBody.getFile(), ContentType.create(fileRequestBody.getContentType()), fileRequestBody.getFileName());
+      entityBuilder.addBinaryBody(FILE_NAME, fileRequestBody.getFile(),
+          ContentType.create(fileRequestBody.getContentType()), fileRequestBody.getFileName());
       return entityBuilder.build();
     }
     logger.error(
-        "When an http request is sent and the apache request body is constructed, the requestBody parameter"
+        "When an http request is sent and the apache request body is constructed, the requestBody" 
+                + " parameter"
             + " type cannot be found,requestBody class name[{}]",
         wechatPayRequestBody.getClass().getName());
     return null;
   }
 
-  private OriginalResponse assembleOriginalResponse(HttpRequest wechatPayRequest, CloseableHttpResponse apacheHttpResponse) throws IOException {
+  private OriginalResponse assembleOriginalResponse(HttpRequest wechatPayRequest,
+      CloseableHttpResponse apacheHttpResponse) throws IOException {
     Map<String, String> responseHeaders = assembleResponseHeader(apacheHttpResponse);
     HttpEntity entity = apacheHttpResponse.getEntity();
     try {
@@ -153,9 +161,11 @@ public class ApacheHttpClientAdapter extends AbstractHttpClient {
   @Override
   protected InputStream innerDownload(HttpRequest httpRequest) {
     try {
-      CloseableHttpResponse apacheHttpResponse = apacheHttpClient.execute(buildApacheHttpRequest(httpRequest));
+      CloseableHttpResponse apacheHttpResponse = apacheHttpClient.execute(
+          buildApacheHttpRequest(httpRequest));
       if (isInvalidHttpCode(apacheHttpResponse.getStatusLine().getStatusCode())) {
-        throw new ServiceException(httpRequest, apacheHttpResponse.getStatusLine().getStatusCode(), "");
+        throw new ServiceException(httpRequest, apacheHttpResponse.getStatusLine().getStatusCode(),
+            "");
       }
       InputStream responseBodyStream = null;
       if (apacheHttpResponse.getEntity() != null) {
