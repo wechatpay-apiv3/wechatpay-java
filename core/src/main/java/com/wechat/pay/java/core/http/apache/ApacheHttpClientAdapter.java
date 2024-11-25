@@ -3,11 +3,20 @@ package com.wechat.pay.java.core.http.apache;
 import static java.util.Objects.requireNonNull;
 import static org.apache.http.entity.ContentType.APPLICATION_JSON;
 
+import com.wechat.pay.java.core.auth.Credential;
+import com.wechat.pay.java.core.auth.Validator;
+import com.wechat.pay.java.core.exception.HttpException;
+import com.wechat.pay.java.core.exception.MalformedMessageException;
+import com.wechat.pay.java.core.exception.ServiceException;
+import com.wechat.pay.java.core.http.AbstractHttpClient;
+import com.wechat.pay.java.core.http.FileRequestBody;
+import com.wechat.pay.java.core.http.HttpRequest;
+import com.wechat.pay.java.core.http.JsonRequestBody;
+import com.wechat.pay.java.core.http.OriginalResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -25,17 +34,6 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.wechat.pay.java.core.auth.Credential;
-import com.wechat.pay.java.core.auth.Validator;
-import com.wechat.pay.java.core.exception.HttpException;
-import com.wechat.pay.java.core.exception.MalformedMessageException;
-import com.wechat.pay.java.core.exception.ServiceException;
-import com.wechat.pay.java.core.http.AbstractHttpClient;
-import com.wechat.pay.java.core.http.FileRequestBody;
-import com.wechat.pay.java.core.http.HttpRequest;
-import com.wechat.pay.java.core.http.JsonRequestBody;
-import com.wechat.pay.java.core.http.OriginalResponse;
-
 public class ApacheHttpClientAdapter extends AbstractHttpClient {
 
   private static final Logger logger = LoggerFactory.getLogger(ApacheHttpClientAdapter.class);
@@ -44,8 +42,8 @@ public class ApacheHttpClientAdapter extends AbstractHttpClient {
 
   private final CloseableHttpClient apacheHttpClient;
 
-  public ApacheHttpClientAdapter(Credential credential, Validator validator,
-      CloseableHttpClient client) {
+  public ApacheHttpClientAdapter(
+      Credential credential, Validator validator, CloseableHttpClient client) {
     super(credential, validator);
     this.apacheHttpClient = requireNonNull(client);
   }
@@ -58,8 +56,8 @@ public class ApacheHttpClientAdapter extends AbstractHttpClient {
   @Override
   public OriginalResponse innerExecute(HttpRequest wechatPayRequest) {
     try {
-      CloseableHttpResponse apacheHttpResponse = apacheHttpClient.execute(
-          buildApacheHttpRequest(wechatPayRequest));
+      CloseableHttpResponse apacheHttpResponse =
+          apacheHttpClient.execute(buildApacheHttpRequest(wechatPayRequest));
       return assembleOriginalResponse(wechatPayRequest, apacheHttpResponse);
     } catch (IOException e) {
       throw new HttpException(wechatPayRequest, e);
@@ -72,27 +70,28 @@ public class ApacheHttpClientAdapter extends AbstractHttpClient {
     org.apache.http.client.methods.HttpUriRequest apacheHttpRequest;
 
     switch (wechatPayRequest.getHttpMethod().name()) {
-    case "GET":
-      apacheHttpRequest = new HttpGet(url);
-      break;
-    case "POST":
-      apacheHttpRequest = new HttpPost(url);
-      ((HttpPost) apacheHttpRequest).setEntity(buildApacheHttpEntity(wechatPayRequest.getBody()));
-      break;
-    case "PUT":
-      apacheHttpRequest = new HttpPut(url);
-      ((HttpPut) apacheHttpRequest).setEntity(buildApacheHttpEntity(wechatPayRequest.getBody()));
-      break;
-    case "PATCH":
-      apacheHttpRequest = new HttpPatch(url);
-      ((HttpPatch) apacheHttpRequest).setEntity(buildApacheHttpEntity(wechatPayRequest.getBody()));
-      break;
-    case "DELETE":
-      apacheHttpRequest = new HttpDelete(url);
-      break;
-    default:
-      throw new IllegalArgumentException(
-          "Unsupported HTTP method: " + wechatPayRequest.getHttpMethod().name());
+      case "GET":
+        apacheHttpRequest = new HttpGet(url);
+        break;
+      case "POST":
+        apacheHttpRequest = new HttpPost(url);
+        ((HttpPost) apacheHttpRequest).setEntity(buildApacheHttpEntity(wechatPayRequest.getBody()));
+        break;
+      case "PUT":
+        apacheHttpRequest = new HttpPut(url);
+        ((HttpPut) apacheHttpRequest).setEntity(buildApacheHttpEntity(wechatPayRequest.getBody()));
+        break;
+      case "PATCH":
+        apacheHttpRequest = new HttpPatch(url);
+        ((HttpPatch) apacheHttpRequest)
+            .setEntity(buildApacheHttpEntity(wechatPayRequest.getBody()));
+        break;
+      case "DELETE":
+        apacheHttpRequest = new HttpDelete(url);
+        break;
+      default:
+        throw new IllegalArgumentException(
+            "Unsupported HTTP method: " + wechatPayRequest.getHttpMethod().name());
     }
     Map<String, String> headers = wechatPayRequest.getHeaders().getHeaders();
     headers.forEach(apacheHttpRequest::addHeader);
@@ -116,20 +115,23 @@ public class ApacheHttpClientAdapter extends AbstractHttpClient {
       MultipartEntityBuilder entityBuilder = MultipartEntityBuilder.create();
       entityBuilder.setMode(HttpMultipartMode.RFC6532);
       entityBuilder.addTextBody(META_NAME, fileRequestBody.getMeta(), APPLICATION_JSON);
-      entityBuilder.addBinaryBody(FILE_NAME, fileRequestBody.getFile(),
-          ContentType.create(fileRequestBody.getContentType()), fileRequestBody.getFileName());
+      entityBuilder.addBinaryBody(
+          FILE_NAME,
+          fileRequestBody.getFile(),
+          ContentType.create(fileRequestBody.getContentType()),
+          fileRequestBody.getFileName());
       return entityBuilder.build();
     }
     logger.error(
-        "When an http request is sent and the apache request body is constructed, the requestBody" 
-                + " parameter"
+        "When an http request is sent and the apache request body is constructed, the requestBody"
+            + " parameter"
             + " type cannot be found,requestBody class name[{}]",
         wechatPayRequestBody.getClass().getName());
     return null;
   }
 
-  private OriginalResponse assembleOriginalResponse(HttpRequest wechatPayRequest,
-      CloseableHttpResponse apacheHttpResponse) throws IOException {
+  private OriginalResponse assembleOriginalResponse(
+      HttpRequest wechatPayRequest, CloseableHttpResponse apacheHttpResponse) throws IOException {
     Map<String, String> responseHeaders = assembleResponseHeader(apacheHttpResponse);
     HttpEntity entity = apacheHttpResponse.getEntity();
     try {
@@ -161,11 +163,11 @@ public class ApacheHttpClientAdapter extends AbstractHttpClient {
   @Override
   protected InputStream innerDownload(HttpRequest httpRequest) {
     try {
-      CloseableHttpResponse apacheHttpResponse = apacheHttpClient.execute(
-          buildApacheHttpRequest(httpRequest));
+      CloseableHttpResponse apacheHttpResponse =
+          apacheHttpClient.execute(buildApacheHttpRequest(httpRequest));
       if (isInvalidHttpCode(apacheHttpResponse.getStatusLine().getStatusCode())) {
-        throw new ServiceException(httpRequest, apacheHttpResponse.getStatusLine().getStatusCode(),
-            "");
+        throw new ServiceException(
+            httpRequest, apacheHttpResponse.getStatusLine().getStatusCode(), "");
       }
       InputStream responseBodyStream = null;
       if (apacheHttpResponse.getEntity() != null) {

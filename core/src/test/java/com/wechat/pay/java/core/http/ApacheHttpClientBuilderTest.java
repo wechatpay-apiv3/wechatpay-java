@@ -1,22 +1,17 @@
 package com.wechat.pay.java.core.http;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
 import com.wechat.pay.java.core.cipher.PrivacyDecryptor;
 import com.wechat.pay.java.core.cipher.PrivacyEncryptor;
 import com.wechat.pay.java.core.cipher.Signer;
-import okhttp3.OkHttpClient;
+import java.net.URI;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.jupiter.api.Test;
-
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.Proxy.Type;
-import java.net.URI;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ApacheHttpClientBuilderTest {
 
@@ -93,8 +88,7 @@ class ApacheHttpClientBuilderTest {
             return null;
           }
         };
-    HttpClient httpClient =
-        new ApacheHttpClientBuilder().config(config).build();
+    HttpClient httpClient = new ApacheHttpClientBuilder().config(config).build();
     assertNotNull(httpClient);
   }
 }

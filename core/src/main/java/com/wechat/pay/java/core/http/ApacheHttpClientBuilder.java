@@ -1,41 +1,28 @@
 package com.wechat.pay.java.core.http;
 
-import java.net.Proxy;
-
 import static java.util.Objects.requireNonNull;
-
-import java.util.concurrent.TimeUnit;
-
-import org.apache.http.HttpHost;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
 import com.wechat.pay.java.core.http.apache.ApacheHttpClientAdapter;
-import com.wechat.pay.java.core.http.okhttp.OkHttpClientAdapter;
 import com.wechat.pay.java.core.http.okhttp.OkHttpMultiDomainInterceptor;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
-/**
- * 默认HttpClient构造器
- */
-public class ApacheHttpClientBuilder
-    implements AbstractHttpClientBuilder<ApacheHttpClientBuilder> {
+/** 默认HttpClient构造器 */
+public class ApacheHttpClientBuilder implements AbstractHttpClientBuilder<ApacheHttpClientBuilder> {
 
   private Credential credential;
   private Validator validator;
-
 
   private CloseableHttpClient customizeApacheHttpClient;
   private static final OkHttpMultiDomainInterceptor multiDomainInterceptor =
       new OkHttpMultiDomainInterceptor();
 
   static PoolingHttpClientConnectionManager apacheHttpClientConnectionManager =
-          new PoolingHttpClientConnectionManager();
-
+      new PoolingHttpClientConnectionManager();
 
   private CloseableHttpClient initDefaultApacheHttpClient() {
     return HttpClientBuilder.create()
@@ -111,11 +98,12 @@ public class ApacheHttpClientBuilder
     requireNonNull(validator);
 
     CloseableHttpClient httpclient =
-        customizeApacheHttpClient == null ? initDefaultApacheHttpClient()
+        customizeApacheHttpClient == null
+            ? initDefaultApacheHttpClient()
             : customizeApacheHttpClient;
     // 每次都会创建一个 httpclient 实例，和 okhttp 不同
     // You can customize a shared OkH(ttpClient instance with newBuilder(). This builds a client
-      // that shares the same connection po)ol, thread pools, and configuration.
+    // that shares the same connection po)ol, thread pools, and configuration.
     return new ApacheHttpClientAdapter(credential, validator, httpclient);
   }
 }
