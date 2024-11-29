@@ -6,7 +6,6 @@ import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
 import com.wechat.pay.java.core.http.apache.ApacheHttpClientAdapter;
-import com.wechat.pay.java.core.http.okhttp.OkHttpMultiDomainInterceptor;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -18,8 +17,6 @@ public class ApacheHttpClientBuilder implements AbstractHttpClientBuilder<Apache
   private Validator validator;
 
   private CloseableHttpClient customizeApacheHttpClient;
-  private static final OkHttpMultiDomainInterceptor multiDomainInterceptor =
-      new OkHttpMultiDomainInterceptor();
 
   static PoolingHttpClientConnectionManager apacheHttpClientConnectionManager =
       new PoolingHttpClientConnectionManager();

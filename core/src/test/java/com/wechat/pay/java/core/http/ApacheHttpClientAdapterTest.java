@@ -1,15 +1,11 @@
 package com.wechat.pay.java.core.http;
 
 import static com.wechat.pay.java.core.http.Constant.AUTHORIZATION;
-import static com.wechat.pay.java.core.http.Constant.OS;
-import static com.wechat.pay.java.core.http.Constant.USER_AGENT_FORMAT;
-import static com.wechat.pay.java.core.http.Constant.VERSION;
 import static com.wechat.pay.java.core.model.TestConfig.MERCHANT_ID;
 import static com.wechat.pay.java.core.model.TestConfig.RESOURCES_DIR;
 
 import com.wechat.pay.java.core.auth.Credential;
 import com.wechat.pay.java.core.auth.Validator;
-import com.wechat.pay.java.core.http.okhttp.OkHttpClientAdapter;
 import com.wechat.pay.java.core.model.TestServiceResponse;
 import com.wechat.pay.java.core.util.IOUtil;
 import java.io.IOException;
@@ -107,15 +103,6 @@ public class ApacheHttpClientAdapterTest {
           }
         };
 
-    String userAgent =
-        String.format(
-            USER_AGENT_FORMAT,
-            OkHttpClientAdapter.class.getPackage().getImplementationVersion(),
-            OS,
-            VERSION == null ? "Unknown" : VERSION,
-            executeSendGetCredential.getClass().getSimpleName(),
-            executeSendGetRequestValidator.getClass().getSimpleName(),
-            "apachehttp/" + getClass().getPackage().getImplementationVersion());
     HttpRequestInterceptor requestInterceptor =
         new HttpRequestInterceptor() {
           @Override
@@ -395,15 +382,7 @@ public class ApacheHttpClientAdapterTest {
             return "";
           }
         };
-    String userAgent =
-        String.format(
-            USER_AGENT_FORMAT,
-            OkHttpClientAdapter.class.getPackage().getImplementationVersion(),
-            OS,
-            VERSION == null ? "Unknown" : VERSION,
-            executeSendPostWithFileCredential.getClass().getSimpleName(),
-            executeSendPostWithFileValidator.getClass().getSimpleName(),
-            "apachehttp/" + getClass().getPackage().getImplementationVersion());
+
     HttpRequestInterceptor interceptor =
         new HttpRequestInterceptor() {
           @Override
@@ -421,11 +400,6 @@ public class ApacheHttpClientAdapterTest {
                 getHeaderValue(headers, AUTHORIZATION));
 
             Assert.assertTrue(request instanceof HttpEntityEnclosingRequest);
-            HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) request;
-            HttpEntity reqEntity = entityRequest.getEntity();
-            // apache multipart entity content length 每次创建不一样，不做校验
-            // Assert.assertEquals(multipartEntity.getContentLength(),
-            // reqEntity.getContentLength());
           }
 
           private String getHeaderValue(Header[] headers, String name) {
@@ -470,14 +444,6 @@ public class ApacheHttpClientAdapterTest {
             .apacheHttpClient(httpClient)
             .build();
 
-    HttpRequest executeSendPostHttpRequest =
-        new HttpRequest.Builder()
-            .httpMethod(HttpMethod.POST)
-            .url(URL)
-            .headers(requestHeaders)
-            .body(JSON_REQUEST_BODY)
-            .build();
-
     HttpResponse<TestServiceResponse> executeSendPostWithFileResponse =
         executeSendPostWithFileHttpClient.post(
             requestHeaders, URL, requestBody, TestServiceResponse.class);
@@ -506,7 +472,7 @@ public class ApacheHttpClientAdapterTest {
   }
 
   @Test
-  public void testExecuteSendPutRequest() throws IOException {
+  public void testExecuteSendPutRequest() {
     Credential executeSendPutCredential =
         new Credential() {
           @Override
@@ -544,15 +510,7 @@ public class ApacheHttpClientAdapterTest {
             return "";
           }
         };
-    String userAgent =
-        String.format(
-            USER_AGENT_FORMAT,
-            OkHttpClientAdapter.class.getPackage().getImplementationVersion(),
-            OS,
-            VERSION == null ? "Unknown" : VERSION,
-            executeSendPutCredential.getClass().getSimpleName(),
-            executeSendPutValidator.getClass().getSimpleName(),
-            "apachehttp/" + getClass().getPackage().getImplementationVersion());
+
     HttpRequestInterceptor interceptor =
         new HttpRequestInterceptor() {
           @Override
@@ -653,7 +611,7 @@ public class ApacheHttpClientAdapterTest {
   }
 
   @Test
-  public void testExecuteSendPatchRequest() throws IOException {
+  public void testExecuteSendPatchRequest() {
     Credential executeSendPatchCredential =
         new Credential() {
           @Override
@@ -691,15 +649,7 @@ public class ApacheHttpClientAdapterTest {
             return "";
           }
         };
-    String userAgent =
-        String.format(
-            USER_AGENT_FORMAT,
-            OkHttpClientAdapter.class.getPackage().getImplementationVersion(),
-            OS,
-            VERSION == null ? "Unknown" : VERSION,
-            executeSendPatchCredential.getClass().getSimpleName(),
-            executeSendPatchValidator.getClass().getSimpleName(),
-            "apachehttp/" + getClass().getPackage().getImplementationVersion());
+
     HttpRequestInterceptor interceptor =
         new HttpRequestInterceptor() {
           @Override
@@ -838,15 +788,7 @@ public class ApacheHttpClientAdapterTest {
             return "";
           }
         };
-    String userAgent =
-        String.format(
-            USER_AGENT_FORMAT,
-            OkHttpClientAdapter.class.getPackage().getImplementationVersion(),
-            OS,
-            VERSION == null ? "Unknown" : VERSION,
-            executeSendDeleteCredential.getClass().getSimpleName(),
-            executeSendDeleteValidator.getClass().getSimpleName(),
-            "apachehttp/" + getClass().getPackage().getImplementationVersion());
+
     HttpRequestInterceptor interceptor =
         new HttpRequestInterceptor() {
           @Override
@@ -976,15 +918,7 @@ public class ApacheHttpClientAdapterTest {
             return "";
           }
         };
-    String userAgent =
-        String.format(
-            USER_AGENT_FORMAT,
-            OkHttpClientAdapter.class.getPackage().getImplementationVersion(),
-            OS,
-            VERSION == null ? "Unknown" : VERSION,
-            getCredential.getClass().getSimpleName(),
-            getHttpValidator.getClass().getSimpleName(),
-            "apachehttp/" + getClass().getPackage().getImplementationVersion());
+
     HttpRequestInterceptor requestInterceptor =
         new HttpRequestInterceptor() {
           @Override
@@ -1194,7 +1128,7 @@ public class ApacheHttpClientAdapterTest {
   }
 
   @Test
-  public void testPatch() throws IOException {
+  public void testPatch() {
     Credential patchCredential =
         new Credential() {
           @Override
@@ -1232,15 +1166,7 @@ public class ApacheHttpClientAdapterTest {
             return "";
           }
         };
-    String userAgent =
-        String.format(
-            USER_AGENT_FORMAT,
-            OkHttpClientAdapter.class.getPackage().getImplementationVersion(),
-            OS,
-            VERSION == null ? "Unknown" : VERSION,
-            patchCredential.getClass().getSimpleName(),
-            patchValidator.getClass().getSimpleName(),
-            "apachehttp/" + getClass().getPackage().getImplementationVersion());
+
     HttpRequestInterceptor interceptor =
         new HttpRequestInterceptor() {
           @Override
@@ -1333,7 +1259,7 @@ public class ApacheHttpClientAdapterTest {
   }
 
   @Test
-  public void testPut() throws IOException {
+  public void testPut() {
     Credential putCredential =
         new Credential() {
           @Override
@@ -1371,15 +1297,7 @@ public class ApacheHttpClientAdapterTest {
             return "";
           }
         };
-    String userAgent =
-        String.format(
-            USER_AGENT_FORMAT,
-            OkHttpClientAdapter.class.getPackage().getImplementationVersion(),
-            OS,
-            VERSION == null ? "Unknown" : VERSION,
-            putCredential.getClass().getSimpleName(),
-            putValidator.getClass().getSimpleName(),
-            "apachehttp/" + getClass().getPackage().getImplementationVersion());
+
     HttpRequestInterceptor interceptor =
         new HttpRequestInterceptor() {
           @Override
@@ -1472,7 +1390,7 @@ public class ApacheHttpClientAdapterTest {
   }
 
   @Test
-  public void testDelete() throws IOException {
+  public void testDelete() {
     Credential executeSendDeleteCredential =
         new Credential() {
           @Override
@@ -1510,15 +1428,7 @@ public class ApacheHttpClientAdapterTest {
             return "";
           }
         };
-    String userAgent =
-        String.format(
-            USER_AGENT_FORMAT,
-            OkHttpClientAdapter.class.getPackage().getImplementationVersion(),
-            OS,
-            VERSION == null ? "Unknown" : VERSION,
-            executeSendDeleteCredential.getClass().getSimpleName(),
-            executeSendDeleteValidator.getClass().getSimpleName(),
-            "apachehttp/" + getClass().getPackage().getImplementationVersion());
+
     HttpRequestInterceptor interceptor =
         new HttpRequestInterceptor() {
           @Override
@@ -1572,23 +1482,15 @@ public class ApacheHttpClientAdapterTest {
             .addInterceptorLast(responseInterceptor)
             .build();
 
-    HttpClient executeSendPutHttpClient =
+    HttpClient deleteHttpClient =
         new ApacheHttpClientBuilder()
             .credential(executeSendDeleteCredential)
             .validator(executeSendDeleteValidator)
             .apacheHttpClient(httpClient)
             .build();
 
-    HttpRequest httpRequest =
-        new HttpRequest.Builder()
-            .httpMethod(HttpMethod.DELETE)
-            .url(URL)
-            .headers(requestHeaders)
-            .body(JSON_REQUEST_BODY)
-            .build();
-
     HttpResponse<TestServiceResponse> executeSendPutResponse =
-        executeSendPutHttpClient.execute(httpRequest, TestServiceResponse.class);
+        deleteHttpClient.delete(requestHeaders, URL, TestServiceResponse.class);
 
     Assert.assertEquals(4, executeSendPutResponse.getRequest().getHeaders().getHeaders().size());
     Assert.assertEquals(
