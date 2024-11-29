@@ -189,7 +189,7 @@ public class ApacheHttpClientAdapterTest {
   }
 
   @Test
-  public void testExecuteSendPostReqWithJsonBody() throws IOException {
+  public void testExecuteSendPostReqWithJsonBody() {
     Credential executeSendPostCredential =
         new Credential() {
           @Override
@@ -343,7 +343,6 @@ public class ApacheHttpClientAdapterTest {
     builder.addTextBody("meta", "meta");
     builder.addBinaryBody(
         "file", requestBody.getFile(), ContentType.create(requestBody.getContentType()), imageName);
-    HttpEntity multipartEntity = builder.build();
     Credential executeSendPostWithFileCredential =
         new Credential() {
           @Override
@@ -750,7 +749,7 @@ public class ApacheHttpClientAdapterTest {
   }
 
   @Test
-  public void testExecuteSendDeleteRequest() throws IOException {
+  public void testExecuteSendDeleteRequest() {
     Credential executeSendDeleteCredential =
         new Credential() {
           @Override
@@ -995,7 +994,7 @@ public class ApacheHttpClientAdapterTest {
   }
 
   @Test
-  public void testPost() throws IOException {
+  public void testPost() {
     Credential postCredential =
         new Credential() {
           @Override
