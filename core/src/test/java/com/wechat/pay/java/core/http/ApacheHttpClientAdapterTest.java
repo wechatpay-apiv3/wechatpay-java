@@ -767,7 +767,7 @@ public class ApacheHttpClientAdapterTest {
           public String getAuthorization(URI uri, String httpMethod, String signBody) {
             Assert.assertEquals(URI.create(URL), uri);
             Assert.assertEquals(HttpMethod.DELETE.name(), httpMethod);
-            Assert.assertEquals(JSON_REQUEST_BODY.getBody(), signBody);
+            Assert.assertEquals("", signBody);
             return FAKE_AUTHORIZATION;
           }
         };
@@ -802,9 +802,7 @@ public class ApacheHttpClientAdapterTest {
             Assert.assertEquals(REQUEST_HEADER_VALUE, getHeaderValue(headers, REQUEST_HEADER_KEY));
             Assert.assertEquals(
                 executeSendDeleteCredential.getAuthorization(
-                    URI.create(URL),
-                    request.getRequestLine().getMethod(),
-                    JSON_REQUEST_BODY.getBody()),
+                    URI.create(URL), request.getRequestLine().getMethod(), ""),
                 getHeaderValue(headers, AUTHORIZATION));
           }
 
@@ -854,7 +852,6 @@ public class ApacheHttpClientAdapterTest {
             .httpMethod(HttpMethod.DELETE)
             .url(URL)
             .headers(requestHeaders)
-            .body(JSON_REQUEST_BODY)
             .build();
 
     HttpResponse<TestServiceResponse> executeSendPutResponse =
@@ -1367,31 +1364,27 @@ public class ApacheHttpClientAdapterTest {
             .apacheHttpClient(httpClient)
             .build();
 
-    HttpResponse<TestServiceResponse> executeSendPutResponse =
+    HttpResponse<TestServiceResponse> putResponse =
         putHttpClient.put(requestHeaders, URL, JSON_REQUEST_BODY, TestServiceResponse.class);
 
-    Assert.assertEquals(4, executeSendPutResponse.getRequest().getHeaders().getHeaders().size());
+    Assert.assertEquals(4, putResponse.getRequest().getHeaders().getHeaders().size());
     Assert.assertEquals(
-        REQUEST_HEADER_VALUE,
-        executeSendPutResponse.getRequest().getHeaders().getHeader(REQUEST_HEADER_KEY));
+        REQUEST_HEADER_VALUE, putResponse.getRequest().getHeaders().getHeader(REQUEST_HEADER_KEY));
     Assert.assertEquals(
-        FAKE_AUTHORIZATION,
-        executeSendPutResponse.getRequest().getHeaders().getHeader(AUTHORIZATION));
-    Assert.assertEquals(HttpMethod.PUT, executeSendPutResponse.getRequest().getHttpMethod());
-    Assert.assertEquals(URL, executeSendPutResponse.getRequest().getUrl().toString());
-    Assert.assertEquals(1, executeSendPutResponse.getHeaders().getHeaders().size());
+        FAKE_AUTHORIZATION, putResponse.getRequest().getHeaders().getHeader(AUTHORIZATION));
+    Assert.assertEquals(HttpMethod.PUT, putResponse.getRequest().getHttpMethod());
+    Assert.assertEquals(URL, putResponse.getRequest().getUrl().toString());
+    Assert.assertEquals(1, putResponse.getHeaders().getHeaders().size());
     Assert.assertEquals(
-        RESPONSE_HEADER_VALUE, executeSendPutResponse.getHeaders().getHeader(RESPONSE_HEADER_KEY));
-    Assert.assertTrue(executeSendPutResponse.getBody() instanceof JsonResponseBody);
-    Assert.assertEquals(
-        RESPONSE_JSON, ((JsonResponseBody) executeSendPutResponse.getBody()).getBody());
-    Assert.assertEquals(
-        RESPONSE_JSON_VALUE, executeSendPutResponse.getServiceResponse().getRequestId());
+        RESPONSE_HEADER_VALUE, putResponse.getHeaders().getHeader(RESPONSE_HEADER_KEY));
+    Assert.assertTrue(putResponse.getBody() instanceof JsonResponseBody);
+    Assert.assertEquals(RESPONSE_JSON, ((JsonResponseBody) putResponse.getBody()).getBody());
+    Assert.assertEquals(RESPONSE_JSON_VALUE, putResponse.getServiceResponse().getRequestId());
   }
 
   @Test
   public void testDelete() {
-    Credential executeSendDeleteCredential =
+    Credential deleteCredential =
         new Credential() {
           @Override
           public String getSchema() {
@@ -1407,11 +1400,11 @@ public class ApacheHttpClientAdapterTest {
           public String getAuthorization(URI uri, String httpMethod, String signBody) {
             Assert.assertEquals(URI.create(URL), uri);
             Assert.assertEquals(HttpMethod.DELETE.name(), httpMethod);
-            Assert.assertEquals(JSON_REQUEST_BODY.getBody(), signBody);
+            Assert.assertEquals("", signBody);
             return FAKE_AUTHORIZATION;
           }
         };
-    Validator executeSendDeleteValidator =
+    Validator deleteValidator =
         new Validator() {
           @Override
           public <T> boolean validate(HttpHeaders responseHeaders, String body) {
@@ -1441,10 +1434,8 @@ public class ApacheHttpClientAdapterTest {
             Assert.assertEquals(4, headers.length);
             Assert.assertEquals(REQUEST_HEADER_VALUE, getHeaderValue(headers, REQUEST_HEADER_KEY));
             Assert.assertEquals(
-                executeSendDeleteCredential.getAuthorization(
-                    URI.create(URL),
-                    request.getRequestLine().getMethod(),
-                    JSON_REQUEST_BODY.getBody()),
+                deleteCredential.getAuthorization(
+                    URI.create(URL), request.getRequestLine().getMethod(), ""),
                 getHeaderValue(headers, AUTHORIZATION));
           }
 
@@ -1484,30 +1475,27 @@ public class ApacheHttpClientAdapterTest {
 
     HttpClient deleteHttpClient =
         new ApacheHttpClientBuilder()
-            .credential(executeSendDeleteCredential)
-            .validator(executeSendDeleteValidator)
+            .credential(deleteCredential)
+            .validator(deleteValidator)
             .apacheHttpClient(httpClient)
             .build();
 
-    HttpResponse<TestServiceResponse> executeSendPutResponse =
+    HttpResponse<TestServiceResponse> deleteResponse =
         deleteHttpClient.delete(requestHeaders, URL, TestServiceResponse.class);
 
-    Assert.assertEquals(4, executeSendPutResponse.getRequest().getHeaders().getHeaders().size());
+    Assert.assertEquals(4, deleteResponse.getRequest().getHeaders().getHeaders().size());
     Assert.assertEquals(
         REQUEST_HEADER_VALUE,
-        executeSendPutResponse.getRequest().getHeaders().getHeader(REQUEST_HEADER_KEY));
+        deleteResponse.getRequest().getHeaders().getHeader(REQUEST_HEADER_KEY));
     Assert.assertEquals(
-        FAKE_AUTHORIZATION,
-        executeSendPutResponse.getRequest().getHeaders().getHeader(AUTHORIZATION));
-    Assert.assertEquals(HttpMethod.DELETE, executeSendPutResponse.getRequest().getHttpMethod());
-    Assert.assertEquals(URL, executeSendPutResponse.getRequest().getUrl().toString());
-    Assert.assertEquals(1, executeSendPutResponse.getHeaders().getHeaders().size());
+        FAKE_AUTHORIZATION, deleteResponse.getRequest().getHeaders().getHeader(AUTHORIZATION));
+    Assert.assertEquals(HttpMethod.DELETE, deleteResponse.getRequest().getHttpMethod());
+    Assert.assertEquals(URL, deleteResponse.getRequest().getUrl().toString());
+    Assert.assertEquals(1, deleteResponse.getHeaders().getHeaders().size());
     Assert.assertEquals(
-        RESPONSE_HEADER_VALUE, executeSendPutResponse.getHeaders().getHeader(RESPONSE_HEADER_KEY));
-    Assert.assertTrue(executeSendPutResponse.getBody() instanceof JsonResponseBody);
-    Assert.assertEquals(
-        RESPONSE_JSON, ((JsonResponseBody) executeSendPutResponse.getBody()).getBody());
-    Assert.assertEquals(
-        RESPONSE_JSON_VALUE, executeSendPutResponse.getServiceResponse().getRequestId());
+        RESPONSE_HEADER_VALUE, deleteResponse.getHeaders().getHeader(RESPONSE_HEADER_KEY));
+    Assert.assertTrue(deleteResponse.getBody() instanceof JsonResponseBody);
+    Assert.assertEquals(RESPONSE_JSON, ((JsonResponseBody) deleteResponse.getBody()).getBody());
+    Assert.assertEquals(RESPONSE_JSON_VALUE, deleteResponse.getServiceResponse().getRequestId());
   }
 }
