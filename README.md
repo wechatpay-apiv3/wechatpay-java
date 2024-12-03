@@ -189,6 +189,23 @@ SDK 使用的是 unchecked exception，会抛出四种自定义异常。每种�
   - 解析回调请求体为 JSON 字符串失败：上报监控和日志打印。
   - 解密回调通知内容失败：确认传入的 apiV3 密钥是否正确。
 
+## 使用本地平台公钥
+
+如果你的商户可使用微信支付的公钥验证应答和回调的签名，可使用微信支付公钥和公钥ID初始化。
+
+```java
+// 可以根据实际情况使用publicKeyFromPath或publicKey加载公钥
+Config config =
+    new RSAPublicKeyConfig.Builder()
+        .merchantId(merchantId)
+        .privateKeyFromPath(privateKeyPath)
+        .publicKeyFromPath(publicKeyPath)
+        .publicKeyId(publicKeyId)
+        .merchantSerialNumber(merchantSerialNumber)
+        .apiV3Key(apiV3Key)
+        .build();
+```
+
 ## 自动更新微信支付平台证书
 
 为确保 API 请求过程中的安全性，客户端需要使用微信支付平台证书来验证服务器响应的真实性和完整性。
@@ -233,23 +250,6 @@ Config config =
         .build();
 ```
 
-## 使用本地平台公钥
-
-如果你的商户可使用微信支付的公钥验证应答和回调的签名，可使用微信支付公钥和公钥ID初始化。
-
-```java
-// 可以根据实际情况使用publicKeyFromPath或publicKey加载公钥
-Config config =
-    new RSAPublicKeyConfig.Builder()
-        .merchantId(merchantId)
-        .privateKeyFromPath(privateKeyPath)
-        .publicKeyFromPath(publicKeyPath)
-        .publicKeyId(publicKeyId)
-        .merchantSerialNumber(merchantSerialNumber)
-        .apiV3Key(apiV3Key)
-        .build();
-```
-
 ## 回调通知
 
 首先，你需要在你的服务器上创建一个公开的 HTTP 端点，接受来自微信支付的回调通知。
@@ -264,7 +264,7 @@ Config config =
     - HTTP 头 `Wechatpay-Nonce`。签名中的随机数。
     - HTTP 头 `Wechatpay-Timestamp`。签名中的时间戳。
     - HTTP 头 `Wechatpay-Signature-Type`。签名类型。
-1. 初始化 `RSAAutoCertificateConfig`。微信支付平台证书由 SDK 的自动更新平台能力提供，也可以使用本地证书。
+1. 初始化 `NotificationConfig`，根据回调签名选择使用微信支付公钥或者平台证书选择不同的Config
 1. 初始化 `NotificationParser`。
 1. 调用 `NotificationParser.parse()` 验签、解密并将 JSON 转换成具体的通知回调对象。如果验签失败，SDK 会抛出 `ValidationException`。
 1. 接下来可以执行你的业务逻辑了。如果执行成功，你应返回 `200 OK` 的状态码。如果执行失败，你应返回 `4xx` 或者 `5xx`的状态码，例如数据库操作失败建议返回 `500 Internal Server Error`。
@@ -279,12 +279,31 @@ RequestParam requestParam = new RequestParam.Builder()
         .body(requestBody)
         .build();
 
-// 如果已经初始化了 RSAAutoCertificateConfig，可直接使用
-// 没有的话，则构造一个
+// 如果已经初始化了 NotificationConfig，可直接使用
+// 没有的话，则构造一个。以下多种 Config 根据情况选择一种即可：
+
+// 1. 如果你使用的是微信支付公私钥，则使用 RSAPublicKeyNotificationConfig
+NotificationConfig config = new RSAPublicKeyNotificationConfig.Builder()
+        .publicKeyFromPath(publicKeyPath)
+        .publicKeyId(publicKeyId)
+        .apiV3Key(apiV3Key)
+        .build();
+
+// 2. 如果你仍在使用微信支付平台证书，则使用 RSAAutoCertificateConfig
 NotificationConfig config = new RSAAutoCertificateConfig.Builder()
         .merchantId(merchantId)
         .privateKeyFromPath(privateKeyPath)
         .merchantSerialNumber(merchantSerialNumber)
+        .apiV3Key(apiV3Key)
+        .build();
+
+// 3. 如果你正在进行微信支付平台证书到微信支付公私钥的灰度切换，希望保持切换兼容，则使用 RSACombinedNotificationConfig
+NotificationConfig config = new RSACombinedNotificationConfig.Builder()
+        .merchantId(merchantId)
+        .privateKeyFromPath(privateKeyPath)
+        .merchantSerialNumber(merchantSerialNumber)
+        .publicKeyFromPath(wechatpayPublicKeyPath)
+        .publicKeyId(wechatpayPublicKeyId)
         .apiV3Key(apiV3Key)
         .build();
 
@@ -371,6 +390,16 @@ inputStream.close();
 
 如果 SDK 尚未支持某个接口，你可以使用 [cipher](core/src/main/java/com/wechat/pay/java/core/cipher) 中的 `RSAPrivacyEncryptor` 和 `RSAPrivacyDecryptor` ，手动对敏感信息加解密。
 
+当你使用本地的微信支付平台证书或者微信支付公钥，可以通过以下方法直接构建加密器 `PrivacyEncryptor`
+
+```java
+// 平台证书中的公钥 或者 微信支付公钥
+PublicKey wechatPayPublicKey = null;
+String plaintext = "";
+PrivacyEncryptor encryptor = new RSAPrivacyEncryptor(wechatPayPublicKey);
+String ciphertext = encryptor.encryptToString(plaintext);
+```
+
 当你使用自动获取的微信支付平台证书时，可以通过以下方法获取加密器 `PrivacyEncryptor`，以及对应的证书序列号。
 
 ```java
@@ -379,15 +408,7 @@ String wechatPayCertificateSerialNumber = encryptor.getWechatpaySerial();
 String ciphertext = encryptor.encryptToString(plaintext);
 ```
 
-当你使用本地的公钥或私钥，可以通过以下方法直接构建加密器 `PrivacyEncryptor` 和解密器 `PrivacyDecryptor`。
-
-```java
-// 微信支付平台证书中的公钥
-PublicKey wechatPayPublicKey = null;
-String plaintext = "";
-PrivacyEncryptor encryptor = new RSAPrivacyEncryptor(wechatPayPublicKey);
-String ciphertext = encryptor.encryptToString(plaintext);
-```
+你可以使用如下方法加载本地私钥来构建解密器 `PrivacyDecryptor`
 
 ```java
 // 商户私钥
