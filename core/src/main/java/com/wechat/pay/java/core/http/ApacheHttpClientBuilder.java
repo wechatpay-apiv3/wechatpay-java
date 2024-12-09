@@ -46,7 +46,7 @@ public class ApacheHttpClientBuilder implements AbstractHttpClientBuilder<Apache
    * 设置凭据生成器
    *
    * @param credential 凭据生成器
-   * @return defaultHttpClientBuilder
+   * @return apacheHttpClientBuilder
    */
   @Override
   public ApacheHttpClientBuilder credential(Credential credential) {
@@ -58,7 +58,7 @@ public class ApacheHttpClientBuilder implements AbstractHttpClientBuilder<Apache
    * 设置验证器
    *
    * @param validator 验证器
-   * @return defaultHttpClientBuilder
+   * @return apacheHttpClientBuilder
    */
   @Override
   public ApacheHttpClientBuilder validator(Validator validator) {
@@ -67,10 +67,10 @@ public class ApacheHttpClientBuilder implements AbstractHttpClientBuilder<Apache
   }
 
   /**
-   * 设置 appacheHttpClient 若设置该client，则忽略其他参数
+   * 设置 appacheHttpClient，若没有设置，则使用默认创建的 appacheHttpClient
    *
    * @param apacheHttpClient 用户自定义的apacheHttpClient
-   * @return defaultHttpClientBuilder
+   * @return apacheHttpClientBuilder
    */
   public ApacheHttpClientBuilder apacheHttpClient(CloseableHttpClient apacheHttpClient) {
     this.customizeApacheHttpClient = apacheHttpClient;
@@ -98,9 +98,6 @@ public class ApacheHttpClientBuilder implements AbstractHttpClientBuilder<Apache
         customizeApacheHttpClient == null
             ? initDefaultApacheHttpClient()
             : customizeApacheHttpClient;
-    // 每次都会创建一个 httpclient 实例，和 okhttp 不同
-    // You can customize a shared OkH(ttpClient instance with newBuilder(). This builds a client
-    // that shares the same connection po)ol, thread pools, and configuration.
     return new ApacheHttpClientAdapter(credential, validator, httpclient);
   }
 }
