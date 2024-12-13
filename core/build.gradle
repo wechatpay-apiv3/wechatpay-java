@@ -18,6 +18,8 @@ jar {
 dependencies {
     implementation "com.google.code.gson:gson:${gsonVersion}"
     implementation "com.squareup.okhttp3:okhttp:${okhttpVersion}"
+    implementation "org.apache.httpcomponents:httpmime:${apachehttpVersion}"
+    implementation "org.apache.httpcomponents:httpclient:${apachehttpVersion}"
     implementation "org.slf4j:slf4j-api:${slf4jVersion}"
 
     testImplementation "junit:junit:${junitVersion}"
