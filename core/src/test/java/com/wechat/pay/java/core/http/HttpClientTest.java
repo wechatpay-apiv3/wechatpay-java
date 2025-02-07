@@ -235,7 +235,7 @@ public interface HttpClientTest {
   }
 
   @ParameterizedTest
-  @ValueSource(ints = {199, 300})
+  @ValueSource(ints = {400, 300})
   default void testDownload_ServiceException(int responseCode) throws IOException {
     HttpClient client = createHttpClient();
     MockWebServer server = new MockWebServer();

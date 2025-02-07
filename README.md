@@ -495,6 +495,54 @@ JsapiService service = new JsapiService.Builder().httpclient(httpClient).build()
 
 我们提供基于 [腾讯 Kona 国密套件](https://github.com/Tencent/TencentKonaSMSuite) 的国密扩展。文档请参考 [shangmi/README.md](shangmi/README.md)。
 
+## 使用 ApacheHttpClient 发送 HTTP请求
+
+SDK 支持使用 ApacheHttpClient 发送 HTTP 请求。建议使用 [ApacheHttpClientBuilder](https://github.com/wechatpay-apiv3/wechatpay-java/tree/main/core/src/main/java/com/wechat/pay/java/core/http/ApacheHttpClientBuilder.java) 创建 [ApacheHttpClientAdapter]https://github.com/wechatpay-apiv3/wechatpay-java/tree/main/core/src/main/java/com/wechat/pay/java/core/http/apache/ApacheHttpClientAdapter.java) 来发送 HTTP 请求，会自动生成签名和验证签名。
+
+### 使用示例
+
+发送请求步骤如下：
+
+1. 初始化 `ApacheHttpClientAdapter`，建议使用 `ApacheHttpClientBuilder` 构建
+2. 构建请求 `HttpRequest`
+3. 调用 `httpClient.execute` 或者 `httpClient.get` 等方法来发送 HTTP 请求。`httpClient.execute` 支持发送 GET、PUT、POST、PATCH、DELETE 请求，也可以调用指定的 HTTP 方法发送请求。
+
+[ApacheHttpClientAdapterTest](https://github.com/wechatpay-apiv3/wechatpay-java/blob/main/core/src/test/java/com/wechat/pay/java/core/http/ApacheHttpClientAdapterTest.java) 中演示了如何构造和发送 HTTP 请求。以下是简单的代码使用示例：
+
+```java
+// 初始化商户配置
+Config config =
+new RSAAutoCertificateConfig.Builder()
+.merchantId(merchantId) // 商户号
+.privateKeyFromPath(privateKeyPath) // 商户API私钥路径
+.merchantSerialNumber(merchantSerialNumber) // 商户证书序列号
+.apiV3Key(apiV3Key) // 商户APIV3密钥
+.build();
+
+// 方法一：使用默认创建的 ApacheHttpClient
+HttpClient httpClient = new ApacheHttpClientBuilder().config(config).build();
+// 方法二：使用业务已有的 customApacheHttpClient
+HttpClient httpClient = new ApacheHttpClientBuilder().config(config).apacheHttpClient(customApacheHttpClient).build();
+
+// 构造 HttpRequest，以 GET 为例
+HttpRequest httpRequest =
+  new HttpRequest.Builder()
+  .httpMethod(HttpMethod.GET)
+  .url(requestPath)
+  .headers(headers)
+  .build();
+
+// 发送请求 Response 为自定义的回包的类型
+HttpResponse<ExampleResponse> httpResponse = httpClient.execute(httpRequest, ExampleResponse.class);
+```
+
+### 如何迁移
+
+如果之前使用的是 [wechatpay-apache-httpclient](https://github.com/wechatpay-apiv3/wechatpay-apache-httpclient)，想要迁移到使用 SDK，可以按照以下步骤：
+
+1. 修改初始化方式：可参考示例代码
+2. 修改收发包请求：定义回包类 XXXResponse，构造 HttpRequest，可参考示例代码
+
 ## 常见问题
 
 ### 为什么收到应答中的证书序列号和发起请求的证书序列号不一致？
