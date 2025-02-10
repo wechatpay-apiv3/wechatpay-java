@@ -1,5 +1,12 @@
 # ChangeLog
 
+## [0.2.16] - 2025-02-10
+
+### Added
+
++ 支持 Apache Http Client
+
+
 ## [0.2.15] - 2024-11-20
 
 ### Added
