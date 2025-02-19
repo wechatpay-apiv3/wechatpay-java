@@ -78,12 +78,13 @@ public class QuickStart {
     public static String apiV3Key = "...";
 
     public static void main(String[] args) {
-        // 使用自动更新平台证书的RSA配置
-        // 一个商户号只能初始化一个配置，否则会因为重复的下载任务报错
+        // 使用微信支付公钥的RSA配置
         Config config =
-                new RSAAutoCertificateConfig.Builder()
+                new RSAPublicKeyConfig.Builder()
                         .merchantId(merchantId)
                         .privateKeyFromPath(privateKeyPath)
+                        .publicKeyFromPath(publicKeyPath)
+                        .publicKeyId(publicKeyId)
                         .merchantSerialNumber(merchantSerialNumber)
                         .apiV3Key(apiV3Key)
                         .build();
