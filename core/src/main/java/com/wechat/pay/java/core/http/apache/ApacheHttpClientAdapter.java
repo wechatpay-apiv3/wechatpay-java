@@ -55,9 +55,8 @@ public class ApacheHttpClientAdapter extends AbstractHttpClient {
 
   @Override
   public OriginalResponse innerExecute(HttpRequest wechatPayRequest) {
-    try {
-      CloseableHttpResponse apacheHttpResponse =
-          apacheHttpClient.execute(buildApacheHttpRequest(wechatPayRequest));
+    try (CloseableHttpResponse apacheHttpResponse =
+        apacheHttpClient.execute(buildApacheHttpRequest(wechatPayRequest))) {
       return assembleOriginalResponse(wechatPayRequest, apacheHttpResponse);
     } catch (IOException e) {
       throw new HttpException(wechatPayRequest, e);
