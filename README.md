@@ -317,16 +317,16 @@ try {
 } catch (ValidationException e) {
   // 签名验证失败，返回 401 UNAUTHORIZED 状态码
   logger.error("sign verification failed", e);
-  return ResponseEntity.status(HttpStatus.UNAUTHORIZED);
+  return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 }
 
 // 如果处理失败，应返回 4xx/5xx 的状态码，例如 500 INTERNAL_SERVER_ERROR
 if (/* process error */) {
-  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
+  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 }
 
 // 处理成功，返回 200 OK 状态码
-return ResponseEntity.status(HttpStatus.OK);
+return ResponseEntity.status(HttpStatus.OK).build();
 ```
 
 常用的通知回调调对象类型有：
