@@ -1,5 +1,12 @@
 # ChangeLog
 
+## [0.2.17] - 2025-04-11
+
+### Modified
+
++ 修复 Apache Http Client 未能正确设置 Charset 为 UTF-8 的问题
++ 修复 ApacheHttpResponse 未能正确关闭的问题
+
 ## [0.2.16] - 2025-02-10
 
 ### Added
