@@ -108,7 +108,7 @@ public class ApacheHttpClientAdapter extends AbstractHttpClient {
     if (wechatPayRequestBody instanceof JsonRequestBody) {
       return new StringEntity(
           ((JsonRequestBody) wechatPayRequestBody).getBody(),
-          ContentType.create(wechatPayRequestBody.getContentType(),"UTF-8")); 
+          ContentType.create(wechatPayRequestBody.getContentType(), StandardCharsets.UTF_8));
     }
     if (wechatPayRequestBody instanceof FileRequestBody) {
       FileRequestBody fileRequestBody = (FileRequestBody) wechatPayRequestBody;
