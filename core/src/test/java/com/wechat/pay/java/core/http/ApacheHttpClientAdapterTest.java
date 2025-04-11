@@ -11,6 +11,7 @@ import com.wechat.pay.java.core.util.IOUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import org.apache.http.Header;
@@ -253,7 +254,7 @@ public class ApacheHttpClientAdapterTest {
             HttpEntity entity =
                 new StringEntity(
                     JSON_REQUEST_BODY.getBody(),
-                    ContentType.create(JSON_REQUEST_BODY.getContentType()));
+                    ContentType.create(JSON_REQUEST_BODY.getContentType(), StandardCharsets.UTF_8));
             Assert.assertEquals(
                 entity.getContentType().getValue(), reqEntity.getContentType().getValue());
             Assert.assertEquals(entity.getContentLength(), reqEntity.getContentLength());
@@ -1057,7 +1058,7 @@ public class ApacheHttpClientAdapterTest {
             HttpEntity entity =
                 new StringEntity(
                     JSON_REQUEST_BODY.getBody(),
-                    ContentType.create(JSON_REQUEST_BODY.getContentType()));
+                    ContentType.create(JSON_REQUEST_BODY.getContentType(), StandardCharsets.UTF_8));
             Assert.assertEquals(
                 entity.getContentType().getValue(), reqEntity.getContentType().getValue());
             Assert.assertEquals(entity.getContentLength(), reqEntity.getContentLength());

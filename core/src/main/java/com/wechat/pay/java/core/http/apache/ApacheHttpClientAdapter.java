@@ -15,6 +15,7 @@ import com.wechat.pay.java.core.http.JsonRequestBody;
 import com.wechat.pay.java.core.http.OriginalResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.apache.http.Header;
@@ -103,11 +104,11 @@ public class ApacheHttpClientAdapter extends AbstractHttpClient {
     if (wechatPayRequestBody == null) {
       return new StringEntity("", "");
     }
-
+    // 指定ContentType参数为UTF-8， fix issues #352
     if (wechatPayRequestBody instanceof JsonRequestBody) {
       return new StringEntity(
           ((JsonRequestBody) wechatPayRequestBody).getBody(),
-          ContentType.create(wechatPayRequestBody.getContentType()));
+          ContentType.create(wechatPayRequestBody.getContentType(), StandardCharsets.UTF_8));
     }
     if (wechatPayRequestBody instanceof FileRequestBody) {
       FileRequestBody fileRequestBody = (FileRequestBody) wechatPayRequestBody;
