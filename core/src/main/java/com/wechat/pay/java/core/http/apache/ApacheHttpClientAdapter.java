@@ -15,6 +15,7 @@ import com.wechat.pay.java.core.http.JsonRequestBody;
 import com.wechat.pay.java.core.http.OriginalResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.apache.http.Header;
