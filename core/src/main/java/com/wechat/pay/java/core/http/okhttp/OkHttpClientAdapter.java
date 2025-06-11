@@ -68,7 +68,7 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
       com.wechat.pay.java.core.http.RequestBody wechatPayRequestBody) {
     if (wechatPayRequestBody == null) {
       // create an empty request body
-      return RequestBody.create("", null);
+      return createOkHttpEmptyRequestBody();
     }
     if (wechatPayRequestBody instanceof JsonRequestBody) {
       return createOkHttpRequestBody(wechatPayRequestBody);
@@ -93,6 +93,10 @@ public final class OkHttpClientAdapter extends AbstractHttpClient {
   @SuppressWarnings("deprecation")
   private okhttp3.RequestBody createRequestBody(byte[] content, okhttp3.MediaType mediaType) {
     return okhttp3.RequestBody.create(mediaType, content);
+  }
+
+  private RequestBody createOkHttpEmptyRequestBody() {
+    return createRequestBody("", null);
   }
 
   private RequestBody createOkHttpRequestBody(
