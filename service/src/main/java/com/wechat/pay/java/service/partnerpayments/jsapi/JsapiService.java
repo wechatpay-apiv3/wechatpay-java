@@ -37,7 +37,7 @@ import com.wechat.pay.java.service.partnerpayments.jsapi.model.PrepayRequest;
 import com.wechat.pay.java.service.partnerpayments.jsapi.model.PrepayResponse;
 import com.wechat.pay.java.service.partnerpayments.jsapi.model.QueryOrderByIdRequest;
 import com.wechat.pay.java.service.partnerpayments.jsapi.model.QueryOrderByOutTradeNoRequest;
-import com.wechat.pay.java.service.partnerpayments.jsapi.model.Transaction;
+import com.wechat.pay.java.service.partnerpayments.model.Transaction;
 
 /** JsapiService服务 */
 public class JsapiService {

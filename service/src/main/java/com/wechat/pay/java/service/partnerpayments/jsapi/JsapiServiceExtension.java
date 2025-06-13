@@ -14,7 +14,7 @@ import com.wechat.pay.java.service.partnerpayments.jsapi.model.PrepayRequest;
 import com.wechat.pay.java.service.partnerpayments.jsapi.model.PrepayWithRequestPaymentResponse;
 import com.wechat.pay.java.service.partnerpayments.jsapi.model.QueryOrderByIdRequest;
 import com.wechat.pay.java.service.partnerpayments.jsapi.model.QueryOrderByOutTradeNoRequest;
-import com.wechat.pay.java.service.partnerpayments.jsapi.model.Transaction;
+import com.wechat.pay.java.service.partnerpayments.model.Transaction;
 import java.time.Instant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
