@@ -32,12 +32,12 @@ import com.wechat.pay.java.core.http.JsonRequestBody;
 import com.wechat.pay.java.core.http.MediaType;
 import com.wechat.pay.java.core.http.QueryParameter;
 import com.wechat.pay.java.core.http.RequestBody;
+import com.wechat.pay.java.service.partnerpayments.model.Transaction;
 import com.wechat.pay.java.service.partnerpayments.nativepay.model.CloseOrderRequest;
 import com.wechat.pay.java.service.partnerpayments.nativepay.model.PrepayRequest;
 import com.wechat.pay.java.service.partnerpayments.nativepay.model.PrepayResponse;
 import com.wechat.pay.java.service.partnerpayments.nativepay.model.QueryOrderByIdRequest;
 import com.wechat.pay.java.service.partnerpayments.nativepay.model.QueryOrderByOutTradeNoRequest;
-import com.wechat.pay.java.service.partnerpayments.nativepay.model.Transaction;
 
 /** NativePayService服务 */
 public class NativePayService {

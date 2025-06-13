@@ -37,7 +37,7 @@ import com.wechat.pay.java.service.partnerpayments.h5.model.PrepayRequest;
 import com.wechat.pay.java.service.partnerpayments.h5.model.PrepayResponse;
 import com.wechat.pay.java.service.partnerpayments.h5.model.QueryOrderByIdRequest;
 import com.wechat.pay.java.service.partnerpayments.h5.model.QueryOrderByOutTradeNoRequest;
-import com.wechat.pay.java.service.partnerpayments.h5.model.Transaction;
+import com.wechat.pay.java.service.partnerpayments.model.Transaction;
 
 /** H5Service服务 */
 public class H5Service {

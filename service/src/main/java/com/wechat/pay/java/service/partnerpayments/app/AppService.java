@@ -37,7 +37,7 @@ import com.wechat.pay.java.service.partnerpayments.app.model.PrepayRequest;
 import com.wechat.pay.java.service.partnerpayments.app.model.PrepayResponse;
 import com.wechat.pay.java.service.partnerpayments.app.model.QueryOrderByIdRequest;
 import com.wechat.pay.java.service.partnerpayments.app.model.QueryOrderByOutTradeNoRequest;
-import com.wechat.pay.java.service.partnerpayments.app.model.Transaction;
+import com.wechat.pay.java.service.partnerpayments.model.Transaction;
 
 /** AppService服务 */
 public class AppService {

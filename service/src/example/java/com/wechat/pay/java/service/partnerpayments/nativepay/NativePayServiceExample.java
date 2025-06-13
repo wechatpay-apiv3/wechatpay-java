@@ -5,12 +5,12 @@ import com.wechat.pay.java.core.RSAAutoCertificateConfig;
 import com.wechat.pay.java.core.exception.HttpException;
 import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.exception.ServiceException;
+import com.wechat.pay.java.service.partnerpayments.model.Transaction;
 import com.wechat.pay.java.service.partnerpayments.nativepay.model.CloseOrderRequest;
 import com.wechat.pay.java.service.partnerpayments.nativepay.model.PrepayRequest;
 import com.wechat.pay.java.service.partnerpayments.nativepay.model.PrepayResponse;
 import com.wechat.pay.java.service.partnerpayments.nativepay.model.QueryOrderByIdRequest;
 import com.wechat.pay.java.service.partnerpayments.nativepay.model.QueryOrderByOutTradeNoRequest;
-import com.wechat.pay.java.service.partnerpayments.nativepay.model.Transaction;
 
 /** NativePayService使用示例 */
 public class NativePayServiceExample {
