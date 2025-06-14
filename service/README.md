@@ -31,3 +31,4 @@
 | billdownload | 账单下载 |✔️|✔️|
 | ecommercesubsidy | 电商收付通补差 | |✔️|
 | ecommercerefund  | 电商收付通退款 | |✔️|
+| mchtransfer | 商家转账升级功能 |✔️||
