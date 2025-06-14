@@ -1,14 +1,13 @@
 package com.wechat.pay.java.service.transferbatch;
 
+import static java.util.Objects.requireNonNull;
+
 import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.exception.ValidationException;
 import com.wechat.pay.java.core.notification.NotificationConfig;
 import com.wechat.pay.java.core.notification.NotificationParser;
 import com.wechat.pay.java.core.notification.RequestParam;
-import com.wechat.pay.java.service.refund.model.RefundNotification;
 import com.wechat.pay.java.service.transferbatch.model.TransferBatchNotification;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * 商家转账批次回调通知解析服务

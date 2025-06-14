@@ -1,13 +1,13 @@
 package com.wechat.pay.java.service.refund;
 
+import static java.util.Objects.requireNonNull;
+
 import com.wechat.pay.java.core.exception.MalformedMessageException;
 import com.wechat.pay.java.core.exception.ValidationException;
 import com.wechat.pay.java.core.notification.NotificationConfig;
 import com.wechat.pay.java.core.notification.NotificationParser;
 import com.wechat.pay.java.core.notification.RequestParam;
 import com.wechat.pay.java.service.refund.model.RefundNotification;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * 退款回调通知解析服务

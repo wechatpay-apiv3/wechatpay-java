@@ -39,14 +39,15 @@ public class RefundNotificationParseServiceExample {
     service = new RefundNotificationParseService.Builder().config(config).build();
     // ... 调用接口
     try {
-      RequestParam requestParam = new RequestParam.Builder()
-          .serialNumber("5157F09EFDC096DE15EBE81A47057A72********")
-          .signature("mm/2CMGxo5qDKNk1i7Szn0IiwAUPlfrp********")
-          .timestamp("1723789635")
-          .nonce("614275b63d789bd3a7a472c63d809552")
-          .body("")
-          .signType("WECHATPAY2-SHA256-RSA2048")
-          .build();
+      RequestParam requestParam =
+          new RequestParam.Builder()
+              .serialNumber("5157F09EFDC096DE15EBE81A47057A72********")
+              .signature("mm/2CMGxo5qDKNk1i7Szn0IiwAUPlfrp********")
+              .timestamp("1723789635")
+              .nonce("614275b63d789bd3a7a472c63d809552")
+              .body("")
+              .signType("WECHATPAY2-SHA256-RSA2048")
+              .build();
       RefundNotification refundNotification = refund(requestParam);
     } catch (MalformedMessageException e) { // 回调通知参数不正确、解析通知数据失败
       // 调用e.getMessage()获取信息打印日志或上报监控，更多方法见MalformedMessageException定义
