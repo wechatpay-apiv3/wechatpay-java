@@ -41,6 +41,22 @@ public class AcceptElecsignResponse {
   @SerializedName("create_time")
   private String createTime;
 
+  public String getState() {
+    return state;
+  }
+
+  public void setState(String state) {
+    this.state = state;
+  }
+
+  public String getCreateTime() {
+    return createTime;
+  }
+
+  public void setCreateTime(String createTime) {
+    this.createTime = createTime;
+  }
+
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
